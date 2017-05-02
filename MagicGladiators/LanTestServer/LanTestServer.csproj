@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NetworkCommsDotNetComplete">
+      <HintPath>..\..\..\..\..\Downloads\NetworkComms.Net-3.0.3\NetworkComms.Net-3.0.3\Platforms\Net40\MergedDllBuild\bin\Release\MergedComplete\NetworkCommsDotNetComplete.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
