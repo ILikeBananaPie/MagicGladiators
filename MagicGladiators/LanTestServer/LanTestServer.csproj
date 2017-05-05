@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="NetworkCommsDotNet">
       <HintPath>..\..\..\..\..\Downloads\NetworkComms.Net-3.0.3\NetworkComms.Net-3.0.3\Platforms\Net40\MergedDllBuild\bin\Release\NetworkCommsDotNet.dll</HintPath>
     </Reference>
