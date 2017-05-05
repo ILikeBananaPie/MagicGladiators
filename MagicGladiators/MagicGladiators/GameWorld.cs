@@ -1,6 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MagicGladiators.Components.Composites;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NetworkCommsDotNet;
+using NetworkCommsDotNet.Connections;
 using System.Collections.Generic;
 
 namespace MagicGladiators
@@ -62,6 +65,7 @@ namespace MagicGladiators
         {
             // TODO: Add your initialization logic here
 
+            
             gameObjects = new List<GameObject>();
 
 
@@ -109,8 +113,26 @@ namespace MagicGladiators
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
             // TODO: Add your update logic here
+            if (Keyboard.GetState().IsKeyDown(Keys.F2))
+            {
+                bool testfor = false;
+                foreach (GameObject obj in gameObjects)
+                {
+                    if (obj.GetComponent("Server") is Server)
+                    {
+                        testfor = true;
+                    }
+                }
+                if (!testfor)
+                {
+                    GameObject server = new GameObject(0);
+                    server.AddComponent(new Server(server));
+                    server.LoadContent(this.Content);
+                    gameObjects.Add(server);
+                }
+            }
+
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 
