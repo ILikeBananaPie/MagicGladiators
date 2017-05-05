@@ -8,13 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using System.Diagnostics;
 
 namespace MagicGladiators.Components.Composites
 {
     class Server: Component, IDrawable, ILoadable
     {
-        private Dictionary<Connection, GameObject> players;
+        private static Dictionary<Connection, GameObject> players;
 
 
         public Server(GameObject gameObject) : base(gameObject)
@@ -40,7 +39,7 @@ namespace MagicGladiators.Components.Composites
             }
         }
 
-        private void JoinServer(PacketHeader header, Connection connection, string message)
+        private static void JoinServer(PacketHeader header, Connection connection, string message)
         {
             if (players.Count <= 8)
             {
