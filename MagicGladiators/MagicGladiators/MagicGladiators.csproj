@@ -39,7 +39,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Animation.cs" />
-    <Compile Include="Components\Composites\Server.cs" />
+    <Compile Include="Builder\Director.cs" />
+    <Compile Include="Components\Composites\Dummy.cs" />
     <Compile Include="Components\Interfaces\ILoadable.cs" />
     <Compile Include="Components\Interfaces\IUpdateable.cs" />
     <Compile Include="Components\Leafs\Animator.cs" />
@@ -53,6 +54,9 @@
     <Compile Include="Components\Interfaces\ICollisionStay.cs" />
     <Compile Include="Components\Interfaces\IDrawable.cs" />
     <Compile Include="Components\Composites\Player.cs" />
+    <Compile Include="Builder\IBuilder.cs" />
+    <Compile Include="Builder\PlayerBuilder.cs" />
+    <Compile Include="Strategies\Idle.cs" />
     <Compile Include="Strategies\IStrategy.cs" />
     <Compile Include="Strategies\Move.cs" />
     <Compile Include="Program.cs" />
@@ -69,6 +73,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Player.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
     <Content Include="NetworkCommsDotNet.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

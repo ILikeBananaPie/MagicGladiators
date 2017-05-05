@@ -11,7 +11,7 @@ namespace MagicGladiators
 {
     class Move : IStrategy
     {
-        private float movementSpeed;
+        private float movementSpeed = 200;
 
         private Transform transform;
 
