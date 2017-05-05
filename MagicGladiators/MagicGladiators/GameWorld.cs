@@ -5,6 +5,12 @@ using System.Collections.Generic;
 
 namespace MagicGladiators
 {
+
+    public enum ObjectType { }
+    
+
+
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -17,7 +23,8 @@ namespace MagicGladiators
 
         public static List<GameObject> gameObjects;
 
-
+        public List<Collider> Colliders { get; private set; }
+        public List<Collider> newColliders { get; private set; }
 
 
         public float deltaTime { get; set; }
@@ -55,6 +62,11 @@ namespace MagicGladiators
             // TODO: Add your initialization logic here
 
             gameObjects = new List<GameObject>();
+
+
+            Colliders = new List<Collider>();
+            newColliders = new List<Collider>();
+
 
             base.Initialize();
         }
