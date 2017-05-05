@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using System.Diagnostics;
 using System.Net;
-using NetworkCommsDotNet.Connections.TCP;
+using NetworkCommsDotNet;
 
 namespace MagicGladiators.Components.Composites
 {
