@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="Builder\Director.cs" />
+    <Compile Include="Builder\DummyBuilder.cs" />
     <Compile Include="Components\Composites\Dummy.cs" />
     <Compile Include="Components\Composites\Server.cs" />
     <Compile Include="Components\Interfaces\ILoadable.cs" />

@@ -73,8 +73,12 @@ namespace MagicGladiators
             newColliders = new List<Collider>();
 
             Director director = new Director(new PlayerBuilder());
-
             gameObjects.Add(director.Construct(Vector2.Zero,1));
+
+
+            director = new Director(new DummyBuilder());
+            gameObjects.Add(director.Construct(new Vector2(50, 50),1));
+            
             base.Initialize();
         }
 
