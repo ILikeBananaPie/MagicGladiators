@@ -1,18 +1,44 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace MagicGladiators
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1:Game
+    public class GameWorld:Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Game1()
+
+
+        public static List<GameObject> gameObjects;
+
+
+
+
+        public float deltaTime { get; set; }
+
+
+        private static GameWorld instance;
+        public static GameWorld Instance
+
+
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new GameWorld();
+                }
+                return instance;
+            }
+        }
+
+        private GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -28,6 +54,8 @@ namespace MagicGladiators
         {
             // TODO: Add your initialization logic here
 
+            gameObjects = new List<GameObject>();
+
             base.Initialize();
         }
 
@@ -41,6 +69,11 @@ namespace MagicGladiators
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            foreach (GameObject go in gameObjects)
+            {
+                go.LoadContent(Content);
+            }
         }
 
         /// <summary>
@@ -63,7 +96,7 @@ namespace MagicGladiators
                 Exit();
 
             // TODO: Add your update logic here
-
+            deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             base.Update(gameTime);
         }
 
@@ -76,8 +109,16 @@ namespace MagicGladiators
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            foreach (GameObject go in gameObjects)
+            {
+                go.Draw(spriteBatch);
+            }
             base.Draw(gameTime);
         }
+        public GameObject FindGameObjectWithTag(string tag)
+        {
+            return gameObjects.Find(x => x.Tag == tag);
+        }
     }
+
 }
