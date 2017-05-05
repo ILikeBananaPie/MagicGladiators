@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using System.Diagnostics;
+using System.Net;
+using NetworkCommsDotNet.Connections.TCP;
 
 namespace MagicGladiators.Components.Composites
 {
@@ -25,7 +27,8 @@ namespace MagicGladiators.Components.Composites
 
             NetworkComms.AppendGlobalIncomingPacketHandler<Vector2>("UpdatePosition", UpdatePosition);
             //Start listening for incoming connections
-            Connection.StartListening(ConnectionType.TCP, new System.Net.IPEndPoint(System.Net.IPAddress.Any, 0));
+            
+            Connection.StartListening(ConnectionType.TCP, new IPEndPoint(IPAddress.Any, 0));
 
         }
 
