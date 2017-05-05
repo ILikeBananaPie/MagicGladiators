@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace MagicGladiators.Components.Composites
 {
-    class Server: Component, IDrawable, ILoadable
+    class Server : Component, IDrawable, ILoadable
     {
         private static Dictionary<Connection, GameObject> players;
 
@@ -26,7 +26,7 @@ namespace MagicGladiators.Components.Composites
             NetworkComms.AppendGlobalIncomingPacketHandler<Vector2>("UpdatePosition", UpdatePosition);
             //Start listening for incoming connections
             Connection.StartListening(ConnectionType.TCP, new System.Net.IPEndPoint(System.Net.IPAddress.Any, 0));
-            
+
         }
 
         SpriteFont spriteFont;
@@ -48,11 +48,13 @@ namespace MagicGladiators.Components.Composites
                 {
                     GameObject go = new GameObject(0);
                     connection.SendObject<bool>("JoinedServerRespond", true);
-                } else
+                }
+                else
                 {
                     connection.SendObject<bool>("JoinedServerRespond", false);
                 }
-            } else
+            }
+            else
             {
                 connection.SendObject<bool>("JoinedServerRespond", false);
             }
