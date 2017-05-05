@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using System.Diagnostics;
 
 namespace MagicGladiators.Components.Composites
 {
@@ -20,7 +21,7 @@ namespace MagicGladiators.Components.Composites
         {
             players = new Dictionary<Connection, GameObject>();
 
-            NetworkComms.AppendGlobalIncomingPacketHandler<string>("JoinServer", JoinServer);
+            NetworkComms.AppendGlobalIncomingPacketHandler<string>("JoinServer", Test);
 
             NetworkComms.AppendGlobalIncomingPacketHandler<Vector2>("UpdatePosition", UpdatePosition);
             //Start listening for incoming connections
@@ -55,6 +56,11 @@ namespace MagicGladiators.Components.Composites
             {
                 connection.SendObject<bool>("JoinedServerRespond", false);
             }
+        }
+
+        private static void Test(PacketHeader header, Connection connection, string message)
+        {
+            Debug.Write("Eh");
         }
 
         private void UpdatePosition(PacketHeader header, Connection connection, Vector2 position)
