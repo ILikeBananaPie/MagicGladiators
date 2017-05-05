@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace MagicGladiators
 {
-    public enum DIRECTION { Front, Back, Left, Right };
-
-    class Player
+    interface IStrategy
     {
+        void Execute(ref DIRECTION currentDirection);
     }
 }

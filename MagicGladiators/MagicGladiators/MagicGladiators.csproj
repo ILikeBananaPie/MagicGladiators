@@ -52,6 +52,7 @@
     <Compile Include="Components\Interfaces\ICollisionStay.cs" />
     <Compile Include="Components\Interfaces\IDrawable.cs" />
     <Compile Include="Components\Composites\Player.cs" />
+    <Compile Include="Strategies\IStrategy.cs" />
     <Compile Include="Strategies\Move.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
