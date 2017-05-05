@@ -72,7 +72,7 @@
     </Reference>
     <Reference Include="NetworkCommsDotNet, Version=3.0.0.0, Culture=neutral, PublicKeyToken=f58108eb6480f6ec, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Downloads\NetworkCommsDotNet.dll</HintPath>
+      <HintPath>Extra\NetworkCommsDotNet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -81,6 +81,11 @@
     <Content Include="Content\Player.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Extra\InTheHand.Net.Personal.dll" />
+    <Content Include="Extra\InTheHand.Net.Personal.xml" />
+    <Content Include="Extra\NetworkCommsDotNet.dll" />
+    <Content Include="Extra\NetworkCommsDotNet.pdb" />
+    <Content Include="Extra\NetworkCommsDotNet.XML" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
