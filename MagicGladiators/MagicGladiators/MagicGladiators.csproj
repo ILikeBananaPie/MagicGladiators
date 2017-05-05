@@ -70,8 +70,9 @@
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="NetworkCommsDotNet">
-      <HintPath>..\..\..\..\..\Downloads\NetworkComms.Net-3.0.3\NetworkComms.Net-3.0.3\Platforms\Net40\NetworkCommsDotNet\bin\Release\NetworkCommsDotNet.dll</HintPath>
+    <Reference Include="NetworkCommsDotNet, Version=3.0.0.0, Culture=neutral, PublicKeyToken=f58108eb6480f6ec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Extra\NetworkCommsDotNet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -80,6 +81,11 @@
     <Content Include="Content\Player.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Extra\InTheHand.Net.Personal.dll" />
+    <Content Include="Extra\InTheHand.Net.Personal.xml" />
+    <Content Include="Extra\NetworkCommsDotNet.dll" />
+    <Content Include="Extra\NetworkCommsDotNet.pdb" />
+    <Content Include="Extra\NetworkCommsDotNet.XML" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
