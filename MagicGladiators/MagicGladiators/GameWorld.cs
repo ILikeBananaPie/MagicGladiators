@@ -8,6 +8,7 @@ namespace MagicGladiators
 
     public enum ObjectType { }
     
+    
 
 
 
@@ -67,7 +68,9 @@ namespace MagicGladiators
             Colliders = new List<Collider>();
             newColliders = new List<Collider>();
 
+            Director director = new Director(new PlayerBuilder());
 
+            gameObjects.Add(director.Construct(Vector2.Zero,1));
             base.Initialize();
         }
 
@@ -109,6 +112,14 @@ namespace MagicGladiators
 
             // TODO: Add your update logic here
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+
+            foreach (GameObject go in gameObjects)
+            {
+                go.Update();
+                
+            }
+            
             base.Update(gameTime);
         }
 
@@ -121,10 +132,12 @@ namespace MagicGladiators
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(spriteBatch);
             }
+            spriteBatch.End();
             base.Draw(gameTime);
         }
         public GameObject FindGameObjectWithTag(string tag)
