@@ -47,7 +47,7 @@ namespace MagicGladiators.Components.Composites
 
         public void LoadContent(ContentManager content)
         {
-            spriteFont = content.Load<SpriteFont>("Font");
+            spriteFont = content.Load<SpriteFont>("fontText");
             rect = new Texture2D(GameWorld.Instance.GraphicsDevice, 15 * 21, 14);
             Color[] data = new Color[15*21*14];
             for (int i = 0; i < data.Length; i++) data[i] = Color.White;

@@ -80,7 +80,7 @@ namespace MagicGladiators.Components.Composites
 
         public void LoadContent(ContentManager content)
         {
-            spriteFont = content.Load<SpriteFont>("Font");
+            spriteFont = content.Load<SpriteFont>("fontText");
         }
 
         public void Update()

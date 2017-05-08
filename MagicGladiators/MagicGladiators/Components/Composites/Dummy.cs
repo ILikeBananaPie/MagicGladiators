@@ -24,7 +24,7 @@ namespace MagicGladiators
 
         public Dummy(GameObject gameObject) : base(gameObject)
         {
-            gameObject.Tag = "Ball";
+            gameObject.Tag = "Dummy";
 
         }
 
