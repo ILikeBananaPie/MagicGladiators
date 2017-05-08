@@ -131,7 +131,7 @@ namespace MagicGladiators
                 bool testfor = false;
                 foreach (GameObject obj in gameObjects)
                 {
-                    if (obj.GetComponent("Server") is Server)
+                    if (obj.GetComponent("Server") is Server || obj.GetComponent("Client") is Client)
                     {
                         testfor = true;
                     }
@@ -142,6 +142,23 @@ namespace MagicGladiators
                     server.AddComponent(new Server(server));
                     server.LoadContent(this.Content);
                     gameObjects.Add(server);
+                }
+            } else if (Keyboard.GetState().IsKeyDown(Keys.F3))
+            {
+                bool testfor = false;
+                foreach (GameObject obj in gameObjects)
+                {
+                    if (obj.GetComponent("Server") is Server || obj.GetComponent("Client") is Client)
+                    {
+                        testfor = true;
+                    }
+                }
+                if (!testfor)
+                {
+                    GameObject client = new GameObject(0);
+                    client.AddComponent(new Client(client));
+                    client.LoadContent(this.Content);
+                    gameObjects.Add(client);
                 }
             }
 

@@ -31,7 +31,7 @@ namespace MagicGladiators
 
         public Player(GameObject gameObject, Transform transform) : base(gameObject)
         {
-            gameObject.Tag = "Ball";
+            gameObject.Tag = "Player";
             this.transform = transform;
 
         }
