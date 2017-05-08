@@ -41,6 +41,7 @@
     <Compile Include="Animation.cs" />
     <Compile Include="Builder\Director.cs" />
     <Compile Include="Builder\DummyBuilder.cs" />
+    <Compile Include="Circle.cs" />
     <Compile Include="Components\Composites\Dummy.cs" />
     <Compile Include="Components\Composites\Server.cs" />
     <Compile Include="Components\Interfaces\ILoadable.cs" />
@@ -78,6 +79,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\CollisionTexture.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Player.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

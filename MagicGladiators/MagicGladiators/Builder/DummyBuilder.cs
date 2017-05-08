@@ -21,7 +21,7 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Dummy(gameObject));
 
-            //gameObject.AddComponent(new Collider(gameObject)
+            gameObject.AddComponent(new Collider(gameObject, false));
 
             gameObject.transform.position = position;
         }

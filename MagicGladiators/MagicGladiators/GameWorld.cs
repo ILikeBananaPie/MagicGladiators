@@ -30,6 +30,9 @@ namespace MagicGladiators
         public List<Collider> Colliders { get; private set; }
         public List<Collider> newColliders { get; private set; }
 
+        public List<Collider> CircleColliders { get; set; }
+        public List<Collider> newCircleColliders { get; set; }
+
 
         public float deltaTime { get; set; }
 
@@ -64,20 +67,22 @@ namespace MagicGladiators
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            IsMouseVisible = true;
             
             gameObjects = new List<GameObject>();
 
 
             Colliders = new List<Collider>();
             newColliders = new List<Collider>();
+            CircleColliders = new List<Collider>();
+            newCircleColliders = new List<Collider>();
 
             Director director = new Director(new PlayerBuilder());
             gameObjects.Add(director.Construct(Vector2.Zero,1));
 
 
             director = new Director(new DummyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(50, 50),1));
+            gameObjects.Add(director.Construct(new Vector2(200, 200),1));
             
             base.Initialize();
         }

@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
     public enum DIRECTION { Front, Back, Left, Right };
 
-    class Player : Component, IUpdateable, IAnimateable, ILoadable, ICollisionEnter, ICollisionExit
+    class Player : Component, IUpdateable, IAnimateable, ILoadable, ICollisionEnter, ICollisionExit, ICollisionStay, IDrawable
     {
         private Animator animator;
 
@@ -20,9 +21,12 @@ namespace MagicGladiators
         private DIRECTION direction;
 
         private Transform transform;
+        private bool CollisionTest;
+        private SpriteFont fontText;
 
         public Player(GameObject gameObject, Transform transform) : base(gameObject)
         {
+            gameObject.Tag = "Ball";
             this.transform = transform;
             
         }
@@ -50,8 +54,8 @@ namespace MagicGladiators
         public void LoadContent(ContentManager content)
         {
             animator = (Animator)gameObject.GetComponent("Animator");
+            fontText = content.Load<SpriteFont>("fontText");
 
-            
             CreateAnimations();
         }
 
@@ -62,12 +66,26 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            
+            CollisionTest = true;
+            Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
+            double sin = test.X * other.CircleCollisionBox.Center.Y - other.CircleCollisionBox.Center.X * test.Y;
+            double cos = test.X * other.CircleCollisionBox.Center.X + test.Y * other.CircleCollisionBox.Center.Y;
+
+            double angle = Math.Atan2(sin, cos) * (180 / Math.PI);
+            //other.gameObject.transform.position.X += Math.Cos(angle);
+            //other.gameObject.transform.position.Y += Math.Sin(angle);
+
+            Vector2 vectorBetween = other.gameObject.transform.position - test;
+            (other.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+
+            //other.gameObject.transform.position = other.gameObject.transform.position + vectorBetween;
+
+            //other.gameObject.transform.position =  new Vector2(other.gameObject.transform.position.X + (float)Math.Cos(angle) * 50, other.gameObject.transform.position.Y + (float)Math.Sin(angle) * 50);
         }
 
         public void OnCollisionExit(Collider other)
         {
-            
+            CollisionTest = false;
         }
 
         public void Update()
@@ -85,6 +103,18 @@ namespace MagicGladiators
                 strategy = new Idle(animator);
             }
             strategy.Execute(ref direction);
+        }
+
+        public void OnCollisionStay(Collider other)
+        {
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            if (CollisionTest)
+            {
+                spriteBatch.DrawString(fontText, "Collision Detected!", new Vector2(0, 0), Color.Black);
+            }
         }
     }
 }
