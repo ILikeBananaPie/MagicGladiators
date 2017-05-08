@@ -17,10 +17,13 @@ namespace MagicGladiators
         private IStrategy strategy;
 
         private DIRECTION direction;
+        private bool testPush;
+        private Vector2 testVector;
+        private float testTimer;
 
         public Dummy(GameObject gameObject) : base(gameObject)
         {
-            gameObject.Tag = "Dummy";
+            gameObject.Tag = "Ball";
 
         }
 
@@ -53,11 +56,31 @@ namespace MagicGladiators
 
         public void Update()
         {
+            if (testPush)
+            {
+                if (testTimer < 1)
+                {
+                    testTimer += GameWorld.Instance.deltaTime;
+                    gameObject.transform.position += testVector / 10;
+                }
+                else
+                {
+                    testTimer = 0;
+                    testPush = false;
+                }
+            }
+
             if(!(strategy is Idle))
             {
                 strategy = new Idle(animator);
             }
             strategy.Execute(ref direction);
+        }
+
+        public void isPushed(Vector2 vectorBetween)
+        {
+            testPush = true;
+            testVector = vectorBetween;
         }
 
       

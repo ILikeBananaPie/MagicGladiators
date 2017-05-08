@@ -25,6 +25,7 @@ namespace MagicGladiators
         /// Inidcates if this collider will check for collisions
         /// </summary>
         public bool CheckCollisions { get; set; }
+        public bool CheckCircleCollisions { get; set; }
 
         private HashSet<Collider> otherColliders = new HashSet<Collider>();
 
@@ -45,18 +46,50 @@ namespace MagicGladiators
             }
         }
 
+        public Circle CircleCollisionBox
+        {
+            get
+            {
+                return new Circle
+                    (
+                        (int)(gameObject.transform.position.X + spriteRenderer.Offset.X),
+                        (int)(gameObject.transform.position.Y + spriteRenderer.Offset.Y),
+                        spriteRenderer.Sprite.Width / 2
+                    );
+            }
+        }
+
         public Collider(GameObject gameObject, bool newCollider) : base(gameObject)
         {
-            CheckCollisions = true;
-
-            if (!newCollider)
+            if (gameObject.Tag == "Ball")
             {
-                GameWorld.Instance.Colliders.Add(this);
+                CheckCircleCollisions = true;
+                GameWorld.Instance.CircleColliders.Add(this);
+                /*
+                if (!newCollider)
+                {
+                    GameWorld.Instance.CircleColliders.Add(this);
+                }
+                else
+                {
+                    GameWorld.Instance.newCircleColliders.Add(this);
+                }
+                */
             }
             else
             {
-                GameWorld.Instance.newColliders.Add(this);
+                CheckCollisions = true;
+
+                if (!newCollider)
+                {
+                    GameWorld.Instance.Colliders.Add(this);
+                }
+                else
+                {
+                    GameWorld.Instance.newColliders.Add(this);
+                }
             }
+
         }
 
         public void LoadContent(ContentManager content)
@@ -68,17 +101,21 @@ namespace MagicGladiators
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Rectangle topLine = new Rectangle(CollisionBox.X, CollisionBox.Y, CollisionBox.Width, 1);
-            Rectangle bottomLine = new Rectangle(CollisionBox.X, CollisionBox.Y + CollisionBox.Height, CollisionBox.Width, 1);
-            Rectangle rightLine = new Rectangle(CollisionBox.X + CollisionBox.Width, CollisionBox.Y, 1, CollisionBox.Height);
-            Rectangle leftLine = new Rectangle(CollisionBox.X, CollisionBox.Y, 1, CollisionBox.Height);
+            if (gameObject.Tag != "Ball")
+            {
+                Rectangle topLine = new Rectangle(CollisionBox.X, CollisionBox.Y, CollisionBox.Width, 1);
+                Rectangle bottomLine = new Rectangle(CollisionBox.X, CollisionBox.Y + CollisionBox.Height, CollisionBox.Width, 1);
+                Rectangle rightLine = new Rectangle(CollisionBox.X + CollisionBox.Width, CollisionBox.Y, 1, CollisionBox.Height);
+                Rectangle leftLine = new Rectangle(CollisionBox.X, CollisionBox.Y, 1, CollisionBox.Height);
 
 #if DEBUG
-            spriteBatch.Draw(texture, topLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
-            spriteBatch.Draw(texture, bottomLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
-            spriteBatch.Draw(texture, rightLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
-            spriteBatch.Draw(texture, leftLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+                spriteBatch.Draw(texture, topLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+                spriteBatch.Draw(texture, bottomLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+                spriteBatch.Draw(texture, rightLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+                spriteBatch.Draw(texture, leftLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
 #endif
+            }
+
 
         }
 
@@ -113,6 +150,37 @@ namespace MagicGladiators
                         }
                     }
                 }
+            }
+            else if (CheckCircleCollisions)
+            {
+                foreach (Collider other in GameWorld.Instance.CircleColliders)
+                {
+                    if (other != this)
+                    {
+                        if (CircleCollisionBox.Intersects(other.CircleCollisionBox))
+                        {
+                            gameObject.OnCollisionStay(other);
+                            if (!otherColliders.Contains(other))
+                            {
+                                otherColliders.Add(other);
+                                gameObject.OnCollisionEnter(other);
+                            }
+                            else if (otherColliders.Contains(other))
+                            {
+                                otherColliders.Remove(other);
+                                gameObject.OnCollisionExit(other);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CheckCircleCollision()
+        {
+            if (true)
+            {
+
             }
         }
     }

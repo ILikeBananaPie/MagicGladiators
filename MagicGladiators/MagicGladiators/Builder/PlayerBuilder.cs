@@ -24,7 +24,7 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Player(gameObject, gameObject.transform));
 
-           // gameObject.AddComponent(new Collider(gameObject, false));
+            gameObject.AddComponent(new Collider(gameObject, false));
           
            // gameObject.LoadContent(GameWorld.Instance.Content);
 
