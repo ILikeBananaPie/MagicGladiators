@@ -91,19 +91,19 @@ namespace MagicGladiators
                 }
                 GameWorld.objectsToRemove.Add(gameObject);
             }
-            /*
+         /*   
             if (other.gameObject.Tag == "Dummy")
             {
                 GameWorld.objectsToRemove.Add(gameObject);
                 Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
 
                 Vector2 vectorBetween = other.gameObject.transform.position - test;
-                //Vector2 playerPushVector = test - other.gameObject.transform.position;
-                //playerPushVector.Normalize()
+                Vector2 playerPushVector = test - other.gameObject.transform.position;
+                playerPushVector.Normalize();
                 vectorBetween.Normalize();
                 (other.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
             }
-            */
+           */ 
         }
 
         public void Update()

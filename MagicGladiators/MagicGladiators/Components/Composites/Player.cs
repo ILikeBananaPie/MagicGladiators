@@ -71,7 +71,7 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            /*
+            
             if (other.gameObject.Tag != "Ability")
             {
                 CollisionTest = true;
@@ -83,7 +83,7 @@ namespace MagicGladiators
                 //other.gameObject.transform.position.X += Math.Cos(angle);
                 //other.gameObject.transform.position.Y += Math.Sin(angle);
 
-                Vector2 vectorBetween = other.gameObject.transform.position - test;
+                Vector2 vectorBetween = test - other.gameObject.transform.position;
                 //Vector2 playerPushVector = test - other.gameObject.transform.position;
                 //playerPushVector.Normalize()
                 vectorBetween.Normalize();
@@ -95,7 +95,7 @@ namespace MagicGladiators
 
                 //other.gameObject.transform.position =  new Vector2(other.gameObject.transform.position.X + (float)Math.Cos(angle) * 50, other.gameObject.transform.position.Y + (float)Math.Sin(angle) * 50);
             }
-            */
+            
         }
 
         public void OnCollisionExit(Collider other)
