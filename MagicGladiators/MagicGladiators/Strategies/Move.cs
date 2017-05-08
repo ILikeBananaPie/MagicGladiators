@@ -35,25 +35,65 @@ namespace MagicGladiators
             if (keyState.IsKeyDown(Keys.W))
             {
                 translation += new Vector2(0, -1);
+                Player.accelerationTest += new Vector2(0, -0.5F);
                 currentDirection = Back;
             }
             if (keyState.IsKeyDown(Keys.A))
             {
                 translation += new Vector2(-1, 0);
+                Player.accelerationTest += new Vector2(-0.5F, 0);
+
                 currentDirection = Left;
             }
             if (keyState.IsKeyDown(Keys.S))
             {
                 translation += new Vector2(0, 1);
+                Player.accelerationTest += new Vector2(0, 0.5F);
+
                 currentDirection = Front;
             }
             if (keyState.IsKeyDown(Keys.D))
             {
                 translation += new Vector2(1, 0);
+                Player.accelerationTest += new Vector2(0.5F, 0);
+
                 currentDirection = Right;
             }
+            /*
+            if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.A))
+            {
+                translation += new Vector2(-1, -1);
+                Vector2 test = new Vector2(-0.5F, -0.5F);
+                test.Normalize();
+                Player.accelerationTest += test;
+            }
+            if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.D))
+            {
+                translation += new Vector2(1, -1);
+                Vector2 test = new Vector2(0.5F, -0.5F);
+                test.Normalize();
+                Player.accelerationTest += test;
+            }
+            if (keyState.IsKeyDown(Keys.S) && keyState.IsKeyDown(Keys.A))
+            {
+                translation += new Vector2(-1, 1);
+                Vector2 test = new Vector2(-0.5F, 0.5F);
+                test.Normalize();
+                Player.accelerationTest += test;
+            }
+            if (keyState.IsKeyDown(Keys.S) && keyState.IsKeyDown(Keys.D))
+            {
+                translation += new Vector2(1, 1);
+                Vector2 test = new Vector2(0.5F, 0.5F);
+                test.Normalize();
+                Player.accelerationTest += test;
+            }
+            */
             direction = currentDirection;
-            transform.Translate(translation * movementSpeed * GameWorld.Instance.deltaTime);
+            //transform.position += 
+            //gameObject.transform.position += velocityTest;
+
+            //transform.Translate(translation * movementSpeed * GameWorld.Instance.deltaTime);
 
             animator.PlayAnimation("Walk" + currentDirection);
 
