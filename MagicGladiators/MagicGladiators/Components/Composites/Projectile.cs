@@ -76,6 +76,7 @@ namespace MagicGladiators
                 {
                     if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
                     {
+                        //plz don't delete me
                         Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
                         vectorBetween.Normalize();
                         if (go.gameObject.Tag == "Player")
