@@ -122,16 +122,18 @@ namespace MagicGladiators
             if (testPush)
             {
                 //accelerationTest = new Vector2((int)testVector.X, (int)testVector.Y);
-                accelerationTest = testVector * 15;
-                /*
-                if (testTimer < 1)
+                accelerationTest = testVector * 10;
+                
+                if (testTimer < 0.0025F)
                 {
                     testTimer += GameWorld.Instance.deltaTime;
+                    /*
                     gameObject.transform.position += testVector * testSpeed;
                     if (testSpeed > 0)
                     {
                         testSpeed--;
                     }
+                    */
                 }
                 else
                 {
@@ -139,19 +141,19 @@ namespace MagicGladiators
                     testPush = false;
                     testSpeed = 10;
                 }
-                */
+                
                 velocityTest += accelerationTest;
                 accelerationTest = Vector2.Zero;
-                testPush = false;
+                //testPush = false;
             }
-            if (!(Vector2.Distance(velocityTest, Vector2.Zero) > 0.25F && Vector2.Distance(velocityTest, Vector2.Zero) < -0.25F))
+            if (!(Vector2.Distance(velocityTest, Vector2.Zero) > 0.05F && Vector2.Distance(velocityTest, Vector2.Zero) < -0.05F))
             {
                 accelerationTest = breakTest * -velocityTest;
                 velocityTest += accelerationTest;
                 //accelerationTest = Vector2.Zero;
 
             }
-            if (Vector2.Distance(velocityTest, Vector2.Zero) < 0.25F && Vector2.Distance(velocityTest, Vector2.Zero) > -0.25F)
+            if (Vector2.Distance(velocityTest, Vector2.Zero) < 0.05F && Vector2.Distance(velocityTest, Vector2.Zero) > -0.05F)
             {
                 velocityTest = Vector2.Zero;
 
