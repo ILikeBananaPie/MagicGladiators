@@ -56,6 +56,85 @@ namespace MagicGladiators
             transform.Translate(translation * movementSpeed * GameWorld.Instance.deltaTime);
 
             animator.PlayAnimation("Walk" + currentDirection);
+
+
         }
-    }
+
+        /*
+
+        private float movementSpeed = 200;
+
+        private float maxSpeed = 1;
+
+        private Transform transform;
+
+        private Vector2 velocity;
+
+        private Animator animator;
+
+        private Vector2 acceleration;
+
+        public static DIRECTION direction { get; private set; }
+
+
+        public Move(Transform transform, Animator animator)
+        {
+            this.transform = transform;
+            this.animator = animator;
+        }
+
+        public void accelerate(Vector2 acceleration)
+        {
+
+            if (this.velocity.X > this.maxSpeed)
+                this.velocity.X = this.maxSpeed;
+            if (this.velocity.X < -1 * this.maxSpeed)
+                this.velocity.X = -1 * this.maxSpeed; // the same for y
+
+            if (this.velocity.Y > this.maxSpeed)
+                this.velocity.Y = this.maxSpeed;
+            if (this.velocity.Y < -1 * this.maxSpeed)
+                this.velocity.Y = -1 * this.maxSpeed; // the same for y
+        }
+
+        public void Execute(ref DIRECTION currentDirection)
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            Vector2 velocity = Transform.playerPosition;
+
+            if (keyState.IsKeyDown(Keys.W))
+            {
+                // translation.Y = 7;
+                Transform.playerPosition += velocity * GameWorld.Instance.deltaTime;
+                velocity -= acceleration * GameWorld.Instance.deltaTime;
+                acceleration.Y += 0.5f;
+                currentDirection = Back;
+            }
+            if (keyState.IsKeyDown(Keys.A))
+            {
+                Transform.playerPosition += velocity * GameWorld.Instance.deltaTime;
+                velocity -= acceleration * GameWorld.Instance.deltaTime;
+                acceleration.X -= 0.5f;
+                currentDirection = Left;
+            }
+            if (keyState.IsKeyDown(Keys.S))
+            {
+
+                Transform.playerPosition += velocity * GameWorld.Instance.deltaTime;
+                velocity += acceleration * GameWorld.Instance.deltaTime;
+                acceleration.Y -= 0.5f;
+                currentDirection = Front;
+            }
+            if (keyState.IsKeyDown(Keys.D))
+            {
+                Transform.playerPosition += velocity * GameWorld.Instance.deltaTime;
+                velocity += acceleration * GameWorld.Instance.deltaTime;
+                acceleration.X += 0.5f;
+                currentDirection = Right;
+            }
+     
+          */
+        }
+
 }
