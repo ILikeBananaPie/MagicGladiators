@@ -15,6 +15,8 @@ namespace MagicGladiators
         public void BuildGameObject(Vector2 position, object id)
         {
             gameObject = new GameObject(id);
+
+            gameObject.Tag = "Player";
                             
             gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
                        
