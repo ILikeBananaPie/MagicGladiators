@@ -23,12 +23,17 @@ namespace MagicGladiators
         private Transform transform;
         private bool CollisionTest;
         private SpriteFont fontText;
+        private bool testPush;
+        private Vector2 testVector;
+        private float testTimer;
+        private float testSpeed = 20;
+        private bool canShoot;
 
         public Player(GameObject gameObject, Transform transform) : base(gameObject)
         {
             gameObject.Tag = "Ball";
             this.transform = transform;
-            
+
         }
 
 
@@ -47,7 +52,7 @@ namespace MagicGladiators
             animator.CreateAnimation("WalkRight", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
 
             animator.PlayAnimation("IdleFront");
-            
+
             strategy = new Idle(animator);
         }
 
@@ -61,7 +66,7 @@ namespace MagicGladiators
 
         public void OnAnimationDone(string animationName)
         {
-            
+
         }
 
         public void OnCollisionEnter(Collider other)
@@ -76,7 +81,12 @@ namespace MagicGladiators
             //other.gameObject.transform.position.Y += Math.Sin(angle);
 
             Vector2 vectorBetween = other.gameObject.transform.position - test;
+            //Vector2 playerPushVector = test - other.gameObject.transform.position;
+            //playerPushVector.Normalize()
+            vectorBetween.Normalize();
             (other.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+            testPush = true;
+            testVector = vectorBetween;
 
             //other.gameObject.transform.position = other.gameObject.transform.position + vectorBetween;
 
@@ -90,6 +100,25 @@ namespace MagicGladiators
 
         public void Update()
         {
+            if (testPush)
+            {
+                if (testTimer < 1)
+                {
+                    testTimer += GameWorld.Instance.deltaTime;
+                    gameObject.transform.position -= testVector * testSpeed;
+                    if (testSpeed > 0)
+                    {
+                        testSpeed -= 0.5F;
+                    }
+                }
+                else
+                {
+                    testTimer = 0;
+                    testPush = false;
+                    testSpeed = 20;
+                }
+            }
+
             KeyboardState keyState = Keyboard.GetState();
             if (keyState.IsKeyDown(Keys.W) || keyState.IsKeyDown(Keys.A) || keyState.IsKeyDown(Keys.S) || keyState.IsKeyDown(Keys.D))
             {
@@ -103,6 +132,22 @@ namespace MagicGladiators
                 strategy = new Idle(animator);
             }
             strategy.Execute(ref direction);
+
+            MouseState mouse = Mouse.GetState();
+            if (mouse.LeftButton == ButtonState.Pressed && canShoot)
+            {
+                
+                Director director = new Director(new ProjectileBuilder());
+                //Vector2 mousePos = Vector2.Transform(mouse.Position, Matrix.Invert(GameWorld.Instance.vie))
+                director.ConstructProjectile(gameObject.transform.position, new Vector2(mouse.Position.X, mouse.Position.Y));
+                canShoot = false;
+            }
+
+            if (mouse.LeftButton == ButtonState.Released)
+            {
+                canShoot = true;
+            }
+
         }
 
         public void OnCollisionStay(Collider other)

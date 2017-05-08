@@ -24,6 +24,12 @@ namespace MagicGladiators
             return builder.GetResult();
         }
 
+        public GameObject ConstructProjectile(Vector2 position, Vector2 target)
+        {
+            builder.FireProjectile(position, target);
+            return builder.GetResult();
+        }
+
       
     }
 }
