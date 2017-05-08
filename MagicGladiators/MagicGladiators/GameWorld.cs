@@ -86,7 +86,10 @@ namespace MagicGladiators
 
             director = new Director(new DummyBuilder());
             gameObjects.Add(director.Construct(new Vector2(200, 200),1));
-            
+            gameObjects.Add(director.Construct(new Vector2(200, 180), 1));
+            gameObjects.Add(director.Construct(new Vector2(200, 220), 1));
+
+
             base.Initialize();
         }
 
@@ -180,10 +183,8 @@ namespace MagicGladiators
             {
                 foreach (GameObject go in objectsToRemove)
                 {
-
-                    Colliders.Remove((go.GetComponent("Collider") as Collider));
+                    CircleColliders.Remove((go.GetComponent("Collider") as Collider));
                     gameObjects.Remove(go);
-
                 }
                 objectsToRemove.Clear();
             }

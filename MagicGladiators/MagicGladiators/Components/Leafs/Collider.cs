@@ -61,11 +61,14 @@ namespace MagicGladiators
 
         public Collider(GameObject gameObject, bool newCollider) : base(gameObject)
         {
-            if (gameObject.Tag == "Ball")
+            CheckCircleCollisions = true;
+            GameWorld.Instance.CircleColliders.Add(this);
+            /*
+            if (gameObject.Tag == "Dummy" || gameObject.Tag == "Ability")
             {
                 CheckCircleCollisions = true;
                 GameWorld.Instance.CircleColliders.Add(this);
-                /*
+                
                 if (!newCollider)
                 {
                     GameWorld.Instance.CircleColliders.Add(this);
@@ -74,7 +77,7 @@ namespace MagicGladiators
                 {
                     GameWorld.Instance.newCircleColliders.Add(this);
                 }
-                */
+                
             }
             else
             {
@@ -89,6 +92,7 @@ namespace MagicGladiators
                     GameWorld.Instance.newColliders.Add(this);
                 }
             }
+            */
 
         }
 

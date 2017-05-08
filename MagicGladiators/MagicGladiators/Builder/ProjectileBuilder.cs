@@ -23,7 +23,7 @@ namespace MagicGladiators
             gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
             gameObject.AddComponent(new Animator(gameObject));
             gameObject.AddComponent(new Projectile(gameObject, position, targetVector));
-            gameObject.Tag = "Ball";
+            gameObject.Tag = "Ability";
             gameObject.AddComponent(new Collider(gameObject, true));
             gameObject.transform.position = position;
             gameObject.LoadContent(GameWorld.Instance.Content);

@@ -70,21 +70,44 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (other.gameObject.Tag == "Ball")
+            if (other.gameObject.Tag != "Player")
             {
-
+                foreach (Collider go in GameWorld.Instance.CircleColliders)
+                {
+                    if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
+                    {
+                        Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
+                        vectorBetween.Normalize();
+                        if (go.gameObject.Tag == "Player")
+                        {
+                            (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
+                        }
+                        else if (go.gameObject.Tag == "Dummy")
+                        {
+                            (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+                        }
+                    }
+                }
+                GameWorld.objectsToRemove.Add(gameObject);
             }
+            /*
+            if (other.gameObject.Tag == "Dummy")
+            {
+                GameWorld.objectsToRemove.Add(gameObject);
+                Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
+
+                Vector2 vectorBetween = other.gameObject.transform.position - test;
+                //Vector2 playerPushVector = test - other.gameObject.transform.position;
+                //playerPushVector.Normalize()
+                vectorBetween.Normalize();
+                (other.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+            }
+            */
         }
 
         public void Update()
         {
-            //Vector2 translation = Vector2.Zero;
-            //translation += targetVector;
-            //transform.Translate(translation);
-            //Vector2 tempVector = this.target - originalPos;
-            //tempVector.Normalize();
-            //this.target.Normalize();
-            go.transform.position += testVector;
+            go.transform.position += testVector * 5;
             animator.PlayAnimation("Shoot");
 
             if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
