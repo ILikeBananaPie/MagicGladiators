@@ -20,6 +20,7 @@ namespace MagicGladiators
         private bool testPush;
         private Vector2 testVector;
         private float testTimer;
+        private int testSpeed = 10;
 
         public Dummy(GameObject gameObject) : base(gameObject)
         {
@@ -61,12 +62,17 @@ namespace MagicGladiators
                 if (testTimer < 1)
                 {
                     testTimer += GameWorld.Instance.deltaTime;
-                    gameObject.transform.position += testVector / 10;
+                    gameObject.transform.position += testVector * testSpeed;
+                    if (testSpeed > 0)
+                    {
+                        testSpeed--;
+                    }
                 }
                 else
                 {
                     testTimer = 0;
                     testPush = false;
+                    testSpeed = 10;
                 }
             }
 

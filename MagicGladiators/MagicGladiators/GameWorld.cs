@@ -26,6 +26,8 @@ namespace MagicGladiators
 
 
         public static List<GameObject> gameObjects;
+        public static List<GameObject> newObjects;
+        public static List<GameObject> objectsToRemove;
 
         public List<Collider> Colliders { get; private set; }
         public List<Collider> newColliders { get; private set; }
@@ -70,7 +72,8 @@ namespace MagicGladiators
             IsMouseVisible = true;
             
             gameObjects = new List<GameObject>();
-
+            newObjects = new List<GameObject>();
+            objectsToRemove = new List<GameObject>();
 
             Colliders = new List<Collider>();
             newColliders = new List<Collider>();
@@ -167,8 +170,29 @@ namespace MagicGladiators
                 go.Update();
                 
             }
-            
+            UpdateLevel();
             base.Update(gameTime);
+        }
+
+        public void UpdateLevel()
+        {
+            if (objectsToRemove.Count > 0)
+            {
+                foreach (GameObject go in objectsToRemove)
+                {
+
+                    Colliders.Remove((go.GetComponent("Collider") as Collider));
+                    gameObjects.Remove(go);
+
+                }
+                objectsToRemove.Clear();
+            }
+
+            if (newObjects.Count > 0)
+            {
+                gameObjects.AddRange(newObjects);
+                newObjects.Clear();
+            }
         }
 
         /// <summary>
