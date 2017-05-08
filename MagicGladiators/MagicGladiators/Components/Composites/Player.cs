@@ -29,6 +29,12 @@ namespace MagicGladiators
         private float testSpeed = 20;
         private bool canShoot;
 
+
+        public static Vector2 accelerationTest;
+        public static Vector2 velocityTest;
+        private float breakTest = 0.050F;
+
+
         public Player(GameObject gameObject, Transform transform) : base(gameObject)
         {
             gameObject.Tag = "Player";
@@ -111,8 +117,13 @@ namespace MagicGladiators
 
         public void Update()
         {
+            float testing = Vector2.Distance(velocityTest, Vector2.Zero);
+            velocityTest += accelerationTest;
             if (testPush)
             {
+                //accelerationTest = new Vector2((int)testVector.X, (int)testVector.Y);
+                accelerationTest = testVector * 15;
+                /*
                 if (testTimer < 1)
                 {
                     testTimer += GameWorld.Instance.deltaTime;
@@ -128,7 +139,31 @@ namespace MagicGladiators
                     testPush = false;
                     testSpeed = 10;
                 }
+                */
+                velocityTest += accelerationTest;
+                accelerationTest = Vector2.Zero;
+                testPush = false;
             }
+            if (!(Vector2.Distance(velocityTest, Vector2.Zero) > 0.25F && Vector2.Distance(velocityTest, Vector2.Zero) < -0.25F))
+            {
+                accelerationTest = breakTest * -velocityTest;
+                velocityTest += accelerationTest;
+                //accelerationTest = Vector2.Zero;
+
+            }
+            if (Vector2.Distance(velocityTest, Vector2.Zero) < 0.25F && Vector2.Distance(velocityTest, Vector2.Zero) > -0.25F)
+            {
+                velocityTest = Vector2.Zero;
+
+            }
+            /*
+            else if (velocityTest != Vector2.Zero)
+            {
+                accelerationTest = breakTest * -velocityTest;
+            }
+            */
+            gameObject.transform.position += velocityTest;
+            //velocityTest = Vector2.Zero;
 
             KeyboardState keyState = Keyboard.GetState();
             if (keyState.IsKeyDown(Keys.W) || keyState.IsKeyDown(Keys.A) || keyState.IsKeyDown(Keys.S) || keyState.IsKeyDown(Keys.D))

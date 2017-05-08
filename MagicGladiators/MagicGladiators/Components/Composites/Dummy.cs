@@ -88,7 +88,5 @@ namespace MagicGladiators
             testPush = true;
             testVector = vectorBetween;
         }
-
-      
     }
 }
