@@ -19,14 +19,21 @@ namespace MagicGladiators
 
         private GameObject go;
         private Transform transform;
+        private Vector2 originalPos;
+        private Vector2 testVector;
 
-        private Vector2 targetVector;
+        private Vector2 target;
 
-        public Projectile(GameObject gameObject, Vector2 targetVector) : base(gameObject)
+        public Projectile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
             go = gameObject;
-            go.Tag = "Ability";
-            this.targetVector = targetVector;
+            originalPos = position;
+            go.transform.position = position;
+            this.target = target;
+            testVector = target - originalPos;
+            testVector.Normalize();
+            //target = target - originalPos;
+            //target.Normalize();
             this.transform = gameObject.transform;
         }
 
@@ -56,22 +63,34 @@ namespace MagicGladiators
 
             Texture2D sprite = content.Load<Texture2D>("Player");
             GameWorld.newObjects.Add(go);
+            go.Tag = "Ability";
 
             CreateAnimations();
         }
 
         public void OnCollisionEnter(Collider other)
         {
-            throw new NotImplementedException();
+            if (other.gameObject.Tag == "Ball")
+            {
+
+            }
         }
 
         public void Update()
         {
-            Vector2 translation = Vector2.Zero;
-            translation += targetVector;
-            transform.Translate(translation);
-            //transform.Translate(translation * speed * GameWorld.Instance.deltaTime);
+            //Vector2 translation = Vector2.Zero;
+            //translation += targetVector;
+            //transform.Translate(translation);
+            //Vector2 tempVector = this.target - originalPos;
+            //tempVector.Normalize();
+            //this.target.Normalize();
+            go.transform.position += testVector;
             animator.PlayAnimation("Shoot");
+
+            if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
+            {
+                GameWorld.objectsToRemove.Add(gameObject);
+            }
         }
     }
 }

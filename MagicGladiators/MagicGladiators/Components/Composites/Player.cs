@@ -71,26 +71,30 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            CollisionTest = true;
-            Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
-            double sin = test.X * other.CircleCollisionBox.Center.Y - other.CircleCollisionBox.Center.X * test.Y;
-            double cos = test.X * other.CircleCollisionBox.Center.X + test.Y * other.CircleCollisionBox.Center.Y;
+            if (other.gameObject.Tag != "Ability")
+            {
+                CollisionTest = true;
+                Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
+                double sin = test.X * other.CircleCollisionBox.Center.Y - other.CircleCollisionBox.Center.X * test.Y;
+                double cos = test.X * other.CircleCollisionBox.Center.X + test.Y * other.CircleCollisionBox.Center.Y;
 
-            double angle = Math.Atan2(sin, cos) * (180 / Math.PI);
-            //other.gameObject.transform.position.X += Math.Cos(angle);
-            //other.gameObject.transform.position.Y += Math.Sin(angle);
+                double angle = Math.Atan2(sin, cos) * (180 / Math.PI);
+                //other.gameObject.transform.position.X += Math.Cos(angle);
+                //other.gameObject.transform.position.Y += Math.Sin(angle);
 
-            Vector2 vectorBetween = other.gameObject.transform.position - test;
-            //Vector2 playerPushVector = test - other.gameObject.transform.position;
-            //playerPushVector.Normalize()
-            vectorBetween.Normalize();
-            (other.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
-            testPush = true;
-            testVector = vectorBetween;
+                Vector2 vectorBetween = other.gameObject.transform.position - test;
+                //Vector2 playerPushVector = test - other.gameObject.transform.position;
+                //playerPushVector.Normalize()
+                vectorBetween.Normalize();
+                //(other.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+                testPush = true;
+                testVector = vectorBetween;
 
-            //other.gameObject.transform.position = other.gameObject.transform.position + vectorBetween;
+                //other.gameObject.transform.position = other.gameObject.transform.position + vectorBetween;
 
-            //other.gameObject.transform.position =  new Vector2(other.gameObject.transform.position.X + (float)Math.Cos(angle) * 50, other.gameObject.transform.position.Y + (float)Math.Sin(angle) * 50);
+                //other.gameObject.transform.position =  new Vector2(other.gameObject.transform.position.X + (float)Math.Cos(angle) * 50, other.gameObject.transform.position.Y + (float)Math.Sin(angle) * 50);
+            }
+
         }
 
         public void OnCollisionExit(Collider other)
@@ -139,7 +143,7 @@ namespace MagicGladiators
                 
                 Director director = new Director(new ProjectileBuilder());
                 //Vector2 mousePos = Vector2.Transform(mouse.Position, Matrix.Invert(GameWorld.Instance.vie))
-                director.ConstructProjectile(gameObject.transform.position, new Vector2(mouse.Position.X, mouse.Position.Y));
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
                 canShoot = false;
             }
 
@@ -156,6 +160,14 @@ namespace MagicGladiators
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            MouseState mouse = Mouse.GetState();
+            spriteBatch.DrawString(fontText, "PlayerX: " + gameObject.transform.position.X, new Vector2(0, 10), Color.Black);
+            spriteBatch.DrawString(fontText, "PlayerY: " + gameObject.transform.position.Y, new Vector2(0, 30), Color.Black);
+            spriteBatch.DrawString(fontText, "MouseX: " + mouse.X, new Vector2(0, 50), Color.Black);
+            spriteBatch.DrawString(fontText, "MouseY: " + mouse.Y, new Vector2(0, 70), Color.Black);
+
+
+
             if (CollisionTest)
             {
                 spriteBatch.DrawString(fontText, "Collision Detected!", new Vector2(0, 0), Color.Black);
