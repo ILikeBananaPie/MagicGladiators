@@ -45,6 +45,7 @@
     <Compile Include="Builder\ProjectileBuilder.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="Components\Composites\Dummy.cs" />
+    <Compile Include="Components\Composites\Enemy.cs" />
     <Compile Include="Components\Composites\InputReciever.cs" />
     <Compile Include="Components\Composites\Projectile.cs" />
     <Compile Include="Components\Composites\Server.cs" />
