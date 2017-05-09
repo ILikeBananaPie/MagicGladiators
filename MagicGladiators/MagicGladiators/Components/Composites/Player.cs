@@ -34,7 +34,14 @@ namespace MagicGladiators
         public static Vector2 accelerationTest;
         public static Vector2 velocityTest;
         private float breakTest = 0.050F;
-
+        
+        private readonly Object thisLock = new Object();
+        private UpdatePackage _updatePackage;
+        public UpdatePackage updatePackage
+        {
+            get { lock (thisLock) { return _updatePackage; } }
+            set { lock (thisLock) { _updatePackage = value; } }
+        }
 
         public Player(GameObject gameObject, Transform transform) : base(gameObject)
         {
@@ -68,6 +75,7 @@ namespace MagicGladiators
             animator = (Animator)gameObject.GetComponent("Animator");
             fontText = content.Load<SpriteFont>("fontText");
 
+            updatePackage = new UpdatePackage(transform.position);
             CreateAnimations();
         }
 
@@ -198,7 +206,7 @@ namespace MagicGladiators
             {
                 canShoot = true;
             }
-
+            updatePackage.InfoUpdate(transform.position, velocityTest);
         }
 
         public void OnCollisionStay(Collider other)

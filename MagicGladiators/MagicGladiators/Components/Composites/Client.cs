@@ -19,8 +19,8 @@ namespace MagicGladiators.Components.Composites
         private bool connected;
         private string ip;
         private Texture2D rect;
-        Transform hostPos;
-        Transform playerPos;
+        Enemy hostPos;
+        Player playerPos;
         private Keys[] lastPressedKeys;
 
         Connection tCPConn;
@@ -31,8 +31,8 @@ namespace MagicGladiators.Components.Composites
             tCPConn = null;
             ip = string.Empty;
             lastPressedKeys = Keyboard.GetState().GetPressedKeys();
-            hostPos = (GameWorld.gameObjects.Find(x => x.Tag == "Dummy").GetComponent("Transform") as Transform);
-            playerPos = (GameWorld.gameObjects.Find(x => x.Tag == "Player").GetComponent("Transform") as Transform);
+            hostPos = (GameWorld.gameObjects.Find(x => x.Tag == "Dummy").GetComponent("Enemy") as Enemy);
+            playerPos = (GameWorld.gameObjects.Find(x => x.Tag == "Player").GetComponent("Player") as Player);
         }
 
         SpriteFont spriteFont;
@@ -109,7 +109,7 @@ namespace MagicGladiators.Components.Composites
             } 
             else
             {
-                tCPConn.SendObject<UpdatePackage>("UpdatePosition", new UpdatePackage(playerPos.position));
+                tCPConn.SendObject<UpdatePackage>("UpdatePosition", playerPos.updatePackage);
             }
         }
 
@@ -117,7 +117,7 @@ namespace MagicGladiators.Components.Composites
         {
             if (connected)
             {
-                hostPos.position = incomingObject.position;
+                hostPos.UpdateEnemyInfo(incomingObject);
             }
         }
 

@@ -17,6 +17,14 @@ namespace MagicGladiators.Components.Composites
         //public static Vector2 velocityTest;
         //private float breakTest = 0.050F;
 
+        private readonly Object thisLock = new Object();
+        private UpdatePackage _updatePackage;
+        public UpdatePackage updatePackage
+        {
+            get { lock (thisLock) { return _updatePackage; } }
+            set { lock (thisLock) { _updatePackage = value; } }
+        }
+
         public Enemy/*Number 1*/(GameObject gameObject) : base(gameObject)
         {
 
@@ -44,6 +52,7 @@ namespace MagicGladiators.Components.Composites
             }
             */
             trnsfrm.position += velocity;
+            updatePackage.InfoUpdate(trnsfrm.position, velocity);
         }
 
         public void UpdateEnemyInfo(UpdatePackage package)

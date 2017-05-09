@@ -17,7 +17,7 @@ namespace MagicGladiators.Components.Composites
     class Server : Component, IDrawable, ILoadable, IUpdateable
     {
         private static Dictionary<Connection, GameObject> players;
-        private Transform playerPos;
+        private Player playerPos;
 
 
         public Server(GameObject gameObject) : base(gameObject)
@@ -31,7 +31,7 @@ namespace MagicGladiators.Components.Composites
             
             Connection.StartListening(ConnectionType.TCP, new IPEndPoint(IPAddress.Any, 0));
 
-            playerPos = (GameWorld.gameObjects.Find(x => x.Tag == "Player").GetComponent("Transform") as Transform);
+            playerPos = (GameWorld.gameObjects.Find(x => x.Tag == "Player").GetComponent("Player") as Player);
 
         }
 
@@ -54,7 +54,7 @@ namespace MagicGladiators.Components.Composites
                 {
                     GameObject go = new GameObject(0);
                     go.Tag = connection.ToString();
-                    go.AddComponent(new InputReciever(go));
+                    go.AddComponent(new Enemy(go));
                     go.AddComponent(new SpriteRenderer(go, "Player", 1));
                     go.LoadContent(GameWorld.Instance.Content);
                     players.Add(connection, go);
@@ -74,8 +74,7 @@ namespace MagicGladiators.Components.Composites
 
         private void UpdatePosition(PacketHeader header, Connection connection, UpdatePackage position)
         {
-            ((players[connection] as GameObject).GetComponent("InputReciever") as InputReciever).UpdatePosition(position.position);
-            connection.SendObject<UpdatePackage>("HostPos", new UpdatePackage(playerPos.position));
+            ((players[connection] as GameObject).GetComponent("Enemy") as Enemy).UpdateEnemyInfo(position);
         }
 
         public void LoadContent(ContentManager content)
@@ -87,7 +86,7 @@ namespace MagicGladiators.Components.Composites
         {
             foreach (Connection key in players.Keys)
             {
-                key.SendObject<UpdatePackage>("HostPos", new UpdatePackage(playerPos.position));
+                key.SendObject<UpdatePackage>("HostPos", playerPos.updatePackage);
             }
         }
     }

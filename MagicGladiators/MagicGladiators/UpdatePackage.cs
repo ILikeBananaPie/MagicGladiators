@@ -61,5 +61,16 @@ namespace MagicGladiators
             position = new Vector2(xypos[0], xypos[1]);
             velocity = new Vector2(xyvel[0], xyvel[1]);
         }
+
+        public void InfoUpdate(Vector2 position)
+        {
+            this.position = position;
+            this.velocity = Vector2.Zero;
+        }
+        public void InfoUpdate(Vector2 position, Vector2 velocity)
+        {
+            this.position = position;
+            this.velocity = velocity;
+        }
     }
 }
