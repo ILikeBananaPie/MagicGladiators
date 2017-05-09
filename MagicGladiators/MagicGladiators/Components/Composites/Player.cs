@@ -28,6 +28,7 @@ namespace MagicGladiators
         private float testTimer;
         private float testSpeed = 20;
         private bool canShoot;
+        private SpriteRenderer sprite;
 
 
         public static Vector2 accelerationTest;
@@ -39,7 +40,7 @@ namespace MagicGladiators
         {
             gameObject.Tag = "Player";
             this.transform = transform;
-
+            sprite = (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer);
         }
 
 
@@ -146,6 +147,7 @@ namespace MagicGladiators
                 accelerationTest = Vector2.Zero;
                 //testPush = false;
             }
+
             if (!(Vector2.Distance(velocityTest, Vector2.Zero) > 0.05F && Vector2.Distance(velocityTest, Vector2.Zero) < -0.05F))
             {
                 accelerationTest = breakTest * -velocityTest;
@@ -158,13 +160,14 @@ namespace MagicGladiators
                 velocityTest = Vector2.Zero;
 
             }
+            gameObject.transform.position += velocityTest;
+
             /*
             else if (velocityTest != Vector2.Zero)
             {
                 accelerationTest = breakTest * -velocityTest;
             }
             */
-            gameObject.transform.position += velocityTest;
             //velocityTest = Vector2.Zero;
 
             KeyboardState keyState = Keyboard.GetState();

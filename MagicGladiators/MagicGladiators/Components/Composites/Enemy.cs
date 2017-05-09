@@ -13,6 +13,10 @@ namespace MagicGladiators.Components.Composites
         private Transform trnsfrm;
         private Vector2 velocity;
 
+        public static Vector2 accelerationTest;
+        public static Vector2 velocityTest;
+        private float breakTest = 0.050F;
+
         public Enemy/*Number 1*/(GameObject gameObject) : base(gameObject)
         {
 
@@ -25,7 +29,21 @@ namespace MagicGladiators.Components.Composites
 
         public void Update()
         {
-            //trnsfrm.Translate(direction * GameWorld.Instance.deltaTime);
+            /*
+            if (!(Vector2.Distance(velocityTest, Vector2.Zero) > 0.05F && Vector2.Distance(velocityTest, Vector2.Zero) < -0.05F))
+            {
+                accelerationTest = breakTest * -velocityTest;
+                velocityTest += accelerationTest;
+                //accelerationTest = Vector2.Zero;
+
+            }
+            if (Vector2.Distance(velocityTest, Vector2.Zero) < 0.05F && Vector2.Distance(velocityTest, Vector2.Zero) > -0.05F)
+            {
+                velocityTest = Vector2.Zero;
+
+            }
+            */
+            gameObject.transform.position += velocityTest;
         }
 
         public void UpdateEnemyInfo(UpdatePackage package)
