@@ -59,7 +59,7 @@ namespace MagicGladiators
 
                 currentDirection = Right;
             }
-            
+            /*
             if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.A))
             {
                 translation += new Vector2(-1, -1);
@@ -88,7 +88,7 @@ namespace MagicGladiators
                 test.Normalize();
                 Player.accelerationTest += test;
             }
-            
+            */
             direction = currentDirection;
             //transform.position += 
             //gameObject.transform.position += velocityTest;
