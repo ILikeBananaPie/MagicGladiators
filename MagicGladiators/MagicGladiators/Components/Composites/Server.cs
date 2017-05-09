@@ -41,7 +41,7 @@ namespace MagicGladiators.Components.Composites
             int incriment = 0;
             foreach (System.Net.IPEndPoint localEndPoint in Connection.ExistingLocalListenEndPoints(ConnectionType.TCP))
             {
-                spriteBatch.DrawString(spriteFont, localEndPoint.Address.ToString() + ":" + localEndPoint.Port.ToString(), new Vector2(20, 20 + incriment), Color.Black);
+                spriteBatch.DrawString(spriteFont, localEndPoint.Address.ToString() + ":" + localEndPoint.Port.ToString(), new Vector2(150, 10 + incriment), Color.Black);
                 incriment += 15;
             }
         }
