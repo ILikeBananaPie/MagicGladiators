@@ -13,9 +13,9 @@ namespace MagicGladiators.Components.Composites
         private Transform trnsfrm;
         private Vector2 velocity;
 
-        public static Vector2 accelerationTest;
-        public static Vector2 velocityTest;
-        private float breakTest = 0.050F;
+        //public static Vector2 accelerationTest;
+        //public static Vector2 velocityTest;
+        //private float breakTest = 0.050F;
 
         public Enemy/*Number 1*/(GameObject gameObject) : base(gameObject)
         {
@@ -43,7 +43,7 @@ namespace MagicGladiators.Components.Composites
 
             }
             */
-            gameObject.transform.position += velocityTest;
+            trnsfrm.position += velocity;
         }
 
         public void UpdateEnemyInfo(UpdatePackage package)
