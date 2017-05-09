@@ -11,7 +11,7 @@ namespace MagicGladiators.Components.Composites
     class Enemy:Component, ILoadable, IUpdateable
     {
         private Transform trnsfrm;
-        private Vector2 direction;
+        private Vector2 velocity;
 
         public Enemy/*Number 1*/(GameObject gameObject) : base(gameObject)
         {
@@ -31,7 +31,7 @@ namespace MagicGladiators.Components.Composites
         public void UpdateEnemyInfo(UpdatePackage package)
         {
             this.trnsfrm.position = package.position;
-            this.direction = package.direction;
+            this.velocity = package.velocity;
         }
     }
 }

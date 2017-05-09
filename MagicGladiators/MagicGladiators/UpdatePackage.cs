@@ -12,13 +12,13 @@ namespace MagicGladiators
     public class UpdatePackage
     {
         public Vector2 position { get; set; }
-        public Vector2 direction { get; set; }
+        public Vector2 velocity { get; set; }
 
         [ProtoMember(1)]
         private float[] xypos;
 
         [ProtoMember(2)]
-        private float[] xydir;
+        private float[] xyvel;
 
         private UpdatePackage() { }
 
@@ -29,17 +29,17 @@ namespace MagicGladiators
         public UpdatePackage(Vector2 position)
         {
             this.position = position;
-            this.direction = Vector2.Zero;
+            this.velocity = Vector2.Zero;
         }
         /// <summary>
         /// Update package to communicate with server
         /// </summary>
         /// <param name="position">Your characters current position</param>
-        /// <param name="direction">Your characters current direction. Should be normalized.</param>
-        public UpdatePackage(Vector2 position, Vector2 direction)
+        /// <param name="velocity">Your characters current direction. Should be normalized.</param>
+        public UpdatePackage(Vector2 position, Vector2 velocity)
         {
             this.position = position;
-            this.direction = direction;
+            this.velocity = velocity;
         }
 
         [ProtoBeforeSerialization]
@@ -51,7 +51,7 @@ namespace MagicGladiators
             }
             if (position != null)
             {
-                xydir = new float[2] { direction.X, direction.Y };
+                xyvel = new float[2] { velocity.X, velocity.Y };
             }
         }
 
@@ -59,7 +59,7 @@ namespace MagicGladiators
         private void Deserialize()
         {
             position = new Vector2(xypos[0], xypos[1]);
-            direction = new Vector2(xydir[0], xydir[1]);
+            velocity = new Vector2(xyvel[0], xyvel[1]);
         }
     }
 }
