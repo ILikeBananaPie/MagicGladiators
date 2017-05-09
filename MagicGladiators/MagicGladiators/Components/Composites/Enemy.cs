@@ -25,7 +25,7 @@ namespace MagicGladiators.Components.Composites
 
         public void Update()
         {
-            trnsfrm.Translate(direction * GameWorld.Instance.deltaTime);
+            //trnsfrm.Translate(direction * GameWorld.Instance.deltaTime);
         }
 
         public void UpdateEnemyInfo(UpdatePackage package)
