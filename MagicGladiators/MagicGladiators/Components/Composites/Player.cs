@@ -55,7 +55,6 @@ namespace MagicGladiators
         {
             SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
 
-
             animator.CreateAnimation("IdleFront", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("IdleBack", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("IdleLeft", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
@@ -91,24 +90,16 @@ namespace MagicGladiators
             {
                 CollisionTest = true;
                 Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
-                double sin = test.X * other.CircleCollisionBox.Center.Y - other.CircleCollisionBox.Center.X * test.Y;
-                double cos = test.X * other.CircleCollisionBox.Center.X + test.Y * other.CircleCollisionBox.Center.Y;
 
-                double angle = Math.Atan2(sin, cos) * (180 / Math.PI);
-                //other.gameObject.transform.position.X += Math.Cos(angle);
-                //other.gameObject.transform.position.Y += Math.Sin(angle);
+                //Vector2 vectorBetween = test - other.gameObject.transform.position;
 
-                Vector2 vectorBetween = test - other.gameObject.transform.position;
-                //Vector2 playerPushVector = test - other.gameObject.transform.position;
-                //playerPushVector.Normalize()
-                vectorBetween.Normalize();
-                //(other.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+                testVector = (gameObject.GetComponent("Physics") as Physics).GetVector(test, other.gameObject.transform.position);
+                //GetVector(test, other.gameObject.transform.position);
+                testVector.Normalize();
+                //vectorBetween.Normalize();
                 testPush = true;
-                testVector = vectorBetween;
+                //testVector = vectorBetween;
 
-                //other.gameObject.transform.position = other.gameObject.transform.position + vectorBetween;
-
-                //other.gameObject.transform.position =  new Vector2(other.gameObject.transform.position.X + (float)Math.Cos(angle) * 50, other.gameObject.transform.position.Y + (float)Math.Sin(angle) * 50);
             }
             
         }
@@ -124,10 +115,45 @@ namespace MagicGladiators
             testVector = vectorBetween;
         }
 
+        public Vector2 GetVector(Vector2 origin, Vector2 target)
+        {
+            return origin - target;
+        }
+
+        public Vector2 physicsBreak(float breakFactor, Vector2 velocity)
+        {
+            if (!(Vector2.Distance(velocity, Vector2.Zero) > 0.05F && Vector2.Distance(velocity, Vector2.Zero) < -0.05F))
+            {
+                accelerationTest = breakFactor * -velocity;
+                //velocityTest += accelerationTest;
+                //accelerationTest = Vector2.Zero;
+            }
+            else
+            {
+                accelerationTest = Vector2.Zero;
+                velocityTest = Vector2.Zero;
+            }
+            velocityTest = UpdateVelocity(accelerationTest, velocityTest);
+            return accelerationTest;
+        }
+
+        public void updatePosition()
+        {
+            gameObject.transform.position += velocityTest;
+        }
+
+        public Vector2 UpdateVelocity(Vector2 acceleration, Vector2 velocity)
+        {
+            return velocity += acceleration;
+        }
+
         public void Update()
         {
-            float testing = Vector2.Distance(velocityTest, Vector2.Zero);
-            velocityTest += accelerationTest;
+            //velocityTest = UpdateVelocity(accelerationTest, velocityTest);
+            //accelerationTest = physicsBreak(breakTest, velocityTest);
+            //updatePosition();
+            gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
+            
             if (testPush)
             {
                 //accelerationTest = new Vector2((int)testVector.X, (int)testVector.Y);
@@ -150,33 +176,12 @@ namespace MagicGladiators
                     testPush = false;
                     testSpeed = 10;
                 }
-                
-                velocityTest += accelerationTest;
-                accelerationTest = Vector2.Zero;
+                (gameObject.GetComponent("Physics") as Physics).Velocity += accelerationTest;
+                (gameObject.GetComponent("Physics") as Physics).Acceleration = Vector2.Zero;
+                //velocityTest += accelerationTest;
+                //accelerationTest = Vector2.Zero;
                 //testPush = false;
             }
-
-            if (!(Vector2.Distance(velocityTest, Vector2.Zero) > 0.05F && Vector2.Distance(velocityTest, Vector2.Zero) < -0.05F))
-            {
-                accelerationTest = breakTest * -velocityTest;
-                velocityTest += accelerationTest;
-                //accelerationTest = Vector2.Zero;
-
-            }
-            if (Vector2.Distance(velocityTest, Vector2.Zero) < 0.05F && Vector2.Distance(velocityTest, Vector2.Zero) > -0.05F)
-            {
-                velocityTest = Vector2.Zero;
-
-            }
-            gameObject.transform.position += velocityTest;
-
-            /*
-            else if (velocityTest != Vector2.Zero)
-            {
-                accelerationTest = breakTest * -velocityTest;
-            }
-            */
-            //velocityTest = Vector2.Zero;
 
             KeyboardState keyState = Keyboard.GetState();
             if (keyState.IsKeyDown(Keys.W) || keyState.IsKeyDown(Keys.A) || keyState.IsKeyDown(Keys.S) || keyState.IsKeyDown(Keys.D))
