@@ -28,7 +28,8 @@ namespace MagicGladiators
         {
             go = gameObject;
             originalPos = position;
-            go.transform.position = position;
+            //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
+            //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
             this.target = target;
             testVector = target - originalPos;
             testVector.Normalize();

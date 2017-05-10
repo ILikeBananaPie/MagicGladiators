@@ -7,13 +7,26 @@ using System.Threading.Tasks;
 
 namespace MagicGladiators
 {
-    public class Transform : Component
+    public class Transform:Component
     {
         public static Vector2 playerPosition;
 
         public static Vector2 EnemyPosition;
 
-        public Vector2 position { get; set; }
+        private readonly Object thisLock = new Object();
+
+        private Vector2 _position;
+        public Vector2 position
+        {
+            get
+            {
+                lock (thisLock) { return _position; }
+            }
+            set
+            {
+                lock (thisLock) { _position = value; }
+            }
+        }
 
 
         public Transform(GameObject gameObject, Vector2 position) : base(gameObject)

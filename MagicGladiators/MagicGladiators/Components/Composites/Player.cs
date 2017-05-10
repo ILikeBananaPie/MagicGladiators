@@ -28,18 +28,26 @@ namespace MagicGladiators
         private float testTimer;
         private float testSpeed = 20;
         private bool canShoot;
+        private SpriteRenderer sprite;
 
 
         public static Vector2 accelerationTest;
         public static Vector2 velocityTest;
         private float breakTest = 0.050F;
-
+        
+        private readonly Object thisLock = new Object();
+        private UpdatePackage _updatePackage;
+        public UpdatePackage updatePackage
+        {
+            get { lock (thisLock) { return _updatePackage; } }
+            set { lock (thisLock) { _updatePackage = value; } }
+        }
 
         public Player(GameObject gameObject, Transform transform) : base(gameObject)
         {
             gameObject.Tag = "Player";
             this.transform = transform;
-
+            sprite = (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer);
         }
 
 
@@ -67,6 +75,7 @@ namespace MagicGladiators
             animator = (Animator)gameObject.GetComponent("Animator");
             fontText = content.Load<SpriteFont>("fontText");
 
+            updatePackage = new UpdatePackage(transform.position);
             CreateAnimations();
         }
 
@@ -146,6 +155,7 @@ namespace MagicGladiators
                 accelerationTest = Vector2.Zero;
                 //testPush = false;
             }
+
             if (!(Vector2.Distance(velocityTest, Vector2.Zero) > 0.05F && Vector2.Distance(velocityTest, Vector2.Zero) < -0.05F))
             {
                 accelerationTest = breakTest * -velocityTest;
@@ -158,13 +168,14 @@ namespace MagicGladiators
                 velocityTest = Vector2.Zero;
 
             }
+            gameObject.transform.position += velocityTest;
+
             /*
             else if (velocityTest != Vector2.Zero)
             {
                 accelerationTest = breakTest * -velocityTest;
             }
             */
-            gameObject.transform.position += velocityTest;
             //velocityTest = Vector2.Zero;
 
             KeyboardState keyState = Keyboard.GetState();
@@ -195,7 +206,7 @@ namespace MagicGladiators
             {
                 canShoot = true;
             }
-
+            updatePackage.InfoUpdate(transform.position, velocityTest);
         }
 
         public void OnCollisionStay(Collider other)
