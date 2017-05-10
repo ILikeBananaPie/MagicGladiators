@@ -60,34 +60,7 @@ namespace MagicGladiators
                 currentDirection = Right;
             }
             
-            if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.A))
-            {
-                translation += new Vector2(-1, -1);
-                Vector2 test = new Vector2(-0.5F, -0.5F);
-                test.Normalize();
-                Player.accelerationTest += test;
-            }
-            if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.D))
-            {
-                translation += new Vector2(1, -1);
-                Vector2 test = new Vector2(0.5F, -0.5F);
-                test.Normalize();
-                Player.accelerationTest += test;
-            }
-            if (keyState.IsKeyDown(Keys.S) && keyState.IsKeyDown(Keys.A))
-            {
-                translation += new Vector2(-1, 1);
-                Vector2 test = new Vector2(-0.5F, 0.5F);
-                test.Normalize();
-                Player.accelerationTest += test;
-            }
-            if (keyState.IsKeyDown(Keys.S) && keyState.IsKeyDown(Keys.D))
-            {
-                translation += new Vector2(1, 1);
-                Vector2 test = new Vector2(0.5F, 0.5F);
-                test.Normalize();
-                Player.accelerationTest += test;
-            }
+          
             
             direction = currentDirection;
             //transform.position += 
