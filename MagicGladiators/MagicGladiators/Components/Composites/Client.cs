@@ -123,7 +123,17 @@ namespace MagicGladiators.Components.Composites
 
         private void JoinedServerRespond(PacketHeader packetHeader, Connection connection, bool incomingObject)
         {
-            connected = incomingObject;
+            if (incomingObject)
+            {
+                connected = true;
+                GameObject host = new GameObject(0);
+                host.AddComponent(new Enemy(host));
+                host.AddComponent(new SpriteRenderer(host, "Player", 1));
+                host.AddComponent(new Collider(host, false));
+                host.LoadContent(GameWorld.Instance.Content);
+                GameWorld.newObjects.Add(host);
+                hostPos = host.GetComponent("Enemy") as Enemy;
+            }
         }
     }
 }

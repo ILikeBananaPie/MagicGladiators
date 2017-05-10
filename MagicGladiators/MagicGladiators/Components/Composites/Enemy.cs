@@ -27,7 +27,7 @@ namespace MagicGladiators.Components.Composites
 
         public Enemy/*Number 1*/(GameObject gameObject) : base(gameObject)
         {
-
+            updatePackage = new UpdatePackage(Vector2.Zero);
         }
 
         public void LoadContent(ContentManager content)
