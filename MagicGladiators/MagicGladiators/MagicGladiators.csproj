@@ -54,6 +54,7 @@
     <Compile Include="Components\Leafs\Animator.cs" />
     <Compile Include="Components\Leafs\Collider.cs" />
     <Compile Include="Components\Leafs\Component.cs" />
+    <Compile Include="Components\Leafs\Physics.cs" />
     <Compile Include="GameWorld.cs" />
     <Compile Include="Components\Composites\GameObject.cs" />
     <Compile Include="Components\Interfaces\IAnimateable.cs" />
