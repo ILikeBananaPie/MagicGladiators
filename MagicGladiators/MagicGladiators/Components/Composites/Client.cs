@@ -28,6 +28,7 @@ namespace MagicGladiators.Components.Composites
         public Client(GameObject gameObject) : base(gameObject)
         {
             connected = false;
+            updatingHostInfo = false;
             tCPConn = null;
             ip = string.Empty;
             lastPressedKeys = Keyboard.GetState().GetPressedKeys();
@@ -113,11 +114,17 @@ namespace MagicGladiators.Components.Composites
             }
         }
 
+        private bool updatingHostInfo;
         private void HostPos(PacketHeader packetHeader, Connection connection, UpdatePackage incomingObject)
         {
             if (connected)
             {
-                hostPos.UpdateEnemyInfo(incomingObject);
+                if (!updatingHostInfo)
+                {
+                    updatingHostInfo = true;
+                    hostPos.UpdateEnemyInfo(incomingObject);
+                    updatingHostInfo = false;
+                }
             }
         }
 

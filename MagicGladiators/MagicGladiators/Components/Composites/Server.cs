@@ -72,9 +72,15 @@ namespace MagicGladiators.Components.Composites
             }
         }
 
+        private bool updatingClientInfo;
         private void UpdatePosition(PacketHeader header, Connection connection, UpdatePackage position)
         {
-            ((players[connection] as GameObject).GetComponent("Enemy") as Enemy).UpdateEnemyInfo(position);
+            if (!updatingClientInfo)
+            {
+                updatingClientInfo = true;
+                ((players[connection] as GameObject).GetComponent("Enemy") as Enemy).UpdateEnemyInfo(position);
+                updatingClientInfo = false;
+            }
         }
 
         public void LoadContent(ContentManager content)
