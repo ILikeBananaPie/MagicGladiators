@@ -1,4 +1,4 @@
-﻿using NetworkCommsDotNet;
+﻿//using NetworkCommsDotNet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +28,7 @@ namespace LanTestClient
                 Console.WriteLine("Sending message to server saying '" + messageToSend + "'");
 
                 //Send the message in a single line
-                NetworkComms.SendObject("Message", serverIP, serverPort, messageToSend);
+                //NetworkComms.SendObject("Message", serverIP, serverPort, messageToSend);
 
                 //Check if user wants to go around the loop
                 Console.WriteLine("\nPress q to quit or any other key to send another message.");
@@ -37,7 +37,7 @@ namespace LanTestClient
             }
 
             //We have used comms so we make sure to call shutdown
-            NetworkComms.Shutdown();
+            //NetworkComms.Shutdown();
         }
     }
 }

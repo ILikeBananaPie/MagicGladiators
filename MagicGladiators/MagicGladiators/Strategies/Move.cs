@@ -11,54 +11,59 @@ namespace MagicGladiators
 {
     class Move : IStrategy
     {
-         private float movementSpeed = 200;
+        private float movementSpeed = 200;
 
-         private Transform transform;
+        private Transform transform;
 
-         private Animator animator;
+        private Animator animator;
 
-         public static DIRECTION direction { get; private set; }
+        private Physics physics;
+
+         public static DIRECTION direction
+        { get; private set; }
 
 
-         public Move(Transform transform, Animator animator)
-         {
-             this.transform = transform;
-             this.animator = animator;
-         }
+        public Move(Transform transform, Animator animator)
+        {
+            this.transform = transform;
+            this.animator = animator;
+            this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
+        }
 
-         public void Execute(ref DIRECTION currentDirection)
-         {
-             KeyboardState keyState = Keyboard.GetState();
+        public void Execute(ref DIRECTION currentDirection)
+        {
+            KeyboardState keyState = Keyboard.GetState();
 
-             Vector2 translation = Vector2.Zero;
+            Vector2 translation = Vector2.Zero;
 
             if (keyState.IsKeyDown(Keys.W))
             {
                 translation += new Vector2(0, -1);
-                Player.accelerationTest += new Vector2(0, -0.25F);
+                physics.Acceleration += new Vector2(0, -0.25F);
                 currentDirection = Back;
             }
             if (keyState.IsKeyDown(Keys.A))
             {
                 translation += new Vector2(-1, 0);
-                Player.accelerationTest += new Vector2(-0.25F, 0);
+                physics.Acceleration += new Vector2(-0.25F, 0);
 
                 currentDirection = Left;
             }
             if (keyState.IsKeyDown(Keys.S))
             {
                 translation += new Vector2(0, 1);
-                Player.accelerationTest += new Vector2(0, 0.25F);
+                physics.Acceleration += new Vector2(0, 0.25F);
 
                 currentDirection = Front;
             }
             if (keyState.IsKeyDown(Keys.D))
             {
                 translation += new Vector2(1, 0);
-                Player.accelerationTest += new Vector2(0.25F, 0);
+                physics.Acceleration += new Vector2(0.25F, 0);
 
                 currentDirection = Right;
             }
+
             /*
             if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.A))
             {
@@ -95,88 +100,88 @@ namespace MagicGladiators
 
             //transform.Translate(translation * movementSpeed * GameWorld.Instance.deltaTime);
 
-             animator.PlayAnimation("Walk" + currentDirection);
+            animator.PlayAnimation("Walk" + currentDirection);
 
 
-         }
-         
-
-/*
-        private float movementSpeed = 5;
-
-        private float maxSpeed = 30;
-
-        private Transform transform;
-
-        private Vector2 velocity;
-
-        private Animator animator;
-
-        private Vector2 acceleration;
-
-        private Vector2 velMax;
-        private Vector2 velMin;
-
-
-        public static DIRECTION direction { get; private set; }
-
-
-        public Move(Transform transform, Animator animator)
-        {
-            this.transform = transform;
-            this.animator = animator;
         }
 
 
+        /*
+                private float movementSpeed = 5;
 
-        public void Execute(ref DIRECTION currentDirection)
-        {
-            KeyboardState keyState = Keyboard.GetState();
+                private float maxSpeed = 30;
+
+                private Transform transform;
+
+                private Vector2 velocity;
+
+                private Animator animator;
+
+                private Vector2 acceleration;
+
+                private Vector2 velMax;
+                private Vector2 velMin;
 
 
-            Transform.playerPosition += velocity;
+                public static DIRECTION direction { get; private set; }
 
-            if (keyState.IsKeyDown(Keys.W))
-            {
 
-                Transform.playerPosition.Y += velocity.Y * GameWorld.Instance.deltaTime;
-                velocity.Y += acceleration.Y * GameWorld.Instance.deltaTime;
-                velocity.Y++;
+                public Move(Transform transform, Animator animator)
+                {
+                    this.transform = transform;
+                    this.animator = animator;
+                }
 
-                currentDirection = Back;
-            }
-            if (keyState.IsKeyDown(Keys.A))
-            {
-                Transform.playerPosition.X += velocity.X * GameWorld.Instance.deltaTime;
-                velocity.X -= acceleration.X * GameWorld.Instance.deltaTime;
-                velocity.X--;
 
-                currentDirection = Left;
-            }
-            if (keyState.IsKeyDown(Keys.S))
-            {
 
-                Transform.playerPosition.Y += velocity.Y * GameWorld.Instance.deltaTime;
-                velocity.Y -= acceleration.Y * GameWorld.Instance.deltaTime;
-                velocity.Y--;
+                public void Execute(ref DIRECTION currentDirection)
+                {
+                    KeyboardState keyState = Keyboard.GetState();
 
-                currentDirection = Front;
-            }
-            if (keyState.IsKeyDown(Keys.D))
-            {
-                Transform.playerPosition.X += velocity.X * GameWorld.Instance.deltaTime;
-                velocity.X += acceleration.X * GameWorld.Instance.deltaTime;
-                velocity.X++;
 
-                currentDirection = Right;
+                    Transform.playerPosition += velocity;
 
-                direction = currentDirection;
-                transform.Translate(velocity * movementSpeed * GameWorld.Instance.deltaTime);
+                    if (keyState.IsKeyDown(Keys.W))
+                    {
 
-                animator.PlayAnimation("Walk" + currentDirection);
+                        Transform.playerPosition.Y += velocity.Y * GameWorld.Instance.deltaTime;
+                        velocity.Y += acceleration.Y * GameWorld.Instance.deltaTime;
+                        velocity.Y++;
 
-            }
-        }*/
+                        currentDirection = Back;
+                    }
+                    if (keyState.IsKeyDown(Keys.A))
+                    {
+                        Transform.playerPosition.X += velocity.X * GameWorld.Instance.deltaTime;
+                        velocity.X -= acceleration.X * GameWorld.Instance.deltaTime;
+                        velocity.X--;
+
+                        currentDirection = Left;
+                    }
+                    if (keyState.IsKeyDown(Keys.S))
+                    {
+
+                        Transform.playerPosition.Y += velocity.Y * GameWorld.Instance.deltaTime;
+                        velocity.Y -= acceleration.Y * GameWorld.Instance.deltaTime;
+                        velocity.Y--;
+
+                        currentDirection = Front;
+                    }
+                    if (keyState.IsKeyDown(Keys.D))
+                    {
+                        Transform.playerPosition.X += velocity.X * GameWorld.Instance.deltaTime;
+                        velocity.X += acceleration.X * GameWorld.Instance.deltaTime;
+                        velocity.X++;
+
+                        currentDirection = Right;
+
+                        direction = currentDirection;
+                        transform.Translate(velocity * movementSpeed * GameWorld.Instance.deltaTime);
+
+                        animator.PlayAnimation("Walk" + currentDirection);
+
+                    }
+                }*/
     }
-    
+
 }
