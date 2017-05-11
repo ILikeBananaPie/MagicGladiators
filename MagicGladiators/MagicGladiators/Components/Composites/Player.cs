@@ -152,6 +152,7 @@ namespace MagicGladiators
             //velocityTest = UpdateVelocity(accelerationTest, velocityTest);
             //accelerationTest = physicsBreak(breakTest, velocityTest);
             //updatePosition();
+
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
             
             if (testPush)
