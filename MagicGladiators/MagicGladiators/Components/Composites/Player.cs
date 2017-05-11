@@ -42,6 +42,7 @@ namespace MagicGladiators
             get { lock (thisLock) { return _updatePackage; } }
             set { lock (thisLock) { _updatePackage = value; } }
         }
+        private Physics phys;
 
         public Player(GameObject gameObject, Transform transform) : base(gameObject)
         {
@@ -73,6 +74,7 @@ namespace MagicGladiators
         {
             animator = (Animator)gameObject.GetComponent("Animator");
             fontText = content.Load<SpriteFont>("fontText");
+            phys = gameObject.GetComponent("Physics") as Physics;
 
             updatePackage = new UpdatePackage(transform.position);
             CreateAnimations();
@@ -212,7 +214,7 @@ namespace MagicGladiators
             {
                 canShoot = true;
             }
-            updatePackage.InfoUpdate(transform.position, velocityTest);
+            updatePackage.InfoUpdate(transform.position, phys.Velocity);
         }
 
         public void OnCollisionStay(Collider other)
