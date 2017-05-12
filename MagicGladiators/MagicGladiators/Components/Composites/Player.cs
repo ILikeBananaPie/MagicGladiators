@@ -30,7 +30,7 @@ namespace MagicGladiators
         private bool canShoot;
         private SpriteRenderer sprite;
 
-
+        //testing
         public static Vector2 accelerationTest;
         public static Vector2 velocityTest;
         private float breakTest = 0.050F;
