@@ -24,7 +24,7 @@ namespace MagicGladiators.Components.Composites
         private Keys[] lastPressedKeys;
 
         Connection tCPConn;
-
+        //Es is client!
         public Client(GameObject gameObject) : base(gameObject)
         {
             connected = false;
