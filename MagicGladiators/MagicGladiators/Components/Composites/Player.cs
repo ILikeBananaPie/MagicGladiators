@@ -219,6 +219,7 @@ namespace MagicGladiators
 
         public void OnCollisionStay(Collider other)
         {
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
