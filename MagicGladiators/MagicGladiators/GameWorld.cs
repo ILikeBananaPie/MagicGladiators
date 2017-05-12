@@ -80,14 +80,17 @@ namespace MagicGladiators
             CircleColliders = new List<Collider>();
             newCircleColliders = new List<Collider>();
 
-            Director director = new Director(new PlayerBuilder());
-            gameObjects.Add(director.Construct(Vector2.Zero,1));
+            Director director = new Director(new MapBuilder());
+            gameObjects.Add(director.Construct(Vector2.Zero));
+
+            director = new Director(new PlayerBuilder());
+            gameObjects.Add(director.Construct(Vector2.Zero));
 
 
             director = new Director(new DummyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(200, 200),1));
-            gameObjects.Add(director.Construct(new Vector2(200, 180), 1));
-            gameObjects.Add(director.Construct(new Vector2(200, 220), 1));
+            gameObjects.Add(director.Construct(new Vector2(200, 200)));
+            gameObjects.Add(director.Construct(new Vector2(200, 180)));
+            gameObjects.Add(director.Construct(new Vector2(200, 220)));
 
 
             base.Initialize();
@@ -141,7 +144,7 @@ namespace MagicGladiators
                 }
                 if (!testfor)
                 {
-                    GameObject server = new GameObject(0);
+                    GameObject server = new GameObject();
                     server.AddComponent(new Server(server));
                     server.LoadContent(this.Content);
                     gameObjects.Add(server);
@@ -158,7 +161,7 @@ namespace MagicGladiators
                 }
                 if (!testfor)
                 {
-                    GameObject client = new GameObject(0);
+                    GameObject client = new GameObject();
                     client.AddComponent(new Client(client));
                     client.LoadContent(this.Content);
                     gameObjects.Add(client);
