@@ -41,9 +41,10 @@
     <Compile Include="Animation.cs" />
     <Compile Include="Builder\Director.cs" />
     <Compile Include="Builder\DummyBuilder.cs" />
-    <Compile Include="Components\Composites\Abilities\DefensiveAbility.cs" />
-    <Compile Include="Components\Composites\Abilities\MobilityAbility.cs" />
-    <Compile Include="Components\Composites\Abilities\OffensiveAbility.cs" />
+    <Compile Include="Components\Composites\Abilities\Defensive\DefensiveAbility.cs" />
+    <Compile Include="Components\Composites\Abilities\Mobility\Charge.cs" />
+    <Compile Include="Components\Composites\Abilities\Mobility\MobilityAbility.cs" />
+    <Compile Include="Components\Composites\Abilities\Offensive\OffensiveAbility.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\HomingMissile.cs" />
     <Compile Include="Components\Composites\Client.cs" />
     <Compile Include="Builder\ProjectileBuilder.cs" />
@@ -128,10 +129,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\Composites\Abilities\Defensive\" />
-    <Folder Include="Components\Composites\Abilities\Mobility\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

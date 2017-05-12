@@ -59,7 +59,8 @@ namespace MagicGladiators
             animator.CreateAnimation("WalkBack", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("WalkLeft", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("WalkRight", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-
+            animator.CreateAnimation("ChargeLeft", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("ChargeRight", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.PlayAnimation("IdleFront");
 
             strategy = new Idle(animator);
@@ -128,6 +129,7 @@ namespace MagicGladiators
                     strategy = new Move(gameObject.transform, animator);
                 }
             }
+            
             else
             {
                 strategy = new Idle(animator);

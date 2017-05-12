@@ -11,7 +11,6 @@ namespace MagicGladiators
     {
         private GameObject gameObject;
 
-
         public void BuildGameObject(Vector2 position, object id)
         {
             gameObject = new GameObject(id);
@@ -27,8 +26,10 @@ namespace MagicGladiators
             gameObject.AddComponent(new Collider(gameObject, false));
 
             gameObject.AddComponent(new Physics(gameObject));
-          
-           // gameObject.LoadContent(GameWorld.Instance.Content);
+
+            // gameObject.LoadContent(GameWorld.Instance.Content);
+
+            gameObject.AddComponent(new Charge(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
             gameObject.transform.position = position;
 
