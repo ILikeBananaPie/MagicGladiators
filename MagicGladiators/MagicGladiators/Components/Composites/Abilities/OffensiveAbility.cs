@@ -13,8 +13,9 @@ namespace MagicGladiators.Components.Composites.Abilities
     abstract class OffensiveAbility:Component, ILoadable, IUpdateable
     {
         //Something akin to missiles mainly
-        public OffensiveAbility(GameObject go, MouseState ms) : base(go)
+        public OffensiveAbility(GameObject go) : base(go)
         {
+
         }
 
         public void LoadContent(ContentManager content)
