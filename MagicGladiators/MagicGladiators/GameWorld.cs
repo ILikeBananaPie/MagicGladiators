@@ -69,6 +69,10 @@ namespace MagicGladiators
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.ApplyChanges();
+
             IsMouseVisible = true;
             
             gameObjects = new List<GameObject>();
