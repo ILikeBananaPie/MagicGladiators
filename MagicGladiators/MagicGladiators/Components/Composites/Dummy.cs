@@ -22,9 +22,15 @@ namespace MagicGladiators
         private float testTimer;
         private int testSpeed = 10;
 
+        public float Damage { get; private set; } = 5.5F;
+        public bool isAlive { get; set; } = true;
+
+
         public Dummy(GameObject gameObject) : base(gameObject)
         {
             gameObject.Tag = "Dummy";
+            gameObject.MaxHealth = 100;
+            gameObject.CurrentHealth = gameObject.MaxHealth;
 
         }
 

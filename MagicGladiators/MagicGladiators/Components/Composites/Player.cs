@@ -21,15 +21,13 @@ namespace MagicGladiators
         private DIRECTION direction;
 
         private Transform transform;
-        private bool CollisionTest;
         private SpriteFont fontText;
         private bool testPush;
         private Vector2 testVector;
         private float testTimer;
-        private float testSpeed = 20;
         private bool canShoot;
         private SpriteRenderer sprite;
-        
+
         private readonly Object thisLock = new Object();
         private UpdatePackage _updatePackage;
         public UpdatePackage updatePackage
@@ -42,6 +40,8 @@ namespace MagicGladiators
         public Player(GameObject gameObject, Transform transform) : base(gameObject)
         {
             gameObject.Tag = "Player";
+            gameObject.MaxHealth = 100;
+            gameObject.CurrentHealth = gameObject.MaxHealth;
             this.transform = transform;
             sprite = (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer);
         }
@@ -82,22 +82,14 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            
             if (other.gameObject.Tag != "Ability")
             {
+                gameObject.CurrentHealth -= (other.gameObject.GetComponent("Dummy") as Dummy).Damage;
                 Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
-
-                //Vector2 vectorBetween = test - other.gameObject.transform.position;
-
                 testVector = (gameObject.GetComponent("Physics") as Physics).GetVector(test, other.gameObject.transform.position);
-                //GetVector(test, other.gameObject.transform.position);
                 testVector.Normalize();
-                //vectorBetween.Normalize();
                 testPush = true;
-                //testVector = vectorBetween;
-
             }
-            
         }
 
         public void OnCollisionExit(Collider other)
@@ -112,39 +104,20 @@ namespace MagicGladiators
 
         public void Update()
         {
-            //velocityTest = UpdateVelocity(accelerationTest, velocityTest);
-            //accelerationTest = physicsBreak(breakTest, velocityTest);
-            //updatePosition();
-
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
-            
+
             if (testPush)
             {
-                //accelerationTest = new Vector2((int)testVector.X, (int)testVector.Y);
-                accelerationTest = testVector * 10;
-                
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector * 10;
                 if (testTimer < 0.0025F)
                 {
                     testTimer += GameWorld.Instance.deltaTime;
-                    /*
-                    gameObject.transform.position += testVector * testSpeed;
-                    if (testSpeed > 0)
-                    {
-                        testSpeed--;
-                    }
-                    */
                 }
                 else
                 {
                     testTimer = 0;
                     testPush = false;
-                    testSpeed = 10;
                 }
-                (gameObject.GetComponent("Physics") as Physics).Velocity += accelerationTest;
-                (gameObject.GetComponent("Physics") as Physics).Acceleration = Vector2.Zero;
-                //velocityTest += accelerationTest;
-                //accelerationTest = Vector2.Zero;
-                //testPush = false;
             }
 
             KeyboardState keyState = Keyboard.GetState();
@@ -164,7 +137,6 @@ namespace MagicGladiators
             MouseState mouse = Mouse.GetState();
             if (mouse.LeftButton == ButtonState.Pressed && canShoot)
             {
-                
                 Director director = new Director(new ProjectileBuilder());
                 director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
                 canShoot = false;
@@ -185,10 +157,12 @@ namespace MagicGladiators
         public void Draw(SpriteBatch spriteBatch)
         {
             MouseState mouse = Mouse.GetState();
-            spriteBatch.DrawString(fontText, "PlayerX: " + gameObject.transform.position.X, new Vector2(0, 10), Color.Black);
-            spriteBatch.DrawString(fontText, "PlayerY: " + gameObject.transform.position.Y, new Vector2(0, 30), Color.Black);
-            spriteBatch.DrawString(fontText, "MouseX: " + mouse.X, new Vector2(0, 50), Color.Black);
-            spriteBatch.DrawString(fontText, "MouseY: " + mouse.Y, new Vector2(0, 70), Color.Black);
+            spriteBatch.DrawString(fontText, "Health: " + gameObject.CurrentHealth + "/" + gameObject.MaxHealth, new Vector2(0, 0), Color.Black);
+
+            spriteBatch.DrawString(fontText, "PlayerX: " + gameObject.transform.position.X, new Vector2(0, 20), Color.Black);
+            spriteBatch.DrawString(fontText, "PlayerY: " + gameObject.transform.position.Y, new Vector2(0, 40), Color.Black);
+            spriteBatch.DrawString(fontText, "MouseX: " + mouse.X, new Vector2(0, 60), Color.Black);
+            spriteBatch.DrawString(fontText, "MouseY: " + mouse.Y, new Vector2(0, 80), Color.Black);
         }
     }
 }
