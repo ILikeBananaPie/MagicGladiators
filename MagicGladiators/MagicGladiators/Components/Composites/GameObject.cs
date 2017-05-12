@@ -24,11 +24,8 @@ namespace MagicGladiators
 
         private bool isLoaded = false;
 
-        public object ID { get; set; }
-
-        public GameObject(object id)
+        public GameObject()
         {
-            this.ID = id;
             this.transform = new Transform(this, Vector2.Zero);
 
             AddComponent(transform);

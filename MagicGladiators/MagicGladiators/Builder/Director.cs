@@ -17,9 +17,9 @@ namespace MagicGladiators
             this.builder = builder;
         }
 
-        public GameObject Construct(Vector2 position, object id)
+        public GameObject Construct(Vector2 position)
         {
-            builder.BuildGameObject(position, id);
+            builder.BuildGameObject(position);
 
             return builder.GetResult();
         }

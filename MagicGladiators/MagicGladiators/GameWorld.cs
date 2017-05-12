@@ -74,7 +74,11 @@ namespace MagicGladiators
             graphics.ApplyChanges();
 
             IsMouseVisible = true;
-            
+            Window.AllowUserResizing = true;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.ApplyChanges();
+
             gameObjects = new List<GameObject>();
             newObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
@@ -84,14 +88,21 @@ namespace MagicGladiators
             CircleColliders = new List<Collider>();
             newCircleColliders = new List<Collider>();
 
-            Director director = new Director(new PlayerBuilder());
-            gameObjects.Add(director.Construct(Vector2.Zero,1));
+            Director director = new Director(new MapBuilder());
+            Texture2D sprite = Content.Load<Texture2D>("StandardMap");
+            gameObjects.Add(director.Construct(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2)));
+
+            Vector2 mapCenter = new Vector2(gameObjects[0].transform.position.X + sprite.Width / 2, gameObjects[0].transform.position.Y + sprite.Height / 2);
+            //float mapRadius = (gameObjects[0].GetComponent("Collider") as Collider).CircleCollisionBox.Radius;
+
+            director = new Director(new PlayerBuilder());
+            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16)));
 
 
             director = new Director(new DummyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(200, 200),1));
-            gameObjects.Add(director.Construct(new Vector2(200, 180), 1));
-            gameObjects.Add(director.Construct(new Vector2(200, 220), 1));
+            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16)));
+            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16)));
+            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
 
 
             base.Initialize();
@@ -130,6 +141,7 @@ namespace MagicGladiators
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            graphics.ApplyChanges();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
@@ -154,7 +166,7 @@ namespace MagicGladiators
                 }
                 if (!testfor)
                 {
-                    GameObject server = new GameObject(0);
+                    GameObject server = new GameObject();
                     server.AddComponent(new Server(server));
                     server.LoadContent(this.Content);
                     gameObjects.Add(server);
@@ -171,7 +183,7 @@ namespace MagicGladiators
                 }
                 if (!testfor)
                 {
-                    GameObject client = new GameObject(0);
+                    GameObject client = new GameObject();
                     client.AddComponent(new Client(client));
                     client.LoadContent(this.Content);
                     gameObjects.Add(client);
@@ -215,7 +227,8 @@ namespace MagicGladiators
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            //GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DarkRed);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();

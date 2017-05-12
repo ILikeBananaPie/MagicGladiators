@@ -52,7 +52,7 @@ namespace MagicGladiators.Components.Composites
             {
                 if (!players.ContainsKey(connection))
                 {
-                    GameObject go = new GameObject(0);
+                    GameObject go = new GameObject();
                     go.Tag = connection.ToString();
                     go.AddComponent(new Enemy(go));
                     go.AddComponent(new SpriteRenderer(go, "Player", 1));

@@ -1,38 +1,33 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace MagicGladiators
 {
-    class PlayerBuilder : IBuilder
+    class MapBuilder : IBuilder
     {
         private GameObject gameObject;
-
 
         public void BuildGameObject(Vector2 position)
         {
             gameObject = new GameObject();
+            gameObject.Tag = "Map";
 
-            gameObject.Tag = "Player";
-
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "StandardMap", 1));
 
             gameObject.AddComponent(new Animator(gameObject));
 
-            gameObject.AddComponent(new Player(gameObject, gameObject.transform));
+            gameObject.AddComponent(new Map(gameObject));
 
             gameObject.AddComponent(new Collider(gameObject, false));
 
-            gameObject.AddComponent(new Physics(gameObject));
-
             //gameObject.LoadContent(GameWorld.Instance.Content);
 
+
             gameObject.transform.position = position;
-
-
         }
 
         public void FireProjectile(Vector2 position, Vector2 targetVector)
@@ -44,6 +39,5 @@ namespace MagicGladiators
         {
             return gameObject;
         }
-
     }
 }

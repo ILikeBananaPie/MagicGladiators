@@ -45,12 +45,14 @@
     <Compile Include="Components\Composites\Abilities\MobilityAbility.cs" />
     <Compile Include="Components\Composites\Abilities\OffensiveAbility.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\HomingMissile.cs" />
+    <Compile Include="Builder\MapBuilder.cs" />
     <Compile Include="Components\Composites\Client.cs" />
     <Compile Include="Builder\ProjectileBuilder.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="Components\Composites\Dummy.cs" />
     <Compile Include="Components\Composites\Enemy.cs" />
     <Compile Include="Components\Composites\InputReciever.cs" />
+    <Compile Include="Components\Composites\Map.cs" />
     <Compile Include="Components\Composites\Projectile.cs" />
     <Compile Include="Components\Composites\Server.cs" />
     <Compile Include="Components\Interfaces\ILoadable.cs" />
@@ -107,6 +109,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Player.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\StandardMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Extra\InTheHand.Net.Personal.dll" />
