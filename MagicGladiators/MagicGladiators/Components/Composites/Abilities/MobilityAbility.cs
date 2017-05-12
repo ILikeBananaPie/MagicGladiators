@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Content;
+
+namespace MagicGladiators.Components.Composites.Abilities
+{
+    abstract class MobilityAbility:Component, ILoadable, IUpdateable
+    {
+        //Manipulating character movement, speed, velocity and/or position
+        public MobilityAbility(GameObject go) : base(go)
+        {
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

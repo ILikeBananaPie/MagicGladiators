@@ -41,6 +41,9 @@
     <Compile Include="Animation.cs" />
     <Compile Include="Builder\Director.cs" />
     <Compile Include="Builder\DummyBuilder.cs" />
+    <Compile Include="Components\Composites\Abilities\DefensiveAbility.cs" />
+    <Compile Include="Components\Composites\Abilities\MobilityAbility.cs" />
+    <Compile Include="Components\Composites\Abilities\OffensiveAbility.cs" />
     <Compile Include="Components\Composites\Client.cs" />
     <Compile Include="Builder\ProjectileBuilder.cs" />
     <Compile Include="Circle.cs" />
