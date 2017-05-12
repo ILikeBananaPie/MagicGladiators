@@ -133,6 +133,15 @@ namespace MagicGladiators
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
+
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.CurrentHealth < 0)
+                {
+                    objectsToRemove.Add(go);
+                }
+            }
+
             if (Keyboard.GetState().IsKeyDown(Keys.F2))
             {
                 bool testfor = false;
