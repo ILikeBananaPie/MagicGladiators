@@ -17,7 +17,7 @@ namespace MagicGladiators.Components.Composites.Abilities
         public DefensiveAbility(GameObject go) : base(go)
         {
         }
-
+        //IDK im tired
         public abstract void LoadContent(ContentManager content);
 
         public abstract void Update();
