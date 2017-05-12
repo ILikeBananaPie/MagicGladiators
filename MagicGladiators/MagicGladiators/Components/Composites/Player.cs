@@ -29,11 +29,6 @@ namespace MagicGladiators
         private float testSpeed = 20;
         private bool canShoot;
         private SpriteRenderer sprite;
-
-
-        public static Vector2 accelerationTest;
-        public static Vector2 velocityTest;
-        private float breakTest = 0.050F;
         
         private readonly Object thisLock = new Object();
         private UpdatePackage _updatePackage;
@@ -90,7 +85,6 @@ namespace MagicGladiators
             
             if (other.gameObject.Tag != "Ability")
             {
-                CollisionTest = true;
                 Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
 
                 //Vector2 vectorBetween = test - other.gameObject.transform.position;
@@ -108,45 +102,12 @@ namespace MagicGladiators
 
         public void OnCollisionExit(Collider other)
         {
-            CollisionTest = false;
         }
 
         public void isPushed(Vector2 vectorBetween)
         {
             testPush = true;
             testVector = vectorBetween;
-        }
-
-        public Vector2 GetVector(Vector2 origin, Vector2 target)
-        {
-            return origin - target;
-        }
-
-        public Vector2 physicsBreak(float breakFactor, Vector2 velocity)
-        {
-            if (!(Vector2.Distance(velocity, Vector2.Zero) > 0.05F && Vector2.Distance(velocity, Vector2.Zero) < -0.05F))
-            {
-                accelerationTest = breakFactor * -velocity;
-                //velocityTest += accelerationTest;
-                //accelerationTest = Vector2.Zero;
-            }
-            else
-            {
-                accelerationTest = Vector2.Zero;
-                velocityTest = Vector2.Zero;
-            }
-            velocityTest = UpdateVelocity(accelerationTest, velocityTest);
-            return accelerationTest;
-        }
-
-        public void updatePosition()
-        {
-            gameObject.transform.position += velocityTest;
-        }
-
-        public Vector2 UpdateVelocity(Vector2 acceleration, Vector2 velocity)
-        {
-            return velocity += acceleration;
         }
 
         public void Update()
@@ -205,7 +166,6 @@ namespace MagicGladiators
             {
                 
                 Director director = new Director(new ProjectileBuilder());
-                //Vector2 mousePos = Vector2.Transform(mouse.Position, Matrix.Invert(GameWorld.Instance.vie))
                 director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
                 canShoot = false;
             }
@@ -229,13 +189,6 @@ namespace MagicGladiators
             spriteBatch.DrawString(fontText, "PlayerY: " + gameObject.transform.position.Y, new Vector2(0, 30), Color.Black);
             spriteBatch.DrawString(fontText, "MouseX: " + mouse.X, new Vector2(0, 50), Color.Black);
             spriteBatch.DrawString(fontText, "MouseY: " + mouse.Y, new Vector2(0, 70), Color.Black);
-
-
-
-            if (CollisionTest)
-            {
-                spriteBatch.DrawString(fontText, "Collision Detected!", new Vector2(0, 0), Color.Black);
-            }
         }
     }
 }
