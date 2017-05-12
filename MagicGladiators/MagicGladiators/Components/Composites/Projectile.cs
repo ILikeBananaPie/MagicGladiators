@@ -11,8 +11,8 @@ namespace MagicGladiators
 {
     class Projectile : Component, IUpdateable, ICollisionEnter, ILoadable
     {
-        private Animator animator;
-
+        private Animator animator; //test 
+         
         private IStrategy strategy;
 
         private DIRECTION direction;
