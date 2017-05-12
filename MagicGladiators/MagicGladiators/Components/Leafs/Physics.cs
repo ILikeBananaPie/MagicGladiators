@@ -12,7 +12,6 @@ namespace MagicGladiators
         public Vector2 Velocity { get; set; }
         public Vector2 Acceleration { get; set; }
         private float breakFactor = 0.050F;
-        private static int maxValue = int.MaxValue;
 
         public Physics(GameObject gameObject) : base(gameObject)
         {
@@ -21,24 +20,6 @@ namespace MagicGladiators
 
         public Vector2 GetVector(Vector2 origin, Vector2 target)
         {
-            float x = 0;
-            float y = 0;
-            try
-            {
-                x = checked(origin.X - target.X);
-            }
-            catch (System.OverflowException)
-            {
-                throw new OverflowException("Overflow exception; you're way out of bounds");
-            }
-            try
-            {
-                y = checked(origin.Y - target.Y);
-            }
-            catch (System.OverflowException)
-            {
-                throw new OverflowException("Overflow exception; you're way out of bounds");
-            }
             return origin - target;
         }
 

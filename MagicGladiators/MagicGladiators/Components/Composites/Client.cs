@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using MagicGladiators;
 using NetworkCommsDotNet;
 using NetworkCommsDotNet.Connections.TCP;
+using System.Threading;
 
 namespace MagicGladiators.Components.Composites
 {
@@ -24,7 +25,7 @@ namespace MagicGladiators.Components.Composites
         private Keys[] lastPressedKeys;
 
         Connection tCPConn;
-
+        //Es is client!
         public Client(GameObject gameObject) : base(gameObject)
         {
             connected = false;
@@ -59,6 +60,10 @@ namespace MagicGladiators.Components.Composites
         {
             if (!connected)
             {
+                if (threadUpdate != null)
+                {
+                    threadUpdate.Abort();
+                }
                 KeyboardState kbState = Keyboard.GetState();
                 Keys[] pressedKeys = kbState.GetPressedKeys();
 
@@ -109,6 +114,22 @@ namespace MagicGladiators.Components.Composites
                 lastPressedKeys = pressedKeys;
             } 
             else
+            {
+                if (threadUpdate == null)
+                {
+                    threadUpdate = new Thread(ThreadUpdate);
+                    threadUpdate.Start();
+                } else if (!threadUpdate.IsAlive)
+                {
+                    threadUpdate.Start();
+                }
+            }
+        }
+
+        private Thread threadUpdate;
+        public void ThreadUpdate()
+        {
+            while (true)
             {
                 tCPConn.SendObject<UpdatePackage>("UpdatePosition", playerPos.updatePackage);
             }

@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using System.Diagnostics;
 using System.Net;
+using System.Threading;
 
 namespace MagicGladiators.Components.Composites
 {
@@ -89,9 +90,25 @@ namespace MagicGladiators.Components.Composites
 
         public void Update()
         {
-            foreach (Connection key in players.Keys)
+            if (threadUpdate == null)
             {
-                key.SendObject<UpdatePackage>("HostPos", playerPos.updatePackage);
+                threadUpdate = new Thread(ThreadUpdate);
+                threadUpdate.Start();
+            } else if (!threadUpdate.IsAlive)
+            {
+                threadUpdate.Start();
+            }
+        }
+
+        private Thread threadUpdate;
+        public void ThreadUpdate()
+        {
+            while (true)
+            {
+                foreach (Connection key in players.Keys)
+                {
+                    key.SendObject<UpdatePackage>("HostPos", playerPos.updatePackage);
+                }
             }
         }
     }

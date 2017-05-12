@@ -69,6 +69,10 @@ namespace MagicGladiators
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.ApplyChanges();
+
             IsMouseVisible = true;
             
             gameObjects = new List<GameObject>();
@@ -129,6 +133,15 @@ namespace MagicGladiators
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
+
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.CurrentHealth < 0)
+                {
+                    objectsToRemove.Add(go);
+                }
+            }
+
             if (Keyboard.GetState().IsKeyDown(Keys.F2))
             {
                 bool testfor = false;
