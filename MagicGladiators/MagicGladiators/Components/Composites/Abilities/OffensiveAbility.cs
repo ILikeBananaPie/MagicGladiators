@@ -18,14 +18,8 @@ namespace MagicGladiators.Components.Composites.Abilities
 
         }
 
-        public void LoadContent(ContentManager content)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void LoadContent(ContentManager content);
 
-        public void Update()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Update();
     }
 }
