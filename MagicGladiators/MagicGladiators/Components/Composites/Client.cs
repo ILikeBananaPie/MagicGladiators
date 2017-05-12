@@ -12,6 +12,7 @@ using MagicGladiators;
 using NetworkCommsDotNet;
 using NetworkCommsDotNet.Connections.TCP;
 using System.Threading;
+using System.Diagnostics;
 
 namespace MagicGladiators.Components.Composites
 {
@@ -131,7 +132,16 @@ namespace MagicGladiators.Components.Composites
         {
             while (true)
             {
-                tCPConn.SendObject<UpdatePackage>("UpdatePosition", playerPos.updatePackage);
+                try
+                {
+                    tCPConn.SendObject<UpdatePackage>("UpdatePosition", playerPos.updatePackage);
+                }
+                catch (ConnectionSendTimeoutException cste)
+                {
+                    connected = false;
+                    GameWorld.gameObjects.Remove(GameWorld.gameObjects.Find(x => x.GetComponent("Enemy") is Enemy));
+                    Debug.Write(cste.Message);
+                }
             }
         }
 

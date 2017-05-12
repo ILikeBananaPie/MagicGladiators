@@ -16,7 +16,13 @@ namespace MagicGladiators.Components.Composites
 {
     class Server : Component, IDrawable, ILoadable, IUpdateable
     {
-        private static Dictionary<Connection, GameObject> players;
+        private static readonly Object thislock = new Object();
+        private static Dictionary<Connection, GameObject> _players;
+        private static Dictionary<Connection, GameObject> players
+        {
+            get { lock (thislock) { return _players; } }
+            set { lock (thislock) { _players = value; } }
+        }
         private Player playerPos;
 
 
@@ -103,9 +109,11 @@ namespace MagicGladiators.Components.Composites
         private Thread threadUpdate;
         public void ThreadUpdate()
         {
+            Dictionary<Connection, GameObject> dicofplayers;
             while (true)
             {
-                foreach (Connection key in players.Keys)
+                dicofplayers = new Dictionary<Connection, GameObject>(players);
+                foreach (Connection key in dicofplayers.Keys)
                 {
                     key.SendObject<UpdatePackage>("HostPos", playerPos.updatePackage);
                 }
