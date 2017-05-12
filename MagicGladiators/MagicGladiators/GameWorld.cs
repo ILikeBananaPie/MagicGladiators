@@ -70,7 +70,11 @@ namespace MagicGladiators
         {
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
-            
+            Window.AllowUserResizing = true;
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 600;
+            graphics.ApplyChanges();
+
             gameObjects = new List<GameObject>();
             newObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
@@ -81,16 +85,17 @@ namespace MagicGladiators
             newCircleColliders = new List<Collider>();
 
             Director director = new Director(new MapBuilder());
-            gameObjects.Add(director.Construct(Vector2.Zero));
+            Texture2D sprite = Content.Load<Texture2D>("StandardMap");
+            gameObjects.Add(director.Construct(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2)));
 
             director = new Director(new PlayerBuilder());
-            gameObjects.Add(director.Construct(Vector2.Zero));
+            gameObjects.Add(director.Construct(new Vector2(400, 50)));
 
 
             director = new Director(new DummyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(200, 200)));
-            gameObjects.Add(director.Construct(new Vector2(200, 180)));
-            gameObjects.Add(director.Construct(new Vector2(200, 220)));
+            gameObjects.Add(director.Construct(new Vector2(200, 250)));
+            gameObjects.Add(director.Construct(new Vector2(600, 250)));
+            gameObjects.Add(director.Construct(new Vector2(400, 500)));
 
 
             base.Initialize();
@@ -129,6 +134,7 @@ namespace MagicGladiators
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            graphics.ApplyChanges();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
@@ -214,7 +220,8 @@ namespace MagicGladiators
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            //GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DarkRed);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();

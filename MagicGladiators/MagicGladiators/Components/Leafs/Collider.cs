@@ -52,8 +52,8 @@ namespace MagicGladiators
             {
                 return new Circle
                     (
-                        (int)(gameObject.transform.position.X + spriteRenderer.Offset.X),
-                        (int)(gameObject.transform.position.Y + spriteRenderer.Offset.Y),
+                        (int)(gameObject.transform.position.X + spriteRenderer.Rectangle.Width / 2),
+                        (int)(gameObject.transform.position.Y + spriteRenderer.Rectangle.Height / 2),
                         spriteRenderer.Sprite.Width / 2
                     );
             }
@@ -130,6 +130,7 @@ namespace MagicGladiators
 
         private void CheckCollision()
         {
+            /*
             if (CheckCollisions)
             {
                 foreach (Collider other in GameWorld.Instance.Colliders)
@@ -155,7 +156,8 @@ namespace MagicGladiators
                     }
                 }
             }
-            else if (CheckCircleCollisions)
+            */
+            if (CheckCircleCollisions)
             {
                 foreach (Collider other in GameWorld.Instance.CircleColliders)
                 {
@@ -169,11 +171,11 @@ namespace MagicGladiators
                                 otherColliders.Add(other);
                                 gameObject.OnCollisionEnter(other);
                             }
-                            else if (otherColliders.Contains(other))
-                            {
-                                otherColliders.Remove(other);
-                                gameObject.OnCollisionExit(other);
-                            }
+                        }
+                        else if (otherColliders.Contains(other))
+                        {
+                            otherColliders.Remove(other);
+                            gameObject.OnCollisionExit(other);
                         }
                     }
                 }

@@ -71,7 +71,7 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (other.gameObject.Tag != "Player")
+            if (other.gameObject.Tag != "Player" && other.gameObject.Tag != "Map")
             {
                 foreach (Collider go in GameWorld.Instance.CircleColliders)
                 {

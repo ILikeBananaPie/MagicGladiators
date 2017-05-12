@@ -82,11 +82,11 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (other.gameObject.Tag != "Ability")
+            if (other.gameObject.Tag != "Ability" && other.gameObject.Tag != "Map")
             {
                 gameObject.CurrentHealth -= (other.gameObject.GetComponent("Dummy") as Dummy).Damage;
                 Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
-                testVector = (gameObject.GetComponent("Physics") as Physics).GetVector(test, other.gameObject.transform.position);
+                testVector = (gameObject.GetComponent("Physics") as Physics).GetVector(test, (other.gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center);
                 testVector.Normalize();
                 testPush = true;
             }

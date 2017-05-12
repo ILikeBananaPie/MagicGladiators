@@ -19,20 +19,19 @@ namespace MagicGladiators
         private List<GameObject> objectsToRemove = new List<GameObject>();
         private List<GameObject> newObjects = new List<GameObject>();
 
-
-        private GameObject go;
-        private Transform transform;
-
+        public float LavaDamage { get; set; } = 0.2F;
 
         public Map(GameObject gameObject) : base(gameObject)
         {
+            gameObject.MaxHealth = 10000;
+            gameObject.CurrentHealth = gameObject.MaxHealth;
         }
 
         private void CreateAnimations()
         {
             SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
 
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 0, 0, 1, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 600, 600, 1, Vector2.Zero, spriteRenderer.Sprite));
 
             animator.PlayAnimation("Idle");
 
@@ -43,27 +42,26 @@ namespace MagicGladiators
         {
             animator = (Animator)gameObject.GetComponent("Animator");
             Texture2D sprite = content.Load<Texture2D>("StandardMap");
-            GameWorld.newObjects.Add(go);
-
             CreateAnimations();
         }
 
         public void OnCollisionExit(Collider other)
         {
-            objectsToRemove.Add(other.gameObject);
+            newObjects.Add(other.gameObject);
         }
 
         public void OnCollisionEnter(Collider other)
         {
-            newObjects.Add(other.gameObject);
+            objectsToRemove.Add(other.gameObject);
         }
 
         public void Update()
         {
             foreach (GameObject go in objects)
             {
-                go.
+                go.CurrentHealth -= LavaDamage;
             }
+            UpdateLevel();
         }
 
         private void UpdateLevel()
