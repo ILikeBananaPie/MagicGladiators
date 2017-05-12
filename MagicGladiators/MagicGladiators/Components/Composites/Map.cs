@@ -21,6 +21,8 @@ namespace MagicGladiators
 
         public float LavaDamage { get; set; } = 0.2F;
 
+        private float timer;
+
         public Map(GameObject gameObject) : base(gameObject)
         {
             gameObject.MaxHealth = 10000;
@@ -59,7 +61,17 @@ namespace MagicGladiators
         {
             foreach (GameObject go in objects)
             {
+                if (timer >= 0.25F)
+                {
+                    timer = 0;
+                    //go.CurrentHealth -= LavaDamage;
+                }
+                else
+                {
+                    timer += GameWorld.Instance.deltaTime;
+                }
                 go.CurrentHealth -= LavaDamage;
+
             }
             UpdateLevel();
         }

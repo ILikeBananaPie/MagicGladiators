@@ -71,8 +71,8 @@ namespace MagicGladiators
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
 
             gameObjects = new List<GameObject>();
@@ -88,14 +88,17 @@ namespace MagicGladiators
             Texture2D sprite = Content.Load<Texture2D>("StandardMap");
             gameObjects.Add(director.Construct(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2)));
 
+            Vector2 mapCenter = new Vector2(gameObjects[0].transform.position.X + sprite.Width / 2, gameObjects[0].transform.position.Y + sprite.Height / 2);
+            //float mapRadius = (gameObjects[0].GetComponent("Collider") as Collider).CircleCollisionBox.Radius;
+
             director = new Director(new PlayerBuilder());
-            gameObjects.Add(director.Construct(new Vector2(400, 50)));
+            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16)));
 
 
             director = new Director(new DummyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(200, 250)));
-            gameObjects.Add(director.Construct(new Vector2(600, 250)));
-            gameObjects.Add(director.Construct(new Vector2(400, 500)));
+            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16)));
+            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16)));
+            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
 
 
             base.Initialize();
