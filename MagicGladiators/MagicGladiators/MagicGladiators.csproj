@@ -53,6 +53,7 @@
     <Compile Include="Components\Composites\Enemy.cs" />
     <Compile Include="Components\Composites\InputReciever.cs" />
     <Compile Include="Components\Composites\Map.cs" />
+    <Compile Include="Components\Composites\OnClick.cs" />
     <Compile Include="Components\Composites\Projectile.cs" />
     <Compile Include="Components\Composites\Server.cs" />
     <Compile Include="Components\Interfaces\ILoadable.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Builder\PlayerBuilder.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="Scene\Scene.cs" />
     <Compile Include="Strategies\Idle.cs" />
     <Compile Include="Strategies\IStrategy.cs" />
     <Compile Include="Strategies\Move.cs" />
