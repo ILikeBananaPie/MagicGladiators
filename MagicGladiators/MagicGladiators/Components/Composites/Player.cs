@@ -147,6 +147,15 @@ namespace MagicGladiators
                 canShoot = true;
             }
             updatePackage.InfoUpdate(transform.position, phys.Velocity);
+
+            if (keyState.IsKeyDown(Keys.Q) && canShoot)
+            {
+                canShoot = false;
+                Director director = new Director(new HomingMissileBuilder());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+               
+            }
+           
         }
 
         public void OnCollisionStay(Collider other)
