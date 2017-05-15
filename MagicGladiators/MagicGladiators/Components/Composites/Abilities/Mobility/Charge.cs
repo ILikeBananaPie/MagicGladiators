@@ -8,10 +8,10 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 namespace MagicGladiators
 {
-    class Charge : MobilityAbility, IUpdateable
+    class Charge : MobilityAbility, IUpdateable, ICollisionEnter
     {
 
-        private bool on = false;
+        public static bool on = false;
         private bool activated = false;
 
         private Animator animator;
@@ -20,21 +20,24 @@ namespace MagicGladiators
         private Transform transform;
         private Vector2 target;
         private float chargeTimer;
-
+        private Vector2 testVector;
         private Vector2 test;
+
+        
 
         private Physics physics;
         public Charge(GameObject go, Transform transform, Animator animator) : base(go)
         {
+            
             this.go = go;
-            this.animator = animator;      
+            this.animator = animator;
             this.transform = transform;
             this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
         }
 
         public override void LoadContent(ContentManager content)
         {
-          
+            
         }
 
         public override void Update()
@@ -48,11 +51,11 @@ namespace MagicGladiators
             //activate aim and move in a charge
             if (keyState.IsKeyDown(Keys.Space) && !on && !activated)
             {
-                
+
 
                 activated = true;
             }
-            if(activated && keyState.IsKeyUp(Keys.Space))
+            if (activated && keyState.IsKeyUp(Keys.Space))
             {
                 target = new Vector2(mouse.Position.X, mouse.Position.Y);
                 test = physics.GetVector(target, go.transform.position);
@@ -65,7 +68,7 @@ namespace MagicGladiators
                 {
                     physics.Acceleration += test;
                     chargeTimer += (float)GameWorld.Instance.deltaTime;
-                    
+
                 }
                 timer += (float)GameWorld.Instance.deltaTime;
                 if (timer > 2)
@@ -77,7 +80,35 @@ namespace MagicGladiators
                 }
             }
 
-            
+
         }
+
+        public void OnCollisionEnter(Collider other)
+        {
+            if (other.gameObject.Tag != "Player")
+            {
+                foreach (Collider go in GameWorld.Instance.CircleColliders)
+                {
+                    if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
+                    {
+                        //plz don't delete me
+                        Vector2 vectorBetween = go.gameObject.transform.position - other.gameObject.transform.position;
+                        vectorBetween.Normalize();
+                        if (go.gameObject.Tag == "Dummy" && on)
+                        {
+
+                            
+                            (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+                        }
+                    }
+                }
+                
+            }
+
+
+
+
+        }
+
     }
 }
