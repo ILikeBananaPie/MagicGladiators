@@ -195,7 +195,11 @@ namespace MagicGladiators
                     }
                 }
             }
+            foreach (GameObject go in abilityList)
+            {
 
+            }
+            //only in buy phase
             foreach (GameObject go in Player.items)
             {
                 if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
