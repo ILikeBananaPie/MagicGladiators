@@ -20,7 +20,7 @@ namespace MagicGladiators
         public float DamageResistance { get; set; }
         public float LavaResistance { get; set; }
 
-        private List<Component> components = new List<Component>();
+        public List<Component> components = new List<Component>();
 
         public string Tag { get; set; } = "Untagged";
         public ObjectType objectType { get; set; }

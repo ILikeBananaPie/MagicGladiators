@@ -31,6 +31,7 @@ namespace MagicGladiators
         private SpriteRenderer sprite;
 
         public static List<GameObject> items = new List<GameObject>();
+        public static List<GameObject> abilities = new List<GameObject>();
 
         private readonly Object thisLock = new Object();
         private UpdatePackage _updatePackage;

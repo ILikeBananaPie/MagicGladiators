@@ -38,7 +38,9 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AbilityIcon.cs" />
     <Compile Include="Animation.cs" />
+    <Compile Include="Builder\AbilityIconBuilder.cs" />
     <Compile Include="Builder\Director.cs" />
     <Compile Include="Builder\DummyBuilder.cs" />
     <Compile Include="Builder\ItemBuilder.cs" />
@@ -57,12 +59,14 @@
     <Compile Include="Components\Composites\Map.cs" />
     <Compile Include="Components\Composites\Projectile.cs" />
     <Compile Include="Components\Composites\Server.cs" />
+    <Compile Include="Components\Interfaces\IAbility.cs" />
     <Compile Include="Components\Interfaces\ILoadable.cs" />
     <Compile Include="Components\Interfaces\IUpdateable.cs" />
     <Compile Include="Components\Leafs\Animator.cs" />
     <Compile Include="Components\Leafs\Collider.cs" />
     <Compile Include="Components\Leafs\Component.cs" />
     <Compile Include="Components\Leafs\Physics.cs" />
+    <Compile Include="CreateAbility.cs" />
     <Compile Include="GameWorld.cs" />
     <Compile Include="Components\Composites\GameObject.cs" />
     <Compile Include="Components\Interfaces\IAnimateable.cs" />

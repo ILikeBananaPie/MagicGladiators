@@ -10,27 +10,28 @@ namespace MagicGladiators
 {
 
     public enum ObjectType { }
-    
-    
+
+
 
 
 
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class GameWorld:Game
+    public class GameWorld : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-
+        private int abilityIndex = 0;
+        private List<IAbility> abilityListTest = new List<IAbility>();
 
         public static List<GameObject> gameObjects;
         public static List<GameObject> newObjects;
         public static List<GameObject> objectsToRemove;
 
         public static List<GameObject> itemList;
-        public static List<GameObject> abilityList;
+        public static List<GameObject> abilityList = new List<GameObject>();
 
         public List<Collider> Colliders { get; private set; }
         public List<Collider> newColliders { get; private set; }
@@ -43,6 +44,10 @@ namespace MagicGladiators
         public float deltaTime { get; set; }
 
         private bool canBuy = true;
+
+        private List<string> offensiveAbilities = new List<string>() { "HomingMissile", "Fireball", "Ricochet" };
+        private List<string> defensiveAbilities = new List<string>() { "Deflect", "Invisibility", "Stone Armor" };
+        private List<string> movementAbilities = new List<string>() { "Charge", "Blink", "Leap" };
 
 
         private static GameWorld instance;
@@ -104,7 +109,7 @@ namespace MagicGladiators
             //float mapRadius = (gameObjects[0].GetComponent("Collider") as Collider).CircleCollisionBox.Radius;
 
             director = new Director(new PlayerBuilder());
-            player =  director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
+            player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
             gameObjects.Add(player);
 
             director = new Director(new DummyBuilder());
@@ -125,6 +130,19 @@ namespace MagicGladiators
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
 
 
+            director = new Director(new AbilityIconBuilder());
+            int x = Window.ClientBounds.Width - 144;
+            int y = Window.ClientBounds.Height - 144;
+            for (int i = 0; i < 16; i++)
+            {
+                abilityList.Add(director.ConstructIcon(new Vector2(x, y), "HomingMissile", 100));
+                if (x == Window.ClientBounds.Width - 42)
+                {
+                    x = Window.ClientBounds.Width - 144;
+                    y += 34;
+                }
+                else x += 34;
+            }
 
             base.Initialize();
         }
@@ -195,10 +213,44 @@ namespace MagicGladiators
                     }
                 }
             }
+
             foreach (GameObject go in abilityList)
             {
+                if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+                {
+                    if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.abilities.Count <= 7)
+                    {
+                        AbilityIcon ability = (go.GetComponent("AbilityIcon") as AbilityIcon);
+                        canBuy = false;
 
+                        Director director = new Director(new AbilityIconBuilder());
+                        int x = Player.abilities.Count * 34;
+                        Player.abilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), ability.Name, ability.Value));
+                        (Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).index = abilityIndex;
+                        abilityIndex++;
+                        Player.gold -= ability.Value;
+
+                        CreateAbility ca = new CreateAbility(ability.Name);
+                        player.AddComponent(ca.GetComponent());
+                    }
+                }
             }
+
+            foreach (GameObject go in Player.abilities)
+            {
+                if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+                {
+                    if (canBuy && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        //rebind ability
+                    }
+                    if (canBuy && mouse.RightButton == ButtonState.Pressed)
+                    {
+                        //upgrade ability
+                    }
+                }
+            }
+
             //only in buy phase
             foreach (GameObject go in Player.items)
             {
@@ -237,7 +289,8 @@ namespace MagicGladiators
                     server.LoadContent(this.Content);
                     gameObjects.Add(server);
                 }
-            } else if (Keyboard.GetState().IsKeyDown(Keys.F3))
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.F3))
             {
                 bool testfor = false;
                 foreach (GameObject obj in gameObjects)
@@ -262,7 +315,7 @@ namespace MagicGladiators
             foreach (GameObject go in gameObjects)
             {
                 go.Update();
-                
+
             }
             UpdateLevel();
             base.Update(gameTime);
@@ -329,6 +382,16 @@ namespace MagicGladiators
                     y += 34;
                 }
                 else x += 34;
+            }
+
+            foreach (GameObject go in abilityList)
+            {
+                go.Draw(spriteBatch);
+            }
+            foreach (GameObject go in Player.abilities)
+            {
+                go.Draw(spriteBatch);
+
             }
             spriteBatch.End();
             base.Draw(gameTime);

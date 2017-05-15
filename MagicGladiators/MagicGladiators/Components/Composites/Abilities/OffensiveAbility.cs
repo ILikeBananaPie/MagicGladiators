@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna;
 using Microsoft.Xna.Framework.Input;
 
-namespace MagicGladiators.Components.Composites.Abilities
+namespace MagicGladiators
 {
-    abstract class OffensiveAbility:Component, ILoadable, IUpdateable
+    public abstract class OffensiveAbility:Component, ILoadable, IUpdateable
     {
         //Something akin to missiles mainly
         public OffensiveAbility(GameObject go) : base(go)
