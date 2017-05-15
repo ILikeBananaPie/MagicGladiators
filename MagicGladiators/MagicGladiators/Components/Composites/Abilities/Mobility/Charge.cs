@@ -12,27 +12,27 @@ namespace MagicGladiators
     {
 
         private bool on = false;
-        //dsjkfhsdkjf
+        
 
-        private Animator animator; //test 
-
-        private IStrategy strategy;
-
-        private DIRECTION direction;
-
-        private GameObject go;
+        private Animator animator;
+        private float timer;
+        private GameObject gameObject;
         private Transform transform;
         private Vector2 originalPos;
         private Vector2 testVector;
-
+        private int speed;
         private Vector2 target;
-
+        private int chargeTimer;
 
         private Physics physics;
         public Charge(GameObject go, Transform transform, Animator animator) : base(go)
         {
-
+            go = gameObject;
             this.animator = animator;
+            //this.speed = 10;
+            this.target = target;
+            // testVector = target - originalPos;
+            //testVector.Normalize();
             this.transform = transform;
             this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
         }
@@ -47,34 +47,73 @@ namespace MagicGladiators
             MouseState mouse = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
 
-
-
-            Vector2 translation = originalPos;
-
+            timer += (float)GameWorld.Instance.deltaTime;
+            if (timer > 1)
+            {
+                
+                timer = 0;
+                chargeTimer++;
+                on = false;
+            }
+            Vector2 translation = Vector2.Zero;
+          
 
             //activate aim and move in a charge
 
             if (keyState.IsKeyDown(Keys.Space) && !on)
             {
+                target = new Vector2(mouse.Position.X, mouse.Position.Y);
                 on = true;
             }
-            else if ( keyState.IsKeyDown(Keys.Space) && on)
+            else if ( keyState.IsKeyUp(Keys.Space) && on && (chargeTimer % 2 == 0))
             {
-                on = false;
-            }
-            if(on && mouse.LeftButton == ButtonState.Pressed)
-            {
-                physics.Acceleration += new Vector2(1.25F, 0);
-            }
-               // physics.Acceleration += new Vector2(1.25F, 0);
-                /*if ()
+               
+               if(transform.position.Y - mouse.Position.Y > 0)
                 {
-
+                    physics.Acceleration += new Vector2(0, -1.25F);
+                    if(transform.position.Y == mouse.Position.Y)
+                    {
+                        physics.Acceleration += new Vector2(0, -1.25F);
+                    }
                 }
-                */
+
+                else if (transform.position.Y - mouse.Position.Y < 0)
+                {
+                    physics.Acceleration += new Vector2(0, 1.25F);
+                    if (transform.position.Y == mouse.Position.Y)
+                    {
+                        physics.Acceleration += new Vector2(0, 1.25F);
+                    }
+                }
+                if (transform.position.X - mouse.Position.X > 0)
+                {
+                    physics.Acceleration += new Vector2(-1.25f, 0);
+                    if (transform.position.X == mouse.Position.X)
+                    {
+                        physics.Acceleration += new Vector2(-1.25f, 0);
+                    }
+                }
+                else if (transform.position.X - mouse.Position.X < 0)
+                {
+                    physics.Acceleration += new Vector2(1.25f, 0);
+                    if (transform.position.X == mouse.Position.X)
+                    {
+                        physics.Acceleration += new Vector2(1.25f, 0);
+                    }
+                }
+                
+               
+            }
+            
+               
+                
+                
+
+                
+                
             }
 
-            //animator.PlayAnimation("ChargeRight");
+           
 
         }
 
