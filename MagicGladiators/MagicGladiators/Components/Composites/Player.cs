@@ -85,11 +85,11 @@ namespace MagicGladiators
         {
             if (other.gameObject.Tag != "Ability" && other.gameObject.Tag != "Map")
             {
-                gameObject.CurrentHealth -= (other.gameObject.GetComponent("Dummy") as Dummy).Damage;
+                //gameObject.CurrentHealth -= (other.gameObject.GetComponent("Dummy") as Dummy).Damage;
                 Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
                 testVector = (gameObject.GetComponent("Physics") as Physics).GetVector(test, (other.gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center);
                 testVector.Normalize();
-                testPush = true;
+               // testPush = true;
             }
         }
 
