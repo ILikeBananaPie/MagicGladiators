@@ -5,16 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 
-namespace MagicGladiators.Components.Composites.Abilities
+namespace MagicGladiators
 {
-    abstract class DefensiveAbility:Component, ILoadable, IUpdateable
+    abstract class MobilityAbility:Component, ILoadable, IUpdateable
     {
-       
-        //Something stationary or character based
-        public DefensiveAbility(GameObject go) : base(go)
+        //Manipulating character movement, speed, velocity and/or position
+        public MobilityAbility(GameObject go) : base(go)
         {
         }
-        
+
         public abstract void LoadContent(ContentManager content);
 
         public abstract void Update();

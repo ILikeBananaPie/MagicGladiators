@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Input;
 
 namespace MagicGladiators
 {
@@ -29,6 +30,10 @@ namespace MagicGladiators
             gameObject.AddComponent(new Physics(gameObject));
 
             //gameObject.LoadContent(GameWorld.Instance.Content);
+
+            MouseState mouse = Mouse.GetState();
+
+            gameObject.AddComponent(new Charge(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
             gameObject.transform.position = position;
 
