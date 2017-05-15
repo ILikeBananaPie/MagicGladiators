@@ -24,7 +24,6 @@ namespace MagicGladiators
         SpriteBatch spriteBatch;
 
 
-
         public static List<GameObject> gameObjects;
         public static List<GameObject> newObjects;
         public static List<GameObject> objectsToRemove;
@@ -78,6 +77,7 @@ namespace MagicGladiators
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
+
 
             gameObjects = new List<GameObject>();
             newObjects = new List<GameObject>();
@@ -148,12 +148,13 @@ namespace MagicGladiators
 
             foreach (GameObject go in gameObjects)
             {
-                if (go.CurrentHealth < 0)
+                if (go.CurrentHealth < 0) 
                 {
                     objectsToRemove.Add(go);
                 }
+              
             }
-
+            
             if (Keyboard.GetState().IsKeyDown(Keys.F2))
             {
                 bool testfor = false;

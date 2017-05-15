@@ -32,11 +32,12 @@ namespace MagicGladiators
             //gameObject.LoadContent(GameWorld.Instance.Content);
 
             MouseState mouse = Mouse.GetState();
-
-            gameObject.AddComponent(new Charge(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
-
             gameObject.transform.position = position;
 
+            // ABILITY COMPONENTS
+            gameObject.AddComponent(new Charge(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
+
+            gameObject.AddComponent(new RollingMeteor(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
         }
 
