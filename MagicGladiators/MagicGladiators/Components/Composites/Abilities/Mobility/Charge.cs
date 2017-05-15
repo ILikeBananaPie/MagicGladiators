@@ -12,7 +12,7 @@ namespace MagicGladiators
     {
 
         private bool on = false;
-
+        //dsjkfhsdkjf
 
         private Animator animator; //test 
 
