@@ -47,6 +47,7 @@
     <Compile Include="Components\Composites\Abilities\OffensiveAbility.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\HomingMissile.cs" />
     <Compile Include="Builder\MapBuilder.cs" />
+    <Compile Include="Components\Composites\Ability.cs" />
     <Compile Include="Components\Composites\Client.cs" />
     <Compile Include="Builder\ProjectileBuilder.cs" />
     <Compile Include="Circle.cs" />
@@ -114,6 +115,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Player.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SpellSheet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\StandardMap.png">

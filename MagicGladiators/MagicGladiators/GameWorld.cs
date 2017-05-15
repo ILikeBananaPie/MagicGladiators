@@ -299,28 +299,29 @@ namespace MagicGladiators
                 go.Draw(spriteBatch);
             }
             //only in buy phase
-            int x = 2;
-            int y = 200;
+            int x = 10;
+            int y = Window.ClientBounds.Height - 138;
+            //only in buy phase
             foreach (GameObject go in itemList)
             {
                 go.transform.position = new Vector2(x, y);
                 go.Draw(spriteBatch);
-                if (x == 104)
+                if (x == 112)
                 {
-                    x = 2;
+                    x = 10;
                     y += 34;
                 }
                 else x += 34;
             }
-            x = 2;
-            y = 400;
+            x = 180;
+            y = Window.ClientBounds.Height - 138;
             foreach (GameObject go in Player.items)
             {
                 go.transform.position = new Vector2(x, y);
                 go.Draw(spriteBatch);
-                if (x == 36)
+                if (x == 214)
                 {
-                    x = 2;
+                    x = 180;
                     y += 34;
                 }
                 else x += 34;

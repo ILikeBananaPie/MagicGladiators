@@ -54,7 +54,7 @@ namespace MagicGladiators
                     (
                         (int)(gameObject.transform.position.X + spriteRenderer.Rectangle.Width / 2),
                         (int)(gameObject.transform.position.Y + spriteRenderer.Rectangle.Height / 2),
-                        spriteRenderer.Sprite.Width / 2
+                        spriteRenderer.Rectangle.Width / 2
                     );
             }
         }
