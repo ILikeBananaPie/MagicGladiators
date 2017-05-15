@@ -21,6 +21,8 @@ namespace MagicGladiators
         private Vector2 originalPos;
         private Vector2 testVector;
         private Vector2 target;
+        private GameObject player;
+        private TimeSpan timer;
        
         
         
@@ -36,7 +38,7 @@ namespace MagicGladiators
             testVector = target - originalPos;
             testVector.Normalize();
             this.transform = gameObject.transform;
-           
+            timer = new TimeSpan(0);
 
         }
 
@@ -62,6 +64,7 @@ namespace MagicGladiators
 
         public override void LoadContent(ContentManager content)
         {
+            player = GameWorld.Instance.FindGameObjectWithTag("Enemy");
             animator = (Animator)gameObject.GetComponent("Animator");
 
             Texture2D sprite = content.Load<Texture2D>("Player");
@@ -73,12 +76,18 @@ namespace MagicGladiators
 
         public override void Update()
         {
+             
             go.transform.position += testVector * 5;
             animator.PlayAnimation("Shoot");        
 
            if (Vector2.Distance(originalPos, gameObject.transform.position) > 200 && !(strategy is FollowTarget))
             {
                 strategy = new FollowTarget(gameObject.transform, gameObject.transform, animator);
+                
+               if( timer.Milliseconds == 20)
+                {
+                    GameWorld.objectsToRemove.Add(gameObject);
+                }
                 
             }
 
@@ -103,14 +112,16 @@ namespace MagicGladiators
                        
                         Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
                         vectorBetween.Normalize();
-                        if (go.gameObject.Tag == "Player")
-                        {
-                            (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
-                        }
-                        else if (go.gameObject.Tag == "Dummy")
+                        //if (go.gameObject.Tag == "Player")
+                        //{
+                        //    (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
+                        //}
+                        //else 
+                        if (go.gameObject.Tag == "Dummy")
                         {
                             (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
                         }
+                       
                     }
                 }
                 GameWorld.objectsToRemove.Add(gameObject);
