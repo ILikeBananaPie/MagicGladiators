@@ -23,6 +23,7 @@ namespace MagicGladiators
         private int speed;
         private Vector2 target;
         private int chargeTimer;
+        private int chargeCD;
 
         private Physics physics;
         public Charge(GameObject go, Transform transform, Animator animator) : base(go)
@@ -53,6 +54,7 @@ namespace MagicGladiators
                 
                 timer = 0;
                 chargeTimer++;
+                chargeCD++;
                 on = false;
             }
             Vector2 translation = Vector2.Zero;
@@ -65,10 +67,10 @@ namespace MagicGladiators
                 target = new Vector2(mouse.Position.X, mouse.Position.Y);
                 on = true;
             }
-            else if ( keyState.IsKeyUp(Keys.Space) && on && (chargeTimer % 2 == 0))
+            else if ( keyState.IsKeyUp(Keys.Space) && on && (chargeCD % 2 == 0))
             {
                
-               if(transform.position.Y - mouse.Position.Y > 0)
+               if(transform.position.Y - mouse.Position.Y > 0 && (chargeTimer % 0.5 == 0))
                 {
                     physics.Acceleration += new Vector2(0, -1.25F);
                     if(transform.position.Y == mouse.Position.Y)
@@ -77,7 +79,7 @@ namespace MagicGladiators
                     }
                 }
 
-                else if (transform.position.Y - mouse.Position.Y < 0)
+                else if (transform.position.Y - mouse.Position.Y < 0 && (chargeTimer % 0.5 == 0))
                 {
                     physics.Acceleration += new Vector2(0, 1.25F);
                     if (transform.position.Y == mouse.Position.Y)
@@ -85,7 +87,7 @@ namespace MagicGladiators
                         physics.Acceleration += new Vector2(0, 1.25F);
                     }
                 }
-                if (transform.position.X - mouse.Position.X > 0)
+                if (transform.position.X - mouse.Position.X > 0 && (chargeTimer % 0.5 == 0))
                 {
                     physics.Acceleration += new Vector2(-1.25f, 0);
                     if (transform.position.X == mouse.Position.X)
@@ -93,7 +95,7 @@ namespace MagicGladiators
                         physics.Acceleration += new Vector2(-1.25f, 0);
                     }
                 }
-                else if (transform.position.X - mouse.Position.X < 0)
+                else if (transform.position.X - mouse.Position.X < 0 && (chargeTimer % 0.5 == 0))
                 {
                     physics.Acceleration += new Vector2(1.25f, 0);
                     if (transform.position.X == mouse.Position.X)
