@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 
-namespace MagicGladiators.Components.Composites
+namespace MagicGladiators
 {
     class Enemy:Component, ILoadable, IUpdateable
     {

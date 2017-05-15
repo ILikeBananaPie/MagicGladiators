@@ -48,6 +48,16 @@ namespace MagicGladiators
                         switch (destination)
                         {
                             case "NewGame":
+                                GameWorld.Instance.NextScene = Scene.NewGame();
+                                break;
+                            case "MainMenu":
+                                GameWorld.Instance.NextScene = Scene.MainMenu();
+                                break;
+                            case "Join":
+                                GameWorld.Instance.NextScene = Scene.Join();
+                                break;
+                            case "Host":
+                                GameWorld.Instance.NextScene = Scene.Host();
                                 break;
                         }
                     }

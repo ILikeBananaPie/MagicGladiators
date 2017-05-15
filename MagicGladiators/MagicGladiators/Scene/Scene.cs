@@ -43,23 +43,67 @@ namespace MagicGladiators
                 {
                     case 0:
                         included[i].AddComponent(new SpriteRenderer(included[i], "AlphaNewGame", 0));
-                        included[i].transform.position = new Vector2(500, 300);
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
                         included[i].AddComponent(new OnClick(included[i], "NewGame"));
                         break;
                     case 1:
                         included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 3 - 40);
                         included[i].AddComponent(new OnClick(included[i], "Options"));
                         break;
                     case 2:
                         included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
                         included[i].AddComponent(new OnClick(included[i], "Credits"));
                         break;
                     case 3:
                         included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
                         included[i].AddComponent(new OnClick(included[i], "Credits"));
                         break;
                 }
             }
+            return new Scene(included);
+        }
+        public static Scene NewGame()
+        {
+            GameObject[] included = new GameObject[3];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "Join"));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 3.5f - 40);
+                        included[i].AddComponent(new OnClick(included[i], "Host"));
+                        break;
+                    case 2:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "MainMenu"));
+                        break;
+                }
+            }
+            return new Scene(included);
+        }
+        public static Scene Join()
+        {
+            GameObject[] included = new GameObject[1];
+            included[0] = new GameObject();
+            included[0].AddComponent(new Client(included[0]));
+            return new Scene(included);
+        }
+        public static Scene Host()
+        {
+            GameObject[] included = new GameObject[0];
+            included[0] = new GameObject();
+            included[0].AddComponent(new Server(included[0]));
             return new Scene(included);
         }
         #endregion

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NetworkCommsDotNet;
 using NetworkCommsDotNet.Connections;
+using System;
 using System.Collections.Generic;
 
 namespace MagicGladiators
@@ -206,6 +207,13 @@ namespace MagicGladiators
             if (CurrentScene != null)
             {
                 CurrentScene.Update();
+            }
+            if (NextScene != null)
+            {
+                NextScene.LoadContent(Content);
+                CurrentScene = NextScene;
+                NextScene = null;
+                GC.Collect();
             }
             base.Update(gameTime);
         }
