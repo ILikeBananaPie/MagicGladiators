@@ -49,6 +49,7 @@ namespace MagicGladiators
             if (keyState.IsKeyDown(Keys.Space) && !on && !activated)
             {
                 
+
                 activated = true;
             }
             if(activated && keyState.IsKeyUp(Keys.Space))
