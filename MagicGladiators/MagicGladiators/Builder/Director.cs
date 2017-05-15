@@ -30,6 +30,12 @@ namespace MagicGladiators
             return builder.GetResult();
         }
 
+        public GameObject ConstructItem(Vector2 position, string[] stats)
+        {
+            builder.BuildItem(position, stats);
+            return builder.GetResult();
+        }
+
       
     }
 }

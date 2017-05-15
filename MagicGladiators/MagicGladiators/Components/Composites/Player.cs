@@ -20,6 +20,8 @@ namespace MagicGladiators
 
         private DIRECTION direction;
 
+        public static int gold = 1000;
+
         private Transform transform;
         private SpriteFont fontText;
         private bool testPush;
@@ -27,6 +29,8 @@ namespace MagicGladiators
         private float testTimer;
         private bool canShoot;
         private SpriteRenderer sprite;
+
+        public static List<GameObject> items = new List<GameObject>();
 
         private readonly Object thisLock = new Object();
         private UpdatePackage _updatePackage;
@@ -163,6 +167,25 @@ namespace MagicGladiators
             spriteBatch.DrawString(fontText, "PlayerY: " + (int)gameObject.transform.position.Y, new Vector2(0, 40), Color.Black);
             spriteBatch.DrawString(fontText, "MouseX: " + mouse.X, new Vector2(0, 60), Color.Black);
             spriteBatch.DrawString(fontText, "MouseY: " + mouse.Y, new Vector2(0, 80), Color.Black);
+            spriteBatch.DrawString(fontText, "Gold: " + gold, new Vector2(0, 100), Color.Black);
+
+        }
+
+        public void UpdateStats()
+        {
+            gameObject.MaxHealth = 100;
+            gameObject.Speed = 10;
+            gameObject.DamageResistance = 0;
+            gameObject.LavaResistance = 0;
+
+            foreach (GameObject go in items)
+            {
+                Item item = (go.GetComponent("Item") as Item);
+                gameObject.MaxHealth += item.Health;
+                gameObject.DamageResistance += item.DamageResistance;
+                gameObject.Speed += item.Speed;
+                gameObject.LavaResistance += item.LavaResistance;
+            }
         }
     }
 }

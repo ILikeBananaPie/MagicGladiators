@@ -29,14 +29,20 @@ namespace MagicGladiators
         public static List<GameObject> newObjects;
         public static List<GameObject> objectsToRemove;
 
+        public static List<GameObject> itemList;
+        public static List<GameObject> abilityList;
+
         public List<Collider> Colliders { get; private set; }
         public List<Collider> newColliders { get; private set; }
 
         public List<Collider> CircleColliders { get; set; }
         public List<Collider> newCircleColliders { get; set; }
 
+        private GameObject player;
 
         public float deltaTime { get; set; }
+
+        private bool canBuy = true;
 
 
         private static GameWorld instance;
@@ -83,6 +89,8 @@ namespace MagicGladiators
             newObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
 
+            itemList = new List<GameObject>();
+
             Colliders = new List<Collider>();
             newColliders = new List<Collider>();
             CircleColliders = new List<Collider>();
@@ -96,13 +104,26 @@ namespace MagicGladiators
             //float mapRadius = (gameObjects[0].GetComponent("Collider") as Collider).CircleCollisionBox.Radius;
 
             director = new Director(new PlayerBuilder());
-            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16)));
-
+            player =  director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
+            gameObjects.Add(player);
 
             director = new Director(new DummyBuilder());
             gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16)));
             gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16)));
             gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
+
+            director = new Director(new ItemBuilder());
+            string[] testItem = new string[] { "Speed", "10", "10", "10", "10", "100" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "Hp", "10", "10", "10", "10", "100" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "LavaRes", "10", "10", "10", "10", "100" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "DmgRes", "10", "10", "10", "10", "100" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "Speed", "10", "10", "10", "10", "100" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+
 
 
             base.Initialize();
@@ -145,13 +166,54 @@ namespace MagicGladiators
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
-
+            MouseState mouse = Mouse.GetState();
+            Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
             foreach (GameObject go in gameObjects)
             {
                 if (go.CurrentHealth < 0)
                 {
                     objectsToRemove.Add(go);
                 }
+            }
+            //only in buy phase
+            foreach (GameObject go in itemList)
+            {
+                Item item = (go.GetComponent("Item") as Item);
+                if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+                {
+                    if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.items.Count <= 5)
+                    {
+                        canBuy = false;
+                        if (Player.gold >= item.Value)
+                        {
+                            Director director = new Director(new ItemBuilder());
+                            Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString() }));
+                            Player.gold -= item.Value;
+                            (player.GetComponent("Player") as Player).UpdateStats();
+                            break;
+                        }
+                    }
+                }
+            }
+
+            foreach (GameObject go in Player.items)
+            {
+                if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+                {
+                    if (canBuy && mouse.RightButton == ButtonState.Pressed)
+                    {
+                        canBuy = false;
+                        Player.gold += (go.GetComponent("Item") as Item).Value;
+                        Player.items.Remove(go);
+                        (player.GetComponent("Player") as Player).UpdateStats();
+                        break;
+                    }
+                }
+            }
+
+            if (mouse.RightButton == ButtonState.Released)
+            {
+                canBuy = true;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.F2))
@@ -235,6 +297,33 @@ namespace MagicGladiators
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(spriteBatch);
+            }
+            //only in buy phase
+            int x = 2;
+            int y = 200;
+            foreach (GameObject go in itemList)
+            {
+                go.transform.position = new Vector2(x, y);
+                go.Draw(spriteBatch);
+                if (x == 104)
+                {
+                    x = 2;
+                    y += 34;
+                }
+                else x += 34;
+            }
+            x = 2;
+            y = 400;
+            foreach (GameObject go in Player.items)
+            {
+                go.transform.position = new Vector2(x, y);
+                go.Draw(spriteBatch);
+                if (x == 36)
+                {
+                    x = 2;
+                    y += 34;
+                }
+                else x += 34;
             }
             spriteBatch.End();
             base.Draw(gameTime);

@@ -7,10 +7,10 @@ using Microsoft.Xna.Framework;
 
 namespace MagicGladiators
 {
-    class ProjectileBuilder : IBuilder
+    class ItemBuilder : IBuilder
     {
         private GameObject gameObject;
-        //private GameObject target;
+
 
         public void BuildGameObject(Vector2 position)
         {
@@ -19,23 +19,24 @@ namespace MagicGladiators
 
         public void BuildItem(Vector2 position, string[] stats)
         {
-            throw new NotImplementedException();
+            gameObject = new GameObject();
+
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "ItemSheet", 1));
+
+            gameObject.AddComponent(new Animator(gameObject));
+
+            gameObject.AddComponent(new Item(gameObject, stats));
+
+            gameObject.AddComponent(new Collider(gameObject, false));
+
+            gameObject.LoadContent(GameWorld.Instance.Content);
+
+            gameObject.transform.position = position;
         }
 
         public void FireProjectile(Vector2 position, Vector2 targetVector)
         {
-            gameObject = new GameObject();
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
-            gameObject.AddComponent(new Animator(gameObject));
-            gameObject.AddComponent(new Projectile(gameObject, position, targetVector));
-            gameObject.Tag = "Ability";
-            gameObject.AddComponent(new Collider(gameObject, true));
-            gameObject.transform.position = position;
-            gameObject.LoadContent(GameWorld.Instance.Content);
-            //GameWorld.newObjects.Add(gameObject);
-
-            gameObject.transform.position = position;
-
+            throw new NotImplementedException();
         }
 
         public GameObject GetResult()

@@ -41,6 +41,7 @@
     <Compile Include="Animation.cs" />
     <Compile Include="Builder\Director.cs" />
     <Compile Include="Builder\DummyBuilder.cs" />
+    <Compile Include="Builder\ItemBuilder.cs" />
     <Compile Include="Components\Composites\Abilities\DefensiveAbility.cs" />
     <Compile Include="Components\Composites\Abilities\MobilityAbility.cs" />
     <Compile Include="Components\Composites\Abilities\OffensiveAbility.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="Components\Composites\Player.cs" />
     <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Builder\PlayerBuilder.cs" />
-    <Compile Include="Item.cs" />
+    <Compile Include="Components\Composites\Item.cs" />
     <Compile Include="Strategies\Idle.cs" />
     <Compile Include="Strategies\IStrategy.cs" />
     <Compile Include="Strategies\Move.cs" />
@@ -107,6 +108,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\CollisionTexture.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ItemSheet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Player.png">
