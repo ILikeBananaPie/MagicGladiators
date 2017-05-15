@@ -85,20 +85,24 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (other.gameObject.Tag != "Player")
+            if (other.gameObject.Tag != "Player" && on)
             {
+                timer++;
+                (gameObject.GetComponent("Physics") as Physics).Velocity = Vector2.Zero;
                 foreach (Collider go in GameWorld.Instance.CircleColliders)
                 {
+
                     if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
                     {
                         //plz don't delete me
-                        Vector2 vectorBetween = go.gameObject.transform.position - other.gameObject.transform.position;
+                        Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
                         vectorBetween.Normalize();
-                        if (go.gameObject.Tag == "Dummy" && on)
+                        if (go.gameObject.Tag == "Dummy" )
                         {
 
                             
                             (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+                            
                         }
                     }
                 }
