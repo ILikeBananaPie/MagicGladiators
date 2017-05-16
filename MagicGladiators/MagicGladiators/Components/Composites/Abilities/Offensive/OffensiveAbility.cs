@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MagicGladiators
 {
-    abstract class OffensiveAbility:Component, ILoadable, IUpdateable
+    public abstract class OffensiveAbility:Component, ILoadable, IUpdateable
     {
         //Something akin to missiles mainly
         public OffensiveAbility(GameObject go) : base(go)

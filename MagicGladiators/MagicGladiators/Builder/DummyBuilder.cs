@@ -28,6 +28,21 @@ namespace MagicGladiators
             gameObject.transform.position = position;
         }
 
+        public void BuildIcon(Vector2 position, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void BuildIcon(Vector2 position, string name, int value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void BuildItem(Vector2 position, string[] stats)
+        {
+            throw new NotImplementedException();
+        }
+
         public void FireProjectile(Vector2 position, Vector2 targetVector)
         {
             throw new NotImplementedException();

@@ -22,7 +22,7 @@ namespace MagicGladiators
         private float testTimer;
         private int testSpeed = 10;
 
-        public float Damage { get; private set; } = 5.5F;
+        public float Damage { get; private set; } = 5F;
         public bool isAlive { get; set; } = true;
 
 
@@ -53,7 +53,10 @@ namespace MagicGladiators
         
         public void OnCollisionEnter(Collider other)
         {
-            
+            if (other.gameObject.Tag == "Player")
+            {
+                (other.gameObject.GetComponent("Player") as Player).TakeDamage(Damage);
+            }
         }
 
         public void OnCollisionExit(Collider other)
