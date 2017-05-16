@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna;
 using Microsoft.Xna.Framework.Input;
 
-namespace MagicGladiators.Components.Composites.Abilities
+namespace MagicGladiators
 {
     abstract class OffensiveAbility:Component, ILoadable, IUpdateable
     {

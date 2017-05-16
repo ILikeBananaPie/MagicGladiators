@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 
-namespace MagicGladiators.Components.Composites.Abilities
+namespace MagicGladiators
 {
     abstract class MobilityAbility:Component, ILoadable, IUpdateable
     {
