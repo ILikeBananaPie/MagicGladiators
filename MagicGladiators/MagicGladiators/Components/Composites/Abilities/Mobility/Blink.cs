@@ -74,7 +74,7 @@ namespace MagicGladiators
 
                     while (Vector2.Distance(playerTemp, target) > 500)
                     {
-                        playerTemp += normalizedVectorBetween * 1000;
+                        playerTemp -= normalizedVectorBetween * 10;
                     }
                     
 
