@@ -44,17 +44,13 @@
     <Compile Include="Builder\Director.cs" />
     <Compile Include="Builder\DummyBuilder.cs" />
     <Compile Include="Builder\ItemBuilder.cs" />
-    <Compile Include="Components\Composites\Abilities\DefensiveAbility.cs" />
-    <Compile Include="Components\Composites\Abilities\MobilityAbility.cs" />
-    <Compile Include="Components\Composites\Abilities\OffensiveAbility.cs" />
+    <Compile Include="Builder\MapBuilder.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\DefensiveAbility.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\Charge.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\MobilityAbility.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\OffensiveAbility.cs" />
-    <Compile Include="Builder\MapBuilder.cs" />
     <Compile Include="Builder\HomingMissileBuilder.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\HomingMissile.cs" />
-    <Compile Include="Builder\MapBuilder.cs" />
     <Compile Include="Components\Composites\Ability.cs" />
     <Compile Include="Components\Composites\Client.cs" />
     <Compile Include="Builder\ProjectileBuilder.cs" />
@@ -84,7 +80,6 @@
     <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Builder\PlayerBuilder.cs" />
     <Compile Include="Strategies\FollowTarget.cs" />
-    <Compile Include="Item.cs" />
     <Compile Include="Components\Composites\Item.cs" />
     <Compile Include="Strategies\Idle.cs" />
     <Compile Include="Strategies\IStrategy.cs" />

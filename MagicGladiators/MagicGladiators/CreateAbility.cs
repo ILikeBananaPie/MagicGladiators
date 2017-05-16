@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,11 +17,11 @@ namespace MagicGladiators
             this.name = name;
         }
 
-        public Component GetComponent()
+        public Component GetComponent(GameObject gameObject, Vector2 position)
         {
             if (name == "HomingMissile")
             {
-                component = new HomingMissile(new GameObject());
+                component = new HomingMissile(gameObject, position, Vector2.Zero);
             }
             if (name == "Blink")
             {
@@ -28,7 +29,7 @@ namespace MagicGladiators
             }
             if (name == "Charge")
             {
-
+                component = new Charge(gameObject, gameObject.transform, (gameObject.GetComponent("Animator") as Animator));
             }
             if (name == "Ricochet")
             {

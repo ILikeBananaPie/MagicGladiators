@@ -34,6 +34,11 @@ namespace MagicGladiators
 
         public void FireProjectile(Vector2 position, Vector2 targetVector)
         {
+            throw new NotImplementedException();
+        }
+
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
+        {
             gameObject = new GameObject();
             gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
             gameObject.AddComponent(new Animator(gameObject));

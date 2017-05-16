@@ -104,7 +104,7 @@ namespace MagicGladiators
                 testVector.Normalize();
                // testPush = true;
             }
-            */
+            
         }
 
         public void OnCollisionExit(Collider other)

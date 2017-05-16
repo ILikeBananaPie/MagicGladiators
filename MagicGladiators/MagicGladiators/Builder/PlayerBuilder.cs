@@ -29,7 +29,7 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Physics(gameObject));
 
-            gameObject.AddComponent(new HomingMissile(gameObject, gameObject.transform.position, Vector2.Zero));
+            //gameObject.AddComponent(new HomingMissile(gameObject, gameObject.transform.position, Vector2.Zero));
           
            // gameObject.LoadContent(GameWorld.Instance.Content);
 
@@ -37,7 +37,7 @@ namespace MagicGladiators
 
             MouseState mouse = Mouse.GetState();
 
-            gameObject.AddComponent(new Charge(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
+            //gameObject.AddComponent(new Charge(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
             gameObject.transform.position = position;
 

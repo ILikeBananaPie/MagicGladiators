@@ -133,16 +133,17 @@ namespace MagicGladiators
             director = new Director(new AbilityIconBuilder());
             int x = Window.ClientBounds.Width - 144;
             int y = Window.ClientBounds.Height - 144;
-            for (int i = 0; i < 16; i++)
+
+
+            abilityList.Add(director.ConstructIcon(new Vector2(x, y), "HomingMissile", 100));
+            if (x == Window.ClientBounds.Width - 42)
             {
-                abilityList.Add(director.ConstructIcon(new Vector2(x, y), "HomingMissile", 100));
-                if (x == Window.ClientBounds.Width - 42)
-                {
-                    x = Window.ClientBounds.Width - 144;
-                    y += 34;
-                }
-                else x += 34;
+                x = Window.ClientBounds.Width - 144;
+                y += 34;
             }
+            else x += 34;
+            abilityList.Add(director.ConstructIcon(new Vector2(x, y), "Charge", 100));
+
 
             base.Initialize();
         }
@@ -231,7 +232,7 @@ namespace MagicGladiators
                         Player.gold -= ability.Value;
 
                         CreateAbility ca = new CreateAbility(ability.Name);
-                        player.AddComponent(ca.GetComponent());
+                        player.AddComponent(ca.GetComponent(player, player.transform.position));
                     }
                 }
             }

@@ -51,6 +51,11 @@ namespace MagicGladiators
             throw new NotImplementedException();
         }
 
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
+        {
+            throw new NotImplementedException();
+        }
+
         public GameObject GetResult()
         {
             return gameObject;
