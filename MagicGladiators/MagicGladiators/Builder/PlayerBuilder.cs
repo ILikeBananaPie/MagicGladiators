@@ -29,9 +29,11 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Physics(gameObject));
 
+            gameObject.AddComponent(new RollingMeteor(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
+
             //gameObject.AddComponent(new HomingMissile(gameObject, gameObject.transform.position, Vector2.Zero));
-          
-           // gameObject.LoadContent(GameWorld.Instance.Content);
+
+            // gameObject.LoadContent(GameWorld.Instance.Content);
 
             //gameObject.LoadContent(GameWorld.Instance.Content);
 
@@ -54,7 +56,6 @@ namespace MagicGladiators
         {
             throw new NotImplementedException();
         }
-            gameObject.AddComponent(new RollingMeteor(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
         public void BuildItem(Vector2 position, string[] stats)
         {
