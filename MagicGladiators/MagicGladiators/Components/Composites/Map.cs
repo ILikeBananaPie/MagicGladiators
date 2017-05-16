@@ -61,7 +61,7 @@ namespace MagicGladiators
         {
             foreach (GameObject go in objects)
             {
-                if (go.Tag == "Player" || go.Tag == "Enemy")
+                if (go.Tag == "Player" || go.Tag == "Enemy" || go.Tag == "Dummy")
                 {
                     if (timer >= 0.25F)
                     {
