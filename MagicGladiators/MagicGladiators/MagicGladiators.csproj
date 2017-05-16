@@ -46,6 +46,7 @@
     <Compile Include="Builder\ItemBuilder.cs" />
     <Compile Include="Builder\MapBuilder.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\DefensiveAbility.cs" />
+    <Compile Include="Components\Composites\Abilities\Mobility\Blink.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\Charge.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\MobilityAbility.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\OffensiveAbility.cs" />
