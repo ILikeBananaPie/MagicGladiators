@@ -85,7 +85,10 @@ namespace MagicGladiators
 
             if (other.gameObject.Tag != "Player" && other.gameObject.Tag != "Map")
             {
-                GameWorld.Instance.player.CurrentHealth += (GameWorld.Instance.player.GetComponent("Drain") as Drain).healing;
+                if (gameObject.Tag == "Drain")
+                {
+                    GameWorld.Instance.player.CurrentHealth += (GameWorld.Instance.player.GetComponent("Drain") as Drain).healing;
+                }
                 foreach (Collider go in GameWorld.Instance.CircleColliders)
                 {
                     if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
