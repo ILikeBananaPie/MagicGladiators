@@ -113,7 +113,7 @@ namespace CoreTest
             Vector2 expected = new Vector2(2, 2);
             Assert.AreEqual(actual, expected);
         }
-
+         
         [TestMethod]
         public void UpdateVelocityTestNegativeValues()
         {
