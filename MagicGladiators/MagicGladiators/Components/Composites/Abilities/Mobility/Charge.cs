@@ -11,7 +11,7 @@ namespace MagicGladiators
     class Charge : MobilityAbility, IUpdateable, ICollisionEnter
     {
 
-        public static bool on = false;
+        private bool on = false;
         private bool activated = false;
 
         private Animator animator;
@@ -55,13 +55,13 @@ namespace MagicGladiators
 
                 activated = true;
             }
-            if (activated && keyState.IsKeyUp(Keys.Space))
+          /*  if (activated && keyState.IsKeyUp(Keys.Space))
             {
                 target = new Vector2(mouse.Position.X, mouse.Position.Y);
                 test = physics.GetVector(target, go.transform.position);
                 test.Normalize();
                 on = true;
-            }
+            }*/
             if (on)
             {
                 if (chargeTimer < 0.25)
