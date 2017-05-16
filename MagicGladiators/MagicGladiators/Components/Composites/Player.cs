@@ -20,6 +20,9 @@ namespace MagicGladiators
 
         private DIRECTION direction;
 
+        public static int gold = 1000;
+        public static float speed = 1;
+
         private Transform transform;
         private SpriteFont fontText;
         private bool testPush;
@@ -27,6 +30,12 @@ namespace MagicGladiators
         private float testTimer;
         private bool canShoot;
         private SpriteRenderer sprite;
+        private float regenTimer;
+
+        public static List<GameObject> items = new List<GameObject>();
+        public static List<GameObject> abilities = new List<GameObject>();
+
+        public static Vector2 testSpeed;
 
         private readonly Object thisLock = new Object();
         private UpdatePackage _updatePackage;
@@ -81,9 +90,14 @@ namespace MagicGladiators
 
         }
 
+        public void TakeDamage(float damage)
+        {
+            gameObject.CurrentHealth -= damage * gameObject.DamageResistance;
+        }
+
         public void OnCollisionEnter(Collider other)
         {
-            if (other.gameObject.Tag != "Ability" && other.gameObject.Tag != "Map")
+            if (other.gameObject.Tag != "Ability" && other.gameObject.Tag != "Map" && other.gameObject.Tag != "Icon")
             {
                 //gameObject.CurrentHealth -= (other.gameObject.GetComponent("Dummy") as Dummy).Damage;
                 Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
@@ -91,6 +105,7 @@ namespace MagicGladiators
                 testVector.Normalize();
                // testPush = true;
             }
+            
         }
 
         public void OnCollisionExit(Collider other)
@@ -105,6 +120,19 @@ namespace MagicGladiators
 
         public void Update()
         {
+            if (gameObject.CurrentHealth >= gameObject.MaxHealth)
+            {
+                gameObject.CurrentHealth = gameObject.MaxHealth;
+            }
+            else
+            {
+                if (regenTimer > 1)
+                {
+                    gameObject.CurrentHealth += gameObject.HealthRegen;
+                    regenTimer = 0;
+                }
+                else regenTimer += GameWorld.Instance.deltaTime;
+            }
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
 
             if (testPush)
@@ -140,7 +168,7 @@ namespace MagicGladiators
             if (mouse.LeftButton == ButtonState.Pressed && canShoot)
             {
                 Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball");
                 canShoot = false;
             }
 
@@ -149,6 +177,15 @@ namespace MagicGladiators
                 canShoot = true;
             }
             updatePackage.InfoUpdate(transform.position, phys.Velocity);
+            /*
+            if (keyState.IsKeyDown(Keys.Q) && canShoot)
+            {
+                canShoot = false;
+                Director director = new Director(new HomingMissileBuilder());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), );
+               
+            }
+           */
         }
 
         public void OnCollisionStay(Collider other)
@@ -165,6 +202,27 @@ namespace MagicGladiators
             spriteBatch.DrawString(fontText, "PlayerY: " + (int)gameObject.transform.position.Y, new Vector2(0, 40), Color.Black);
             spriteBatch.DrawString(fontText, "MouseX: " + mouse.X, new Vector2(0, 60), Color.Black);
             spriteBatch.DrawString(fontText, "MouseY: " + mouse.Y, new Vector2(0, 80), Color.Black);
+            spriteBatch.DrawString(fontText, "Gold: " + gold, new Vector2(0, 100), Color.Black);
+            spriteBatch.DrawString(fontText, "speed: " + testSpeed, new Vector2(0, 160), Color.Black);
+
+
+        }
+
+        public void UpdateStats()
+        {
+            gameObject.MaxHealth = 100;
+            gameObject.Speed = 1;
+            gameObject.DamageResistance = 1;
+            gameObject.LavaResistance = 1;
+
+            foreach (GameObject go in items)
+            {
+                Item item = (go.GetComponent("Item") as Item);
+                gameObject.MaxHealth += item.Health;
+                gameObject.DamageResistance += item.DamageResistance / 10;
+                gameObject.Speed += item.Speed / 10;
+                gameObject.LavaResistance += item.LavaResistance / 10;
+            }
         }
     }
 }

@@ -12,21 +12,25 @@ namespace MagicGladiators
     class Projectile : Component, IUpdateable, ICollisionEnter, ILoadable
     {
         private Animator animator; //test 
-         
+
         private IStrategy strategy;
 
         private DIRECTION direction;
 
-        private GameObject go;
+        //private GameObject go;
         private Transform transform;
         private Vector2 originalPos;
         private Vector2 testVector;
+
+        private float homingTimer;
+        private float distance;
+        private Vector2 bestTarget;
 
         private Vector2 target;
 
         public Projectile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
-            go = gameObject;
+            //go = gameObject;
             originalPos = position;
             //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
             //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
@@ -63,14 +67,15 @@ namespace MagicGladiators
             animator = (Animator)gameObject.GetComponent("Animator");
 
             Texture2D sprite = content.Load<Texture2D>("Player");
-            GameWorld.newObjects.Add(go);
-            go.Tag = "Ability";
+            GameWorld.newObjects.Add(gameObject);
+            //go.Tag = "Ability";
 
             CreateAnimations();
         }
 
         public void OnCollisionEnter(Collider other)
         {
+
             if (other.gameObject.Tag != "Player" && other.gameObject.Tag != "Map")
             {
                 foreach (Collider go in GameWorld.Instance.CircleColliders)
@@ -82,7 +87,7 @@ namespace MagicGladiators
                         vectorBetween.Normalize();
                         if (go.gameObject.Tag == "Player")
                         {
-                           // (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
+                            // (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
                         }
                         else if (go.gameObject.Tag == "Dummy")
                         {
@@ -92,30 +97,70 @@ namespace MagicGladiators
                 }
                 GameWorld.objectsToRemove.Add(gameObject);
             }
-         /*   
-            if (other.gameObject.Tag == "Dummy")
-            {
-                GameWorld.objectsToRemove.Add(gameObject);
-                Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
 
-                Vector2 vectorBetween = other.gameObject.transform.position - test;
-                Vector2 playerPushVector = test - other.gameObject.transform.position;
-                playerPushVector.Normalize();
-                vectorBetween.Normalize();
-                (other.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
-            }
-           */ 
+            /*   
+               if (other.gameObject.Tag == "Dummy")
+               {
+                   GameWorld.objectsToRemove.Add(gameObject);
+                   Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
+
+                   Vector2 vectorBetween = other.gameObject.transform.position - test;
+                   Vector2 playerPushVector = test - other.gameObject.transform.position;
+                   playerPushVector.Normalize();
+                   vectorBetween.Normalize();
+                   (other.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+               }
+              */
         }
 
         public void Update()
         {
-            go.transform.position += testVector * 5;
-            animator.PlayAnimation("Shoot");
+            gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
 
-            if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
+            if (gameObject.Tag == "Fireball")
             {
-                GameWorld.objectsToRemove.Add(gameObject);
+                gameObject.transform.position += testVector * 5;
+                animator.PlayAnimation("Shoot");
+
+                if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
+                {
+                    GameWorld.objectsToRemove.Add(gameObject);
+                }
             }
+            if (gameObject.Tag == "HomingMissile")
+            {
+                if (homingTimer > 1)
+                {
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        if (Vector2.Distance(gameObject.transform.position, go.transform.position) < 10000 && (go.Tag == "Dummy" || go.Tag == "Enemy"))
+                        {
+                            distance = Vector2.Distance(gameObject.transform.position, go.transform.position);
+                            bestTarget = go.transform.position;
+                            foreach (GameObject item in GameWorld.gameObjects)
+                            {
+                                if (Vector2.Distance(gameObject.transform.position, item.transform.position) < distance && (item.Tag == "Dummy" || item.Tag == "Enemy"))
+                                {
+                                    distance = Vector2.Distance(gameObject.transform.position, item.transform.position);
+                                    bestTarget = item.transform.position;
+                                }
+                            }
+
+                            Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(bestTarget, gameObject.transform.position);
+                            test.Normalize();
+                            (gameObject.GetComponent("Physics") as Physics).Acceleration += test / 15;
+                        }
+                    }
+                }
+                else
+                {
+                    homingTimer += GameWorld.Instance.deltaTime;
+                    Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(target, gameObject.transform.position);
+                    test.Normalize();
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += test / 10;
+                }
+            }
+
         }
     }
 }

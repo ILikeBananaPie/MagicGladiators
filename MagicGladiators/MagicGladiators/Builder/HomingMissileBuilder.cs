@@ -7,30 +7,11 @@ using Microsoft.Xna.Framework;
 
 namespace MagicGladiators
 {
-    class MapBuilder : IBuilder
+    class HomingMissileBuilder: IBuilder
     {
         private GameObject gameObject;
 
         public void BuildGameObject(Vector2 position)
-        {
-            gameObject = new GameObject();
-            gameObject.Tag = "Map";
-
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "StandardMap", 1));
-
-            gameObject.AddComponent(new Animator(gameObject));
-
-            gameObject.AddComponent(new Map(gameObject));
-
-            gameObject.AddComponent(new Collider(gameObject, false));
-
-            //gameObject.LoadContent(GameWorld.Instance.Content);
-
-
-            gameObject.transform.position = position;
-        }
-
-        public void BuildIcon(Vector2 position, string name)
         {
             throw new NotImplementedException();
         }
@@ -43,6 +24,21 @@ namespace MagicGladiators
         public void BuildItem(Vector2 position, string[] stats)
         {
             throw new NotImplementedException();
+        }
+
+        public void FireProjectile(Vector2 position, Vector2 targetVector)
+        {
+            gameObject = new GameObject();
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
+            gameObject.AddComponent(new Animator(gameObject));
+            gameObject.AddComponent(new HomingMissile(gameObject, position, targetVector));
+            gameObject.Tag = "Ability";
+            gameObject.AddComponent(new Collider(gameObject, true));
+            gameObject.transform.position = position;
+            gameObject.LoadContent(GameWorld.Instance.Content);
+            //GameWorld.newObjects.Add(gameObject);
+
+            gameObject.transform.position = position;
         }
 
         public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)

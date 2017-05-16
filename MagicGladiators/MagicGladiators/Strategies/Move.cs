@@ -19,6 +19,8 @@ namespace MagicGladiators
 
         private Physics physics;
 
+        private GameObject player;
+
          public static DIRECTION direction
         { get; private set; }
 
@@ -26,6 +28,7 @@ namespace MagicGladiators
         public Move(Transform transform, Animator animator)
         {
             this.transform = transform;
+            this.player = transform.gameObject;
             this.animator = animator;
             this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
         }
@@ -38,32 +41,28 @@ namespace MagicGladiators
 
             if (keyState.IsKeyDown(Keys.W))
             {
-                translation += new Vector2(0, -1);
-                physics.Acceleration += new Vector2(0, -0.25F);
+                physics.Acceleration += new Vector2(0, -0.25F * player.Speed);
                 currentDirection = Back;
             }
             if (keyState.IsKeyDown(Keys.A))
             {
-                translation += new Vector2(-1, 0);
-                physics.Acceleration += new Vector2(-0.25F, 0);
+                physics.Acceleration += new Vector2(-0.25F * player.Speed, 0);
 
                 currentDirection = Left;
             }
             if (keyState.IsKeyDown(Keys.S))
             {
-                translation += new Vector2(0, 1);
-                physics.Acceleration += new Vector2(0, 0.25F);
+                physics.Acceleration += new Vector2(0, 0.25F * player.Speed);
 
                 currentDirection = Front;
             }
             if (keyState.IsKeyDown(Keys.D))
             {
-                translation += new Vector2(1, 0);
-                physics.Acceleration += new Vector2(0.25F, 0);
+                physics.Acceleration += new Vector2(0.25F * player.Speed, 0);
 
                 currentDirection = Right;
             }
-
+            Player.testSpeed = physics.Acceleration;
             /*
             if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.A))
             {

@@ -29,19 +29,44 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Physics(gameObject));
 
+            //gameObject.AddComponent(new HomingMissile(gameObject, gameObject.transform.position, Vector2.Zero));
+          
+           // gameObject.LoadContent(GameWorld.Instance.Content);
+
             //gameObject.LoadContent(GameWorld.Instance.Content);
 
             MouseState mouse = Mouse.GetState();
             gameObject.transform.position = position;
 
-            // ABILITY COMPONENTS
-            gameObject.AddComponent(new Charge(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
+            //gameObject.AddComponent(new Charge(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
-            gameObject.AddComponent(new RollingMeteor(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
+            gameObject.transform.position = position;
+
 
         }
 
+        public void BuildIcon(Vector2 position, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void BuildIcon(Vector2 position, string name, int value)
+        {
+            throw new NotImplementedException();
+        }
+            gameObject.AddComponent(new RollingMeteor(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
+
+        public void BuildItem(Vector2 position, string[] stats)
+        {
+            throw new NotImplementedException();
+        }
+
         public void FireProjectile(Vector2 position, Vector2 targetVector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
         {
             throw new NotImplementedException();
         }
