@@ -72,7 +72,7 @@ namespace MagicGladiators
                     Vector2 normalizedVectorBetween = (gameObject.GetComponent("Physics") as Physics).GetVector(playerTemp, target);
                     normalizedVectorBetween.Normalize();
 
-                    while (Vector2.Distance(go.transform.position, target) > 500)
+                    while (Vector2.Distance(playerTemp, target) > 500)
                     {
                         playerTemp += normalizedVectorBetween * 1000;
                     }
