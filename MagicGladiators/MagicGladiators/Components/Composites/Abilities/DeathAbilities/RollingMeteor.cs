@@ -24,6 +24,17 @@ namespace MagicGladiators
 
         private Random rnd;
 
+
+        private bool activated;
+        private bool mousePressedBool = false;
+        private bool mouseReleasedBool = true;
+        private bool qPressed = false;
+
+        private bool redoStartPoint;
+
+        private Vector2 pointA;
+        private Vector2 pointB;
+
         public static DIRECTION direction
         { get; private set; }
 
@@ -68,41 +79,55 @@ namespace MagicGladiators
         public void Update()
         {
             KeyboardState keyState = Keyboard.GetState();
+            MouseState mouse = Mouse.GetState();
 
             Vector2 translation = Vector2.Zero;
 
-
-
-            if (keyState.IsKeyDown(Keys.I) && gameObject.CurrentHealth <= 0)
+            if (keyState.IsKeyDown(Keys.Q) && gameObject.CurrentHealth <= 0 && !qPressed)
             {
-
-
-                physics.Acceleration += new Vector2(0, -0.25F);
+                qPressed = true;
+                if (activated == true)
+                {
+                    activated = false;
+                }
+                else activated = true;
 
             }
-            if (keyState.IsKeyDown(Keys.J))
+            if (keyState.IsKeyUp(Keys.Q))
             {
-
-                physics.Acceleration += new Vector2(-0.25F, 0);
-
-
+                qPressed = false;
             }
-            if (keyState.IsKeyDown(Keys.K))
+            if (activated && mouse.LeftButton == ButtonState.Pressed && !mousePressedBool)
             {
-
-                physics.Acceleration += new Vector2(0, 0.25F);
-
-
-            }
-            if (keyState.IsKeyDown(Keys.L))
-            {
-
-                physics.Acceleration += new Vector2(0.25F, 0);
-
-
+                mousePressedBool = true;
+                mouseReleasedBool = false;
+                pointA = new Vector2(mouse.Position.X, mouse.Position.Y);
             }
 
+            if (activated && mouse.LeftButton == ButtonState.Released && !mouseReleasedBool)
+            {
+                pointB = new Vector2(mouse.Position.X, mouse.Position.Y);
 
+                Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(pointB, pointA);
+                test.Normalize();
+                pointA = pointA - test * 1000;
+                CorrectStartPoint();
+                
+                Director director = new Director(new ProjectileBuilder());
+                director.ConstructProjectile(pointA, pointB, "DeathMeteor");
+                mousePressedBool = false;
+                mouseReleasedBool = true;
+                activated = false;
+            }
+        }
+        public void CorrectStartPoint()
+        {
+            Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(pointB, pointA);
+            test.Normalize();
+            while (pointA.X > GameWorld.Instance.Window.ClientBounds.Width || pointA.X < 0 || pointA.Y > GameWorld.Instance.Window.ClientBounds.Height || pointA.Y < 0)
+            {
+                pointA += test * 100;
+            }
         }
     }
 }

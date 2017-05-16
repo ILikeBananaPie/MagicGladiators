@@ -26,12 +26,20 @@ namespace MagicGladiators
         private float distance;
         private Vector2 bestTarget;
 
+        private Vector2 meteorVector;
+
         private Vector2 target;
 
         public Projectile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
             //go = gameObject;
             originalPos = position;
+            if (gameObject.Tag == "DeathMeteor")
+            {
+                meteorVector = (gameObject.GetComponent("Physics") as Physics).GetVector(target, position);
+                meteorVector.Normalize();
+            }
+
             //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
             //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
             this.target = target;
@@ -45,7 +53,6 @@ namespace MagicGladiators
         private void CreateAnimations()
         {
             SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
-
 
             animator.CreateAnimation("IdleFront", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("IdleBack", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
@@ -78,6 +85,7 @@ namespace MagicGladiators
 
             if (other.gameObject.Tag != "Player" && other.gameObject.Tag != "Map")
             {
+                GameWorld.Instance.player.CurrentHealth += (GameWorld.Instance.player.GetComponent("Drain") as Drain).healing;
                 foreach (Collider go in GameWorld.Instance.CircleColliders)
                 {
                     if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
@@ -115,11 +123,22 @@ namespace MagicGladiators
 
         public void Update()
         {
+
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
 
-            if (gameObject.Tag == "Fireball")
+            if (gameObject.Tag == "DeathMeteor")
             {
-                gameObject.transform.position += testVector * 5;
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector / 10;
+            }
+
+            if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain")
+            {
+                if (gameObject.Tag == "Drain")
+                {
+                    gameObject.transform.position += testVector * 2;
+                }
+                else gameObject.transform.position += testVector * 5;
+
                 animator.PlayAnimation("Shoot");
 
                 if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
@@ -127,6 +146,11 @@ namespace MagicGladiators
                     GameWorld.objectsToRemove.Add(gameObject);
                 }
             }
+            if (gameObject.Tag == "Drain")
+            {
+
+            }
+
             if (gameObject.Tag == "HomingMissile")
             {
                 if (homingTimer > 1)
@@ -160,7 +184,6 @@ namespace MagicGladiators
                     (gameObject.GetComponent("Physics") as Physics).Acceleration += test / 10;
                 }
             }
-
         }
     }
 }

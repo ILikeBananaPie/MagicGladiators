@@ -35,6 +35,10 @@ namespace MagicGladiators
             {
 
             }
+            if (name == "Drain")
+            {
+                component = new Drain(gameObject);
+            }
             return component;
         }
 

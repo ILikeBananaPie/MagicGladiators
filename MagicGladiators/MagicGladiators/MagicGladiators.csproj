@@ -49,6 +49,7 @@
     <Compile Include="Components\Composites\Abilities\Defensive\DefensiveAbility.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\Charge.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\MobilityAbility.cs" />
+    <Compile Include="Components\Composites\Abilities\Offensive\Drain.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\OffensiveAbility.cs" />
     <Compile Include="Builder\HomingMissileBuilder.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\HomingMissile.cs" />

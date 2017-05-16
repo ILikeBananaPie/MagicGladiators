@@ -39,7 +39,7 @@ namespace MagicGladiators
         public List<Collider> CircleColliders { get; set; }
         public List<Collider> newCircleColliders { get; set; }
 
-        private GameObject player;
+        public GameObject player { get; private set; }
 
         public float deltaTime { get; set; }
 
@@ -190,11 +190,18 @@ namespace MagicGladiators
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
             foreach (GameObject go in gameObjects)
             {
-                if (go.CurrentHealth < 0) 
+                if (go.CurrentHealth < 0)
                 {
                     objectsToRemove.Add(go);
                 }
             }
+
+            if (player.CurrentHealth <= 0)
+            {
+                (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
+            }
+
+
             //only in buy phase
             foreach (GameObject go in itemList)
             {
@@ -275,7 +282,7 @@ namespace MagicGladiators
             {
                 canBuy = true;
             }
-            
+
             if (Keyboard.GetState().IsKeyDown(Keys.F2))
             {
                 bool testfor = false;
