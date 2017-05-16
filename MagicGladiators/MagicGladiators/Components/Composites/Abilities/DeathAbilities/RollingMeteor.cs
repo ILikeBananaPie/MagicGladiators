@@ -67,7 +67,7 @@ namespace MagicGladiators
             strategy = new Idle(animator);
         }
 
-        //dhfgjsdhgfjsgdfjhsgdhdgsfs
+        
         public void LoadContent(ContentManager content)
         {
             animator = (Animator)gameObject.GetComponent("Animator");
