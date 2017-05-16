@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-     class RollingMeteor : Component, ILoadable, IUpdateable
+    class RollingMeteor : Component, ILoadable, IUpdateable
     {
         private float movementSpeed = 200;
 
@@ -62,47 +62,47 @@ namespace MagicGladiators
             animator = (Animator)gameObject.GetComponent("Animator");
 
             Texture2D sprite = content.Load<Texture2D>("Player");
-            
+
         }
-        
+
         public void Update()
         {
             KeyboardState keyState = Keyboard.GetState();
 
             Vector2 translation = Vector2.Zero;
 
-            
-
-                if (keyState.IsKeyDown(Keys.I) && gameObject.CurrentHealth <= 0)
-                {
-               
-                    
-                    physics.Acceleration += new Vector2(0, -0.25F);
-
-                }
-                if (keyState.IsKeyDown(Keys.J))
-                {
-                    
-                    physics.Acceleration += new Vector2(-0.25F, 0);
 
 
-                }
-                if (keyState.IsKeyDown(Keys.K))
-                {
-                    
-                    physics.Acceleration += new Vector2(0, 0.25F);
+            if (keyState.IsKeyDown(Keys.I) && gameObject.CurrentHealth <= 0)
+            {
 
-                    
-                }
-                if (keyState.IsKeyDown(Keys.L))
-                { 
-                    
-                    physics.Acceleration += new Vector2(0.25F, 0);
 
-                   
-                }
+                physics.Acceleration += new Vector2(0, -0.25F);
 
-            
+            }
+            if (keyState.IsKeyDown(Keys.J))
+            {
+
+                physics.Acceleration += new Vector2(-0.25F, 0);
+
+
+            }
+            if (keyState.IsKeyDown(Keys.K))
+            {
+
+                physics.Acceleration += new Vector2(0, 0.25F);
+
+
+            }
+            if (keyState.IsKeyDown(Keys.L))
+            {
+
+                physics.Acceleration += new Vector2(0.25F, 0);
+
+
+            }
+
+
         }
     }
 }
