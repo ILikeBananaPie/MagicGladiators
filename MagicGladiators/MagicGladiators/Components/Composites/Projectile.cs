@@ -107,6 +107,9 @@ namespace MagicGladiators
                     }
                 }
                 GameWorld.objectsToRemove.Add(gameObject);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration = Vector2.Zero;
+                (gameObject.GetComponent("Physics") as Physics).Velocity = Vector2.Zero;
+
             }
 
             /*   
@@ -127,7 +130,6 @@ namespace MagicGladiators
         public void Update()
         {
 
-            gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
 
             if (gameObject.Tag == "DeathMeteor")
             {
@@ -187,6 +189,9 @@ namespace MagicGladiators
                     (gameObject.GetComponent("Physics") as Physics).Acceleration += test / 10;
                 }
             }
+
+            gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
         }
+
     }
 }
