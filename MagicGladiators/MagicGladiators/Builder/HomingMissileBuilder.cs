@@ -11,14 +11,14 @@ namespace MagicGladiators
     {
         private GameObject gameObject;
 
-        public void BuildGameObject(Vector2 position, object id)
+        public void BuildGameObject(Vector2 position)
         {
             throw new NotImplementedException();
         }
 
         public void FireProjectile(Vector2 position, Vector2 targetVector)
         {
-            gameObject = new GameObject(2);
+            gameObject = new GameObject();
             gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
             gameObject.AddComponent(new Animator(gameObject));
             gameObject.AddComponent(new HomingMissile(gameObject, position, targetVector));

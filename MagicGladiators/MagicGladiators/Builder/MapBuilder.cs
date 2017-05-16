@@ -30,7 +30,7 @@ namespace MagicGladiators
             gameObject.transform.position = position;
         }
 
-        public void FireProjectile(Vector2 position, Vector2 targetVector)
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
         {
             throw new NotImplementedException();
         }
