@@ -46,6 +46,11 @@
     <Compile Include="Components\Composites\Abilities\Mobility\MobilityAbility.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\OffensiveAbility.cs" />
     <Compile Include="Builder\MapBuilder.cs" />
+    <Compile Include="Builder\HomingMissileBuilder.cs" />
+    <Compile Include="Components\Composites\Abilities\DefensiveAbility.cs" />
+    <Compile Include="Components\Composites\Abilities\MobilityAbility.cs" />
+    <Compile Include="Components\Composites\Abilities\OffensiveAbility.cs" />
+    <Compile Include="Components\Composites\Abilities\Offensive\HomingMissile.cs" />
     <Compile Include="Components\Composites\Client.cs" />
     <Compile Include="Builder\ProjectileBuilder.cs" />
     <Compile Include="Circle.cs" />
@@ -71,6 +76,7 @@
     <Compile Include="Components\Composites\Player.cs" />
     <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Builder\PlayerBuilder.cs" />
+    <Compile Include="Strategies\FollowTarget.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Strategies\Idle.cs" />
     <Compile Include="Strategies\IStrategy.cs" />
@@ -134,7 +140,10 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Components\Composites\Abilities\Defensive\" />
+    <Folder Include="Components\Composites\Abilities\Mobility\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

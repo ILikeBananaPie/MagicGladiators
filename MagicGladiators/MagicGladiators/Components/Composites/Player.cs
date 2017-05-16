@@ -83,6 +83,8 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
+            /*
+            if (other.gameObject.Tag != "Fireball")
             if (other.gameObject.Tag != "Ability" && other.gameObject.Tag != "Map")
             {
                 //gameObject.CurrentHealth -= (other.gameObject.GetComponent("Dummy") as Dummy).Damage;
@@ -91,6 +93,7 @@ namespace MagicGladiators
                 testVector.Normalize();
                // testPush = true;
             }
+            */
         }
 
         public void OnCollisionExit(Collider other)
@@ -140,7 +143,7 @@ namespace MagicGladiators
             if (mouse.LeftButton == ButtonState.Pressed && canShoot)
             {
                 Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball");
                 canShoot = false;
             }
 
@@ -149,6 +152,15 @@ namespace MagicGladiators
                 canShoot = true;
             }
             updatePackage.InfoUpdate(transform.position, phys.Velocity);
+            /*
+            if (keyState.IsKeyDown(Keys.Q) && canShoot)
+            {
+                canShoot = false;
+                Director director = new Director(new HomingMissileBuilder());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), );
+               
+            }
+           */
         }
 
         public void OnCollisionStay(Collider other)

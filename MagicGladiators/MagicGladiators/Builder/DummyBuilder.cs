@@ -23,10 +23,17 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Collider(gameObject, false));
 
+            gameObject.AddComponent(new Physics(gameObject));
+
             gameObject.transform.position = position;
         }
 
         public void FireProjectile(Vector2 position, Vector2 targetVector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
         {
             throw new NotImplementedException();
         }

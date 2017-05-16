@@ -25,10 +25,19 @@ namespace MagicGladiators
 
         public Vector2 physicsBreak(float breakFactor, Vector2 velocity)
         {
+
             float distanceTest = Vector2.Distance(velocity, Vector2.Zero);
             if (!(Vector2.Distance(velocity, Vector2.Zero) < 0.05F && Vector2.Distance(velocity, Vector2.Zero) > -0.05F))
             {
-                Acceleration = breakFactor * -velocity;
+                if (gameObject.Tag == "HomingMissile")
+                {
+                    Acceleration = 0.001F * -velocity;
+                }
+                else
+                {
+                    Acceleration = breakFactor * -velocity;
+                }
+
                 //velocityTest += accelerationTest;
                 //accelerationTest = Vector2.Zero;
             }
