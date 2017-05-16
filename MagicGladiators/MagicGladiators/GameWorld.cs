@@ -233,6 +233,8 @@ namespace MagicGladiators
 
                         CreateAbility ca = new CreateAbility(ability.Name);
                         player.AddComponent(ca.GetComponent(player, player.transform.position));
+                        abilityList.Remove(ability.gameObject);
+                        break;
                     }
                 }
             }
