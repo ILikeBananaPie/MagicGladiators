@@ -59,20 +59,20 @@ namespace MagicGladiators
             {
                 target = new Vector2(mouse.Position.X, mouse.Position.Y);
                 
-                if (Vector2.Distance(gameObject.transform.position, target) < 500)
+                if (Vector2.Distance(go.transform.position, target) < 500)
                 {
                     
                     gameObject.transform.position = target;
                     
                     activated = false;
                 }
-                if(Vector2.Distance(gameObject.transform.position, target) > 500)
+                if(Vector2.Distance(go.transform.position, target) > 500)
                 {
-                    playerTemp = gameObject.transform.position;
-                    Vector2 normalizedVectorBetween = (gameObject.GetComponent("Physics") as Physics).GetVector(gameObject.transform.position, target);
+                    playerTemp = go.transform.position;
+                    Vector2 normalizedVectorBetween = (gameObject.GetComponent("Physics") as Physics).GetVector(playerTemp, target);
                     normalizedVectorBetween.Normalize();
 
-                    while (Vector2.Distance(gameObject.transform.position, target) > 500)
+                    while (Vector2.Distance(go.transform.position, target) > 500)
                     {
                         playerTemp += normalizedVectorBetween * 1000;
                     }
