@@ -18,7 +18,7 @@ namespace MagicGladiators
         private GameObject go;
         private Transform transform;
         private Vector2 target;
-        private Vector2 normalizedVectorBetween;
+       
 
         private Vector2 playerTemp;
 
@@ -27,8 +27,7 @@ namespace MagicGladiators
         public Blink(GameObject go, Transform transform, Animator animator) : base(go)
         {
             
-            normalizedVectorBetween = target - gameObject.transform.position;
-            normalizedVectorBetween.Normalize();
+            
             this.go = go;
             this.animator = animator;
             this.transform = transform;
@@ -69,18 +68,24 @@ namespace MagicGladiators
                 }
                 if(Vector2.Distance(gameObject.transform.position, target) > 500)
                 {
-                  while(Vector2.Distance(gameObject.transform.position, target) > 500)
-                    {
-                        playerTemp += normalizedVectorBetween * 200;
-                    }
                     playerTemp = gameObject.transform.position;
+                    Vector2 normalizedVectorBetween = (gameObject.GetComponent("Physics") as Physics).GetVector(gameObject.transform.position, target);
+                    normalizedVectorBetween.Normalize();
+
+                    while (Vector2.Distance(gameObject.transform.position, target) > 500)
+                    {
+                        playerTemp += normalizedVectorBetween * 1000;
+                    }
+                    
 
                     activated = false;
 
 
                 }
-                
 
+               
+               
+                
             }
          
         }
