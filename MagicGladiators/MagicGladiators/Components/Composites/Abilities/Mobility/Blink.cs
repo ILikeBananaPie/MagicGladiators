@@ -18,10 +18,6 @@ namespace MagicGladiators
         private GameObject go;
         private Transform transform;
         private Vector2 target;
-       
-
-        private Vector2 playerTemp;
-
 
         private Physics physics;
         public Blink(GameObject go, Transform transform, Animator animator) : base(go)
@@ -59,24 +55,34 @@ namespace MagicGladiators
             {
                 target = new Vector2(mouse.Position.X, mouse.Position.Y);
                 
-                if (Vector2.Distance(go.transform.position, target) < 500)
+                if (Vector2.Distance(go.transform.position, target) < 250)
                 {
+                    Vector2 oldPos = gameObject.transform.position;
                     
                     gameObject.transform.position = target;
+
+                    float distance = Vector2.Distance(gameObject.transform.position, oldPos);
                     
                     activated = false;
                 }
-                if(Vector2.Distance(go.transform.position, target) > 500)
+                if(Vector2.Distance(go.transform.position, target) > 250)
                 {
-                    playerTemp = go.transform.position;
-                    Vector2 normalizedVectorBetween = (gameObject.GetComponent("Physics") as Physics).GetVector(playerTemp, target);
-                    normalizedVectorBetween.Normalize();
+                    Vector2 VectorBetween = (gameObject.GetComponent("Physics") as Physics).GetVector(target, gameObject.transform.position);
+                    VectorBetween.Normalize();
 
-                    while (Vector2.Distance(playerTemp, target) > 500)
+
+                    Vector2 playerTemp = go.transform.position;
+                    Vector2 oldPos = playerTemp;
+
+                    //float test = Vector2.Distance(target, playerTemp);
+
+                    while (Vector2.Distance(playerTemp, oldPos) < 250)
                     {
-                        playerTemp -= normalizedVectorBetween * 10;
+                        //float test2 = Vector2.Distance(target, playerTemp);
+                        playerTemp += VectorBetween * 10;
                     }
-                    
+                    gameObject.transform.position = playerTemp;
+                    float test3 = Vector2.Distance(gameObject.transform.position, oldPos);
 
                     activated = false;
 
