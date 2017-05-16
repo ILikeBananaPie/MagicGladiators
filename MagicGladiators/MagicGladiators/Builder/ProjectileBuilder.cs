@@ -42,14 +42,15 @@ namespace MagicGladiators
             gameObject = new GameObject();
             gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
             gameObject.AddComponent(new Animator(gameObject));
-            gameObject.AddComponent(new Projectile(gameObject, position, targetVector));
             gameObject.Tag = ability;
-            gameObject.AddComponent(new Collider(gameObject, true));
             gameObject.AddComponent(new Physics(gameObject));
+            gameObject.AddComponent(new Projectile(gameObject, position, targetVector));
+            gameObject.AddComponent(new Collider(gameObject, true));
             gameObject.transform.position = position;
             gameObject.LoadContent(GameWorld.Instance.Content);
             //GameWorld.newObjects.Add(gameObject);
 
+            gameObject.CurrentHealth = 100;
             gameObject.transform.position = position;
 
         }

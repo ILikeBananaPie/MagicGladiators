@@ -39,11 +39,14 @@ namespace MagicGladiators
         public List<Collider> CircleColliders { get; set; }
         public List<Collider> newCircleColliders { get; set; }
 
-        private GameObject player;
+        public GameObject player { get; private set; }
 
         public float deltaTime { get; set; }
 
         private bool canBuy = true;
+
+        private int buySpellX;
+        private int buySpellY;
 
         private List<string> offensiveAbilities = new List<string>() { "HomingMissile", "Fireball", "Ricochet" };
         private List<string> defensiveAbilities = new List<string>() { "Deflect", "Invisibility", "Stone Armor" };
@@ -90,6 +93,9 @@ namespace MagicGladiators
             graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
 
+            buySpellX = Window.ClientBounds.Width - 144;
+            buySpellY = Window.ClientBounds.Height - 144;
+
             gameObjects = new List<GameObject>();
             newObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
@@ -131,21 +137,27 @@ namespace MagicGladiators
 
 
             director = new Director(new AbilityIconBuilder());
-            int x = Window.ClientBounds.Width - 144;
-            int y = Window.ClientBounds.Height - 144;
 
 
-            abilityList.Add(director.ConstructIcon(new Vector2(x, y), "HomingMissile", 100));
-            if (x == Window.ClientBounds.Width - 42)
-            {
-                x = Window.ClientBounds.Width - 144;
-                y += 34;
-            }
-            else x += 34;
-            abilityList.Add(director.ConstructIcon(new Vector2(x, y), "Charge", 100));
+
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 100));
+            buySpellPosition();
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100));
+            buySpellPosition();
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Drain", 100));
 
 
             base.Initialize();
+        }
+
+        public void buySpellPosition()
+        {
+            if (buySpellX == Window.ClientBounds.Width - 42)
+            {
+                buySpellX = Window.ClientBounds.Width - 144;
+                buySpellY += 34;
+            }
+            else buySpellX += 34;
         }
 
         /// <summary>
@@ -194,6 +206,13 @@ namespace MagicGladiators
                     objectsToRemove.Add(go);
                 }
             }
+
+            if (player.CurrentHealth <= 0)
+            {
+                (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
+            }
+
+
             //only in buy phase
             foreach (GameObject go in itemList)
             {
