@@ -61,17 +61,19 @@ namespace MagicGladiators
         {
             foreach (GameObject go in objects)
             {
-                if (timer >= 0.25F)
+                if (go.Tag == "Player" || go.Tag == "Enemy")
                 {
-                    timer = 0;
-                    //go.CurrentHealth -= LavaDamage;
+                    if (timer >= 0.25F)
+                    {
+                        timer = 0;
+                        //go.CurrentHealth -= LavaDamage;
+                    }
+                    else
+                    {
+                        timer += GameWorld.Instance.deltaTime;
+                    }
+                    go.CurrentHealth -= LavaDamage * go.LavaResistance;
                 }
-                else
-                {
-                    timer += GameWorld.Instance.deltaTime;
-                }
-                go.CurrentHealth -= LavaDamage;
-
             }
             UpdateLevel();
         }

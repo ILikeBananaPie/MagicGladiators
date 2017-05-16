@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.Globalization;
 
 namespace MagicGladiators
 {
@@ -16,16 +17,26 @@ namespace MagicGladiators
 
         public string Name { get; set; }
         public int Health { get; set; }
-        public int Speed { get; set; }
-        public int DamageResistance { get; set; }
-        public int LavaResistance { get; set; }
+        public float Speed { get; set; }
+        public float DamageResistance { get; set; }
+        public float LavaResistance { get; set; }
         public int Value { get; set; }
 
         public Item(GameObject gameObject, string[] stats) : base(gameObject)
         {
             this.Name = stats[0];
             this.Health = int.Parse(stats[1]);
-            this.Speed = int.Parse(stats[2]);
+            //this.Speed = float.Parse(stats[2]);
+            /*
+            var culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            culture.NumberFormat.NumberDecimalSeparator = ".";
+            culture.NumberFormat.NumberGroupSeparator = ",";
+            culture.NumberFormat.CurrencyDecimalSeparator = ".";
+            culture.NumberFormat.CurrencyGroupSeparator = ",";
+            culture.NumberFormat.PercentDecimalSeparator = ".";
+            culture.NumberFormat.PercentGroupSeparator = ",";
+            */
+            this.Speed = float.Parse(stats[2]);
             this.DamageResistance = int.Parse(stats[3]);
             this.LavaResistance = int.Parse(stats[4]);
             this.Value = int.Parse(stats[5]);

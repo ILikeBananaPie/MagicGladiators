@@ -118,15 +118,15 @@ namespace MagicGladiators
             gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
 
             director = new Director(new ItemBuilder());
-            string[] testItem = new string[] { "Speed", "10", "10", "10", "10", "100" };
+            string[] testItem = new string[] { "Speed", "0", "1", "0", "0", "100" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Hp", "10", "10", "10", "10", "100" };
+            testItem = new string[] { "Hp", "10", "0", "0", "0", "100" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LavaRes", "10", "10", "10", "10", "100" };
+            testItem = new string[] { "LavaRes", "0", "0", "0", "-1", "100" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "DmgRes", "10", "10", "10", "10", "100" };
+            testItem = new string[] { "DmgRes", "0", "0", "-1", "0", "100" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Speed", "10", "10", "10", "10", "100" };
+            testItem = new string[] { "Speed", "0", "1", "0", "0", "100" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
 
 

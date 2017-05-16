@@ -41,6 +41,8 @@ namespace MagicGladiators
 
             gameObject.LoadContent(GameWorld.Instance.Content);
 
+            gameObject.Tag = "Icon";
+
             gameObject.transform.position = position;
         }
 
