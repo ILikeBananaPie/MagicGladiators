@@ -15,18 +15,20 @@ namespace MagicGladiators
         private bool activated = false;
 
         private Animator animator;
-        private float timer;
         private GameObject go;
         private Transform transform;
         private Vector2 target;
-        private float chargeTimer;
-        private Vector2 testVector;
-        private Vector2 test;
+        private Vector2 normalizedVectorBetween;
+
+        private Vector2 playerTemp;
+
 
         private Physics physics;
         public Blink(GameObject go, Transform transform, Animator animator) : base(go)
         {
-           
+            
+            normalizedVectorBetween = target - gameObject.transform.position;
+            normalizedVectorBetween.Normalize();
             this.go = go;
             this.animator = animator;
             this.transform = transform;
@@ -47,15 +49,17 @@ namespace MagicGladiators
 
             Vector2 translation = Vector2.Zero;
 
-            //activate aim and move in a charge
+          
             if (keyState.IsKeyDown(Keys.Space) && !activated)
             {
 
-                target = new Vector2(mouse.Position.X, mouse.Position.Y);
+                
                 activated = true;
             }
             if (activated && keyState.IsKeyUp(Keys.Space))
             {
+                target = new Vector2(mouse.Position.X, mouse.Position.Y);
+                
                 if (Vector2.Distance(gameObject.transform.position, target) < 500)
                 {
                     
@@ -65,11 +69,18 @@ namespace MagicGladiators
                 }
                 if(Vector2.Distance(gameObject.transform.position, target) > 500)
                 {
-                    gameObject.transform.position = target;
+                  while(Vector2.Distance(gameObject.transform.position, target) > 500)
+                    {
+                        playerTemp += normalizedVectorBetween * 200;
+                    }
+                    playerTemp = gameObject.transform.position;
+
                     activated = false;
+
+
                 }
-                 //   target = new Vector2(mouse.Position.X, mouse.Position.Y);
-               
+                
+
             }
          
         }
