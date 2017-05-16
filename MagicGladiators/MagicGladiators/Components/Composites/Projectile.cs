@@ -17,16 +17,18 @@ namespace MagicGladiators
 
         private DIRECTION direction;
 
-        private GameObject go;
+        //private GameObject go;
         private Transform transform;
         private Vector2 originalPos;
         private Vector2 testVector;
+
+        private float homingTimer;
 
         private Vector2 target;
 
         public Projectile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
-            go = gameObject;
+            //go = gameObject;
             originalPos = position;
             //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
             //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
@@ -63,14 +65,15 @@ namespace MagicGladiators
             animator = (Animator)gameObject.GetComponent("Animator");
 
             Texture2D sprite = content.Load<Texture2D>("Player");
-            GameWorld.newObjects.Add(go);
-            go.Tag = "Ability";
+            GameWorld.newObjects.Add(gameObject);
+            //go.Tag = "Ability";
 
             CreateAnimations();
         }
 
         public void OnCollisionEnter(Collider other)
         {
+            /*
             if (other.gameObject.Tag != "Player")
             {
                 foreach (Collider go in GameWorld.Instance.CircleColliders)
@@ -92,6 +95,7 @@ namespace MagicGladiators
                 }
                 GameWorld.objectsToRemove.Add(gameObject);
             }
+            */
          /*   
             if (other.gameObject.Tag == "Dummy")
             {
@@ -109,13 +113,41 @@ namespace MagicGladiators
 
         public void Update()
         {
-            go.transform.position += testVector * 5;
-            animator.PlayAnimation("Shoot");
+            gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
 
-            if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
+            if (gameObject.Tag == "Fireball")
             {
-                GameWorld.objectsToRemove.Add(gameObject);
+                gameObject.transform.position += testVector * 5;
+                animator.PlayAnimation("Shoot");
+
+                if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
+                {
+                    GameWorld.objectsToRemove.Add(gameObject);
+                }
             }
+            if (gameObject.Tag == "HomingMissile")
+            {
+                if (homingTimer > 1)
+                {
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        if (Vector2.Distance(gameObject.transform.position, go.transform.position) < 200 && (go.Tag == "Dummy" || go.Tag == "Enemy" || go.Tag == "Player"))
+                        {
+                            Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(go.transform.position, gameObject.transform.position);
+                            test.Normalize();
+                            (gameObject.GetComponent("Physics") as Physics).Acceleration += test / 20;
+                        }
+                    }
+                }
+                else
+                {
+                    homingTimer += GameWorld.Instance.deltaTime;
+                    Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(target, gameObject.transform.position);
+                    test.Normalize();
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += test / 10;
+                }
+            }
+
         }
     }
 }

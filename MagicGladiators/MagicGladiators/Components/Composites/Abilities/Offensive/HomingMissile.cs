@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MagicGladiators.Components.Composites.Abilities;
+using Microsoft.Xna.Framework.Input;
 
 namespace MagicGladiators
 {
@@ -22,10 +23,10 @@ namespace MagicGladiators
         private Vector2 testVector;
         private Vector2 target;
         private GameObject player;
-        private TimeSpan timer;
-       
-        
-        
+        private float timer;
+
+        private bool canShoot = true;
+
 
 
 
@@ -38,12 +39,12 @@ namespace MagicGladiators
             testVector = target - originalPos;
             testVector.Normalize();
             this.transform = gameObject.transform;
-            timer = new TimeSpan(0);
 
         }
 
         private void CreateAnimations()
         {
+            /*
             SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
 
 
@@ -60,56 +61,76 @@ namespace MagicGladiators
             animator.PlayAnimation("Shoot");
 
             strategy = new Idle(animator);
+            */
         }
 
         public override void LoadContent(ContentManager content)
         {
-            player = GameWorld.Instance.FindGameObjectWithTag("Enemy");
-            animator = (Animator)gameObject.GetComponent("Animator");
+            //player = GameWorld.Instance.FindGameObjectWithTag("Enemy");
+            //animator = (Animator)gameObject.GetComponent("Animator");
 
-            Texture2D sprite = content.Load<Texture2D>("Player");
-            GameWorld.newObjects.Add(go);
-            go.Tag = "Ability";
+            //Texture2D sprite = content.Load<Texture2D>("Player");
+            //GameWorld.newObjects.Add(go);
+            //go.Tag = "Ability";
 
-            CreateAnimations();
+            //CreateAnimations();
         }
 
         public override void Update()
         {
-             
-            go.transform.position += testVector * 5;
-            animator.PlayAnimation("Shoot");        
+            KeyboardState keyState = Keyboard.GetState();
+            MouseState mouse = Mouse.GetState();
 
-           if (Vector2.Distance(originalPos, gameObject.transform.position) > 200 && !(strategy is FollowTarget))
+            if (keyState.IsKeyDown(Keys.Q) && canShoot)
+            {
+                canShoot = false;
+                Director director = new Director(new ProjectileBuilder());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "HomingMissile");
+            }
+            if (!canShoot)
+            {
+                timer += GameWorld.Instance.deltaTime;
+            }
+            if (timer > 5)
+            {
+                timer = 0;
+                canShoot = true;
+            }
+
+            //go.transform.position += testVector * 5;
+            //animator.PlayAnimation("Shoot");
+            /*
+            if (Vector2.Distance(originalPos, gameObject.transform.position) > 200 && !(strategy is FollowTarget))
             {
                 strategy = new FollowTarget(gameObject.transform, gameObject.transform, animator);
-                
-               if( timer.Milliseconds == 20)
+
+                if (timer.Milliseconds == 20)
                 {
                     GameWorld.objectsToRemove.Add(gameObject);
                 }
-                
-            }
 
+            }
+            */
             //else if (Vector2.Distance(originalPos, gameObject.transform.position) > 600)
             //{
 
             //    GameWorld.objectsToRemove.Add(gameObject);
 
             //}
-            strategy.Execute(ref direction);
-        
+            //strategy.Execute(ref direction);
+
         }
 
         public void OnCollisionEnter(Collider other)
         {
+            /*
             if (other.gameObject.Tag != "Player")
             {
                 foreach (Collider go in GameWorld.Instance.CircleColliders)
                 {
                     if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
                     {
-                       
+
                         Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
                         vectorBetween.Normalize();
                         //if (go.gameObject.Tag == "Player")
@@ -121,11 +142,13 @@ namespace MagicGladiators
                         {
                             (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
                         }
-                       
+
                     }
                 }
                 GameWorld.objectsToRemove.Add(gameObject);
+                
             }
+        */
         }
     }
 }

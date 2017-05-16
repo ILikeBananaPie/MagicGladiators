@@ -12,6 +12,6 @@ namespace MagicGladiators
         GameObject GetResult();
 
         void BuildGameObject(Vector2 position, object id);
-        void FireProjectile(Vector2 position, Vector2 targetVector);
+        void FireProjectile(Vector2 position, Vector2 targetVector, string ability);
     }
 }
