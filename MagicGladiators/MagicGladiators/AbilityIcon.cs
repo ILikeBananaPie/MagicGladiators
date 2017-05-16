@@ -31,7 +31,7 @@ namespace MagicGladiators
             animator.CreateAnimation("HomingMissile", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Charge", new Animation(1, 0, 1, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Blink", new Animation(1, 32, 0, 32, 32, 10, Vector2.Zero, sprite));
-            animator.CreateAnimation("Ricochet", new Animation(1, 32, 1, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Drain", new Animation(1, 32, 1, 32, 32, 10, Vector2.Zero, sprite));
 
             animator.PlayAnimation(Name);
         }
