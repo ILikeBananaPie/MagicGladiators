@@ -30,6 +30,7 @@ namespace MagicGladiators
         private float testTimer;
         private bool canShoot;
         private SpriteRenderer sprite;
+        private float regenTimer;
 
         public static List<GameObject> items = new List<GameObject>();
         public static List<GameObject> abilities = new List<GameObject>();
@@ -119,6 +120,19 @@ namespace MagicGladiators
 
         public void Update()
         {
+            if (gameObject.CurrentHealth >= gameObject.MaxHealth)
+            {
+                gameObject.CurrentHealth = gameObject.MaxHealth;
+            }
+            else
+            {
+                if (regenTimer > 1)
+                {
+                    gameObject.CurrentHealth += gameObject.HealthRegen;
+                    regenTimer = 0;
+                }
+                else regenTimer += GameWorld.Instance.deltaTime;
+            }
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
 
             if (testPush)

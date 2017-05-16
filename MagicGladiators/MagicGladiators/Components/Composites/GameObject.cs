@@ -19,6 +19,7 @@ namespace MagicGladiators
         public float Speed { get; set; } = 1;
         public float DamageResistance { get; set; } = 1;
         public float LavaResistance { get; set; } = 1;
+        public float HealthRegen { get; set; } = 0.1F;
 
         public List<Component> components = new List<Component>();
 
