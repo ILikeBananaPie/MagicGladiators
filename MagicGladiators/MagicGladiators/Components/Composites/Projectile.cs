@@ -165,10 +165,15 @@ namespace MagicGladiators
 
                 if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
                 {
-                    if (gameObject.Tag != "Chain")
+                    if (gameObject.Tag == "Chain" && !chainActivated)
                     {
                         GameWorld.objectsToRemove.Add(gameObject);
                     }
+                    else if (gameObject.Tag != "Chain")
+                    {
+                        GameWorld.objectsToRemove.Add(gameObject);
+                    }
+
                 }
             }
 
@@ -183,7 +188,7 @@ namespace MagicGladiators
                 {
                     (chainTarget.GetComponent("Physics") as Physics).Acceleration += pull / 10;
                 }
-                if (keyState.IsKeyDown(Keys.T) || chainTimer > 2)
+                if (keyState.IsKeyDown(Keys.T) || chainTimer > 2 || Vector2.Distance(chainTarget.transform.position, GameWorld.Instance.player.transform.position) < 20)
                 {
                     chainActivated = false;
                     (chainTarget.GetComponent("Physics") as Physics).chainDeactivated = true;
