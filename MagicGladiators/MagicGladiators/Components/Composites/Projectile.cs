@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace MagicGladiators
 {
@@ -22,9 +23,16 @@ namespace MagicGladiators
         private Vector2 originalPos;
         private Vector2 testVector;
 
+        private bool chainActivated;
+
         private float homingTimer;
         private float distance;
         private Vector2 bestTarget;
+
+        private GameObject chainTarget;
+        private float chainTimer;
+
+        private Physics test;
 
         private Vector2 meteorVector;
 
@@ -89,6 +97,12 @@ namespace MagicGladiators
                 {
                     GameWorld.Instance.player.CurrentHealth += (GameWorld.Instance.player.GetComponent("Drain") as Drain).healing;
                 }
+                if (gameObject.Tag == "Chain")
+                {
+                    chainTarget = other.gameObject;
+                    (chainTarget.GetComponent("Physics") as Physics).chainActivated = true;
+                    chainActivated = true;
+                }
                 foreach (Collider go in GameWorld.Instance.CircleColliders)
                 {
                     if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
@@ -100,13 +114,16 @@ namespace MagicGladiators
                         {
                             // (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
                         }
-                        else if (go.gameObject.Tag == "Dummy")
+                        else if (go.gameObject.Tag == "Dummy" && gameObject.Tag != "Chain")
                         {
                             (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
                         }
                     }
                 }
-                GameWorld.objectsToRemove.Add(gameObject);
+                if (gameObject.Tag != "Chain")
+                {
+                    GameWorld.objectsToRemove.Add(gameObject);
+                }
             }
 
             /*   
@@ -126,6 +143,7 @@ namespace MagicGladiators
 
         public void Update()
         {
+            KeyboardState keyState = Keyboard.GetState();
 
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
 
@@ -134,9 +152,9 @@ namespace MagicGladiators
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector / 10;
             }
 
-            if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain")
+            if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
             {
-                if (gameObject.Tag == "Drain")
+                if (gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
                 {
                     gameObject.transform.position += testVector * 2;
                 }
@@ -146,12 +164,32 @@ namespace MagicGladiators
 
                 if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
                 {
+                    if (gameObject.Tag != "Chain")
+                    {
+
+                    }
                     GameWorld.objectsToRemove.Add(gameObject);
                 }
             }
-            if (gameObject.Tag == "Drain")
-            {
 
+            if (chainActivated)
+            {
+                chainTimer += GameWorld.Instance.deltaTime;
+                gameObject.transform.position = chainTarget.transform.position;
+                Vector2 pull = (gameObject.GetComponent("Physics") as Physics).GetVector(GameWorld.Instance.player.transform.position, chainTarget.transform.position);
+                pull.Normalize();
+                (GameWorld.Instance.player.GetComponent("Physics") as Physics).Acceleration -= pull / 10;
+                if (chainTarget.Tag == "Dummy" || chainTarget.Tag == "Enemy")
+                {
+                    (chainTarget.GetComponent("Physics") as Physics).Acceleration += pull / 10;
+                }
+                if (keyState.IsKeyDown(Keys.T) || chainTimer > 2)
+                {
+                    chainActivated = false;
+                    (chainTarget.GetComponent("Physics") as Physics).chainDeactivated = true;
+                    (chainTarget.GetComponent("Physics") as Physics).chainActivated = false;
+                    GameWorld.objectsToRemove.Add(gameObject);
+                }
             }
 
             if (gameObject.Tag == "HomingMissile")
