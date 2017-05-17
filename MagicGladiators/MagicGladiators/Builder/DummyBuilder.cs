@@ -15,7 +15,7 @@ namespace MagicGladiators
         {
             gameObject = new GameObject();
 
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "Dummy", 1));
 
             gameObject.AddComponent(new Animator(gameObject));
 

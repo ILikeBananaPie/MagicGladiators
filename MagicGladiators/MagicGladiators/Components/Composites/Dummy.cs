@@ -40,7 +40,7 @@ namespace MagicGladiators
 
             animator = (Animator)gameObject.GetComponent("Animator");
 
-            Texture2D sprite = content.Load<Texture2D>("Player");
+            Texture2D sprite = content.Load<Texture2D>("Dummy");
 
             direction = Front;
             animator.CreateAnimation("IdleFront", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, sprite));

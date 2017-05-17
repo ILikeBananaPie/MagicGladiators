@@ -64,17 +64,37 @@ namespace MagicGladiators
         {
             SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
 
-            animator.CreateAnimation("IdleFront", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("IdleBack", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("IdleLeft", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("IdleRight", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("WalkFront", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("WalkBack", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("WalkLeft", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("WalkRight", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("Shoot", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Mine", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Fireball", new Animation(1, 0, 1, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("HomingMissile", new Animation(1, 0, 2, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Drain", new Animation(1, 0, 3, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("DeathMeteor", new Animation(1, 32, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Chain", new Animation(1, 32, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
 
-            animator.PlayAnimation("Shoot");
+            if (gameObject.Tag == "Mine")
+            {
+                animator.PlayAnimation("Mine");
+            }
+            if (gameObject.Tag == "Fireball")
+            {
+                animator.PlayAnimation("Fireball");
+            }
+            if (gameObject.Tag == "HomingMissile")
+            {
+                animator.PlayAnimation("HomingMissile");
+            }
+            if (gameObject.Tag == "Drain")
+            {
+                animator.PlayAnimation("Drain");
+            }
+            if (gameObject.Tag == "DeathMeteor")
+            {
+                animator.PlayAnimation("DeathMeteor");
+            }
+            if (gameObject.Tag == "Chain")
+            {
+                animator.PlayAnimation("Chain");
+            }
 
             strategy = new Idle(animator);
         }
@@ -83,7 +103,7 @@ namespace MagicGladiators
         {
             animator = (Animator)gameObject.GetComponent("Animator");
 
-            Texture2D sprite = content.Load<Texture2D>("Player");
+            Texture2D sprite = content.Load<Texture2D>("ProjectileSheet");
             GameWorld.newObjects.Add(gameObject);
             //go.Tag = "Ability";
 
@@ -161,7 +181,7 @@ namespace MagicGladiators
                 }
                 else gameObject.transform.position += testVector * 5;
 
-                animator.PlayAnimation("Shoot");
+                //animator.PlayAnimation("Shoot");
 
                 if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
                 {
