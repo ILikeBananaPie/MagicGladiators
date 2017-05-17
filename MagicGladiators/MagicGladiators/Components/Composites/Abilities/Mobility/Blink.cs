@@ -11,7 +11,7 @@ namespace MagicGladiators
 {
     class Blink : MobilityAbility, IUpdateable
     {
-        private  bool on = false;
+        
         private bool activated = false;
 
         private Animator animator;
@@ -61,7 +61,7 @@ namespace MagicGladiators
                     
                     gameObject.transform.position = target;
 
-                    float distance = Vector2.Distance(gameObject.transform.position, oldPos);
+                    
                     
                     activated = false;
                 }
@@ -74,15 +74,15 @@ namespace MagicGladiators
                     Vector2 playerTemp = go.transform.position;
                     Vector2 oldPos = playerTemp;
 
-                    //float test = Vector2.Distance(target, playerTemp);
+                   
 
                     while (Vector2.Distance(playerTemp, oldPos) < 250)
                     {
-                        //float test2 = Vector2.Distance(target, playerTemp);
+                      
                         playerTemp += VectorBetween * 10;
                     }
                     gameObject.transform.position = playerTemp;
-                    float test3 = Vector2.Distance(gameObject.transform.position, oldPos);
+                    
 
                     activated = false;
 
