@@ -165,9 +165,8 @@ namespace MagicGladiators
                 {
                     if (gameObject.Tag != "Chain")
                     {
-
+                        GameWorld.objectsToRemove.Add(gameObject);
                     }
-                    GameWorld.objectsToRemove.Add(gameObject);
                 }
             }
 
