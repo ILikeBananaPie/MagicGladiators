@@ -51,7 +51,7 @@ namespace MagicGladiators
         private List<string> offensiveAbilities = new List<string>() { "HomingMissile", "Fireball", "Ricochet" };
         private List<string> defensiveAbilities = new List<string>() { "Deflect", "Invisibility", "Stone Armor" };
         private List<string> movementAbilities = new List<string>() { "Charge", "Blink", "Leap" };
-
+        //v.0.2
 
         private static GameWorld instance;
         public static GameWorld Instance
