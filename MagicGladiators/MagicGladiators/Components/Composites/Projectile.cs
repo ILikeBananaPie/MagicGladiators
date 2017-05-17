@@ -26,6 +26,8 @@ namespace MagicGladiators
         private float distance;
         private Vector2 bestTarget;
 
+        private float mineTimer;
+
         private Vector2 target;
 
         public Projectile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
@@ -127,6 +129,20 @@ namespace MagicGladiators
                     GameWorld.objectsToRemove.Add(gameObject);
                 }
             }
+            if(gameObject.Tag == "Mine")
+            {
+                if(mineTimer > 1)
+                {
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        //Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(gameObject.transform.position, Vector2.Zero);
+                        //test.Normalize();
+                        //(gameObject.GetComponent("Physics") as Physics).Acceleration += test / 15;
+                    }
+                }
+                mineTimer += GameWorld.Instance.deltaTime;
+            }
+
             if (gameObject.Tag == "HomingMissile")
             {
                 if (homingTimer > 1)
