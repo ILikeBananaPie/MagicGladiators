@@ -60,5 +60,10 @@ namespace MagicGladiators.Components.Composites
             this.trnsfrm.position = package.position;
             this.velocity = package.velocity;
         }
+        public void UpdateEnemyInfo(Vector2 pos, Vector2 vel)
+        {
+            this.trnsfrm.position = pos;
+            this.velocity = vel;
+        }
     }
 }

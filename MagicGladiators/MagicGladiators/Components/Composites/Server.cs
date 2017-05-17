@@ -11,10 +11,11 @@ using Microsoft.Xna.Framework.Content;
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
+using NetworkCommsDotNet.Connections.TCP;
 
 namespace MagicGladiators.Components.Composites
 {
-    class Server : Component, IDrawable, ILoadable, IUpdateable
+    class Server:Component, IDrawable, ILoadable, IUpdateable
     {
         private static readonly Object thislock = new Object();
         private static Dictionary<Connection, GameObject> _players;
@@ -33,13 +34,30 @@ namespace MagicGladiators.Components.Composites
             NetworkComms.AppendGlobalIncomingPacketHandler<string>("JoinServer", JoinServer);
 
             NetworkComms.AppendGlobalIncomingPacketHandler<UpdatePackage>("UpdatePosition", UpdatePosition);
+
+            NetworkComms.AppendGlobalIncomingPacketHandler<bool>("AddSelf", Addself);
             //Start listening for incoming connections
-            
+
             Connection.StartListening(ConnectionType.TCP, new IPEndPoint(IPAddress.Any, 0));
 
             playerPos = (GameWorld.gameObjects.Find(x => x.Tag == "Player").GetComponent("Player") as Player);
 
         }
+
+        private void Addself(PacketHeader packetHeader, Connection connection, bool incomingObject)
+        {
+            Director dir = new Director(new PlayerBuilder());
+            GameObject go = dir.Construct(new Vector2(50), 2);
+            players.Add(connection, go);
+            GameWorld.gameObjects.Add(go);
+
+        }
+
+        //private void TestFunction(Connection conn)
+        //{
+        //    ConnectionInfo connInfo  = conn.ConnectionInfo;
+        //    connInfo.
+        //}
 
         SpriteFont spriteFont;
         public void Draw(SpriteBatch spriteBatch)
@@ -65,28 +83,21 @@ namespace MagicGladiators.Components.Composites
                     go.LoadContent(GameWorld.Instance.Content);
                     players.Add(connection, go);
                     GameWorld.gameObjects.Add(go);
-                    connection.SendObject<bool>("JoinedServerRespond", true);
-                }
-                else
+                    connection.SendObject<TryConnectPackage>("ServerPackage", new TryConnectPackage(true, connection.ConnectionInfo));
+                } else
                 {
-                    connection.SendObject<bool>("JoinedServerRespond", false);
+                    connection.SendObject<TryConnectPackage>("ServerPackage", new TryConnectPackage(false, connection.ConnectionInfo));
                 }
-            }
-            else
+            } else
             {
-                connection.SendObject<bool>("JoinedServerRespond", false);
+                connection.SendObject<TryConnectPackage>("ServerPackage", new TryConnectPackage(false, connection.ConnectionInfo));
             }
         }
 
-        private bool updatingClientInfo;
         private void UpdatePosition(PacketHeader header, Connection connection, UpdatePackage position)
         {
-            if (!updatingClientInfo)
-            {
-                updatingClientInfo = true;
-                ((players[connection] as GameObject).GetComponent("Enemy") as Enemy).UpdateEnemyInfo(position);
-                updatingClientInfo = false;
-            }
+            ((players[connection] as GameObject).GetComponent("Enemy") as Enemy).UpdateEnemyInfo(position);
+
         }
 
         public void LoadContent(ContentManager content)
@@ -113,9 +124,10 @@ namespace MagicGladiators.Components.Composites
             while (true)
             {
                 dicofplayers = new Dictionary<Connection, GameObject>(players);
+                ServerPackage up = new ServerPackage(dicofplayers);
                 foreach (Connection key in dicofplayers.Keys)
                 {
-                    key.SendObject<UpdatePackage>("HostPos", playerPos.updatePackage);
+                    key.SendObject<ServerPackage>("IncommingServerPackage", up);
                 }
             }
         }

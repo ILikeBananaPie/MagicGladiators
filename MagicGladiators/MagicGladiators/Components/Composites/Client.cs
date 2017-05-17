@@ -21,8 +21,17 @@ namespace MagicGladiators.Components.Composites
         private bool connected;
         private string ip;
         private Texture2D rect;
-        Enemy hostPos;
-        Player playerPos;
+
+        private static readonly Object thislock = new Object();
+        private static Dictionary<ConnectionInfo, GameObject> _players;
+        private static Dictionary<ConnectionInfo, GameObject> players
+        {
+            get { lock (thislock) { return _players; } }
+            set { lock (thislock) { _players = value; } }
+        }
+        private ConnectionInfo thisconninfo;
+        private Player playerPos;
+
         private Keys[] lastPressedKeys;
 
         Connection tCPConn;
@@ -34,8 +43,6 @@ namespace MagicGladiators.Components.Composites
             tCPConn = null;
             ip = string.Empty;
             lastPressedKeys = Keyboard.GetState().GetPressedKeys();
-            hostPos = (GameWorld.gameObjects.Find(x => x.Tag == "Dummy").GetComponent("Enemy") as Enemy);
-            playerPos = (GameWorld.gameObjects.Find(x => x.Tag == "Player").GetComponent("Player") as Player);
         }
 
         SpriteFont spriteFont;
@@ -103,6 +110,8 @@ namespace MagicGladiators.Components.Composites
                             tCPConn = TCPConnection.GetConnection(connInfo);
                             tCPConn.AppendIncomingPacketHandler<bool>("JoinedServerRespond", JoinedServerRespond, NetworkComms.DefaultSendReceiveOptions);
                             tCPConn.AppendIncomingPacketHandler<UpdatePackage>("HostPos", HostPos, NetworkComms.DefaultSendReceiveOptions);
+                            tCPConn.AppendIncomingPacketHandler<ServerPackage>("ServerPackage", IncommingServerPackage, NetworkComms.DefaultSendReceiveOptions);
+                            tCPConn.AppendIncomingPacketHandler<TryConnectPackage>("TryConnect", TryConnect, NetworkComms.DefaultSendReceiveOptions);
                             tCPConn.SendObject<string>("JoinServer", "Player2");
                         }
                         //else
@@ -113,8 +122,7 @@ namespace MagicGladiators.Components.Composites
                 }
                 //save the currently pressed keys so we can compare on the next update
                 lastPressedKeys = pressedKeys;
-            } 
-            else
+            } else
             {
                 if (threadUpdate == null)
                 {
@@ -127,6 +135,41 @@ namespace MagicGladiators.Components.Composites
             }
         }
 
+        private void TryConnect(PacketHeader packetHeader, Connection connection, TryConnectPackage incomingObject)
+        {
+            if (incomingObject.connected)
+            {
+                Director dir = new Director(new PlayerBuilder());
+                GameObject go = dir.Construct(new Vector2(20), 2);
+                thisconninfo = incomingObject.connectionInfo;
+                this.connected = incomingObject.connected;
+            }
+        }
+
+        private void IncommingServerPackage(PacketHeader packetHeader, Connection connection, ServerPackage incomingObject)
+        {
+            foreach (ConnectionInfo key in incomingObject.players.Keys)
+            {
+                if (key != thisconninfo)
+                {
+                    if (players.Keys.Contains(key))
+                    {
+                        (players[key].GetComponent("Enemy") as Enemy).UpdateEnemyInfo(incomingObject.players[key][0], incomingObject.players[key][1]);
+                    }
+                    else
+                    {
+                        GameObject go = new GameObject(0);
+                        go.Tag = connection.ToString();
+                        go.AddComponent(new Enemy(go));
+                        go.AddComponent(new SpriteRenderer(go, "Player", 1));
+                        go.LoadContent(GameWorld.Instance.Content);
+                        players.Add(key, go);
+                        GameWorld.gameObjects.Add(go);
+                    }
+                }
+            }
+        }
+
         private Thread threadUpdate;
         public void ThreadUpdate()
         {
@@ -135,8 +178,7 @@ namespace MagicGladiators.Components.Composites
                 try
                 {
                     tCPConn.SendObject<UpdatePackage>("UpdatePosition", playerPos.updatePackage);
-                }
-                catch (ConnectionSendTimeoutException cste)
+                } catch (ConnectionSendTimeoutException cste)
                 {
                     connected = false;
                     GameWorld.gameObjects.Remove(GameWorld.gameObjects.Find(x => x.GetComponent("Enemy") is Enemy));
@@ -148,30 +190,30 @@ namespace MagicGladiators.Components.Composites
         private bool updatingHostInfo;
         private void HostPos(PacketHeader packetHeader, Connection connection, UpdatePackage incomingObject)
         {
-            if (connected)
-            {
-                if (!updatingHostInfo)
-                {
-                    updatingHostInfo = true;
-                    hostPos.UpdateEnemyInfo(incomingObject);
-                    updatingHostInfo = false;
-                }
-            }
+            //if (connected)
+            //{
+            //    if (!updatingHostInfo)
+            //    {
+            //        updatingHostInfo = true;
+            //        hostPos.UpdateEnemyInfo(incomingObject);
+            //        updatingHostInfo = false;
+            //    }
+            //}
         }
 
         private void JoinedServerRespond(PacketHeader packetHeader, Connection connection, bool incomingObject)
         {
-            if (incomingObject)
-            {
-                connected = true;
-                GameObject host = new GameObject(0);
-                host.AddComponent(new Enemy(host));
-                host.AddComponent(new SpriteRenderer(host, "Player", 1));
-                host.AddComponent(new Collider(host, false));
-                host.LoadContent(GameWorld.Instance.Content);
-                GameWorld.newObjects.Add(host);
-                hostPos = host.GetComponent("Enemy") as Enemy;
-            }
+            //if (incomingObject)
+            //{
+            //    connected = true;
+            //    GameObject host = new GameObject(0);
+            //    host.AddComponent(new Enemy(host));
+            //    host.AddComponent(new SpriteRenderer(host, "Player", 1));
+            //    host.AddComponent(new Collider(host, false));
+            //    host.LoadContent(GameWorld.Instance.Content);
+            //    GameWorld.newObjects.Add(host);
+            //    hostPos = host.GetComponent("Enemy") as Enemy;
+            //}
         }
     }
 }

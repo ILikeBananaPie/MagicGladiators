@@ -84,14 +84,14 @@ namespace MagicGladiators
             CircleColliders = new List<Collider>();
             newCircleColliders = new List<Collider>();
 
-            Director director = new Director(new PlayerBuilder());
-            gameObjects.Add(director.Construct(Vector2.Zero,1));
+            //Director director = new Director(new PlayerBuilder());
+            //gameObjects.Add(director.Construct(Vector2.Zero,1));
 
 
-            director = new Director(new DummyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(200, 200),1));
-            gameObjects.Add(director.Construct(new Vector2(200, 180), 1));
-            gameObjects.Add(director.Construct(new Vector2(200, 220), 1));
+            //director = new Director(new DummyBuilder());
+            //gameObjects.Add(director.Construct(new Vector2(200, 200),1));
+            //gameObjects.Add(director.Construct(new Vector2(200, 180), 1));
+            //gameObjects.Add(director.Construct(new Vector2(200, 220), 1));
 
 
             base.Initialize();
