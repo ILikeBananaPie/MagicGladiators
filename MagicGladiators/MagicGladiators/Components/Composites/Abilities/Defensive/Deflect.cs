@@ -47,7 +47,7 @@ namespace MagicGladiators
                 }
             }
 
-            if (keyState.IsKeyDown(Keys.R) && canUse)
+            if (keyState.IsKeyDown(Keys.F) && canUse)
             {
                 canUse = false;
                 activated = true;

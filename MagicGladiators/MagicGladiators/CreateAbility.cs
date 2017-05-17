@@ -25,19 +25,31 @@ namespace MagicGladiators
             }
             if (name == "Blink")
             {
-
+                component = new Blink(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator);
             }
             if (name == "Charge")
             {
                 component = new Charge(gameObject, gameObject.transform, (gameObject.GetComponent("Animator") as Animator));
             }
-            if (name == "Ricochet")
-            {
-
-            }
             if (name == "Drain")
             {
                 component = new Drain(gameObject);
+            }
+            if (name == "Deflect")
+            {
+                component = new Deflect(gameObject);
+            }
+            if (name == "Mine")
+            {
+                component = new Mine(gameObject, gameObject.transform.position);
+            }
+            if (name == "SpeedBoost")
+            {
+                component = new SpeedBoost(gameObject);
+            }
+            if (name == "Chain")
+            {
+                component = new Chain(gameObject);
             }
             return component;
         }

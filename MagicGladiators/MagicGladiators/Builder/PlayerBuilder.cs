@@ -31,11 +31,11 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new RollingMeteor(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
-            gameObject.AddComponent(new Chain(gameObject));
+            //gameObject.AddComponent(new Chain(gameObject));
 
-            gameObject.AddComponent(new Deflect(gameObject));
+            //gameObject.AddComponent(new Deflect(gameObject));
 
-            gameObject.AddComponent(new SpeedBoost(gameObject));
+            //gameObject.AddComponent(new SpeedBoost(gameObject));
 
             //gameObject.AddComponent(new Drain(gameObject));
 
@@ -50,11 +50,11 @@ namespace MagicGladiators
 
             //gameObject.AddComponent(new Charge(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
-            gameObject.AddComponent(new Blink(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
+            //gameObject.AddComponent(new Blink(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
             gameObject.transform.position = position;
 
-            gameObject.AddComponent(new Mine(gameObject, gameObject.transform.position));
+            //gameObject.AddComponent(new Mine(gameObject, gameObject.transform.position));
 
 
         }

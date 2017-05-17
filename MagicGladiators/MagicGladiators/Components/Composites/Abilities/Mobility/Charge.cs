@@ -49,19 +49,19 @@ namespace MagicGladiators
             Vector2 translation = Vector2.Zero;
 
             //activate aim and move in a charge
-            if (keyState.IsKeyDown(Keys.Space) && !on && !activated)
+            if (keyState.IsKeyDown(Keys.C) && !on && !activated)
             {
 
 
                 activated = true;
             }
-          /*  if (activated && keyState.IsKeyUp(Keys.Space))
+            if (activated && keyState.IsKeyUp(Keys.C))
             {
                 target = new Vector2(mouse.Position.X, mouse.Position.Y);
                 test = physics.GetVector(target, go.transform.position);
                 test.Normalize();
                 on = true;
-            }*/
+            }
             if (on)
             {
                 if (chargeTimer < 0.25)
