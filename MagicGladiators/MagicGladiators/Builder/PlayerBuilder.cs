@@ -31,6 +31,10 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new RollingMeteor(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
+            gameObject.AddComponent(new Chain(gameObject));
+
+            gameObject.AddComponent(new Deflect(gameObject));
+
             //gameObject.AddComponent(new Drain(gameObject));
 
             //gameObject.AddComponent(new HomingMissile(gameObject, gameObject.transform.position, Vector2.Zero));
@@ -47,6 +51,8 @@ namespace MagicGladiators
             gameObject.AddComponent(new Blink(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
             gameObject.transform.position = position;
+
+            gameObject.AddComponent(new Mine(gameObject, gameObject.transform.position));
 
 
         }

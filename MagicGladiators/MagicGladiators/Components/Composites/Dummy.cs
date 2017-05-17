@@ -66,6 +66,8 @@ namespace MagicGladiators
 
         public void Update()
         {
+            gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
+
             if (testPush)
             {
                 if (testTimer < 1)

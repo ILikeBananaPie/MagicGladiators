@@ -32,6 +32,8 @@ namespace MagicGladiators
         private SpriteRenderer sprite;
         private float regenTimer;
 
+        private float timer;
+
         public static List<GameObject> items = new List<GameObject>();
         public static List<GameObject> abilities = new List<GameObject>();
 
@@ -186,6 +188,7 @@ namespace MagicGladiators
                
             }
            */
+           
         }
 
         public void OnCollisionStay(Collider other)
