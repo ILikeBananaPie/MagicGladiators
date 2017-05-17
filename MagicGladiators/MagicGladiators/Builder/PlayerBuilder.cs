@@ -48,6 +48,8 @@ namespace MagicGladiators
 
             //gameObject.AddComponent(new Charge(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
+            gameObject.AddComponent(new Blink(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
+
             gameObject.transform.position = position;
 
 
