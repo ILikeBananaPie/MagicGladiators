@@ -47,19 +47,19 @@ namespace MagicGladiators
                         included[i].AddComponent(new OnClick(included[i], "NewGame"));
                         break;
                     case 1:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaOptions", 0));
                         included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 3 - 40);
                         included[i].AddComponent(new OnClick(included[i], "Options"));
                         break;
                     case 2:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaCredits", 0));
                         included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
                         included[i].AddComponent(new OnClick(included[i], "Credits"));
                         break;
                     case 3:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaExitGame", 0));
                         included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
-                        included[i].AddComponent(new OnClick(included[i], "Credits"));
+                        included[i].AddComponent(new OnClick(included[i], "ExitGame"));
                         break;
                 }
             }
@@ -74,17 +74,17 @@ namespace MagicGladiators
                 switch (i)
                 {
                     case 0:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaJoin", 0));
                         included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
                         included[i].AddComponent(new OnClick(included[i], "Join"));
                         break;
                     case 1:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaHost", 0));
                         included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 3.5f - 40);
                         included[i].AddComponent(new OnClick(included[i], "Host"));
                         break;
                     case 2:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
                         included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
                         included[i].AddComponent(new OnClick(included[i], "MainMenu"));
                         break;
