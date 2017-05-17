@@ -31,7 +31,7 @@ namespace MagicGladiators
         {
             gameObject = new GameObject();
 
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "ItemSheet", 1));
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "ItemSheet2", 1));
 
             gameObject.AddComponent(new Animator(gameObject));
 

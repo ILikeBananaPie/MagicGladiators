@@ -132,14 +132,8 @@ namespace MagicGladiators
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
             testItem = new string[] { "DmgRes", "0", "0", "-1", "0", "100" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Speed", "0", "1", "0", "0", "100" };
-            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-
 
             director = new Director(new AbilityIconBuilder());
-
-
-
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 100));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100));

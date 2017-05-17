@@ -45,12 +45,12 @@ namespace MagicGladiators
         public void LoadContent(ContentManager content)
         {
             animator = (Animator)gameObject.GetComponent("Animator");
-            Texture2D sprite = content.Load<Texture2D>("ItemSheet");
+            Texture2D sprite = content.Load<Texture2D>("ItemSheet2");
 
-            animator.CreateAnimation("Speed", new Animation(1, 0, 1, 32, 32, 10, Vector2.Zero, sprite));
-            animator.CreateAnimation("LavaRes", new Animation(1, 32, 1, 32, 32, 10, Vector2.Zero, sprite));
-            animator.CreateAnimation("DmgRes", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, sprite));
-            animator.CreateAnimation("Hp", new Animation(1, 32, 0, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Speed", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("LavaRes", new Animation(1, 0, 2, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("DmgRes", new Animation(1, 0, 3, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Hp", new Animation(1, 0, 1, 32, 32, 10, Vector2.Zero, sprite));
 
 
             if (Name == "Speed")
