@@ -188,21 +188,7 @@ namespace MagicGladiators
                
             }
            */
-            if (keyState.IsKeyDown(Keys.R) && canShoot)
-            {
-                canShoot = false;
-                Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(gameObject.transform.position, Vector2.Zero, "Mine");
-            }
-            if (!canShoot)
-            {
-                timer += GameWorld.Instance.deltaTime;
-            }
-            if (timer > 5)
-            {
-                timer = 0;
-                canShoot = true;
-            }
+           
         }
 
         public void OnCollisionStay(Collider other)

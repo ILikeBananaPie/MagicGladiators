@@ -41,6 +41,8 @@ namespace MagicGladiators
 
             gameObject.transform.position = position;
 
+            gameObject.AddComponent(new Mine(gameObject, gameObject.transform.position));
+
 
         }
 
