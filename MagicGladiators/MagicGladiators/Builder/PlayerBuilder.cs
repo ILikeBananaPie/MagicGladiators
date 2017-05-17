@@ -31,6 +31,8 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new RollingMeteor(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
+            gameObject.AddComponent(new Chain(gameObject));
+
             gameObject.AddComponent(new Deflect(gameObject));
 
             //gameObject.AddComponent(new Drain(gameObject));
