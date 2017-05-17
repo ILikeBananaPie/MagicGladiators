@@ -17,7 +17,7 @@ namespace MagicGladiators
         private bool activated = false;
         private float activationTime;
 
-        private List<string> abilities = new List<string>() { "Fireball", "Chain", "Drain", "HomingMissile" };
+        private List<string> abilities = new List<string>() { "Fireball", "Chain", "Drain", "HomingMissile", "RollingMeteor", "DeathMeteor" };
 
 
         public Deflect(GameObject go) : base(go)
