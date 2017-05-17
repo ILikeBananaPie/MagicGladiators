@@ -49,6 +49,7 @@
     <Compile Include="Components\Composites\Abilities\Defensive\DefensiveAbility.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\Deflect.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\Charge.cs" />
+    <Compile Include="Components\Composites\Abilities\Defensive\Mine.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\MobilityAbility.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\Chain.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\Drain.cs" />

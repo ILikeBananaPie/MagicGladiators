@@ -36,6 +36,8 @@ namespace MagicGladiators
 
         private Vector2 meteorVector;
 
+        private float mineTimer;
+
         private Vector2 target;
 
         public Projectile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
@@ -188,6 +190,10 @@ namespace MagicGladiators
                     (chainTarget.GetComponent("Physics") as Physics).chainActivated = false;
                     GameWorld.objectsToRemove.Add(gameObject);
                 }
+            }
+            if(gameObject.Tag == "Mine")
+            {
+             
             }
 
             if (gameObject.Tag == "HomingMissile")
