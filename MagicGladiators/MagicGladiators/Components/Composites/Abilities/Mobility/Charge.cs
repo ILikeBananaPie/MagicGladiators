@@ -85,7 +85,7 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (other.gameObject.Tag != "Player" && on)
+            if ((other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy") && on)
             {
                 timer++;
                 (gameObject.GetComponent("Physics") as Physics).Velocity = Vector2.Zero;

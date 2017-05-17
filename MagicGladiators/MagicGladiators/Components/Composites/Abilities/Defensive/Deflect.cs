@@ -17,6 +17,9 @@ namespace MagicGladiators
         private bool activated = false;
         private float activationTime;
 
+        private List<string> abilities = new List<string>() { "Fireball", "Chain", "Drain", "HomingMissile" };
+
+
         public Deflect(GameObject go) : base(go)
         {
         }
@@ -57,7 +60,7 @@ namespace MagicGladiators
             {
                 foreach (GameObject go in GameWorld.gameObjects)
                 {
-                    if (go.Tag == "HomingMissile" || go.Tag == "Fireball")
+                    if (abilities.Exists(x => x == go.Tag))
                     {
                         Circle playerCircle = new Circle();
                         playerCircle.Center = gameObject.transform.position;
