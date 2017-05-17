@@ -17,6 +17,9 @@ namespace MagicGladiators
         private bool activated = false;
         private float activationTime;
 
+        private Vector2 oldVelocity;
+        private Vector2 newVelocity;
+
         private List<string> abilities = new List<string>() { "Fireball", "Chain", "Drain", "HomingMissile", "RollingMeteor", "DeathMeteor" };
 
 
@@ -26,7 +29,7 @@ namespace MagicGladiators
 
         public override void LoadContent(ContentManager content)
         {
-            
+
         }
 
         public override void Update()
@@ -71,51 +74,46 @@ namespace MagicGladiators
                             Vector2 player = new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16);
                             Vector2 other = new Vector2(go.transform.position.X + 16, go.transform.position.Y + 16);
                             activated = false;
+
                             if (player.X - other.X > player.Y - other.Y && other.X < player.X && other.Y > player.Y)
                             {
                                 (go.GetComponent("Physics") as Physics).Velocity = new Vector2((go.GetComponent("Physics") as Physics).Velocity.X * -1, (go.GetComponent("Physics") as Physics).Velocity.Y);
-                                //(go.GetComponent("Physics") as Physics).Velocity = (go.GetComponent("Physics") as Physics).Velocity * 1.1F;
+                                (go.GetComponent("Projectile") as Projectile).TestVector = new Vector2((go.GetComponent("Projectile") as Projectile).TestVector.X * -1, (go.GetComponent("Projectile") as Projectile).TestVector.Y);
                             }
                             if (player.X - other.X < player.Y - other.Y && other.X < player.X && other.Y > player.Y)
                             {
                                 (go.GetComponent("Physics") as Physics).Velocity = new Vector2((go.GetComponent("Physics") as Physics).Velocity.X, (go.GetComponent("Physics") as Physics).Velocity.Y * -1);
-                                //(go.GetComponent("Physics") as Physics).Velocity = (go.GetComponent("Physics") as Physics).Velocity * 1.1F;
-
+                                (go.GetComponent("Projectile") as Projectile).TestVector = new Vector2((go.GetComponent("Projectile") as Projectile).TestVector.X, (go.GetComponent("Projectile") as Projectile).TestVector.Y * -1);
                             }
                             if (player.X - other.X > player.Y - other.Y && other.X > player.X && other.Y < player.Y)
                             {
                                 (go.GetComponent("Physics") as Physics).Velocity = new Vector2((go.GetComponent("Physics") as Physics).Velocity.X, (go.GetComponent("Physics") as Physics).Velocity.Y * -1);
-                                //(go.GetComponent("Physics") as Physics).Velocity = (go.GetComponent("Physics") as Physics).Velocity * 1.1F;
-
+                                (go.GetComponent("Projectile") as Projectile).TestVector = new Vector2((go.GetComponent("Projectile") as Projectile).TestVector.X, (go.GetComponent("Projectile") as Projectile).TestVector.Y * -1);
                             }
                             if (player.X - other.X < player.Y - other.Y && other.X > player.X && other.Y < player.Y)
                             {
                                 (go.GetComponent("Physics") as Physics).Velocity = new Vector2((go.GetComponent("Physics") as Physics).Velocity.X * -1, (go.GetComponent("Physics") as Physics).Velocity.Y);
-                                //(go.GetComponent("Physics") as Physics).Velocity = (go.GetComponent("Physics") as Physics).Velocity * 1.1F;
-
+                                (go.GetComponent("Projectile") as Projectile).TestVector = new Vector2((go.GetComponent("Projectile") as Projectile).TestVector.X * -1, (go.GetComponent("Projectile") as Projectile).TestVector.Y);
                             }
                             if (player.X - other.X > player.Y - other.Y && other.X < player.X && other.Y < player.Y)
                             {
                                 (go.GetComponent("Physics") as Physics).Velocity = new Vector2((go.GetComponent("Physics") as Physics).Velocity.X, (go.GetComponent("Physics") as Physics).Velocity.Y * -1);
-                                //(go.GetComponent("Physics") as Physics).Velocity = (go.GetComponent("Physics") as Physics).Velocity * 1.1F;
-
+                                (go.GetComponent("Projectile") as Projectile).TestVector = new Vector2((go.GetComponent("Projectile") as Projectile).TestVector.X, (go.GetComponent("Projectile") as Projectile).TestVector.Y) * -1;
                             }
                             if (player.X - other.X < player.Y - other.Y && other.X < player.X && other.Y < player.Y)
                             {
                                 (go.GetComponent("Physics") as Physics).Velocity = new Vector2((go.GetComponent("Physics") as Physics).Velocity.X * -1, (go.GetComponent("Physics") as Physics).Velocity.Y);
-                                //(go.GetComponent("Physics") as Physics).Velocity = (go.GetComponent("Physics") as Physics).Velocity * 1.1F;
-
+                                (go.GetComponent("Projectile") as Projectile).TestVector = new Vector2((go.GetComponent("Projectile") as Projectile).TestVector.X * -1, (go.GetComponent("Projectile") as Projectile).TestVector.Y);
                             }
                             if (player.X - other.X > player.Y - other.Y && other.X > player.X && other.Y > player.Y)
                             {
                                 (go.GetComponent("Physics") as Physics).Velocity = new Vector2((go.GetComponent("Physics") as Physics).Velocity.X, (go.GetComponent("Physics") as Physics).Velocity.Y * -1);
-                                //(go.GetComponent("Physics") as Physics).Velocity = (go.GetComponent("Physics") as Physics).Velocity * 1.1F;
-
+                                (go.GetComponent("Projectile") as Projectile).TestVector = new Vector2((go.GetComponent("Projectile") as Projectile).TestVector.X, (go.GetComponent("Projectile") as Projectile).TestVector.Y) * -1;
                             }
                             if (player.X - other.X < player.Y - other.Y && other.X > player.X && other.Y > player.Y)
                             {
                                 (go.GetComponent("Physics") as Physics).Velocity = new Vector2((go.GetComponent("Physics") as Physics).Velocity.X * -1, (go.GetComponent("Physics") as Physics).Velocity.Y);
-                                //(go.GetComponent("Physics") as Physics).Velocity = (go.GetComponent("Physics") as Physics).Velocity * 1.1F;
+                                (go.GetComponent("Projectile") as Projectile).TestVector = new Vector2((go.GetComponent("Projectile") as Projectile).TestVector.X * -1, (go.GetComponent("Projectile") as Projectile).TestVector.Y);
                             }
                         }
                     }

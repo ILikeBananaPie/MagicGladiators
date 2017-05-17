@@ -40,6 +40,19 @@ namespace MagicGladiators
 
         private Vector2 target;
 
+        public Vector2 TestVector
+        {
+            get
+            {
+                return testVector;
+            }
+
+            set
+            {
+                testVector = value;
+            }
+        }
+
         public Projectile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
             //go = gameObject;
@@ -147,20 +160,6 @@ namespace MagicGladiators
                     GameWorld.objectsToRemove.Add(gameObject);
                 }
             }
-
-            /*   
-               if (other.gameObject.Tag == "Dummy")
-               {
-                   GameWorld.objectsToRemove.Add(gameObject);
-                   Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
-
-                   Vector2 vectorBetween = other.gameObject.transform.position - test;
-                   Vector2 playerPushVector = test - other.gameObject.transform.position;
-                   playerPushVector.Normalize();
-                   vectorBetween.Normalize();
-                   (other.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
-               }
-              */
         }
 
         public void Update()
@@ -177,11 +176,9 @@ namespace MagicGladiators
             {
                 if (gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
                 {
-                    gameObject.transform.position += testVector * 2;
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector / 10;
                 }
-                else gameObject.transform.position += testVector * 5;
-
-                //animator.PlayAnimation("Shoot");
+                else (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector / 2;
 
                 if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
                 {
