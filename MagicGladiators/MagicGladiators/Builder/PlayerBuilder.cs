@@ -35,6 +35,8 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Deflect(gameObject));
 
+            gameObject.AddComponent(new SpeedBoost(gameObject));
+
             //gameObject.AddComponent(new Drain(gameObject));
 
             //gameObject.AddComponent(new HomingMissile(gameObject, gameObject.transform.position, Vector2.Zero));
