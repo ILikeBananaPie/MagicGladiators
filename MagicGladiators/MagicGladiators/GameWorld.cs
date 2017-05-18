@@ -213,6 +213,7 @@ namespace MagicGladiators
 
             if (player.CurrentHealth <= 0)
             {
+                //(player.GetComponent("DeathMine") as DeathMine).Update();
                 (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
             }
 

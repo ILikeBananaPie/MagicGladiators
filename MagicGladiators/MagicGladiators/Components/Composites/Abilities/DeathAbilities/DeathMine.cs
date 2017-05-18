@@ -12,20 +12,32 @@ namespace MagicGladiators
 {
     class DeathMine : Component, ILoadable, IUpdateable
     {
+        
+        private Vector2 originalPos;
+        private float timer;
+
         private Transform transform;
         private Animator animator;
+
         private Physics physics;
-        private bool activated;
-        private bool rPressed = false;
+
         private IStrategy strategy;
+        private bool activated = false;
 
-
-
-        public DeathMine(GameObject go, Transform transform, Animator animator) : base(go)
+        public DeathMine(GameObject gameObject, Vector2 position) : base(gameObject)
         {
+           
             this.transform = transform;
             this.animator = animator;
-            this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
+           // this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
+
+        }
+
+
+
+        public void OnCollisionEnter(Collider other)
+        {
+
         }
 
         private void CreateAnimations()
@@ -51,9 +63,7 @@ namespace MagicGladiators
 
         public void LoadContent(ContentManager content)
         {
-            animator = (Animator)gameObject.GetComponent("Animator");
 
-            Texture2D sprite = content.Load<Texture2D>("Player");
         }
 
         public void Update()
@@ -61,30 +71,26 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            Vector2 translation = Vector2.Zero;
-
-            if (keyState.IsKeyDown(Keys.R) && gameObject.CurrentHealth <= 0 && !rPressed)
+            if (keyState.IsKeyDown(Keys.R) && !activated)
             {
-                rPressed = true;
-                if (activated == true)
-                {
-                    activated = false;
-                }
-                else activated = true;
+                Director director = new Director(new ProjectileBuilder());
+                director.ConstructProjectile(new Vector2(mouse.Position.X, mouse.Position.Y), Vector2.Zero, "DeathMine");
+                activated = false;
 
+                activated = true;
+                
+                    
+                
             }
             if (keyState.IsKeyUp(Keys.R))
             {
-                rPressed = false;
-            }
-
-            if (activated)
-            {
-               
-                Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(Vector2.Zero, new Vector2(mouse.Position.X, mouse.Position.Y) , "DeathMine");
                 activated = false;
             }
+            /*if (timer > 5)
+            {
+                timer = 0;
+                canShoot = true;
+            }*/
         }
     }
 }

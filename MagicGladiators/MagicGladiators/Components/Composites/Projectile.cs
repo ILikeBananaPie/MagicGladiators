@@ -83,7 +83,7 @@ namespace MagicGladiators
             animator.CreateAnimation("Drain", new Animation(1, 0, 3, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("DeathMeteor", new Animation(1, 32, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("Chain", new Animation(1, 32, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-
+            animator.CreateAnimation("DeathMine", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             if (gameObject.Tag == "Mine")
             {
                 animator.PlayAnimation("Mine");
@@ -175,7 +175,10 @@ namespace MagicGladiators
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector / 10;
             }
-
+            if (gameObject.Tag == "DeathMine")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
+            }
             if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
             {
                 if (gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
