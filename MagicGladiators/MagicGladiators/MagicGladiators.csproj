@@ -46,6 +46,7 @@
     <Compile Include="Builder\ItemBuilder.cs" />
     <Compile Include="Builder\MapBuilder.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\RollingMeteor.cs" />
+    <Compile Include="Components\Composites\Abilities\DeathAbilities\ShrinkMap.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\DefensiveAbility.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\Blink.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\Deflect.cs" />
@@ -144,6 +145,27 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\SpellSheet2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Standard Map\StandardMap240x240.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Standard Map\StandardMap300x300.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Standard Map\StandardMap360x360.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Standard Map\StandardMap420x420.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Standard Map\StandardMap480x480.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Standard Map\StandardMap540x540.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Standard Map\StandardMap600x600.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\StandardMap.png">

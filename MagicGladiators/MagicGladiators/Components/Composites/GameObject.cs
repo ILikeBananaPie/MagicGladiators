@@ -97,6 +97,11 @@ namespace MagicGladiators
             components.Add(component);
         }
 
+        public void RemoveComponent(Component component)
+        {
+            components.Remove(component);
+        }
+
         /// <summary>
         /// Returns the specified component if it exists
         /// </summary>
@@ -105,10 +110,6 @@ namespace MagicGladiators
         public Component GetComponent(string component)
         {
             return components.Find(x => x.GetType().Name == component);
-        }
-        public void RemoveComponent(Component component)
-        {
-            components.Remove(component);
         }
 
         public void OnAnimationDone(string animationName)

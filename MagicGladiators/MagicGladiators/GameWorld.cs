@@ -52,6 +52,8 @@ namespace MagicGladiators
         private List<string> defensiveAbilities = new List<string>() { "Deflect", "Invisibility", "Stone Armor" };
         private List<string> movementAbilities = new List<string>() { "Charge", "Blink", "Leap" };
 
+        private GameObject map;
+        public float MapScale { get; set; } = 1;
 
         private static GameWorld instance;
         public static GameWorld Instance
@@ -174,7 +176,7 @@ namespace MagicGladiators
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-
+            //map.LoadContent(Content);
             foreach (GameObject go in gameObjects)
             {
                 go.LoadContent(Content);
@@ -214,6 +216,7 @@ namespace MagicGladiators
             if (player.CurrentHealth <= 0)
             {
                 (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
+                (player.GetComponent("ShrinkMap") as ShrinkMap).Update();
             }
 
 
@@ -337,7 +340,7 @@ namespace MagicGladiators
 
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-
+            //map.Update();
             foreach (GameObject go in gameObjects)
             {
                 go.Update();
@@ -377,6 +380,12 @@ namespace MagicGladiators
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
+            //Texture2D tex = (map.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite;
+            //Rectangle rect = (map.GetComponent("SpriteRenderer") as SpriteRenderer).Rectangle;
+            
+            //spriteBatch.Draw(tex, map.transform.position, null, Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(spriteBatch);

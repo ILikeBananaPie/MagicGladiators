@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class RollingMeteor : Component, ILoadable, IUpdateable
+    class RollingMeteor : Component, ILoadable
     {
         private float movementSpeed = 200;
 
@@ -83,7 +83,7 @@ namespace MagicGladiators
 
             Vector2 translation = Vector2.Zero;
 
-            if (keyState.IsKeyDown(Keys.Q) && gameObject.CurrentHealth <= 0 && !qPressed)
+            if (keyState.IsKeyDown(Keys.Q) && !qPressed)
             {
                 qPressed = true;
                 if (activated == true)

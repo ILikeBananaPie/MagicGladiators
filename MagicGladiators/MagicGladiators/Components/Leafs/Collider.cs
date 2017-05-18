@@ -21,11 +21,16 @@ namespace MagicGladiators
         /// </summary>
         private Texture2D texture;
 
+        public float Scale { get; set; } = 1;
+
         /// <summary>
         /// Inidcates if this collider will check for collisions
         /// </summary>
         public bool CheckCollisions { get; set; }
         public bool CheckCircleCollisions { get; set; }
+
+        private Circle circleCollisionBox;
+        private Rectangle collisionBox;
 
         private HashSet<Collider> otherColliders = new HashSet<Collider>();
 
@@ -36,13 +41,7 @@ namespace MagicGladiators
         {
             get
             {
-                return new Rectangle
-                    (
-                        (int)(gameObject.transform.position.X + spriteRenderer.Offset.X),
-                        (int)(gameObject.transform.position.Y + spriteRenderer.Offset.Y),
-                        spriteRenderer.Rectangle.Width,
-                        spriteRenderer.Rectangle.Height
-                    );
+                return collisionBox;
             }
         }
 
@@ -50,12 +49,11 @@ namespace MagicGladiators
         {
             get
             {
-                return new Circle
-                    (
-                        (int)(gameObject.transform.position.X + spriteRenderer.Rectangle.Width / 2),
-                        (int)(gameObject.transform.position.Y + spriteRenderer.Rectangle.Height / 2),
-                        spriteRenderer.Rectangle.Width / 2
-                    );
+                return circleCollisionBox;
+            }
+            set
+            {
+                circleCollisionBox = value;
             }
         }
 
@@ -63,6 +61,21 @@ namespace MagicGladiators
         {
             CheckCircleCollisions = true;
             GameWorld.Instance.CircleColliders.Add(this);
+            LoadContent(GameWorld.Instance.Content);
+            circleCollisionBox = new Circle
+                    (
+                        (int)(gameObject.transform.position.X + spriteRenderer.Rectangle.Width / 2),
+                        (int)(gameObject.transform.position.Y + spriteRenderer.Rectangle.Height / 2),
+                        spriteRenderer.Rectangle.Width / 2
+                    );
+
+            collisionBox = new Rectangle
+                (
+                    (int)(gameObject.transform.position.X + spriteRenderer.Offset.X),
+                    (int)(gameObject.transform.position.Y + spriteRenderer.Offset.Y),
+                    spriteRenderer.Rectangle.Width,
+                    spriteRenderer.Rectangle.Height
+                );
             /*
             if (gameObject.Tag == "Dummy" || gameObject.Tag == "Ability")
             {
@@ -111,14 +124,30 @@ namespace MagicGladiators
                 Rectangle bottomLine = new Rectangle(CollisionBox.X, CollisionBox.Y + CollisionBox.Height, CollisionBox.Width, 1);
                 Rectangle rightLine = new Rectangle(CollisionBox.X + CollisionBox.Width, CollisionBox.Y, 1, CollisionBox.Height);
                 Rectangle leftLine = new Rectangle(CollisionBox.X, CollisionBox.Y, 1, CollisionBox.Height);
-
             }
-
-
         }
 
         public void Update()
         {
+            if (gameObject.Tag == "Map")
+            {
+
+            }
+            circleCollisionBox = new Circle
+        (
+            (int)((gameObject.transform.position.X + (spriteRenderer.Rectangle.Width * Scale) / 2)),
+            (int)((gameObject.transform.position.Y + (spriteRenderer.Rectangle.Height * Scale) / 2)),
+            spriteRenderer.Rectangle.Width * Scale / 2
+        );
+
+            collisionBox = new Rectangle
+        (
+            (int)((gameObject.transform.position.X + spriteRenderer.Offset.X)),
+            (int)((gameObject.transform.position.Y + spriteRenderer.Offset.Y)),
+            (int)(spriteRenderer.Rectangle.Width * Scale),
+            (int)(spriteRenderer.Rectangle.Height * Scale)
+        );
+
             CheckCollision();
         }
 
@@ -157,7 +186,7 @@ namespace MagicGladiators
                 {
                     if (other != this)
                     {
-                        if (CircleCollisionBox.Intersects(other.CircleCollisionBox))
+                        if (circleCollisionBox.Intersects(other.circleCollisionBox))
                         {
                             gameObject.OnCollisionStay(other);
                             if (!otherColliders.Contains(other))
