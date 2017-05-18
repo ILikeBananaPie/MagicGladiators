@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class Deflect : DefensiveAbility
+    class Deflect : DefensiveAbility, IDrawable
     {
         private float cooldown = 1;
         private bool canUse = true;
@@ -20,32 +21,62 @@ namespace MagicGladiators
         private Vector2 oldVelocity;
         private Vector2 newVelocity;
 
+        private GameObject effect;
+        private Animator animator;
+        private Texture2D sprite;
+        private bool isLoaded = false;
+
         private List<string> abilities = new List<string>() { "Fireball", "Chain", "Drain", "HomingMissile", "RollingMeteor", "DeathMeteor" };
 
 
         public Deflect(GameObject go) : base(go)
         {
+            effect = new GameObject();
+            effect.AddComponent(new SpriteRenderer(effect, "Deflect", 1));
+            //LoadContent(GameWorld.Instance.Content);
+        }
+
+        private void CreateAnimations()
+        {
+            //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
+
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 39, 39, 1, Vector2.Zero, sprite));
+
+            animator.PlayAnimation("Idle");
         }
 
         public override void LoadContent(ContentManager content)
         {
-
+            isLoaded = true;
+            //animator = (Animator)gameObject.GetComponent("Animator");
+            //sprite = content.Load<Texture2D>("Deflect");
+            effect.LoadContent(GameWorld.Instance.Content);
+            //CreateAnimations();
         }
 
         public override void Update()
         {
+            if (!isLoaded)
+            {
+                LoadContent(GameWorld.Instance.Content);
+            }
+
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (!canUse)
+            if (activated)
             {
-                timer += GameWorld.Instance.deltaTime;
                 activationTime += GameWorld.Instance.deltaTime;
                 if (activationTime > 2)
                 {
                     activated = false;
                     activationTime = 0;
                 }
+            }
+
+            if (!canUse)
+            {
+                timer += GameWorld.Instance.deltaTime;
                 if (timer > cooldown)
                 {
                     canUse = true;
@@ -66,7 +97,7 @@ namespace MagicGladiators
                     if (abilities.Exists(x => x == go.Tag))
                     {
                         Circle playerCircle = new Circle();
-                        playerCircle.Center = gameObject.transform.position;
+                        playerCircle.Center = new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16);
                         playerCircle.Radius = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Radius * 1.2F;
 
                         if (playerCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
@@ -118,6 +149,17 @@ namespace MagicGladiators
                         }
                     }
                 }
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            if (activated)
+            {
+                float radius = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Radius * 1.2F;
+                radius = radius - (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Radius;
+                effect.transform.position = new Vector2(gameObject.transform.position.X - radius, gameObject.transform.position.Y - radius);
+                effect.Draw(spriteBatch);
             }
         }
     }
