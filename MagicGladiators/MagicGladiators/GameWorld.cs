@@ -150,7 +150,7 @@ namespace MagicGladiators
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Chain", 100));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Blink", 100));
-
+            buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Nova", 100));
             base.Initialize();
         }
