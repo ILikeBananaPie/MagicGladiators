@@ -47,6 +47,15 @@ namespace CoreTest
         }
 
         [TestMethod]
+        public void GetVectorTestEqualValues()
+        {
+            Physics physics = new Physics(new GameObject(1));
+            Vector2 actual = physics.GetVector(new Vector2(1, 1), new Vector2(1, 1));
+            Vector2 expected = new Vector2(0, 0);
+            Assert.AreEqual(actual, expected);
+        }
+
+        [TestMethod]
         public void GetVectorTestMaxPositiveValuePostitiveResult()
         {
             Physics physics = new Physics(new GameObject(1));
