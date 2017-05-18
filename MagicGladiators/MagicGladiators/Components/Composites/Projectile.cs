@@ -164,6 +164,10 @@ namespace MagicGladiators
                     GameWorld.objectsToRemove.Add(gameObject);
                 }
             }
+
+            //HER !!!!! DEATH MINE STUFFF MUHAHAHHAHHA :D
+
+
         }
 
         public void Update()
