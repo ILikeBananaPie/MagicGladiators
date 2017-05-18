@@ -7,10 +7,10 @@ using Microsoft.Xna.Framework;
 
 namespace MagicGladiators
 {
-    class ProjectileBuilder : IBuilder
+    class ItemBuilder : IBuilder
     {
         private GameObject gameObject;
-        //private GameObject target;
+
 
         public void BuildGameObject(Vector2 position)
         {
@@ -29,7 +29,21 @@ namespace MagicGladiators
 
         public void BuildItem(Vector2 position, string[] stats)
         {
-            throw new NotImplementedException();
+            gameObject = new GameObject();
+
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "ItemSheet2", 1));
+
+            gameObject.AddComponent(new Animator(gameObject));
+
+            gameObject.AddComponent(new Item(gameObject, stats));
+
+            gameObject.AddComponent(new Collider(gameObject, false));
+
+            gameObject.LoadContent(GameWorld.Instance.Content);
+
+            gameObject.Tag = "Icon";
+
+            gameObject.transform.position = position;
         }
 
         public void FireProjectile(Vector2 position, Vector2 targetVector)
@@ -39,20 +53,7 @@ namespace MagicGladiators
 
         public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
         {
-            gameObject = new GameObject();
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "ProjectileSheet", 1));
-            gameObject.AddComponent(new Animator(gameObject));
-            gameObject.Tag = ability;
-            gameObject.AddComponent(new Physics(gameObject));
-            gameObject.AddComponent(new Projectile(gameObject, position, targetVector));
-            gameObject.AddComponent(new Collider(gameObject, true));
-            gameObject.transform.position = position;
-            gameObject.LoadContent(GameWorld.Instance.Content);
-            //GameWorld.newObjects.Add(gameObject);
-
-            gameObject.CurrentHealth = 100;
-            gameObject.transform.position = position;
-
+            throw new NotImplementedException();
         }
 
         public GameObject GetResult()

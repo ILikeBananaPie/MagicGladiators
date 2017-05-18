@@ -22,9 +22,15 @@ namespace MagicGladiators
         private float testTimer;
         private int testSpeed = 10;
 
+        public float Damage { get; private set; } = 5F;
+        public bool isAlive { get; set; } = true;
+
+
         public Dummy(GameObject gameObject) : base(gameObject)
         {
             gameObject.Tag = "Dummy";
+            gameObject.MaxHealth = 100;
+            gameObject.CurrentHealth = gameObject.MaxHealth;
 
         }
 
@@ -34,7 +40,7 @@ namespace MagicGladiators
 
             animator = (Animator)gameObject.GetComponent("Animator");
 
-            Texture2D sprite = content.Load<Texture2D>("Player");
+            Texture2D sprite = content.Load<Texture2D>("Dummy");
 
             direction = Front;
             animator.CreateAnimation("IdleFront", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, sprite));
@@ -47,7 +53,10 @@ namespace MagicGladiators
         
         public void OnCollisionEnter(Collider other)
         {
-            
+            if (other.gameObject.Tag == "Player")
+            {
+                (other.gameObject.GetComponent("Player") as Player).TakeDamage(Damage);
+            }
         }
 
         public void OnCollisionExit(Collider other)
@@ -57,6 +66,8 @@ namespace MagicGladiators
 
         public void Update()
         {
+            gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
+
             if (testPush)
             {
                 if (testTimer < 1)

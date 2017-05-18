@@ -35,6 +35,11 @@ namespace MagicGladiators.Components.Composites
             trnsfrm = gameObject.GetComponent("Transform") as Transform;
         }
 
+        public void TakeDamage(float damage)
+        {
+            gameObject.CurrentHealth -= damage * gameObject.DamageResistance;
+        }
+
         public void Update()
         {
             /*

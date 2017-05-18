@@ -17,16 +17,28 @@ namespace MagicGladiators
             this.builder = builder;
         }
 
-        public GameObject Construct(Vector2 position, object id)
+        public GameObject Construct(Vector2 position)
         {
-            builder.BuildGameObject(position, id);
+            builder.BuildGameObject(position);
 
             return builder.GetResult();
         }
 
-        public GameObject ConstructProjectile(Vector2 position, Vector2 target)
+        public GameObject ConstructProjectile(Vector2 position, Vector2 target, string ability)
         {
-            builder.FireProjectile(position, target);
+            builder.FireProjectile(position, target, ability);
+            return builder.GetResult();
+        }
+
+        public GameObject ConstructItem(Vector2 position, string[] stats)
+        {
+            builder.BuildItem(position, stats);
+            return builder.GetResult();
+        }
+
+        public GameObject ConstructIcon(Vector2 position, string name, int value)
+        {
+            builder.BuildIcon(position, name, value);
             return builder.GetResult();
         }
 

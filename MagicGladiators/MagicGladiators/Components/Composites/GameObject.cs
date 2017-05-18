@@ -14,19 +14,22 @@ namespace MagicGladiators
         public Transform transform { get; set; }
         public ContentManager content { get; private set; }
 
+        public float MaxHealth { get; set; }
+        public float CurrentHealth { get; set; }
+        public float Speed { get; set; } = 1;
+        public float DamageResistance { get; set; } = 1;
+        public float LavaResistance { get; set; } = 1;
+        public float HealthRegen { get; set; } = 0.1F;
 
-        private List<Component> components = new List<Component>();
+        public List<Component> components = new List<Component>();
 
         public string Tag { get; set; } = "Untagged";
         public ObjectType objectType { get; set; }
 
         private bool isLoaded = false;
 
-        public object ID { get; set; }
-
-        public GameObject(object id)
+        public GameObject()
         {
-            this.ID = id;
             this.transform = new Transform(this, Vector2.Zero);
 
             AddComponent(transform);

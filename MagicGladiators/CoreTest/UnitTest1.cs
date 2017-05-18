@@ -122,7 +122,7 @@ namespace CoreTest
             Vector2 expected = new Vector2(2, 2);
             Assert.AreEqual(actual, expected);
         }
-
+         
         [TestMethod]
         public void UpdateVelocityTestNegativeValues()
         {
@@ -136,7 +136,7 @@ namespace CoreTest
         public void UpdateVelocityTestMaxValue()
         {
             Physics physics = new Physics(new GameObject(1));
-            Vector2 actual = physics.UpdateVelocity(new Vector2(float.MaxValue, float.MaxValue), new Vector2(0, 0));
+            Vector2 actual = physics.UpdateVelocity(new Vector2(float.MaxValue, float.MaxValue), new Vector2(-1, -1));
             Vector2 expected = new Vector2(float.MaxValue, float.MaxValue);
             Assert.AreEqual(actual, expected);
         }
@@ -147,6 +147,37 @@ namespace CoreTest
             Physics physics = new Physics(new GameObject(1));
             Vector2 actual = physics.UpdateVelocity(new Vector2(float.MinValue, float.MinValue), new Vector2(0, 0));
             Vector2 expected = new Vector2(float.MinValue, float.MinValue);
+            Assert.AreEqual(actual, expected);
+        }
+
+        [TestMethod]
+        public void TestingFloatMaxValue()
+        {
+
+            float actual = float.MaxValue - 1;
+            //actual--;
+            float expected = float.MaxValue;
+
+            Assert.AreEqual(actual, expected);
+        }
+
+        [TestMethod]
+        public void TestingIntMaxValue()
+        {
+
+            int actual = int.MaxValue - 1;
+            int expected = int.MaxValue;
+
+            Assert.AreEqual(actual, expected);
+        }
+
+        [TestMethod]
+        public void TestingDoubleMaxValue()
+        {
+
+            double actual = double.MaxValue - 1;
+            double expected = double.MaxValue;
+
             Assert.AreEqual(actual, expected);
         }
     }
