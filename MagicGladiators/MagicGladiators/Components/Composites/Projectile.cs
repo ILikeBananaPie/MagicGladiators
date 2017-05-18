@@ -104,6 +104,10 @@ namespace MagicGladiators
             {
                 animator.PlayAnimation("DeathMeteor");
             }
+            if(gameObject.Tag == "DeathMine")
+            {
+                animator.PlayAnimation("DeathMine");
+            }
             if (gameObject.Tag == "Chain")
             {
                 animator.PlayAnimation("Chain");
