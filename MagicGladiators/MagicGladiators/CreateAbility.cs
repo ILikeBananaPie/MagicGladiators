@@ -55,6 +55,10 @@ namespace MagicGladiators
             {
                 component = new Nova(gameObject, gameObject.transform.position, Vector2.Zero);
             }
+            if (name.Contains("Spellshield"))
+            {
+                component = new Spellshield(gameObject);
+            }
             return component;
         }
 

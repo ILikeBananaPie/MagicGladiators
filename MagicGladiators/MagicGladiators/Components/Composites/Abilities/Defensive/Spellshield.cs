@@ -20,6 +20,8 @@ namespace MagicGladiators
         private GameObject effect;
         private Animator animator;
         private Texture2D sprite;
+        private bool isLoaded = false;
+
 
         private List<string> abilities = new List<string>() { "Fireball", "Chain", "Drain", "HomingMissile", "RollingMeteor", "DeathMeteor" };
 
@@ -41,6 +43,7 @@ namespace MagicGladiators
 
         public override void LoadContent(ContentManager content)
         {
+            isLoaded = true;
             //animator = (Animator)gameObject.GetComponent("Animator");
             //sprite = content.Load<Texture2D>("Spellshield");
             effect.LoadContent(GameWorld.Instance.Content);
@@ -49,6 +52,12 @@ namespace MagicGladiators
 
         public override void Update()
         {
+
+            if (!isLoaded)
+            {
+                LoadContent(GameWorld.Instance.Content);
+            }
+
             KeyboardState keyState = Keyboard.GetState();
 
             if (activated)

@@ -127,13 +127,15 @@ namespace MagicGladiators
             gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
 
             director = new Director(new ItemBuilder());
-            string[] testItem = new string[] { "Speed", "0", "1", "0", "0", "100" };
+            string[] testItem = new string[] { "Speed", "0", "1", "0", "0", "100", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Hp", "10", "0", "0", "0", "100" };
+            testItem = new string[] { "Hp", "10", "0", "0", "0", "100", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LavaRes", "0", "0", "0", "-1", "100" };
+            testItem = new string[] { "LavaRes", "0", "0", "0", "-1", "100", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "DmgRes", "0", "0", "-1", "0", "100" };
+            testItem = new string[] { "DmgRes", "0", "0", "-1", "0", "100", "0" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "1" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
 
             director = new Director(new AbilityIconBuilder());
@@ -155,6 +157,9 @@ namespace MagicGladiators
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Blink", 100));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Nova", 100));
+            buySpellPosition();
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Spellshield", 100));
+
             base.Initialize();
         }
 
@@ -235,7 +240,7 @@ namespace MagicGladiators
                         if (Player.gold >= item.Value)
                         {
                             Director director = new Director(new ItemBuilder());
-                            Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString() }));
+                            Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString() }));
                             Player.gold -= item.Value;
                             (player.GetComponent("Player") as Player).UpdateStats();
                             break;
@@ -350,6 +355,14 @@ namespace MagicGladiators
 
             }
             foreach (GameObject go in abilityList)
+            {
+                go.Update();
+            }
+            foreach (GameObject go in itemList)
+            {
+                go.Update();
+            }
+            foreach (GameObject go in Player.items)
             {
                 go.Update();
             }

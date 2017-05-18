@@ -33,7 +33,7 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new ShrinkMap(gameObject));
 
-            gameObject.AddComponent(new Spellshield(gameObject));
+            //gameObject.AddComponent(new Spellshield(gameObject));
 
             //gameObject.AddComponent(new Chain(gameObject));
 

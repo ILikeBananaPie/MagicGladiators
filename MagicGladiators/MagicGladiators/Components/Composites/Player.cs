@@ -99,13 +99,13 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (other.gameObject.Tag != "Ability" && other.gameObject.Tag != "Map" && other.gameObject.Tag != "Icon")
+            if (other.gameObject.Tag == "Dummy")
             {
                 //gameObject.CurrentHealth -= (other.gameObject.GetComponent("Dummy") as Dummy).Damage;
                 Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
                 testVector = (gameObject.GetComponent("Physics") as Physics).GetVector(test, (other.gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center);
                 testVector.Normalize();
-               // testPush = true;
+                testPush = true;
             }
             
         }
@@ -139,7 +139,7 @@ namespace MagicGladiators
 
             if (testPush)
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector * 10;
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector * 10) * gameObject.KnockBackResistance;
                 if (testTimer < 0.0025F)
                 {
                     testTimer += GameWorld.Instance.deltaTime;
@@ -217,6 +217,7 @@ namespace MagicGladiators
             gameObject.Speed = 1;
             gameObject.DamageResistance = 1;
             gameObject.LavaResistance = 1;
+            gameObject.KnockBackResistance = 1;
 
             foreach (GameObject go in items)
             {
@@ -225,6 +226,7 @@ namespace MagicGladiators
                 gameObject.DamageResistance += item.DamageResistance / 10;
                 gameObject.Speed += item.Speed / 10;
                 gameObject.LavaResistance += item.LavaResistance / 10;
+                gameObject.KnockBackResistance -= item.KnockBackResistance / 10;
             }
         }
     }
