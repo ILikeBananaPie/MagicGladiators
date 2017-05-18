@@ -221,7 +221,10 @@ namespace MagicGladiators
             {
              
             }
+            if (gameObject.Tag == "DeathMine")
+            {
 
+            }
             if (gameObject.Tag == "HomingMissile")
             {
                 if (homingTimer > 1)

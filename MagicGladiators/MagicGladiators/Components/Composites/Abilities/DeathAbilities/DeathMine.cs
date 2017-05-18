@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MagicGladiators.Components.Composites.Abilities.DeathAbilities
+namespace MagicGladiators
 {
     class DeathMine : Component, ILoadable, IUpdateable
     {
@@ -73,7 +73,7 @@ namespace MagicGladiators.Components.Composites.Abilities.DeathAbilities
                 else activated = true;
 
             }
-            if (keyState.IsKeyUp(Keys.Q))
+            if (keyState.IsKeyUp(Keys.R))
             {
                 rPressed = false;
             }
@@ -82,7 +82,7 @@ namespace MagicGladiators.Components.Composites.Abilities.DeathAbilities
             {
                
                 Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(new Vector2(mouse.Position.X, mouse.Position.Y), Vector2.Zero, "DeathMine");
+                director.ConstructProjectile(Vector2.Zero, new Vector2(mouse.Position.X, mouse.Position.Y) , "DeathMine");
                 activated = false;
             }
         }
