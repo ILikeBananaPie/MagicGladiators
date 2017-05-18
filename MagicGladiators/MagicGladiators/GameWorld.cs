@@ -198,8 +198,9 @@ namespace MagicGladiators
         protected override void Update(GameTime gameTime)
         {
             graphics.ApplyChanges();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))              
+            Exit();
+          
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
