@@ -40,6 +40,7 @@ namespace MagicGladiators
 
         private Vector2 target;
 
+
         public Vector2 TestVector
         {
             get
@@ -62,7 +63,10 @@ namespace MagicGladiators
                 meteorVector = (gameObject.GetComponent("Physics") as Physics).GetVector(target, position);
                 meteorVector.Normalize();
             }
-
+           if(gameObject.Tag == "Nova")
+            {
+                
+            }
             //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
             //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
             this.target = target;
@@ -72,6 +76,8 @@ namespace MagicGladiators
             //target.Normalize();
             this.transform = gameObject.transform;
         }
+
+       
 
         private void CreateAnimations()
         {
@@ -83,7 +89,14 @@ namespace MagicGladiators
             animator.CreateAnimation("Drain", new Animation(1, 0, 3, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("DeathMeteor", new Animation(1, 32, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("Chain", new Animation(1, 32, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-
+            foreach (GameObject go in GameWorld.newObjects)
+            {
+                if (go.Tag.Contains("Nova"))
+                {
+                    animator.PlayAnimation("Fireball");
+                }
+            }
+          
             if (gameObject.Tag == "Mine")
             {
                 animator.PlayAnimation("Mine");
@@ -165,6 +178,39 @@ namespace MagicGladiators
         public void Update()
         {
             KeyboardState keyState = Keyboard.GetState();
+            if (gameObject.Tag == "UpNova")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, 0.2f);
+            }
+            if (gameObject.Tag == "UpRightNova")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0.2f);
+            }
+            if (gameObject.Tag == "RightNova")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0);
+            }
+            if (gameObject.Tag == "DownRightNova")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, -0.2f);
+            }
+            if (gameObject.Tag == "DownNova")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, -0.2f);
+            }
+            if (gameObject.Tag == "DownLeftNova")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, -0.2f);
+            }
+            if (gameObject.Tag == "LeftNova")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0);
+            }
+            if (gameObject.Tag == "UpLeftNova")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0.2f);
+            }
+
 
 
             if (gameObject.Tag == "DeathMeteor")

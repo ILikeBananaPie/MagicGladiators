@@ -56,6 +56,7 @@
     <Compile Include="Components\Composites\Abilities\Mobility\SpeedBoost.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\Chain.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\Drain.cs" />
+    <Compile Include="Components\Composites\Abilities\Offensive\Nova.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\OffensiveAbility.cs" />
     <Compile Include="Builder\HomingMissileBuilder.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\HomingMissile.cs" />
