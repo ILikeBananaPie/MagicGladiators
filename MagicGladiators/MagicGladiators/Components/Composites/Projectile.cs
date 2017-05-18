@@ -180,35 +180,35 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             if (gameObject.Tag == "UpNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, 1);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, 0.2f);
             }
             if (gameObject.Tag == "UpRightNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(1, 1);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0.2f);
             }
             if (gameObject.Tag == "RightNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(1, 0);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0);
             }
             if (gameObject.Tag == "DownRightNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(1, -1);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, -0.2f);
             }
             if (gameObject.Tag == "DownNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, -1);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, -0.2f);
             }
             if (gameObject.Tag == "DownLeftNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-1, -1);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, -0.2f);
             }
             if (gameObject.Tag == "LeftNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-1, 0);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0);
             }
             if (gameObject.Tag == "UpLeftNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-1, 1);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0.2f);
             }
 
 
