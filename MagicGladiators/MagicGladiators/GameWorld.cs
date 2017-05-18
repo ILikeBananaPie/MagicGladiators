@@ -349,6 +349,10 @@ namespace MagicGladiators
                 go.Update();
 
             }
+            foreach (GameObject go in abilityList)
+            {
+                go.Update();
+            }
             UpdateLevel();
             base.Update(gameTime);
         }

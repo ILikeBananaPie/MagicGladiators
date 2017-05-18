@@ -60,7 +60,6 @@ namespace MagicGladiators
         public Collider(GameObject gameObject, bool newCollider) : base(gameObject)
         {
             CheckCircleCollisions = true;
-            GameWorld.Instance.CircleColliders.Add(this);
             LoadContent(GameWorld.Instance.Content);
             circleCollisionBox = new Circle
                     (
@@ -76,6 +75,9 @@ namespace MagicGladiators
                     spriteRenderer.Rectangle.Width,
                     spriteRenderer.Rectangle.Height
                 );
+
+            GameWorld.Instance.CircleColliders.Add(this);
+
             /*
             if (gameObject.Tag == "Dummy" || gameObject.Tag == "Ability")
             {
@@ -130,6 +132,10 @@ namespace MagicGladiators
         public void Update()
         {
             if (gameObject.Tag == "Map")
+            {
+
+            }
+            if (gameObject.Tag == "Icon")
             {
 
             }

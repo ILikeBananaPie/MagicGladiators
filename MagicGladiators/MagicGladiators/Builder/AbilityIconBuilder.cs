@@ -26,9 +26,10 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new AbilityIcon(gameObject, name, value));
 
-            gameObject.AddComponent(new Collider(gameObject, true));
-
             gameObject.LoadContent(GameWorld.Instance.Content);
+
+            gameObject.AddComponent(new Collider(gameObject, false));
+
 
             gameObject.Tag = "Icon";
 
