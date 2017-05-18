@@ -38,7 +38,7 @@ namespace MagicGladiators
             animator.CreateAnimation("Mine", new Animation(1, 32, 1, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("SpeedBoost", new Animation(1, 32, 2, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Chain", new Animation(1, 32, 3, 32, 32, 10, Vector2.Zero, sprite));
-
+            animator.CreateAnimation("Nova", new Animation(1, 64, 1, 32, 32, 10, Vector2.Zero, sprite));
 
             animator.PlayAnimation(Name);
         }

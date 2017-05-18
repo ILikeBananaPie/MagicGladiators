@@ -51,7 +51,7 @@ namespace MagicGladiators
             {
                 component = new Chain(gameObject);
             }
-            if(name == "Nova")
+            if(name.Contains("Nova"))
             {
                 component = new Nova(gameObject, gameObject.transform.position, Vector2.Zero);
             }
