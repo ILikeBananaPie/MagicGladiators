@@ -22,6 +22,7 @@ namespace MagicGladiators
         public float LavaResistance { get; set; }
         public int Value { get; set; }
         public float KnockBackResistance { get; set; }
+        public float ProjectileSpeed { get; set; }
 
         public Item(GameObject gameObject, string[] stats) : base(gameObject)
         {
@@ -42,6 +43,7 @@ namespace MagicGladiators
             this.LavaResistance = int.Parse(stats[4]);
             this.Value = int.Parse(stats[5]);
             this.KnockBackResistance = int.Parse(stats[6]);
+            this.ProjectileSpeed = int.Parse(stats[7]);
         }
 
         public void LoadContent(ContentManager content)
@@ -54,29 +56,9 @@ namespace MagicGladiators
             animator.CreateAnimation("DmgRes", new Animation(1, 0, 3, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Hp", new Animation(1, 0, 1, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("KnockRes", new Animation(1, 32, 0, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("ProjectileSpeed", new Animation(1, 32, 1, 32, 32, 10, Vector2.Zero, sprite));
 
-
-
-            if (Name == "Speed")
-            {
-                animator.PlayAnimation("Speed");
-            }
-            if (Name == "LavaRes")
-            {
-                animator.PlayAnimation("LavaRes");
-            }
-            if (Name == "DmgRes")
-            {
-                animator.PlayAnimation("DmgRes");
-            }
-            if (Name == "Hp")
-            {
-                animator.PlayAnimation("Hp");
-            }
-            if (Name == "KnockRes")
-            {
-                animator.PlayAnimation("KnockRes");
-            }
+            animator.PlayAnimation(Name);
             strategy = new Idle(animator);
         }
     }

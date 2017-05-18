@@ -40,6 +40,7 @@ namespace MagicGladiators
 
         private Vector2 target;
 
+        private float projectileSpeed;
 
         public Vector2 TestVector
         {
@@ -57,6 +58,7 @@ namespace MagicGladiators
         public Projectile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
             //go = gameObject;
+            projectileSpeed = GameWorld.Instance.player.ProjectileSpeed;
             originalPos = position;
             if (gameObject.Tag == "DeathMeteor")
             {
@@ -180,35 +182,35 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             if (gameObject.Tag == "UpNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, 0.2f);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, 0.2f) * projectileSpeed;
             }
             if (gameObject.Tag == "UpRightNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0.2f);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0.2f) * projectileSpeed;
             }
             if (gameObject.Tag == "RightNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0) * projectileSpeed;
             }
             if (gameObject.Tag == "DownRightNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, -0.2f);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, -0.2f) * projectileSpeed;
             }
             if (gameObject.Tag == "DownNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, -0.2f);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, -0.2f) * projectileSpeed;
             }
             if (gameObject.Tag == "DownLeftNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, -0.2f);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, -0.2f) * projectileSpeed;
             }
             if (gameObject.Tag == "LeftNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0) * projectileSpeed;
             }
             if (gameObject.Tag == "UpLeftNova")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0.2f);
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0.2f) * projectileSpeed;
             }
 
 
@@ -222,9 +224,9 @@ namespace MagicGladiators
             {
                 if (gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
                 {
-                    (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector / 10;
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 10) * projectileSpeed;
                 }
-                else (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector / 2;
+                else (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 2) * projectileSpeed;
 
                 if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
                 {
@@ -285,7 +287,7 @@ namespace MagicGladiators
 
                             Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(bestTarget, gameObject.transform.position);
                             test.Normalize();
-                            (gameObject.GetComponent("Physics") as Physics).Acceleration += test / 15;
+                            (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 15) * projectileSpeed;
                         }
                     }
                 }
@@ -294,7 +296,7 @@ namespace MagicGladiators
                     homingTimer += GameWorld.Instance.deltaTime;
                     Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(target, gameObject.transform.position);
                     test.Normalize();
-                    (gameObject.GetComponent("Physics") as Physics).Acceleration += test / 10;
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 10) * projectileSpeed;
                 }
             }
 

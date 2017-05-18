@@ -218,6 +218,7 @@ namespace MagicGladiators
             gameObject.DamageResistance = 1;
             gameObject.LavaResistance = 1;
             gameObject.KnockBackResistance = 1;
+            gameObject.ProjectileSpeed = 1;
 
             foreach (GameObject go in items)
             {
@@ -227,6 +228,7 @@ namespace MagicGladiators
                 gameObject.Speed += item.Speed / 10;
                 gameObject.LavaResistance += item.LavaResistance / 10;
                 gameObject.KnockBackResistance -= item.KnockBackResistance / 10;
+                gameObject.ProjectileSpeed += item.ProjectileSpeed / 10;
             }
         }
     }
