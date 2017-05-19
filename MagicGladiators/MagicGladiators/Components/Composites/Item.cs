@@ -97,14 +97,21 @@ namespace MagicGladiators
 
                 if (testInt != 0)
                 {
+                    if (testInt < 10)
+                    {
+                        spriteBatch.DrawString(fontText, list[index] + ": " + testInt * 10 + "%", new Vector2(x + 50, y - 50 + plus), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                        plus += 20;
+                        index++;
+                    }
+                    else
+                    {
+                        spriteBatch.DrawString(fontText, list[index] + " " + "+ " + testInt, new Vector2(x + 50, y - 50 + plus), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                        plus += 20;
+                        index++;
 
-                    spriteBatch.DrawString(fontText, list[index] + testInt, new Vector2(x + 50, y - 50 + plus), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
-                    plus += 20;
-                    index++;
-
+                    }
                 }
             }
-
         }
     }
 }
