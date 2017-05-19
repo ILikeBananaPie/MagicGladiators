@@ -137,7 +137,7 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" && gameObject.Tag != "DeathMines")
+            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy")
             {
                 if (gameObject.Tag == "Drain")
                 {
