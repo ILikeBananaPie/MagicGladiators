@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MagicGladiators
 {
-    class Projectile : Component, IUpdateable, ICollisionEnter, ILoadable
+    class Projectile : Component, IUpdateable, ICollisionEnter, ILoadable, ICollisionStay
     {
         private Animator animator; //test 
 
@@ -39,6 +39,8 @@ namespace MagicGladiators
         private Vector2 meteorVector;
 
         private float mineTimer;
+        private float mineActivationTime = 5F;
+        private bool deathMineActivated = false;
 
         private Vector2 target;
 
@@ -63,6 +65,10 @@ namespace MagicGladiators
             {
                 meteorVector = (gameObject.GetComponent("Physics") as Physics).GetVector(target, position);
                 meteorVector.Normalize();
+            }
+            if (gameObject.Tag == "DeathMines")
+            {
+
             }
 
             //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
@@ -132,8 +138,7 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-
-            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy")
+            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" && gameObject.Tag != "DeathMines")
             {
                 if (gameObject.Tag == "Drain")
                 {
@@ -145,39 +150,46 @@ namespace MagicGladiators
                     (chainTarget.GetComponent("Physics") as Physics).chainActivated = true;
                     chainActivated = true;
                 }
-                foreach (Collider go in GameWorld.Instance.CircleColliders)
+                if (gameObject.Tag != "DeathMine")
                 {
-                    if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
+                    Push();
+                }
+            }
+        }
+
+        public void OnCollisionStay(Collider other)
+        {
+            if (gameObject.Tag == "DeathMine" && deathMineActivated)
+            {
+                Push();
+            }
+        }
+
+        public void Push()
+        {
+            foreach (Collider go in GameWorld.Instance.CircleColliders)
+            {
+                if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
+                {
+                    Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
+                    vectorBetween.Normalize();
+                    if (go.gameObject.Tag == "Player")
                     {
-                        //plz don't delete me
-                        Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
-                        vectorBetween.Normalize();
-                        if (go.gameObject.Tag == "Player")
-                        {
-                            // (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
-                        }
-                        else if (go.gameObject.Tag == "Dummy" && gameObject.Tag != "Chain")
-                        {
-                            (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
-                        }
+                        // (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
+                    }
+                    else if (go.gameObject.Tag == "Dummy" && gameObject.Tag != "Chain")
+                    {
+                        (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
                     }
                 }
-                if (gameObject.Tag != "Chain")
-                {
-                    GameWorld.objectsToRemove.Add(gameObject);
-                }
             }
-
-            //HER !!!!! DEATH MINE STUFFF MUHAHAHHAHHA :D
-            if(other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy")
+            if (gameObject.Tag != "Chain" && gameObject.Tag != "Deflect" && gameObject.Tag != "Spellshield")
             {
-                if(gameObject.Tag == "DeathMine")
-                {
-                    //(other.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
-                }
+                GameWorld.objectsToRemove.Add(gameObject);
             }
-
         }
+
+        
 
         public void Update()
         {
@@ -194,7 +206,12 @@ namespace MagicGladiators
             
             if (gameObject.Tag == "DeathMine")
             {
-                 //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;    
+                mineTimer += GameWorld.Instance.deltaTime;
+                if (mineTimer > mineActivationTime)
+                {
+                    deathMineActivated = true;
+                }
+                //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
             }
           
 
@@ -280,6 +297,5 @@ namespace MagicGladiators
 
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
         }
-
     }
 }
