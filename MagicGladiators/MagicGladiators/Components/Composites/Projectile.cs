@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MagicGladiators
 {
-    class Projectile : Component, IUpdateable, ICollisionEnter, ILoadable
+    class Projectile : Component, IUpdateable, ICollisionEnter, ILoadable, ICollisionStay
     {
         private Animator animator; //test 
 
@@ -137,10 +137,6 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (gameObject.Tag == "DeathMines" && deathMineActivated)
-            {
-
-            }
             if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" && gameObject.Tag != "DeathMines")
             {
                 if (gameObject.Tag == "Drain")
@@ -153,10 +149,18 @@ namespace MagicGladiators
                     (chainTarget.GetComponent("Physics") as Physics).chainActivated = true;
                     chainActivated = true;
                 }
-                if (gameObject.Tag != "DeathMines" || (gameObject.Tag == "DeathMines" && deathMineActivated))
+                if (gameObject.Tag != "DeathMine")
                 {
                     Push();
                 }
+            }
+        }
+
+        public void OnCollisionStay(Collider other)
+        {
+            if (gameObject.Tag == "DeathMine" && deathMineActivated)
+            {
+                Push();
             }
         }
 
@@ -184,7 +188,7 @@ namespace MagicGladiators
             }
         }
 
-        }
+        
 
         public void Update()
         {
@@ -292,6 +296,5 @@ namespace MagicGladiators
 
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
         }
-
     }
 }
