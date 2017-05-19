@@ -534,6 +534,20 @@ namespace MagicGladiators
                     item.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
             }
+            //casting float issue
+            /*
+            foreach (GameObject go in Player.items)
+            {
+                Item item = (go.GetComponent("Item") as Item);
+                if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+                {
+                    TooltipBox.transform.position = new Vector2(mouse.Position.X + 40, mouse.Position.Y - 60);
+                    TooltipBox.Draw(spriteBatch);
+                    //spriteBatch.DrawString(fontText, item.Name, new Vector2(mouse.Position.X + 50, mouse.Position.Y - 50), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    item.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
+                }
+            }
+            */
             spriteBatch.End();
             base.Draw(gameTime);
         }

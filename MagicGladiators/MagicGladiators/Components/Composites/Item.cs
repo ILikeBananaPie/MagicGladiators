@@ -20,7 +20,7 @@ namespace MagicGladiators
         private int tooltipX;
         private int tooltipY;
         private bool showTooltip = false;
-        private string[] list = new string[2] { "Stat", "Price" };
+        private string[] list = new string[2] { "Stat", "Value" };
 
         public string Name { get; set; }
         public int Health { get; set; }
