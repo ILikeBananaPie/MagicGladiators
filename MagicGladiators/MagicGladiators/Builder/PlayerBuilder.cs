@@ -51,6 +51,8 @@ namespace MagicGladiators
 
             //gameObject.LoadContent(GameWorld.Instance.Content);
 
+            gameObject.AddComponent(new Boomerang(gameObject));
+
             
 
             MouseState mouse = Mouse.GetState();
