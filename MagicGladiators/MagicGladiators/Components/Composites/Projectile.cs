@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MagicGladiators
 {
-    class Projectile : Component, IUpdateable, ICollisionEnter, ILoadable
+    class Projectile : Component, IUpdateable, ICollisionEnter, ILoadable, ICollisionStay
     {
         private Animator animator; //test 
 
@@ -32,11 +32,15 @@ namespace MagicGladiators
         private GameObject chainTarget;
         private float chainTimer;
 
+        
+       
         private Physics test;
 
         private Vector2 meteorVector;
 
         private float mineTimer;
+        private float mineActivationTime = 5F;
+        private bool deathMineActivated = false;
 
         private Vector2 target;
 
@@ -65,10 +69,11 @@ namespace MagicGladiators
                 meteorVector = (gameObject.GetComponent("Physics") as Physics).GetVector(target, position);
                 meteorVector.Normalize();
             }
-           if(gameObject.Tag == "Nova")
+            if (gameObject.Tag == "DeathMines")
             {
-                
+
             }
+
             //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
             //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
             this.target = target;
@@ -119,6 +124,11 @@ namespace MagicGladiators
             {
                 animator.PlayAnimation("DeathMeteor");
             }
+            if(gameObject.Tag == "DeathMine")
+            {
+                animator.PlayAnimation("DeathMine");
+                
+            }
             if (gameObject.Tag == "Chain")
             {
                 animator.PlayAnimation("Chain");
@@ -140,8 +150,7 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-
-            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy")
+            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" && gameObject.Tag != "DeathMines")
             {
                 if (gameObject.Tag == "Drain")
                 {
@@ -153,29 +162,46 @@ namespace MagicGladiators
                     (chainTarget.GetComponent("Physics") as Physics).chainActivated = true;
                     chainActivated = true;
                 }
-                foreach (Collider go in GameWorld.Instance.CircleColliders)
+                if (gameObject.Tag != "DeathMine")
                 {
-                    if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
-                    {
-                        //plz don't delete me
-                        Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
-                        vectorBetween.Normalize();
-                        if (go.gameObject.Tag == "Player")
-                        {
-                            // (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
-                        }
-                        else if (go.gameObject.Tag == "Dummy" && gameObject.Tag != "Chain")
-                        {
-                            (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
-                        }
-                    }
-                }
-                if (gameObject.Tag != "Chain")
-                {
-                    GameWorld.objectsToRemove.Add(gameObject);
+                    Push();
                 }
             }
         }
+
+        public void OnCollisionStay(Collider other)
+        {
+            if (gameObject.Tag == "DeathMine" && deathMineActivated && (other.gameObject.Tag == "Enemy" || other.gameObject.Tag == "Dummy"))
+            {
+                Push();
+            }
+        }
+
+        public void Push()
+        {
+            foreach (Collider go in GameWorld.Instance.CircleColliders)
+            {
+                if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
+                {
+                    Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
+                    vectorBetween.Normalize();
+                    if (go.gameObject.Tag == "Player")
+                    {
+                        // (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
+                    }
+                    else if (go.gameObject.Tag == "Dummy" && gameObject.Tag != "Chain")
+                    {
+                        (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+                    }
+                }
+            }
+            if (gameObject.Tag != "Chain" && gameObject.Tag != "Deflect" && gameObject.Tag != "Spellshield")
+            {
+                GameWorld.objectsToRemove.Add(gameObject);
+            }
+        }
+
+        
 
         public void Update()
         {
@@ -215,10 +241,25 @@ namespace MagicGladiators
 
 
 
+
             if (gameObject.Tag == "DeathMeteor")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector / 10;
             }
+            
+           
+            
+            if (gameObject.Tag == "DeathMine")
+            {
+                mineTimer += GameWorld.Instance.deltaTime;
+                if (mineTimer > mineActivationTime)
+                {
+                    deathMineActivated = true;
+                    (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
+                }
+                //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
+            }
+          
 
             if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
             {
@@ -265,7 +306,7 @@ namespace MagicGladiators
             {
              
             }
-
+           
             if (gameObject.Tag == "HomingMissile")
             {
                 if (homingTimer > 1)
@@ -302,6 +343,5 @@ namespace MagicGladiators
 
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
         }
-
     }
 }
