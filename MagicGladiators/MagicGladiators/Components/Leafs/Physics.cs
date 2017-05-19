@@ -35,9 +35,16 @@ namespace MagicGladiators
             float distanceTest = Vector2.Distance(velocity, Vector2.Zero);
             if (!(Vector2.Distance(velocity, Vector2.Zero) < 0.05F && Vector2.Distance(velocity, Vector2.Zero) > -0.05F))
             {
-                if (gameObject.Tag == "HomingMissile")
+                if (gameObject.Tag == "HomingMissile" || gameObject.Tag == "Boomerang")
                 {
-                    Acceleration = 0.001F * -velocity;
+                    
+
+                    if(gameObject.Tag == "Boomerang")
+                    {
+                        Acceleration = 0.002F * -velocity;
+
+                    }
+                    else Acceleration = 0.001F * -velocity;
                 }
                 else if (chainActivated)
                 {

@@ -32,9 +32,11 @@ namespace MagicGladiators
         private GameObject chainTarget;
         private float chainTimer;
 
-        
-       
+        private bool boomerangReturn = false;
+        private float boomerangTimer = 0;
+
         private Physics test;
+      
 
         private Vector2 meteorVector;
 
@@ -74,6 +76,7 @@ namespace MagicGladiators
 
             }
 
+
             //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
             //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
             this.target = target;
@@ -84,7 +87,7 @@ namespace MagicGladiators
             this.transform = gameObject.transform;
         }
 
-       
+
 
         private void CreateAnimations()
         {
@@ -96,6 +99,7 @@ namespace MagicGladiators
             animator.CreateAnimation("Drain", new Animation(1, 0, 3, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("DeathMeteor", new Animation(1, 32, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("Chain", new Animation(1, 32, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Boomerang", new Animation(1, 0, 1, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
             foreach (GameObject go in GameWorld.newObjects)
             {
                 if (go.Tag.Contains("Nova"))
@@ -103,7 +107,7 @@ namespace MagicGladiators
                     animator.PlayAnimation("Fireball");
                 }
             }
-          
+
             if (gameObject.Tag == "Mine")
             {
                 animator.PlayAnimation("Mine");
@@ -124,14 +128,18 @@ namespace MagicGladiators
             {
                 animator.PlayAnimation("DeathMeteor");
             }
-            if(gameObject.Tag == "DeathMine")
+            if (gameObject.Tag == "DeathMine")
             {
                 animator.PlayAnimation("Mine");
-                
+
             }
             if (gameObject.Tag == "Chain")
             {
                 animator.PlayAnimation("Chain");
+            }
+            if (gameObject.Tag == "Boomerang")
+            {
+                animator.PlayAnimation("Boomerang");
             }
 
             strategy = new Idle(animator);
@@ -150,6 +158,10 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
+            if (gameObject.Tag == "Boomerang" && other.gameObject.Tag == "Player" && boomerangReturn)
+            {
+                GameWorld.objectsToRemove.Add(gameObject);
+            }
             if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" && gameObject.Tag != "DeathMine")
             {
                 if (gameObject.Tag == "Drain")
@@ -202,7 +214,7 @@ namespace MagicGladiators
             }
         }
 
-        
+
 
         public void Update()
         {
@@ -240,6 +252,31 @@ namespace MagicGladiators
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0.2f) * projectileSpeed;
             }
 
+            if (gameObject.Tag == "Boomerang")
+            {
+                if (Vector2.Distance(originalPos, gameObject.transform.position) > 150)
+                {
+                    boomerangReturn = true;
+
+                }
+                else (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 10) * projectileSpeed;
+
+                if (boomerangReturn)
+                {
+                    boomerangTimer += GameWorld.Instance.deltaTime;
+                    Vector2 boomReturn = (gameObject.GetComponent("Physics") as Physics).GetVector((new Vector2(GameWorld.Instance.player.transform.position.X + 16, GameWorld.Instance.player.transform.position.Y + 16)), new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16));
+                    boomReturn.Normalize();
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (boomReturn / 10) * projectileSpeed;
+                }
+
+                if (boomerangTimer >= 5)
+                {
+                    if (gameObject.Tag == "Boomerang")
+                    {
+                        GameWorld.objectsToRemove.Add(gameObject);
+                    }
+                }
+            }
 
 
 
@@ -247,9 +284,9 @@ namespace MagicGladiators
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector / 10;
             }
-            
-           
-            
+
+
+
             if (gameObject.Tag == "DeathMine")
             {
                 mineTimer += GameWorld.Instance.deltaTime;
@@ -260,7 +297,7 @@ namespace MagicGladiators
                 }
                 //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
             }
-          
+
 
             if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
             {
@@ -303,11 +340,11 @@ namespace MagicGladiators
                     GameWorld.objectsToRemove.Add(gameObject);
                 }
             }
-            if(gameObject.Tag == "Mine")
+            if (gameObject.Tag == "Mine")
             {
-             
+
             }
-           
+
             if (gameObject.Tag == "HomingMissile")
             {
                 if (homingTimer > 1)
