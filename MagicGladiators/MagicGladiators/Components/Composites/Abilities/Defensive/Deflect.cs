@@ -120,15 +120,27 @@ namespace MagicGladiators
                             float oy = ex;
 
 
-                            double e1x = (physicsPlayer.Velocity.X * ex + physicsPlayer.Velocity.Y * ey) * ex;
-                            double e1y = (physicsPlayer.Velocity.X * ex + physicsPlayer.Velocity.Y * ey) * ey;
+                            //double e1x = (physicsPlayer.Velocity.X * ex + physicsPlayer.Velocity.Y * ey) * ex;
+                            //double e1y = (physicsPlayer.Velocity.X * ex + physicsPlayer.Velocity.Y * ey) * ey;
+                            //double e2x = (physicsSpell.Velocity.X * ex + physicsSpell.Velocity.Y * ey) * ex;
+                            //double e2y = (physicsSpell.Velocity.X * ex + physicsSpell.Velocity.Y * ey) * ey;
+
+                            //double o1x = (physicsPlayer.Velocity.X * ox + physicsPlayer.Velocity.Y * oy) * ox;
+                            //double o1y = (physicsPlayer.Velocity.X * ox + physicsPlayer.Velocity.Y * oy) * oy;
+                            //double o2x = (physicsSpell.Velocity.X * ox + physicsSpell.Velocity.Y * oy) * ox;
+                            //double o2y = (physicsSpell.Velocity.X * ox + physicsSpell.Velocity.Y * oy) * oy;
+
+                            double e1x = (0 * ex + 0 * ey) * ex;
+                            double e1y = (0 * ex + 0 * ey) * ey;
                             double e2x = (physicsSpell.Velocity.X * ex + physicsSpell.Velocity.Y * ey) * ex;
                             double e2y = (physicsSpell.Velocity.X * ex + physicsSpell.Velocity.Y * ey) * ey;
 
-                            double o1x = (physicsPlayer.Velocity.X * ox + physicsPlayer.Velocity.Y * oy) * ox;
-                            double o1y = (physicsPlayer.Velocity.X * ox + physicsPlayer.Velocity.Y * oy) * oy;
+                            double o1x = (0 * ox + 0 * oy) * ox;
+                            double o1y = (0 * ox + 0 * oy) * oy;
                             double o2x = (physicsSpell.Velocity.X * ox + physicsSpell.Velocity.Y * oy) * ox;
                             double o2y = (physicsSpell.Velocity.X * ox + physicsSpell.Velocity.Y * oy) * oy;
+
+
 
                             int playerMass = 10;
                             int spellMass = 1;
