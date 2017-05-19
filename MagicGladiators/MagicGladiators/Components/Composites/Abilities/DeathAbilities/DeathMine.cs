@@ -29,7 +29,7 @@ namespace MagicGladiators
            
             this.transform = transform;
             this.animator = animator;
-           // this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
+           
 
         }
 
