@@ -42,6 +42,10 @@ namespace MagicGladiators
         private float mineActivationTime = 5F;
         private bool deathMineActivated = false;
 
+
+        private float abilityTimer = 0;
+
+
         private Vector2 target;
 
         private float projectileSpeed;
@@ -209,34 +213,42 @@ namespace MagicGladiators
             if (gameObject.Tag == "UpNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, 0.2f) * projectileSpeed;
-            }
+                abilityTimer += 0.01F;
+            }       
             if (gameObject.Tag == "UpRightNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0.2f) * projectileSpeed;
+                abilityTimer += 0.01F;
             }
             if (gameObject.Tag == "RightNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0) * projectileSpeed;
+                abilityTimer+= 0.01F;
             }
             if (gameObject.Tag == "DownRightNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, -0.2f) * projectileSpeed;
+                abilityTimer+= 0.01F;
             }
             if (gameObject.Tag == "DownNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, -0.2f) * projectileSpeed;
+                abilityTimer+= 0.01F;
             }
             if (gameObject.Tag == "DownLeftNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, -0.2f) * projectileSpeed;
+                abilityTimer += 0.01F;
             }
             if (gameObject.Tag == "LeftNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0) * projectileSpeed;
+                abilityTimer += 0.01F;
             }
             if (gameObject.Tag == "UpLeftNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0.2f) * projectileSpeed;
+                abilityTimer += 0.01F;
             }
 
 
@@ -245,6 +257,7 @@ namespace MagicGladiators
             if (gameObject.Tag == "DeathMeteor")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector / 10;
+                abilityTimer += 0.001f;
             }
             
            
@@ -342,6 +355,16 @@ namespace MagicGladiators
             }
 
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
+
+            if(abilityTimer > 2)
+            {   if(gameObject.Tag == "DeathMeteor" || gameObject.Tag.Contains("Nova"))
+                {
+                    GameWorld.objectsToRemove.Add(gameObject);
+                }
+                
+            }
+
+
         }
     }
 }
