@@ -32,6 +32,7 @@ namespace MagicGladiators
         private GameObject chainTarget;
         private float chainTimer;
 
+        
        
         private Physics test;
 
@@ -193,7 +194,7 @@ namespace MagicGladiators
             
             if (gameObject.Tag == "DeathMine")
             {
-                 (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;    
+                 //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;    
             }
           
 
