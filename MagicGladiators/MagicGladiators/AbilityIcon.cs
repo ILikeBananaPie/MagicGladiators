@@ -40,6 +40,7 @@ namespace MagicGladiators
             animator.CreateAnimation("Chain", new Animation(1, 32, 3, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Nova", new Animation(1, 64, 1, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Spellshield", new Animation(1, 64, 2, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("StoneArmour", new Animation(1, 64, 3, 32, 32, 10, Vector2.Zero, sprite));
 
 
             animator.PlayAnimation(Name);

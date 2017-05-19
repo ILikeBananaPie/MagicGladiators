@@ -33,6 +33,8 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new ShrinkMap(gameObject));
 
+            //gameObject.AddComponent(new StoneArmour(gameObject));
+
             //gameObject.AddComponent(new Spellshield(gameObject));
 
             //gameObject.AddComponent(new Chain(gameObject));
@@ -49,6 +51,8 @@ namespace MagicGladiators
 
             //gameObject.LoadContent(GameWorld.Instance.Content);
 
+            
+
             MouseState mouse = Mouse.GetState();
             gameObject.transform.position = position;
 
@@ -60,6 +64,8 @@ namespace MagicGladiators
             gameObject.transform.position = position;
 
             //gameObject.AddComponent(new Mine(gameObject, gameObject.transform.position));
+
+
 
 
         }

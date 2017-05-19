@@ -49,6 +49,7 @@
     <Compile Include="Components\Composites\Abilities\DeathAbilities\ShrinkMap.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\DefensiveAbility.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\Spellshield.cs" />
+    <Compile Include="Components\Composites\Abilities\Defensive\StoneArmour.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\Blink.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\Deflect.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\Charge.cs" />

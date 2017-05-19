@@ -59,6 +59,10 @@ namespace MagicGladiators
             {
                 component = new Spellshield(gameObject);
             }
+            if(name == "StoneArmour")
+            {
+                component = new StoneArmour(gameObject);
+            }
             return component;
         }
 
