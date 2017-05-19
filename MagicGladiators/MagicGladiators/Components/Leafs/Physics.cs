@@ -15,6 +15,7 @@ namespace MagicGladiators
         public bool chainDeactivated { get; set; } = false;
         public bool chainActivated { get; set; } = false;
         private float timer;
+        private Vector2 breaking = new Vector2(0.05F, 0.05F);
 
         public Physics(GameObject gameObject) : base(gameObject)
         {
@@ -33,18 +34,17 @@ namespace MagicGladiators
 
             }
             float distanceTest = Vector2.Distance(velocity, Vector2.Zero);
-            if (!(Vector2.Distance(velocity, Vector2.Zero) < 0.05F && Vector2.Distance(velocity, Vector2.Zero) > -0.05F))
+            if (!(Vector2.Distance(velocity, Vector2.Zero) < 0.005F && Vector2.Distance(velocity, Vector2.Zero) > -0.005F))
             {
                 if (gameObject.Tag == "HomingMissile" || gameObject.Tag == "Boomerang")
                 {
-                    
-
                     if(gameObject.Tag == "Boomerang")
                     {
-                        Acceleration = 0.002F * -velocity;
+                        Acceleration = 0.001F * -velocity;
+                        //Acceleration = new Vector2(Acceleration.X + Acceleration.X * 10F, Acceleration.Y);
 
                     }
-                    else Acceleration = 0.001F * -velocity;
+                    else Acceleration = 0.004F * -velocity;
                 }
                 else if (chainActivated)
                 {

@@ -36,7 +36,6 @@ namespace MagicGladiators
         private float boomerangTimer = 0;
 
         private Physics test;
-      
 
         private Vector2 meteorVector;
 
@@ -84,7 +83,7 @@ namespace MagicGladiators
             //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
             //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
             this.target = target;
-            testVector = target - originalPos;
+            testVector = target - new Vector2(originalPos.X + 16, originalPos.Y + 16);
             testVector.Normalize();
             //target = target - originalPos;
             //target.Normalize();
@@ -227,7 +226,7 @@ namespace MagicGladiators
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, 0.2f) * projectileSpeed;
                 abilityTimer += 0.01F;
-            }       
+            }
             if (gameObject.Tag == "UpRightNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0.2f) * projectileSpeed;
@@ -236,17 +235,17 @@ namespace MagicGladiators
             if (gameObject.Tag == "RightNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0) * projectileSpeed;
-                abilityTimer+= 0.01F;
+                abilityTimer += 0.01F;
             }
             if (gameObject.Tag == "DownRightNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, -0.2f) * projectileSpeed;
-                abilityTimer+= 0.01F;
+                abilityTimer += 0.01F;
             }
             if (gameObject.Tag == "DownNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, -0.2f) * projectileSpeed;
-                abilityTimer+= 0.01F;
+                abilityTimer += 0.01F;
             }
             if (gameObject.Tag == "DownLeftNova")
             {
@@ -266,19 +265,23 @@ namespace MagicGladiators
 
             if (gameObject.Tag == "Boomerang")
             {
-                if (Vector2.Distance(originalPos, gameObject.transform.position) > 150)
+                if (Vector2.Distance(originalPos, gameObject.transform.position) > 100)
                 {
                     boomerangReturn = true;
 
                 }
-                else (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 10) * projectileSpeed;
+                else (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector / 10 * projectileSpeed;
 
                 if (boomerangReturn)
                 {
+
                     boomerangTimer += GameWorld.Instance.deltaTime;
-                    Vector2 boomReturn = (gameObject.GetComponent("Physics") as Physics).GetVector((new Vector2(GameWorld.Instance.player.transform.position.X + 16, GameWorld.Instance.player.transform.position.Y + 16)), new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16));
+                    Vector2 playerPos = GameWorld.Instance.player.transform.position;
+                    Vector2 boomReturn = (gameObject.GetComponent("Physics") as Physics).GetVector((new Vector2(playerPos.X + 16, playerPos.Y + 16)), new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16));
                     boomReturn.Normalize();
-                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (boomReturn / 10) * projectileSpeed;
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += boomReturn / 10 * projectileSpeed;
+                    //(gameObject.GetComponent("Physics") as Physics).Velocity = (gameObject.GetComponent("Physics") as Physics).UpdateVelocity((gameObject.GetComponent("Physics") as Physics).Acceleration, (gameObject.GetComponent("Physics") as Physics).Velocity);
+
                 }
 
                 if (boomerangTimer >= 5)
@@ -394,12 +397,13 @@ namespace MagicGladiators
 
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
 
-            if(abilityTimer > 2)
-            {   if(gameObject.Tag == "DeathMeteor" || gameObject.Tag.Contains("Nova"))
+            if (abilityTimer > 2)
+            {
+                if (gameObject.Tag == "DeathMeteor" || gameObject.Tag.Contains("Nova"))
                 {
                     GameWorld.objectsToRemove.Add(gameObject);
                 }
-                
+
             }
 
 
