@@ -23,6 +23,7 @@ namespace MagicGladiators
         public int Value { get; set; }
         public float KnockBackResistance { get; set; }
         public float ProjectileSpeed { get; set; }
+        public float LifeSteal { get; set; }
 
         public Item(GameObject gameObject, string[] stats) : base(gameObject)
         {
@@ -44,6 +45,7 @@ namespace MagicGladiators
             this.Value = int.Parse(stats[5]);
             this.KnockBackResistance = int.Parse(stats[6]);
             this.ProjectileSpeed = int.Parse(stats[7]);
+            this.LifeSteal = int.Parse(stats[8]);
         }
 
         public void LoadContent(ContentManager content)
@@ -57,6 +59,7 @@ namespace MagicGladiators
             animator.CreateAnimation("Hp", new Animation(1, 0, 1, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("KnockRes", new Animation(1, 32, 0, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("ProjectileSpeed", new Animation(1, 32, 1, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("LifeSteal", new Animation(1, 32, 2, 32, 32, 10, Vector2.Zero, sprite));
 
             animator.PlayAnimation(Name);
             strategy = new Idle(animator);

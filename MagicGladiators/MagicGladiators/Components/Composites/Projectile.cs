@@ -172,6 +172,7 @@ namespace MagicGladiators
                 }
                 if (gameObject.Tag != "Chain")
                 {
+                    GameWorld.Instance.player.CurrentHealth += 10 * GameWorld.Instance.player.LifeSteal;
                     GameWorld.objectsToRemove.Add(gameObject);
                 }
             }
