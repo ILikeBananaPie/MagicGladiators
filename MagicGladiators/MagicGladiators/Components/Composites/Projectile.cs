@@ -32,6 +32,7 @@ namespace MagicGladiators
         private GameObject chainTarget;
         private float chainTimer;
 
+       
         private Physics test;
 
         private Vector2 meteorVector;
@@ -107,6 +108,7 @@ namespace MagicGladiators
             if(gameObject.Tag == "DeathMine")
             {
                 animator.PlayAnimation("DeathMine");
+                
             }
             if (gameObject.Tag == "Chain")
             {
@@ -166,7 +168,13 @@ namespace MagicGladiators
             }
 
             //HER !!!!! DEATH MINE STUFFF MUHAHAHHAHHA :D
-
+            if(other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy")
+            {
+                if(gameObject.Tag == "DeathMine")
+                {
+                    //(other.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+                }
+            }
 
         }
 
@@ -175,14 +183,20 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
 
 
+
             if (gameObject.Tag == "DeathMeteor")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector / 10;
             }
+            
+           
+            
             if (gameObject.Tag == "DeathMine")
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
+                 (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;    
             }
+          
+
             if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
             {
                 if (gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
@@ -228,10 +242,7 @@ namespace MagicGladiators
             {
              
             }
-            if (gameObject.Tag == "DeathMine")
-            {
-
-            }
+           
             if (gameObject.Tag == "HomingMissile")
             {
                 if (homingTimer > 1)
