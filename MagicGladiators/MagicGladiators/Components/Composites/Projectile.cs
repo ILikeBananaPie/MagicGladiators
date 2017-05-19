@@ -69,7 +69,7 @@ namespace MagicGladiators
                 meteorVector = (gameObject.GetComponent("Physics") as Physics).GetVector(target, position);
                 meteorVector.Normalize();
             }
-            if (gameObject.Tag == "DeathMines")
+            if (gameObject.Tag == "DeathMine")
             {
 
             }
@@ -126,7 +126,7 @@ namespace MagicGladiators
             }
             if(gameObject.Tag == "DeathMine")
             {
-                animator.PlayAnimation("DeathMine");
+                animator.PlayAnimation("Mine");
                 
             }
             if (gameObject.Tag == "Chain")
@@ -150,7 +150,7 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" && gameObject.Tag != "DeathMines")
+            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" && gameObject.Tag != "DeathMine")
             {
                 if (gameObject.Tag == "Drain")
                 {
