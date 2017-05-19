@@ -158,7 +158,7 @@ namespace MagicGladiators
 
         public void OnCollisionStay(Collider other)
         {
-            if (gameObject.Tag == "DeathMine" && deathMineActivated)
+            if (gameObject.Tag == "DeathMine" && deathMineActivated && (other.gameObject.Tag == "Enemy" || other.gameObject.Tag == "Dummy"))
             {
                 Push();
             }
@@ -209,6 +209,7 @@ namespace MagicGladiators
                 if (mineTimer > mineActivationTime)
                 {
                     deathMineActivated = true;
+                    (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
                 }
                 //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
             }
