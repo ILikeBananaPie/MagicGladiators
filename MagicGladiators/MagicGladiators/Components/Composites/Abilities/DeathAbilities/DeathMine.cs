@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class DeathMine : Component, ILoadable, IUpdateable
+    class DeathMine : Component, ILoadable
     {
         
         private Vector2 originalPos;
