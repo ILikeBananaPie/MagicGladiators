@@ -56,6 +56,8 @@ namespace MagicGladiators
             MouseState mouse = Mouse.GetState();
             gameObject.transform.position = position;
 
+
+            gameObject.AddComponent(new DeathMine(gameObject, gameObject.transform.position));
             //gameObject.AddComponent(new Charge(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
             //gameObject.AddComponent(new Blink(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
