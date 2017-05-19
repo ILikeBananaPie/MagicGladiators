@@ -44,10 +44,14 @@ namespace MagicGladiators
         public float deltaTime { get; set; }
 
         private bool canBuy = true;
+        private bool canUpgrade = true;
+
+        public bool MouseOnIcon { get; set; } = false;
 
         private int buySpellX;
         private int buySpellY;
 
+        private List<Collider> testList = new List<Collider>();
         private List<string> offensiveAbilities = new List<string>() { "HomingMissile", "Fireball", "Ricochet" };
         private List<string> defensiveAbilities = new List<string>() { "Deflect", "Invisibility", "Stone Armor" };
         private List<string> movementAbilities = new List<string>() { "Charge", "Blink", "Leap" };
@@ -302,6 +306,23 @@ namespace MagicGladiators
             {
                 if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                 {
+                    MouseOnIcon = true;
+                    if (canUpgrade && mouse.LeftButton == ButtonState.Pressed)
+                    {
+                        //upgrade item
+                        canUpgrade = false;
+                        Item item = (go.GetComponent("Item") as Item);
+                        if (item.upgradeLevel != 3 && Player.gold >= item.UpgradeValue)
+                        {
+                            Player.gold -= item.UpgradeValue;
+                            item.Upgrade();
+                            (player.GetComponent("Player") as Player).UpdateStats();
+                        }
+                        else
+                        {
+                            //error message (not enough gold)
+                        }
+                    }
                     if (canBuy && mouse.RightButton == ButtonState.Pressed)
                     {
                         canBuy = false;
@@ -311,11 +332,19 @@ namespace MagicGladiators
                         break;
                     }
                 }
+                else
+                {
+                    MouseOnIcon = false;
+                }
             }
 
             if (mouse.RightButton == ButtonState.Released)
             {
                 canBuy = true;
+            }
+            if (mouse.LeftButton == ButtonState.Released)
+            {
+                canUpgrade = true;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.F2))
@@ -353,6 +382,33 @@ namespace MagicGladiators
                     client.LoadContent(this.Content);
                     gameObjects.Add(client);
                 }
+            }
+
+            testList.Clear();
+            foreach (GameObject go in abilityList)
+            {
+                testList.Add((go.GetComponent("Collider") as Collider));
+            }
+            foreach (GameObject go in itemList)
+            {
+                testList.Add((go.GetComponent("Collider") as Collider));
+            }
+            foreach (GameObject go in Player.abilities)
+            {
+                testList.Add((go.GetComponent("Collider") as Collider));
+            }
+            foreach (GameObject go in Player.items)
+            {
+                testList.Add((go.GetComponent("Collider") as Collider));
+            }
+            foreach (Collider col in testList)
+            {
+                if (mouseCircle.Intersects(col.CircleCollisionBox))
+                {
+                    MouseOnIcon = true;
+                    break;
+                }
+                else MouseOnIcon = false;
             }
 
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;

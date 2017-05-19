@@ -24,21 +24,14 @@ namespace MagicGladiators
         public float KnockBackResistance { get; set; }
         public float ProjectileSpeed { get; set; }
         public float LifeSteal { get; set; }
+        public int UpgradeValue { get; set; }
+
+        public int upgradeLevel { get; private set; } = 0;
 
         public Item(GameObject gameObject, string[] stats) : base(gameObject)
         {
             this.Name = stats[0];
             this.Health = int.Parse(stats[1]);
-            //this.Speed = float.Parse(stats[2]);
-            /*
-            var culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
-            culture.NumberFormat.NumberDecimalSeparator = ".";
-            culture.NumberFormat.NumberGroupSeparator = ",";
-            culture.NumberFormat.CurrencyDecimalSeparator = ".";
-            culture.NumberFormat.CurrencyGroupSeparator = ",";
-            culture.NumberFormat.PercentDecimalSeparator = ".";
-            culture.NumberFormat.PercentGroupSeparator = ",";
-            */
             this.Speed = float.Parse(stats[2]);
             this.DamageResistance = int.Parse(stats[3]);
             this.LavaResistance = int.Parse(stats[4]);
@@ -46,6 +39,7 @@ namespace MagicGladiators
             this.KnockBackResistance = int.Parse(stats[6]);
             this.ProjectileSpeed = int.Parse(stats[7]);
             this.LifeSteal = int.Parse(stats[8]);
+            this.UpgradeValue = (int)(Value + Value * 0.2F);
         }
 
         public void LoadContent(ContentManager content)
@@ -63,6 +57,20 @@ namespace MagicGladiators
 
             animator.PlayAnimation(Name);
             strategy = new Idle(animator);
+        }
+
+        public void Upgrade()
+        {
+            Health += (int)(Health * 0.1F);
+            Speed += Speed * 0.1F;
+            DamageResistance += DamageResistance * 0.1F;
+            LavaResistance += LavaResistance * 0.1F;
+            Value += (int)(Value * 0.2F);
+            KnockBackResistance += KnockBackResistance * 0.1F;
+            ProjectileSpeed += ProjectileSpeed * 0.1F;
+            LifeSteal += LifeSteal * 0.1F;
+            UpgradeValue += (int)(UpgradeValue * 0.2F);
+            upgradeLevel++;
         }
     }
 }
