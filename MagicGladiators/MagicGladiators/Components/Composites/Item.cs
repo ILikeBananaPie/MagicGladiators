@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Globalization;
+using System.Reflection;
 
 namespace MagicGladiators
 {
@@ -14,16 +15,22 @@ namespace MagicGladiators
     {
         private Animator animator;
         private IStrategy strategy;
+        private SpriteFont fontText;
+
+        private int tooltipX;
+        private int tooltipY;
+        private bool showTooltip = false;
+        private string[] list = new string[2] { "Stat", "Price" };
 
         public string Name { get; set; }
         public int Health { get; set; }
         public float Speed { get; set; }
         public float DamageResistance { get; set; }
         public float LavaResistance { get; set; }
-        public int Value { get; set; }
         public float KnockBackResistance { get; set; }
         public float ProjectileSpeed { get; set; }
         public float LifeSteal { get; set; }
+        public int Value { get; set; }
         public int UpgradeValue { get; set; }
 
         public int upgradeLevel { get; private set; } = 0;
@@ -46,6 +53,8 @@ namespace MagicGladiators
         {
             animator = (Animator)gameObject.GetComponent("Animator");
             Texture2D sprite = content.Load<Texture2D>("ItemSheet2");
+            fontText = content.Load<SpriteFont>("fontText");
+
 
             animator.CreateAnimation("Speed", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("LavaRes", new Animation(1, 0, 2, 32, 32, 10, Vector2.Zero, sprite));
@@ -71,6 +80,31 @@ namespace MagicGladiators
             LifeSteal += LifeSteal * 0.1F;
             UpgradeValue += (int)(UpgradeValue * 0.2F);
             upgradeLevel++;
+        }
+
+        public void Draw(SpriteBatch spriteBatch, int x, int y)
+        {
+
+            int plus = 0;
+            int index = 0;
+            spriteBatch.DrawString(fontText, Name, new Vector2(x + 50, y - 50), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+            plus += 20;
+            var fieldValues2 = this.GetType().GetProperties().Select(field => field.GetValue(this)).ToList();
+            for (int i = 1; i < fieldValues2.Count - 3; i++)
+            {
+                object obj = fieldValues2[i];
+                int testInt = int.Parse(obj.ToString());
+
+                if (testInt != 0)
+                {
+
+                    spriteBatch.DrawString(fontText, list[index] + testInt, new Vector2(x + 50, y - 50 + plus), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    plus += 20;
+                    index++;
+
+                }
+            }
+
         }
     }
 }

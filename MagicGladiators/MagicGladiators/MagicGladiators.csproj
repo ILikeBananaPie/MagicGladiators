@@ -182,6 +182,9 @@
     <Content Include="Content\StandardMap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\ToolTipBox.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Extra\InTheHand.Net.Personal.dll" />
     <Content Include="Extra\InTheHand.Net.Personal.xml" />
     <Content Include="Extra\NetworkCommsDotNet.dll" />

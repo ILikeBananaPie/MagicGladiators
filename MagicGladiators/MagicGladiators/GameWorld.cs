@@ -51,6 +51,10 @@ namespace MagicGladiators
         private int buySpellX;
         private int buySpellY;
 
+        private SpriteFont fontText;
+
+        GameObject TooltipBox = new GameObject();
+
         private List<Collider> testList = new List<Collider>();
         private List<string> offensiveAbilities = new List<string>() { "HomingMissile", "Fireball", "Ricochet" };
         private List<string> defensiveAbilities = new List<string>() { "Deflect", "Invisibility", "Stone Armor" };
@@ -93,6 +97,8 @@ namespace MagicGladiators
             graphics.PreferredBackBufferHeight = 720;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.ApplyChanges();
+
+            TooltipBox.AddComponent(new SpriteRenderer(TooltipBox, "ToolTipBox", 1));
 
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
@@ -192,6 +198,9 @@ namespace MagicGladiators
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            fontText = Content.Load<SpriteFont>("fontText");
+            Content.Load<Texture2D>("ToolTipBox");
+            TooltipBox.LoadContent(Content);
 
             // TODO: use this.Content to load your game content here
             //map.LoadContent(Content);
@@ -462,7 +471,8 @@ namespace MagicGladiators
         {
             //GraphicsDevice.Clear(Color.CornflowerBlue);
             GraphicsDevice.Clear(Color.DarkRed);
-
+            MouseState mouse = Mouse.GetState();
+            Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
@@ -512,6 +522,17 @@ namespace MagicGladiators
             {
                 go.Draw(spriteBatch);
 
+            }
+            foreach (GameObject go in itemList)
+            {
+                Item item = (go.GetComponent("Item") as Item);
+                if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+                {
+                    TooltipBox.transform.position = new Vector2(mouse.Position.X + 40, mouse.Position.Y - 60);
+                    TooltipBox.Draw(spriteBatch);
+                    //spriteBatch.DrawString(fontText, item.Name, new Vector2(mouse.Position.X + 50, mouse.Position.Y - 50), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    item.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
+                }
             }
             spriteBatch.End();
             base.Draw(gameTime);
