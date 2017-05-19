@@ -289,6 +289,7 @@ namespace MagicGladiators
                     if (canBuy && mouse.RightButton == ButtonState.Pressed)
                     {
                         //upgrade ability
+                        //giving ability icons ability components. Give each ability component an isBought bool and only allow Update to run if isBought is true. Set isBought to true when buying the ability.
                     }
                 }
             }

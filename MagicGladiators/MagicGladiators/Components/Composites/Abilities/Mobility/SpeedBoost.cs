@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 
 namespace MagicGladiators
 {
@@ -49,6 +50,9 @@ namespace MagicGladiators
                 oldSpeed = Player.speed;
                 canUse = false;
                 activated = true;
+                Color color = new Color();
+                color.A = 20;
+                (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.DarkSlateGray;
             }
             if (activated)
             {
@@ -62,9 +66,10 @@ namespace MagicGladiators
                 if (activationTimer > activationTime)
                 {
                     //Player.speed = oldSpeed;
-                    gameObject.Speed = oldSpeed;
+                    gameObject.Speed -= speedFactor;
                     activated = false;
                     activationTimer = 0;
+                    (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
                 }
             }
         }
