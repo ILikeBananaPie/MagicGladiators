@@ -438,6 +438,10 @@ namespace MagicGladiators
             }
             foreach (Collider col in testList)
             {
+                if (col.gameObject.Tag == "AbilityIcon" && Player.abilities.Exists(x => x.Tag == "AbilityIcon"))
+                {
+
+                }
                 if (mouseCircle.Intersects(col.CircleCollisionBox))
                 {
                     MouseOnIcon = true;
@@ -576,7 +580,22 @@ namespace MagicGladiators
                 }
             }
 
-            //casting to float issue
+            //Collision detection currently failing
+            foreach (GameObject go in Player.abilities)
+            {
+                AbilityIcon icon = (go.GetComponent("AbilityIcon") as AbilityIcon);
+                if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+                {
+                    int width = (TooltipBox.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Width;
+                    int height = (TooltipBox.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height;
+                    TooltipBox.transform.position = new Vector2(mouse.Position.X - width, mouse.Position.Y - height);
+                    TooltipBox.Draw(spriteBatch);
+                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    //spriteBatch.DrawString(fontText, "Value: " + icon.Value.ToString(), new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
+                }
+            }
+
             foreach (GameObject go in Player.items)
             {
                 Item item = (go.GetComponent("Item") as Item);

@@ -27,13 +27,13 @@ namespace MagicGladiators
             gameObject.AddComponent(new AbilityIcon(gameObject, name, value));
 
             gameObject.LoadContent(GameWorld.Instance.Content);
+            
+            gameObject.transform.position = position;
 
             gameObject.AddComponent(new Collider(gameObject, false));
 
+            gameObject.Tag = "AbilityIcon";
 
-            gameObject.Tag = "Icon";
-
-            gameObject.transform.position = position;
         }
 
         public void BuildItem(Vector2 position, string[] stats)
