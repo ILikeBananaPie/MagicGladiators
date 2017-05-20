@@ -44,6 +44,10 @@ namespace MagicGladiators
             {
                 gameObject.AddComponent(new SpriteRenderer(gameObject, "LavaSpot", 1));
             }
+            else if (name == "Pillar")
+            {
+                gameObject.AddComponent(new SpriteRenderer(gameObject, "Pillar", 1));
+            }
             else gameObject.AddComponent(new SpriteRenderer(gameObject, "StandardMap600x600", 1));
 
             gameObject.AddComponent(new Animator(gameObject));

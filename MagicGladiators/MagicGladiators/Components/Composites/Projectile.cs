@@ -165,19 +165,19 @@ namespace MagicGladiators
             {
                 GameWorld.objectsToRemove.Add(gameObject);
             }
-            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" && gameObject.Tag != "DeathMine")
+            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" && gameObject.Tag != "DeathMine" || other.gameObject.Tag == "Pillar")
             {
                 if (gameObject.Tag == "Drain")
                 {
                     GameWorld.Instance.player.CurrentHealth += (GameWorld.Instance.player.GetComponent("Drain") as Drain).healing;
                 }
-                if (gameObject.Tag == "Chain")
+                if (gameObject.Tag == "Chain" && other.gameObject.Tag != "Pillar")
                 {
                     chainTarget = other.gameObject;
                     (chainTarget.GetComponent("Physics") as Physics).chainActivated = true;
                     chainActivated = true;
                 }
-                if (gameObject.Tag != "DeathMine")
+                if (gameObject.Tag != "DeathMine" && other.gameObject.Tag != "Pillar")
                 {
                     Push();
                 }
@@ -204,7 +204,7 @@ namespace MagicGladiators
                     {
                         // (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
                     }
-                    else if (go.gameObject.Tag == "Dummy" && gameObject.Tag != "Chain")
+                    else if (go.gameObject.Tag == "Dummy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
                     {
                         (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
                     }

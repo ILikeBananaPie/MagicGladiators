@@ -122,6 +122,9 @@ namespace MagicGladiators
 
         public void Update()
         {
+            Vector2 oldPos = gameObject.transform.position;
+            gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
+
             if (gameObject.CurrentHealth >= gameObject.MaxHealth)
             {
                 gameObject.CurrentHealth = gameObject.MaxHealth;
@@ -135,11 +138,9 @@ namespace MagicGladiators
                 }
                 else regenTimer += GameWorld.Instance.deltaTime;
             }
-            gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
-
             if (testPush)
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector * 10) * gameObject.KnockBackResistance;
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector * 5) * gameObject.KnockBackResistance;
                 if (testTimer < 0.0025F)
                 {
                     testTimer += GameWorld.Instance.deltaTime;

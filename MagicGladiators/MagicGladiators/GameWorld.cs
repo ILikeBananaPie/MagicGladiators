@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using NetworkCommsDotNet;
 using NetworkCommsDotNet.Connections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MagicGladiators
 {
@@ -63,6 +64,8 @@ namespace MagicGladiators
 
         private GameObject map;
         public float MapScale { get; set; } = 1;
+
+        private Vector2 mapCenter;
 
         private static GameWorld instance;
         public static GameWorld Instance
@@ -123,11 +126,27 @@ namespace MagicGladiators
             Director director = new Director(new MapBuilder());
             Texture2D sprite = Content.Load<Texture2D>("StandardMap");
             gameObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2), "Map"));
-            Vector2 mapCenter = new Vector2(gameObjects[0].transform.position.X + sprite.Width / 2, gameObjects[0].transform.position.Y + sprite.Height / 2);
 
-            //Lava spot for 2nd map
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.Tag == "Map")
+                {
+                    mapCenter = new Vector2(go.transform.position.X + sprite.Width / 2, go.transform.position.Y + sprite.Height / 2);
+                }
+            }
+
+            #region "Hole Map"
+            //Lava spot for "Hole map"
             Texture2D lavaSpot = Content.Load<Texture2D>("LavaSpot");
             gameObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - lavaSpot.Width / 2, Window.ClientBounds.Height / 2 - lavaSpot.Height / 2), "LavaSpot"));
+            #endregion
+
+            //Pillars for Pillars Map
+            gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
+            gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
+            gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
+            gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
+
 
             director = new Director(new PlayerBuilder());
             player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
