@@ -122,10 +122,12 @@ namespace MagicGladiators
 
             Director director = new Director(new MapBuilder());
             Texture2D sprite = Content.Load<Texture2D>("StandardMap");
-            gameObjects.Add(director.Construct(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2)));
-
+            gameObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2), "Map"));
             Vector2 mapCenter = new Vector2(gameObjects[0].transform.position.X + sprite.Width / 2, gameObjects[0].transform.position.Y + sprite.Height / 2);
-            //float mapRadius = (gameObjects[0].GetComponent("Collider") as Collider).CircleCollisionBox.Radius;
+
+            //Lava spot for 2nd map
+            Texture2D lavaSpot = Content.Load<Texture2D>("LavaSpot");
+            gameObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - lavaSpot.Width / 2, Window.ClientBounds.Height / 2 - lavaSpot.Height / 2), "LavaSpot"));
 
             director = new Director(new PlayerBuilder());
             player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));

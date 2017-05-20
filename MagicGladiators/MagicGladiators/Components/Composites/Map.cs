@@ -9,11 +9,13 @@ using Microsoft.Xna.Framework;
 
 namespace MagicGladiators
 {
-    class Map : Component, ILoadable, ICollisionExit, ICollisionEnter, IUpdateable
+    class Map : Component, ILoadable, ICollisionExit, ICollisionEnter, IUpdateable, ICollisionStay
     {
         private Animator animator;
 
         private IStrategy strategy;
+
+        private Texture2D sprite;
 
         private List<GameObject> objects = new List<GameObject>();
         private List<GameObject> objectsToRemove = new List<GameObject>();
@@ -33,7 +35,15 @@ namespace MagicGladiators
         {
             SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
 
-            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 600, 600, 1, Vector2.Zero, spriteRenderer.Sprite));
+            if (gameObject.Tag == "Lava")
+            {
+                animator.CreateAnimation("Idle", new Animation(1, 0, 0, 1920, 1080, 1, Vector2.Zero, spriteRenderer.Sprite));
+            }
+            else if (gameObject.Tag == "LavaSpot")
+            {
+                animator.CreateAnimation("Idle", new Animation(1, 0, 0, 120, 120, 1, Vector2.Zero, spriteRenderer.Sprite));
+            }
+            else animator.CreateAnimation("Idle", new Animation(1, 0, 0, 600, 600, 1, Vector2.Zero, spriteRenderer.Sprite));
 
             animator.PlayAnimation("Idle");
 
@@ -43,18 +53,53 @@ namespace MagicGladiators
         public void LoadContent(ContentManager content)
         {
             animator = (Animator)gameObject.GetComponent("Animator");
-            Texture2D sprite = content.Load<Texture2D>("StandardMap");
+            if (gameObject.Tag == "Lava")
+            {
+                sprite = content.Load<Texture2D>("LavaBackGround");
+            }
+            else if (gameObject.Tag == "LavaSpot")
+            {
+                sprite = content.Load<Texture2D>("LavaBackGround");
+            }
+            else sprite = content.Load<Texture2D>("StandardMap600x600");
             CreateAnimations();
         }
 
         public void OnCollisionExit(Collider other)
         {
-            newObjects.Add(other.gameObject);
+            if (gameObject.Tag == "Map")
+            {
+                newObjects.Add(other.gameObject);
+            }
         }
 
         public void OnCollisionEnter(Collider other)
         {
-            objectsToRemove.Add(other.gameObject);
+            if (gameObject.Tag == "Map")
+            {
+                objectsToRemove.Add(other.gameObject);
+            }
+        }
+
+        public void OnCollisionStay(Collider other)
+        {
+            if (gameObject.Tag == "LavaSpot" && (other.gameObject.Tag == "Player" || other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy"))
+            {
+                float LavaRadius = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Radius;
+                float otherRadius = (other.gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Radius;
+
+                Vector2 thisCenter = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
+                Vector2 otherCenter = (other.gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
+
+                if (Vector2.Distance(thisCenter, otherCenter) < LavaRadius - otherRadius)
+                {
+                    if (!objects.Exists(x => x == other.gameObject))
+                    {
+                        newObjects.Add(other.gameObject);
+                    }
+                }
+                else objectsToRemove.Add(other.gameObject);
+            }
         }
 
         public void Update()

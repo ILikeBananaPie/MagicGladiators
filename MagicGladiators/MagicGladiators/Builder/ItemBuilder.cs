@@ -46,6 +46,11 @@ namespace MagicGladiators
             gameObject.transform.position = position;
         }
 
+        public void BuildMapPart(Vector2 position, string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public void FireProjectile(Vector2 position, Vector2 targetVector)
         {
             throw new NotImplementedException();
