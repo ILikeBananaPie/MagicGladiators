@@ -67,7 +67,7 @@ namespace MagicGladiators
             {
                 sprite = content.Load<Texture2D>("LavaBackGround");
             }
-            else if (true)
+            else if (gameObject.Tag == "Pillar")
             {
                 sprite = content.Load<Texture2D>("Pillar");
             }

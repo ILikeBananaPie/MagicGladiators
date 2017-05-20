@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Globalization;
 using System.Reflection;
+using System.Threading;
 
 namespace MagicGladiators
 {
@@ -93,8 +94,7 @@ namespace MagicGladiators
             for (int i = 1; i < fieldValues2.Count - 3; i++)
             {
                 object obj = fieldValues2[i];
-                int testInt = int.Parse(obj.ToString());
-
+                float testInt = float.Parse(obj.ToString());
                 if (testInt != 0)
                 {
                     if (testInt < 10)

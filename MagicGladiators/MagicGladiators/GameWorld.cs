@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using NetworkCommsDotNet;
 using NetworkCommsDotNet.Connections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace MagicGladiators
@@ -102,6 +103,10 @@ namespace MagicGladiators
             graphics.ApplyChanges();
 
             TooltipBox.AddComponent(new SpriteRenderer(TooltipBox, "ToolTipBox", 1));
+
+            var culture = new CultureInfo("en-US");
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
 
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
@@ -571,7 +576,7 @@ namespace MagicGladiators
                 }
             }
 
-            /* //casting to float issue
+            //casting to float issue
             foreach (GameObject go in Player.items)
             {
                 Item item = (go.GetComponent("Item") as Item);
@@ -583,7 +588,7 @@ namespace MagicGladiators
                     item.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
             }
-            */
+            
             spriteBatch.End();
             base.Draw(gameTime);
         }
