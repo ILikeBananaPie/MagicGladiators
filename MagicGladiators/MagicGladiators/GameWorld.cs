@@ -7,6 +7,7 @@ using NetworkCommsDotNet.Connections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Drawing;
 
 namespace MagicGladiators
 {
@@ -54,6 +55,7 @@ namespace MagicGladiators
         private int buySpellY;
 
         private SpriteFont fontText;
+        private SpriteFont describtionFont;
 
         GameObject TooltipBox = new GameObject();
 
@@ -180,28 +182,27 @@ namespace MagicGladiators
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
 
             director = new Director(new AbilityIconBuilder());
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 100));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 100, "Fires a projectile in the target \n direction, moving towards the \n closest enemy."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100, "Sends you in the direction of the \n mouse. Exploding on contact."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Drain", 100));
-
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Drain", 100, "Fires a slow moving projectile \n towards your mouse."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Deflect", 100));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Deflect", 100, "Creates a shield around you, \n deflecting any spells coming \n your way."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Mine", 100));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Mine", 100, "Places a static mine at the \n target position. Will explode \n on contact."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "SpeedBoost", 100));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "SpeedBoost", 100, "Increases your movement speed"));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Chain", 100));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Chain", 100, "Fires a slow moving projectile, \n that pulls you and the target \n together for a period of time."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Blink", 100));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Blink", 100, "Instantly moves your character \n towards your mouse's position."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Nova", 100));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Nova", 100, "Sends out 8 straight flying \n projectiles in different directions."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Spellshield", 100));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Spellshield", 100, "Creates a shield around you, \n deleting any spells coming \n your way."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "StoneArmour", 100));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "StoneArmour", 100, "Grants reduced knockback \n effect for a period of time, \n while reducing movement speed."));
 
             base.Initialize();
         }
@@ -225,6 +226,7 @@ namespace MagicGladiators
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             fontText = Content.Load<SpriteFont>("fontText");
+            describtionFont = Content.Load<SpriteFont>("lunchtime");
             Content.Load<Texture2D>("ToolTipBox");
             TooltipBox.LoadContent(Content);
 
@@ -307,7 +309,7 @@ namespace MagicGladiators
 
                         Director director = new Director(new AbilityIconBuilder());
                         int x = Player.abilities.Count * 34;
-                        Player.abilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), ability.Name, ability.Value));
+                        Player.abilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), ability.Name, ability.Value, ability.Text));
                         (Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).index = abilityIndex;
                         abilityIndex++;
                         Player.gold -= ability.Value;
@@ -576,6 +578,7 @@ namespace MagicGladiators
                     TooltipBox.Draw(spriteBatch);
                     spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
                     spriteBatch.DrawString(fontText, "Value: " + icon.Value.ToString(), new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(describtionFont, icon.Text, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 40), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
             }

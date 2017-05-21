@@ -42,9 +42,9 @@ namespace MagicGladiators
             return builder.GetResult();
         }
 
-        public GameObject ConstructIcon(Vector2 position, string name, int value)
+        public GameObject ConstructIcon(Vector2 position, string name, int value, string text)
         {
-            builder.BuildIcon(position, name, value);
+            builder.BuildIcon(position, name, value, text);
             return builder.GetResult();
         }
 

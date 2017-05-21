@@ -31,3 +31,9 @@
 /processorParam:TextureFormat=Compressed
 /build:fontText.spritefont
 
+#begin lunchtime.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:lunchtime.spritefont
+

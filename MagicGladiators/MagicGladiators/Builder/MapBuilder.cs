@@ -26,6 +26,11 @@ namespace MagicGladiators
             throw new NotImplementedException();
         }
 
+        public void BuildIcon(Vector2 position, string name, int value, string text)
+        {
+            throw new NotImplementedException();
+        }
+
         public void BuildItem(Vector2 position, string[] stats)
         {
             throw new NotImplementedException();

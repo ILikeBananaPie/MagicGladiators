@@ -16,11 +16,13 @@ namespace MagicGladiators
         public string Name { get; set; }
         public int Value { get; set; }
         public int index { get; set; }
+        public string Text { get; set; }
 
-        public AbilityIcon(GameObject gameObject, string name, int value) : base(gameObject)
+        public AbilityIcon(GameObject gameObject, string name, int value, string text) : base(gameObject)
         {
             this.Name = name;
             this.Value = value;
+            this.Text = text;
         }
 
         public void LoadContent(ContentManager content)
