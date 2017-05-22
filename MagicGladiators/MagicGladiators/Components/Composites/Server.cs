@@ -26,7 +26,7 @@ namespace MagicGladiators.Components.Composites
         }
         private Player playerPos;
 
-
+        TCPConnection oneself;
         public Server(GameObject gameObject) : base(gameObject)
         {
             players = new Dictionary<Connection, GameObject>();
@@ -35,21 +35,29 @@ namespace MagicGladiators.Components.Composites
 
             NetworkComms.AppendGlobalIncomingPacketHandler<UpdatePackage>("UpdatePosition", UpdatePosition);
 
-            NetworkComms.AppendGlobalIncomingPacketHandler<bool>("AddSelf", Addself);
             //Start listening for incoming connections
 
             Connection.StartListening(ConnectionType.TCP, new IPEndPoint(IPAddress.Any, 0));
 
-            playerPos = (GameWorld.gameObjects.Find(x => x.Tag == "Player").GetComponent("Player") as Player);
-
+            foreach (System.Net.IPEndPoint localEndPoint in Connection.ExistingLocalListenEndPoints(ConnectionType.TCP))
+            {
+                if (localEndPoint.Address.ToString().Contains("127."))
+                {
+                    oneself = TCPConnection.GetConnection(new ConnectionInfo(localEndPoint));
+                }
+            }
+            Addself();
         }
 
-        private void Addself(PacketHeader packetHeader, Connection connection, bool incomingObject)
+        private void Addself()
         {
+            Debug.Write("Addself started");
             Director dir = new Director(new PlayerBuilder());
             GameObject go = dir.Construct(new Vector2(50), 2);
-            players.Add(connection, go);
+            players.Add(oneself, go);
             GameWorld.gameObjects.Add(go);
+            go.LoadContent(GameWorld.Instance.Content);
+            playerPos = (GameWorld.gameObjects.Find(x => x.Tag == "Player").GetComponent("Player") as Player);
 
         }
 
