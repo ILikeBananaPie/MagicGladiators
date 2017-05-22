@@ -44,6 +44,7 @@ namespace MagicGladiators.Components.Composites
             ip = string.Empty;
             lastPressedKeys = Keyboard.GetState().GetPressedKeys();
             players = new Dictionary<string, GameObject>();
+            idle = true;
         }
 
         SpriteFont spriteFont;
@@ -147,6 +148,7 @@ namespace MagicGladiators.Components.Composites
         {
             if (incomingObject.connected)
             {
+                idle = false;
                 Director dir = new Director(new PlayerBuilder());
                 GameObject go = dir.Construct(new Vector2(20), 2);
                 playerPos = go.GetComponent("Player") as Player;
@@ -155,28 +157,34 @@ namespace MagicGladiators.Components.Composites
                 thisconninfo = incomingObject.connectionInfo;
                 players.Add(incomingObject.connectionInfo, go);
                 this.connected = incomingObject.connected;
+                idle = true;
             }
         }
 
+        private bool idle;
         private void IncommingServerPackage(PacketHeader packetHeader, Connection connection, ServerPackage incomingObject)
         {
             foreach (string key in incomingObject.players.Keys)
             {
                 if (key != thisconninfo)
                 {
-                    if (players.Keys.Contains(key))
+                    if (idle)
                     {
-                        (players[key].GetComponent("Enemy") as Enemy).UpdateEnemyInfo(incomingObject.players[key][0], incomingObject.players[key][1]);
-                    }
-                    else
-                    {
-                        GameObject go = new GameObject(0);
-                        go.Tag = connection.ToString();
-                        go.AddComponent(new Enemy(go));
-                        go.AddComponent(new SpriteRenderer(go, "Player", 1));
-                        go.LoadContent(GameWorld.Instance.Content);
-                        players.Add(key, go);
-                        GameWorld.gameObjects.Add(go);
+                        idle = false;
+                        if (players.Keys.Contains(key))
+                        {
+                            (players[key].GetComponent("Enemy") as Enemy).UpdateEnemyInfo(incomingObject.players[key][0], incomingObject.players[key][1]);
+                        } else
+                        {
+                            GameObject go = new GameObject(0);
+                            go.Tag = connection.ToString();
+                            go.AddComponent(new Enemy(go));
+                            go.AddComponent(new SpriteRenderer(go, "Player", 1));
+                            go.LoadContent(GameWorld.Instance.Content);
+                            players.Add(key, go);
+                            GameWorld.gameObjects.Add(go);
+                        }
+                        idle = true;
                     }
                 }
             }
