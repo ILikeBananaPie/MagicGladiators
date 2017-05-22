@@ -108,12 +108,19 @@ namespace MagicGladiators.Components.Composites
                             string serverIP = ip.Split(':').First();
                             int serverPort = int.Parse(ip.Split(':').Last());
                             ConnectionInfo connInfo = new ConnectionInfo(serverIP,serverPort);
-                            tCPConn = TCPConnection.GetConnection(connInfo);
-                            tCPConn.AppendIncomingPacketHandler<bool>("JoinedServerRespond", JoinedServerRespond, NetworkComms.DefaultSendReceiveOptions);
-                            tCPConn.AppendIncomingPacketHandler<UpdatePackage>("HostPos", HostPos, NetworkComms.DefaultSendReceiveOptions);
-                            tCPConn.AppendIncomingPacketHandler<ServerPackage>("ServerPackage", IncommingServerPackage, NetworkComms.DefaultSendReceiveOptions);
-                            tCPConn.AppendIncomingPacketHandler<TryConnectPackage>("TryConnect", TryConnect, NetworkComms.DefaultSendReceiveOptions);
-                            tCPConn.SendObject<string>("JoinServer", "Player2");
+                            try
+                            {
+                                tCPConn = TCPConnection.GetConnection(connInfo);
+                                tCPConn.AppendIncomingPacketHandler<bool>("JoinedServerRespond", JoinedServerRespond, NetworkComms.DefaultSendReceiveOptions);
+                                tCPConn.AppendIncomingPacketHandler<UpdatePackage>("HostPos", HostPos, NetworkComms.DefaultSendReceiveOptions);
+                                tCPConn.AppendIncomingPacketHandler<ServerPackage>("ServerPackage", IncommingServerPackage, NetworkComms.DefaultSendReceiveOptions);
+                                tCPConn.AppendIncomingPacketHandler<TryConnectPackage>("TryConnect", TryConnect, NetworkComms.DefaultSendReceiveOptions);
+                                tCPConn.SendObject<string>("JoinServer", "Player2");
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.Write(e);
+                            }
                         }
                         //else
                         //{
