@@ -117,8 +117,7 @@ namespace MagicGladiators.Components.Composites
                                 tCPConn.AppendIncomingPacketHandler<ServerPackage>("ServerPackage", IncommingServerPackage, NetworkComms.DefaultSendReceiveOptions);
                                 tCPConn.AppendIncomingPacketHandler<TryConnectPackage>("TryConnect", TryConnect, NetworkComms.DefaultSendReceiveOptions);
                                 tCPConn.SendObject<string>("JoinServer", "Player2");
-                            }
-                            catch (Exception e)
+                            } catch (Exception e)
                             {
                                 Debug.Write(e);
                             }
@@ -176,13 +175,19 @@ namespace MagicGladiators.Components.Composites
                             (players[key].GetComponent("Enemy") as Enemy).UpdateEnemyInfo(incomingObject.players[key][0], incomingObject.players[key][1]);
                         } else
                         {
-                            GameObject go = new GameObject(0);
-                            go.Tag = connection.ToString();
-                            go.AddComponent(new Enemy(go));
-                            go.AddComponent(new SpriteRenderer(go, "Player", 1));
-                            go.LoadContent(GameWorld.Instance.Content);
-                            players.Add(key, go);
-                            GameWorld.gameObjects.Add(go);
+                            try
+                            {
+                                GameObject go = new GameObject(0);
+                                go.Tag = connection.ToString();
+                                go.AddComponent(new Enemy(go));
+                                go.AddComponent(new SpriteRenderer(go, "Player", 1));
+                                go.LoadContent(GameWorld.Instance.Content);
+                                players.Add(key, go);
+                                GameWorld.gameObjects.Add(go);
+                            } catch (Exception e)
+                            {
+                                //HAHAAHAHAHAHAHA nope
+                            }
                         }
                         idle = true;
                     }
