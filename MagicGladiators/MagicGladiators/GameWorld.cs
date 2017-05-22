@@ -131,7 +131,10 @@ namespace MagicGladiators
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                NetworkComms.Shutdown();
                 Exit();
+            }
             // TODO: Add your update logic here
 
             foreach (GameObject go in gameObjects)

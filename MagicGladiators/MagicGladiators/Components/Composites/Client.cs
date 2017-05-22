@@ -23,13 +23,13 @@ namespace MagicGladiators.Components.Composites
         private Texture2D rect;
 
         private static readonly Object thislock = new Object();
-        private static Dictionary<ConnectionInfo, GameObject> _players;
-        private static Dictionary<ConnectionInfo, GameObject> players
+        private static Dictionary<string, GameObject> _players;
+        private static Dictionary<string, GameObject> players
         {
             get { lock (thislock) { return _players; } }
             set { lock (thislock) { _players = value; } }
         }
-        private ConnectionInfo thisconninfo;
+        private string thisconninfo;
         private Player playerPos;
 
         private Keys[] lastPressedKeys;
@@ -43,6 +43,7 @@ namespace MagicGladiators.Components.Composites
             tCPConn = null;
             ip = string.Empty;
             lastPressedKeys = Keyboard.GetState().GetPressedKeys();
+            players = new Dictionary<string, GameObject>();
         }
 
         SpriteFont spriteFont;
@@ -141,14 +142,18 @@ namespace MagicGladiators.Components.Composites
             {
                 Director dir = new Director(new PlayerBuilder());
                 GameObject go = dir.Construct(new Vector2(20), 2);
+                playerPos = go.GetComponent("Player") as Player;
+                go.LoadContent(GameWorld.Instance.Content);
+                GameWorld.gameObjects.Add(go);
                 thisconninfo = incomingObject.connectionInfo;
+                players.Add(incomingObject.connectionInfo, go);
                 this.connected = incomingObject.connected;
             }
         }
 
         private void IncommingServerPackage(PacketHeader packetHeader, Connection connection, ServerPackage incomingObject)
         {
-            foreach (ConnectionInfo key in incomingObject.players.Keys)
+            foreach (string key in incomingObject.players.Keys)
             {
                 if (key != thisconninfo)
                 {

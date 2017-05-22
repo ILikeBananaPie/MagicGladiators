@@ -91,14 +91,14 @@ namespace MagicGladiators.Components.Composites
                     go.LoadContent(GameWorld.Instance.Content);
                     players.Add(connection, go);
                     GameWorld.gameObjects.Add(go);
-                    connection.SendObject<TryConnectPackage>("ServerPackage", new TryConnectPackage(true, connection.ConnectionInfo));
+                    connection.SendObject<TryConnectPackage>("TryConnect", new TryConnectPackage(true, connection.ConnectionInfo));
                 } else
                 {
-                    connection.SendObject<TryConnectPackage>("ServerPackage", new TryConnectPackage(false, connection.ConnectionInfo));
+                    connection.SendObject<TryConnectPackage>("TryConnect", new TryConnectPackage(false, connection.ConnectionInfo));
                 }
             } else
             {
-                connection.SendObject<TryConnectPackage>("ServerPackage", new TryConnectPackage(false, connection.ConnectionInfo));
+                connection.SendObject<TryConnectPackage>("TryConnect", new TryConnectPackage(false, connection.ConnectionInfo));
             }
         }
 
@@ -135,7 +135,7 @@ namespace MagicGladiators.Components.Composites
                 ServerPackage up = new ServerPackage(dicofplayers);
                 foreach (Connection key in dicofplayers.Keys)
                 {
-                    key.SendObject<ServerPackage>("IncommingServerPackage", up);
+                    key.SendObject<ServerPackage>("ServerPackage", up);
                 }
             }
         }

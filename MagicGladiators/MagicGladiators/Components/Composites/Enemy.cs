@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 
-namespace MagicGladiators.Components.Composites
+namespace MagicGladiators
 {
     class Enemy:Component, ILoadable, IUpdateable
     {
         private Transform trnsfrm;
-        private Vector2 velocity;
+        public Vector2 velocity;
 
         //public static Vector2 accelerationTest;
         //public static Vector2 velocityTest;

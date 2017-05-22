@@ -14,26 +14,33 @@ namespace MagicGladiators
     [ProtoContract]
     class ServerPackage
     {
-        public Dictionary<ConnectionInfo, Vector2[]> players { get; set; }
+        public Dictionary<string, Vector2[]> players { get; set; }
 
         [ProtoMember(1)]
-        private float[,] xypos;
+        private float[] xypos;
 
         [ProtoMember(2)]
-        private float[,] xyvel;
+        private float[] xyvel;
 
         [ProtoMember(3)]
-        private MemoryStream[] ms;
+        private string[] ci;
 
         private ServerPackage() { }
 
         public ServerPackage(Dictionary<Connection, GameObject> so)
         {
-            players = new Dictionary<ConnectionInfo, Vector2[]>();
+            players = new Dictionary<string, Vector2[]>();
             foreach (Connection key in so.Keys)
             {
-                Vector2[] input = new Vector2[2] {so[key].transform.position, (so[key].GetComponent("Physics") as Physics).Velocity};
-                players.Add(key.ConnectionInfo, input);
+                Vector2[] input;
+                if (so[key].GetComponent("Enemy") is Enemy)
+                {
+                    input = new Vector2[2] { so[key].transform.position, (so[key].GetComponent("Enemy") as Enemy).velocity };
+                } else
+                {
+                    input = new Vector2[2] { so[key].transform.position, (so[key].GetComponent("Physics") as Physics).Velocity };
+                }
+                players.Add(key.ConnectionInfo.ToString(), input);
             }
         }
 
@@ -41,17 +48,19 @@ namespace MagicGladiators
         private void Serialize()
         {
             int length = players.Count;
-            xypos = new float[length, 2];
-            xyvel = new float[length, 2];
-            ms = new MemoryStream[length];
+            xypos = new float[length * 2];
+            xyvel = new float[length * 2];
+            ci = new string[length];
+
             int current = 0;
-            foreach (ConnectionInfo key in players.Keys)
+            foreach (string key in players.Keys)
             {
-                xypos[current, 0] = players[key][0].X;
-                xypos[current, 1] = players[key][0].Y;
-                xyvel[current, 0] = players[key][1].X;
-                xyvel[current, 1] = players[key][1].Y;
-                key.Serialize(ms[current]);
+                ci[current / 2] = key;
+                xypos[current] = players[key][0].X;
+                xyvel[current] = players[key][1].X;
+                current++;
+                xypos[current] = players[key][0].Y;
+                xyvel[current] = players[key][1].Y;
                 current++;
             }
         }
@@ -59,21 +68,21 @@ namespace MagicGladiators
         [ProtoAfterDeserialization]
         private void Deserialize()
         {
-            players = new Dictionary<ConnectionInfo, Vector2[]>();
-            int length = ms.Length;
-            for (int i = 0; i < length; i++)
+            players = new Dictionary<string, Vector2[]>();
+            int length = ci.Length;
+            int current = 0;
+            while (current < length * 2)
             {
-                ConnectionInfo connInfo;
-                ConnectionInfo.Deserialize(ms[i], out connInfo);
-                players.Add
-                    (
-                    connInfo,
-                    new Vector2[2]
-                    {
-                        new Vector2(xypos[i,0], xypos[i,1]),
-                        new Vector2(xyvel[i,0], xyvel[i,1])
-                    }
-                    );
+                string t = ci[current / 2];
+                Vector2 pos = new Vector2();
+                Vector2 vel = new Vector2();
+                pos.X = xypos[current];
+                vel.X = xyvel[current];
+                current++;
+                pos.X = xypos[current];
+                vel.X = xyvel[current];
+                players.Add(t, new Vector2[2] {pos, vel });
+                current++;
             }
         }
     }
