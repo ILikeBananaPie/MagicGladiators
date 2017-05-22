@@ -43,6 +43,8 @@ namespace MagicGladiators
         private float mineActivationTime = 5F;
         private bool deathMineActivated = false;
 
+        private float travelDistance = 1000;
+        private float distanceTravelled;
 
         private float abilityTimer = 0;
 
@@ -108,6 +110,7 @@ namespace MagicGladiators
                 if (go.Tag.Contains("Nova"))
                 {
                     animator.PlayAnimation("Fireball");
+                    travelDistance = 200;
                 }
             }
 
@@ -118,31 +121,36 @@ namespace MagicGladiators
             if (gameObject.Tag == "Fireball")
             {
                 animator.PlayAnimation("Fireball");
+                travelDistance = 200;
             }
             if (gameObject.Tag == "HomingMissile")
             {
                 animator.PlayAnimation("HomingMissile");
+                travelDistance = 1000;
             }
             if (gameObject.Tag == "Drain")
             {
                 animator.PlayAnimation("Drain");
+                travelDistance = 200;
             }
             if (gameObject.Tag == "DeathMeteor")
             {
                 animator.PlayAnimation("DeathMeteor");
+                travelDistance = 1500;
             }
             if (gameObject.Tag == "DeathMine")
             {
                 animator.PlayAnimation("Mine");
-
             }
             if (gameObject.Tag == "Chain")
             {
                 animator.PlayAnimation("Chain");
+                travelDistance = 200;
             }
             if (gameObject.Tag == "Boomerang")
             {
                 animator.PlayAnimation("Boomerang");
+                travelDistance = 1000;
             }
 
             strategy = new Idle(animator);
@@ -288,7 +296,7 @@ namespace MagicGladiators
                 {
                     if (gameObject.Tag == "Boomerang")
                     {
-                        GameWorld.objectsToRemove.Add(gameObject);
+                        //GameWorld.objectsToRemove.Add(gameObject);
                     }
                 }
             }
@@ -323,17 +331,16 @@ namespace MagicGladiators
                 }
                 else (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 2) * projectileSpeed;
 
-                if (Vector2.Distance(originalPos, gameObject.transform.position) > 300)
+                if (distanceTravelled > travelDistance)
                 {
                     if (gameObject.Tag == "Chain" && !chainActivated)
                     {
-                        GameWorld.objectsToRemove.Add(gameObject);
+                        //GameWorld.objectsToRemove.Add(gameObject);
                     }
                     else if (gameObject.Tag != "Chain")
                     {
-                        GameWorld.objectsToRemove.Add(gameObject);
+                        //GameWorld.objectsToRemove.Add(gameObject);
                     }
-
                 }
             }
 
@@ -353,7 +360,7 @@ namespace MagicGladiators
                     chainActivated = false;
                     (chainTarget.GetComponent("Physics") as Physics).chainDeactivated = true;
                     (chainTarget.GetComponent("Physics") as Physics).chainActivated = false;
-                    GameWorld.objectsToRemove.Add(gameObject);
+                    //GameWorld.objectsToRemove.Add(gameObject);
                 }
             }
             if (gameObject.Tag == "Mine")
@@ -394,19 +401,26 @@ namespace MagicGladiators
                     (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 10) * projectileSpeed;
                 }
             }
-
+            Vector2 oldPos = gameObject.transform.position;
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
+            distanceTravelled += Vector2.Distance(oldPos, gameObject.transform.position);
+            CheckDistance();
 
             if (abilityTimer > 2)
             {
                 if (gameObject.Tag == "DeathMeteor" || gameObject.Tag.Contains("Nova"))
                 {
-                    GameWorld.objectsToRemove.Add(gameObject);
+                    //GameWorld.objectsToRemove.Add(gameObject);
                 }
-
             }
+        }
 
-
+        public void CheckDistance()
+        {
+            if (distanceTravelled > travelDistance)
+            {
+                GameWorld.objectsToRemove.Add(gameObject);
+            }
         }
     }
 }
