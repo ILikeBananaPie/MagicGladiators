@@ -86,10 +86,44 @@ namespace MagicGladiators
             //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
             this.target = target;
             testVector = target - new Vector2(originalPos.X + 16, originalPos.Y + 16);
+            if (gameObject.Tag == "UpNova")
+            {
+                testVector = new Vector2(0, 0.2f);
+            }
+            if (gameObject.Tag == "UpRightNova")
+            {
+                testVector = new Vector2(0.2f, 0.2f);
+            }
+            if (gameObject.Tag == "RightNova")
+            {
+                testVector = new Vector2(0.2f, 0);
+            }
+            if (gameObject.Tag == "DownRightNova")
+            {
+                testVector = new Vector2(0.2f, -0.2f);
+            }
+            if (gameObject.Tag == "DownNova")
+            {
+                testVector = new Vector2(0, -0.2f);
+            }
+            if (gameObject.Tag == "DownLeftNova")
+            {
+                testVector = new Vector2(-0.2f, -0.2f);
+            }
+            if (gameObject.Tag == "LeftNova")
+            {
+                testVector = new Vector2(-0.2f, 0);
+            }
+            if (gameObject.Tag == "UpLeftNova")
+            {
+                testVector = new Vector2(-0.2f, 0.2f);
+            }
             testVector.Normalize();
             //target = target - originalPos;
             //target.Normalize();
             this.transform = gameObject.transform;
+
+
         }
 
 
@@ -152,7 +186,6 @@ namespace MagicGladiators
                 animator.PlayAnimation("Boomerang");
                 travelDistance = 1000;
             }
-
             strategy = new Idle(animator);
         }
 
@@ -230,6 +263,7 @@ namespace MagicGladiators
         public void Update()
         {
             KeyboardState keyState = Keyboard.GetState();
+            /*
             if (gameObject.Tag == "UpNova")
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, 0.2f) * projectileSpeed;
@@ -270,6 +304,7 @@ namespace MagicGladiators
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0.2f) * projectileSpeed;
                 abilityTimer += 0.01F;
             }
+            */
 
             if (gameObject.Tag == "Boomerang")
             {
@@ -323,7 +358,7 @@ namespace MagicGladiators
             }
 
 
-            if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
+            if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain" || gameObject.Tag.Contains("Nova"))
             {
                 if (gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
                 {
