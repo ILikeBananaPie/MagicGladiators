@@ -135,7 +135,10 @@ namespace MagicGladiators.Components.Composites
                 ServerPackage up = new ServerPackage(dicofplayers);
                 foreach (Connection key in dicofplayers.Keys)
                 {
-                    key.SendObject<ServerPackage>("ServerPackage", up);
+                    if (key != oneself)
+                    {
+                        key.SendObject<ServerPackage>("ServerPackage", up);
+                    }
                 }
             }
         }
