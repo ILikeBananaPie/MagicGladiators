@@ -137,7 +137,14 @@ namespace MagicGladiators.Components.Composites
                 {
                     if (key != oneself)
                     {
-                        key.SendObject<ServerPackage>("ServerPackage", up);
+                        try
+                        {
+                            key.SendObject<ServerPackage>("ServerPackage", up);
+                        } catch (CommunicationException ce)
+                        {
+                            GameWorld.objectsToRemove.Add(dicofplayers[key]);
+                            players.Remove(key);
+                        }
                     }
                 }
             }
