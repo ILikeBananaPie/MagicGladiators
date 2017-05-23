@@ -12,8 +12,8 @@ namespace MagicGladiators
 {
     class Deflect : DefensiveAbility, IDrawable
     {
-        private float cooldown = 1;
-        private bool canUse = true;
+       
+        
         private float timer;
         private bool activated = false;
         private float activationTime;
@@ -31,6 +31,8 @@ namespace MagicGladiators
 
         public Deflect(GameObject go) : base(go)
         {
+            canShoot = true;
+            cooldown = 5;
             effect = new GameObject();
             effect.AddComponent(new SpriteRenderer(effect, "Deflect", 1));
             //LoadContent(GameWorld.Instance.Content);
@@ -74,19 +76,11 @@ namespace MagicGladiators
                 }
             }
 
-            if (!canUse)
-            {
-                timer += GameWorld.Instance.deltaTime;
-                if (timer > cooldown)
-                {
-                    canUse = true;
-                    timer = 0;
-                }
-            }
+           
 
-            if (keyState.IsKeyDown(Keys.F) && canUse)
+            if (keyState.IsKeyDown(Keys.F) && canShoot)
             {
-                canUse = false;
+                canShoot = false;
                 activated = true;
             }
 

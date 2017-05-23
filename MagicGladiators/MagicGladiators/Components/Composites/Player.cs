@@ -228,17 +228,19 @@ namespace MagicGladiators
             gameObject.KnockBackResistance = 1;
             gameObject.ProjectileSpeed = 1;
             gameObject.LifeSteal = 0;
+            gameObject.CooldownReduction = 1;
 
             foreach (GameObject go in items)
             {
                 Item item = (go.GetComponent("Item") as Item);
                 gameObject.MaxHealth += item.Health;
-                gameObject.DamageResistance += item.DamageResistance / 10;
-                gameObject.Speed += item.Speed / 10;
-                gameObject.LavaResistance += item.LavaResistance / 10;
-                gameObject.KnockBackResistance -= item.KnockBackResistance / 10;
-                gameObject.ProjectileSpeed += item.ProjectileSpeed / 10;
-                gameObject.LifeSteal += item.LifeSteal / 10;
+                gameObject.DamageResistance += item.DamageResistance;
+                gameObject.Speed += item.Speed;
+                gameObject.LavaResistance += item.LavaResistance;
+                gameObject.KnockBackResistance -= item.KnockBackResistance;
+                gameObject.ProjectileSpeed += item.ProjectileSpeed;
+                gameObject.LifeSteal += item.LifeSteal;
+                gameObject.CooldownReduction -= item.CDR;
             }
         }
     }

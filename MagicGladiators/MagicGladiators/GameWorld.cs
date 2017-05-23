@@ -203,6 +203,8 @@ namespace MagicGladiators
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
             testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "1" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "CDR", "0", "0", "0", "0", "100", "0", "0", "0", "0.05" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
         }
 
         public void CreateMap(string map)
@@ -365,7 +367,7 @@ namespace MagicGladiators
                             if (Player.gold >= item.Value)
                             {
                                 Director director = new Director(new ItemBuilder());
-                                Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString() }));
+                                Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString(), item.CDR.ToString() }));
                                 Player.gold -= item.Value;
                                 (player.GetComponent("Player") as Player).UpdateStats();
                                 break;
