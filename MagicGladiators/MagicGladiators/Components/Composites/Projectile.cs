@@ -147,7 +147,7 @@ namespace MagicGladiators
                     travelDistance = 200;
                 }
             }
-
+        
             if (gameObject.Tag == "Mine")
             {
                 animator.PlayAnimation("Mine");
@@ -263,48 +263,7 @@ namespace MagicGladiators
         public void Update()
         {
             KeyboardState keyState = Keyboard.GetState();
-            /*
-            if (gameObject.Tag == "UpNova")
-            {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, 0.2f) * projectileSpeed;
-                abilityTimer += 0.01F;
-            }
-            if (gameObject.Tag == "UpRightNova")
-            {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0.2f) * projectileSpeed;
-                abilityTimer += 0.01F;
-            }
-            if (gameObject.Tag == "RightNova")
-            {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, 0) * projectileSpeed;
-                abilityTimer += 0.01F;
-            }
-            if (gameObject.Tag == "DownRightNova")
-            {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0.2f, -0.2f) * projectileSpeed;
-                abilityTimer += 0.01F;
-            }
-            if (gameObject.Tag == "DownNova")
-            {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(0, -0.2f) * projectileSpeed;
-                abilityTimer += 0.01F;
-            }
-            if (gameObject.Tag == "DownLeftNova")
-            {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, -0.2f) * projectileSpeed;
-                abilityTimer += 0.01F;
-            }
-            if (gameObject.Tag == "LeftNova")
-            {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0) * projectileSpeed;
-                abilityTimer += 0.01F;
-            }
-            if (gameObject.Tag == "UpLeftNova")
-            {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector = new Vector2(-0.2f, 0.2f) * projectileSpeed;
-                abilityTimer += 0.01F;
-            }
-            */
+   
 
             if (gameObject.Tag == "Boomerang")
             {
@@ -445,6 +404,7 @@ namespace MagicGladiators
             {
                 if (gameObject.Tag == "DeathMeteor" || gameObject.Tag.Contains("Nova"))
                 {
+
                     //GameWorld.objectsToRemove.Add(gameObject);
                 }
             }
