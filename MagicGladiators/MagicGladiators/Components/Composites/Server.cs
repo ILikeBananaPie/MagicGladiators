@@ -24,6 +24,7 @@ namespace MagicGladiators.Components.Composites
             get { lock (thislock) { return _players; } }
             set { lock (thislock) { _players = value; } }
         }
+        private static Dictionary
         private Player playerPos;
 
         TCPConnection oneself;

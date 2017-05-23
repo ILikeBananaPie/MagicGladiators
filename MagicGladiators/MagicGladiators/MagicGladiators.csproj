@@ -68,7 +68,8 @@
     <Compile Include="Components\Composites\Player.cs" />
     <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Builder\PlayerBuilder.cs" />
-    <Compile Include="ServerPackage.cs" />
+    <Compile Include="NetworkPackages\ProjectileInfo.cs" />
+    <Compile Include="NetworkPackages\ServerPackage.cs" />
     <Compile Include="Strategies\Idle.cs" />
     <Compile Include="Strategies\IStrategy.cs" />
     <Compile Include="Strategies\Move.cs" />
@@ -77,8 +78,8 @@
     <Compile Include="Components\Leafs\SpriteRenderer.cs" />
     <Compile Include="Components\Leafs\Transform.cs" />
     <Compile Include="StringExt.cs" />
-    <Compile Include="TryConnectPackage.cs" />
-    <Compile Include="UpdatePackage.cs" />
+    <Compile Include="NetworkPackages\TryConnectPackage.cs" />
+    <Compile Include="NetworkPackages\UpdatePackage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="InTheHand.Net.Personal, Version=3.5.605.0, Culture=neutral, PublicKeyToken=ea38caa273134499, processorArchitecture=MSIL">
