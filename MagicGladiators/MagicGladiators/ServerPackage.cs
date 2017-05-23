@@ -79,8 +79,8 @@ namespace MagicGladiators
                 pos.X = xypos[current];
                 vel.X = xyvel[current];
                 current++;
-                pos.X = xypos[current];
-                vel.X = xyvel[current];
+                pos.Y = xypos[current];
+                vel.Y = xyvel[current];
                 players.Add(t, new Vector2[2] {pos, vel });
                 current++;
             }
