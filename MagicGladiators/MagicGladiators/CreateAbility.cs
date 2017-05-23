@@ -63,6 +63,10 @@ namespace MagicGladiators
             {
                 component = new StoneArmour(gameObject);
             }
+            if (name == "Boomerang")
+            {
+                component = new Boomerang(gameObject);
+            }
             return component;
         }
 

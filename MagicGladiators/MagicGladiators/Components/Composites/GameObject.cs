@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Lidgren.Network;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -13,6 +14,7 @@ namespace MagicGladiators
     {
         public Transform transform { get; set; }
         public ContentManager content { get; private set; }
+        public NetConnection Connection { get; set; }
 
         public float MaxHealth { get; set; }
         public float CurrentHealth { get; set; }

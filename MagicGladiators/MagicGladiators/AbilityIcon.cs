@@ -43,6 +43,7 @@ namespace MagicGladiators
             animator.CreateAnimation("Nova", new Animation(1, 64, 1, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Spellshield", new Animation(1, 64, 2, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("StoneArmour", new Animation(1, 64, 3, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Boomerang", new Animation(1, 96, 0, 32, 32, 10, Vector2.Zero, sprite));
 
 
             animator.PlayAnimation(Name);

@@ -203,6 +203,8 @@ namespace MagicGladiators
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Spellshield", 100, "Creates a shield around you, \n deleting any spells coming \n your way."));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "StoneArmour", 100, "Grants reduced knockback \n effect for a period of time, \n while reducing movement speed."));
+            buySpellPosition();
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Boomerang", 100, "Fires a projectile that return to \n your position"));
 
             base.Initialize();
         }
@@ -386,39 +388,12 @@ namespace MagicGladiators
 
             if (Keyboard.GetState().IsKeyDown(Keys.F2))
             {
-                bool testfor = false;
-                foreach (GameObject obj in gameObjects)
-                {
-                    if (obj.GetComponent("Server") is Server || obj.GetComponent("Client") is Client)
-                    {
-                        testfor = true;
-                    }
-                }
-                if (!testfor)
-                {
-                    GameObject server = new GameObject();
-                    server.AddComponent(new Server(server));
-                    server.LoadContent(this.Content);
-                    gameObjects.Add(server);
-                }
+
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.F3))
+
+            if (Keyboard.GetState().IsKeyDown(Keys.F3))
             {
-                bool testfor = false;
-                foreach (GameObject obj in gameObjects)
-                {
-                    if (obj.GetComponent("Server") is Server || obj.GetComponent("Client") is Client)
-                    {
-                        testfor = true;
-                    }
-                }
-                if (!testfor)
-                {
-                    GameObject client = new GameObject();
-                    client.AddComponent(new Client(client));
-                    client.LoadContent(this.Content);
-                    gameObjects.Add(client);
-                }
+
             }
 
             testList.Clear();

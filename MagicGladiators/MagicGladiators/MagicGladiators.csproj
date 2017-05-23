@@ -45,6 +45,7 @@
     <Compile Include="Builder\DummyBuilder.cs" />
     <Compile Include="Builder\ItemBuilder.cs" />
     <Compile Include="Builder\MapBuilder.cs" />
+    <Compile Include="Client.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\DeathMine.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\RollingMeteor.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\ShrinkMap.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Components\Composites\Player.cs" />
     <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Builder\PlayerBuilder.cs" />
+    <Compile Include="Server.cs" />
     <Compile Include="Strategies\FollowTarget.cs" />
     <Compile Include="Components\Composites\Item.cs" />
     <Compile Include="Strategies\Idle.cs" />
@@ -108,6 +110,10 @@
     <Reference Include="InTheHand.Net.Personal, Version=3.5.605.0, Culture=neutral, PublicKeyToken=ea38caa273134499, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Extra\InTheHand.Net.Personal.dll</HintPath>
+    </Reference>
+    <Reference Include="Lidgren.Network, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Lidgren.Network.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
