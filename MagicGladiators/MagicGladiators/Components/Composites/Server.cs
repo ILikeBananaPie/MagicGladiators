@@ -43,7 +43,7 @@ namespace MagicGladiators.Components.Composites
             {
                 if (localEndPoint.Address.ToString().Contains("127."))
                 {
-                    oneself = UDPConnection.GetConnection(new ConnectionInfo(localEndPoint), UDPOptions.None, false, false);
+                    oneself = UDPConnection.GetConnection(new ConnectionInfo(localEndPoint), UDPOptions.Handshake, true, true);
                 }
             }
             Addself();
