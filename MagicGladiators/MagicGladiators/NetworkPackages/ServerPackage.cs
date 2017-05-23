@@ -28,15 +28,12 @@ namespace MagicGladiators
         private string[] ci;
 
         [ProtoMember(4)]
-        private string[] pci;
-
-        [ProtoMember(5)]
         private string[] pname;
 
-        [ProtoMember(6)]
+        [ProtoMember(5)]
         private float[] pxypos;
 
-        [ProtoMember(7)]
+        [ProtoMember(6)]
         private float[] pxyvel;
 
         private ServerPackage() { }
