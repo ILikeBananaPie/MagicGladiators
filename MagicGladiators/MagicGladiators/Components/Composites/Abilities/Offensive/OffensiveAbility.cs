@@ -13,12 +13,12 @@ namespace MagicGladiators
     public abstract class OffensiveAbility: Ability
     {
         //Something akin to missiles mainly
-        public OffensiveAbility(GameObject go, float cooldownTimer, bool canShoot) : base(go, cooldownTimer, canShoot)
+        public OffensiveAbility(GameObject go, float cooldown, bool canShoot) : base(go, cooldown, canShoot)
         {
 
         }
 
-        public abstract void LoadContent(ContentManager content);
+        
 
         
     }

@@ -22,10 +22,6 @@ namespace MagicGladiators
 
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-
-        }
 
         public override void Update()
         {
@@ -48,6 +44,11 @@ namespace MagicGladiators
                 Director director = new Director(new ProjectileBuilder());
                 director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Chain");
             }
+        }
+
+        public override void LoadContent(ContentManager content)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -9,24 +9,25 @@ namespace MagicGladiators
 {
     public abstract class Ability : Component, ILoadable, IUpdateable
     {
-        private int cooldown;
-        private bool canShoot;
-        private float cooldownTimer;
+        protected int cooldown;
+        protected bool canShoot;
+        protected float cooldownTimer;
 
 
-        public Ability(GameObject gameObject, float cooldownTimer, bool canShoot) : base(gameObject)
+        public Ability(GameObject gameObject, float cooldown, bool canShoot) : base(gameObject)
         {
-
+            
         }
 
-        public void LoadContent(ContentManager content)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void LoadContent(ContentManager content);
+        
+           
+        
 
         public abstract void Update();
        
-                    
+            
+                      
         
         public void Cooldown()
         {
