@@ -152,9 +152,10 @@ namespace MagicGladiators.Components.Composites
 
         private void TryConnect(PacketHeader packetHeader, Connection connection, TryConnectPackage incomingObject)
         {
+            idle = false;
+            if (incomingObject.connected)
             if (incomingObject.connected && !players.ContainsKey(incomingObject.connectionInfo))
             {
-                idle = false;
                 Director dir = new Director(new PlayerBuilder());
                 GameObject go = dir.Construct(new Vector2(20), 2);
                 playerPos = go.GetComponent("Player") as Player;
@@ -163,42 +164,43 @@ namespace MagicGladiators.Components.Composites
                 thisconninfo = incomingObject.connectionInfo;
                 players.Add(incomingObject.connectionInfo, go);
                 this.connected = incomingObject.connected;
-                idle = true;
             }
+            idle = true;
         }
 
         private bool idle;
         private void IncommingServerPackage(PacketHeader packetHeader, Connection connection, ServerPackage incomingObject)
         {
-            foreach (string key in incomingObject.players.Keys)
+            if (players.Count > 0)
             {
-                if (key != thisconninfo)
+                foreach (string key in incomingObject.players.Keys)
                 {
-                    if (idle)
+                    if (key != thisconninfo)
                     {
-                        idle = false;
-                        if (players.Keys.Contains(key))
+                        if (idle)
                         {
-                            (players[key].GetComponent("Enemy") as Enemy).UpdateEnemyInfo(incomingObject.players[key][0], incomingObject.players[key][1]);
-                        }
-                        else
-                        {
-                            try
+                            idle = false;
+                            if (players.Keys.Contains(key))
                             {
-                                GameObject go = new GameObject(0);
-                                go.Tag = connection.ToString();
-                                go.AddComponent(new Enemy(go));
-                                go.AddComponent(new SpriteRenderer(go, "Player", 1));
-                                go.LoadContent(GameWorld.Instance.Content);
-                                players.Add(key, go);
-                                GameWorld.gameObjects.Add(go);
-                            }
-                            catch (Exception e)
+                                (players[key].GetComponent("Enemy") as Enemy).UpdateEnemyInfo(incomingObject.players[key][0], incomingObject.players[key][1]);
+                            } else
                             {
-                                //HAHAAHAHAHAHAHA nope
+                                try
+                                {
+                                    GameObject go = new GameObject(0);
+                                    go.Tag = connection.ToString();
+                                    go.AddComponent(new Enemy(go));
+                                    go.AddComponent(new SpriteRenderer(go, "Player", 1));
+                                    go.LoadContent(GameWorld.Instance.Content);
+                                    players.Add(key, go);
+                                    GameWorld.gameObjects.Add(go);
+                                } catch (Exception e)
+                                {
+                                    //HAHAAHAHAHAHAHA nope
+                                }
                             }
+                            idle = true;
                         }
-                        idle = true;
                     }
                 }
             }
