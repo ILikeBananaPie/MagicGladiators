@@ -115,7 +115,7 @@ namespace MagicGladiators.Components.Composites
                             ConnectionInfo connInfo = new ConnectionInfo(serverIP, serverPort);
                             try
                             {
-                                udpConn = UDPConnection.GetConnection(connInfo, UDPOptions.None, true, true);
+                                udpConn = UDPConnection.GetConnection(connInfo, UDPOptions.None, false, true);
                                 udpConn.AppendIncomingPacketHandler<bool>("JoinedServerRespond", JoinedServerRespond, NetworkComms.DefaultSendReceiveOptions);
                                 udpConn.AppendIncomingPacketHandler<UpdatePackage>("HostPos", HostPos, NetworkComms.DefaultSendReceiveOptions);
                                 udpConn.AppendIncomingPacketHandler<ServerPackage>("ServerPackage", IncommingServerPackage, NetworkComms.DefaultSendReceiveOptions);
