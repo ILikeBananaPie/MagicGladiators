@@ -20,7 +20,7 @@ namespace MagicGladiators
         public int damage { get; set; } = 10;
         public int healing { get; set; } = 5;
 
-        public Drain(GameObject go) : base(go)
+        public Drain(GameObject go, float cooldownTimer, bool canShoot) : base(go,cooldownTimer, canShoot)
         {
 
         }

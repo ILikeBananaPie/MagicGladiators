@@ -17,7 +17,7 @@ namespace MagicGladiators
 
         private float cooldown = 5;
 
-        public Chain(GameObject go) : base(go)
+        public Chain(GameObject go, float cooldownTimer, bool canShoot) : base(go, cooldownTimer, canShoot)
         {
 
         }

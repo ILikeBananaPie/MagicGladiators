@@ -27,7 +27,7 @@ namespace MagicGladiators
         private bool canShoot = true;
        
 
-        public Nova(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
+        public Nova(GameObject gameObject, Vector2 position, Vector2 target, float cooldownTimer, bool canShoot) : base(gameObject, cooldownTimer, canShoot)
         {
             go = gameObject;
             originalPos = position;

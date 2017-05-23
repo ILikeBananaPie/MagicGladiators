@@ -36,7 +36,7 @@ namespace MagicGladiators
             gameObject = new GameObject();
             gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
             gameObject.AddComponent(new Animator(gameObject));
-            gameObject.AddComponent(new HomingMissile(gameObject, position, targetVector));
+            gameObject.AddComponent(new HomingMissile(gameObject, position, targetVector, 5, true));
             gameObject.Tag = "Ability";
             gameObject.AddComponent(new Collider(gameObject, true));
             gameObject.transform.position = position;
