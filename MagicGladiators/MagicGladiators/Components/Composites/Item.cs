@@ -42,13 +42,13 @@ namespace MagicGladiators
             this.Name = stats[0];
             this.Health = int.Parse(stats[1]);
             this.Speed = float.Parse(stats[2]);
-            this.DamageResistance = int.Parse(stats[3]);
-            this.LavaResistance = int.Parse(stats[4]);
+            this.DamageResistance = float.Parse(stats[3]);
+            this.LavaResistance = float.Parse(stats[4]);
             this.Value = int.Parse(stats[5]);
-            this.KnockBackResistance = int.Parse(stats[6]);
-            this.ProjectileSpeed = int.Parse(stats[7]);
-            this.LifeSteal = int.Parse(stats[8]);
-            this.CDR = int.Parse(stats[9]);
+            this.KnockBackResistance = float.Parse(stats[6]);
+            this.ProjectileSpeed = float.Parse(stats[7]);
+            this.LifeSteal = float.Parse(stats[8]);
+            this.CDR = float.Parse(stats[9]);
             this.UpgradeValue = (int)(Value + Value * 0.2F);
         }
 
@@ -74,15 +74,15 @@ namespace MagicGladiators
 
         public void Upgrade()
         {
-            Health += (int)(Health * 0.1F);
-            Speed += Speed * 0.1F;
-            DamageResistance += DamageResistance * 0.1F;
-            LavaResistance += LavaResistance * 0.1F;
+            Health += (int)(Health * 0.25F);
+            Speed += Speed * 0.25F;
+            DamageResistance += DamageResistance * 0.25F;
+            LavaResistance += LavaResistance * 0.25F;
             Value += (int)(Value * 0.2F);
-            KnockBackResistance += KnockBackResistance * 0.1F;
-            ProjectileSpeed += ProjectileSpeed * 0.1F;
-            LifeSteal += LifeSteal * 0.1F;
-            CDR += CDR * 0.1F;
+            KnockBackResistance += KnockBackResistance * 0.25F;
+            ProjectileSpeed += ProjectileSpeed * 0.25F;
+            LifeSteal += LifeSteal * 0.25F;
+            CDR += CDR * 0.25F;
             UpgradeValue += (int)(UpgradeValue * 0.2F);
             upgradeLevel++;
         }
@@ -103,7 +103,7 @@ namespace MagicGladiators
                 {
                     if (testInt < 10)
                     {
-                        spriteBatch.DrawString(fontText, list[index] + ": " + testInt * 10 + "%", new Vector2(x + 50, y - 50 + plus), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                        spriteBatch.DrawString(fontText, list[index] + ": " + (testInt * 100).ToString(".") + "%", new Vector2(x + 50, y - 50 + plus), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
                         plus += 20;
                         index++;
                     }
