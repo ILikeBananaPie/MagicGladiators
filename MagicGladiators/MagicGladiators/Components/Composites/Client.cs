@@ -16,7 +16,7 @@ using System.Diagnostics;
 
 namespace MagicGladiators.Components.Composites
 {
-    class Client:Component, IUpdateable, IDrawable, ILoadable
+    class Client : Component, IUpdateable, IDrawable, ILoadable
     {
         private bool connected;
         private string ip;
@@ -61,7 +61,7 @@ namespace MagicGladiators.Components.Composites
         {
             spriteFont = content.Load<SpriteFont>("fontText");
             rect = new Texture2D(GameWorld.Instance.GraphicsDevice, 15 * 21, 14);
-            Color[] data = new Color[15*21*14];
+            Color[] data = new Color[15 * 21 * 14];
             for (int i = 0; i < data.Length; i++) data[i] = Color.White;
             rect.SetData(data);
         }
@@ -92,23 +92,27 @@ namespace MagicGladiators.Components.Composites
                         if (key.ToString().Contains("D") && key.ToString().Length > 1)
                         {
                             ip += key.ToString()[1];
-                        } else if (key == Keys.OemPeriod)
+                        }
+                        else if (key == Keys.OemPeriod)
                         {
                             if (pressedKeys.Contains(Keys.LeftShift) || pressedKeys.Contains(Keys.RightShift))
                             {
                                 ip += ":";
-                            } else
+                            }
+                            else
                             {
                                 ip += ".";
                             }
-                        } else if (key == Keys.Back)
+                        }
+                        else if (key == Keys.Back)
                         {
                             ip = ip.Truncate(ip.Length - 1);
-                        } else if (key == Keys.Enter)
+                        }
+                        else if (key == Keys.Enter)
                         {
                             string serverIP = ip.Split(':').First();
                             int serverPort = int.Parse(ip.Split(':').Last());
-                            ConnectionInfo connInfo = new ConnectionInfo(serverIP,serverPort);
+                            ConnectionInfo connInfo = new ConnectionInfo(serverIP, serverPort);
                             try
                             {
                                 tCPConn = TCPConnection.GetConnection(connInfo);
@@ -117,7 +121,8 @@ namespace MagicGladiators.Components.Composites
                                 tCPConn.AppendIncomingPacketHandler<ServerPackage>("ServerPackage", IncommingServerPackage, NetworkComms.DefaultSendReceiveOptions);
                                 tCPConn.AppendIncomingPacketHandler<TryConnectPackage>("TryConnect", TryConnect, NetworkComms.DefaultSendReceiveOptions);
                                 tCPConn.SendObject<string>("JoinServer", "Player2");
-                            } catch (Exception e)
+                            }
+                            catch (Exception e)
                             {
                                 Debug.Write(e);
                             }
@@ -130,13 +135,15 @@ namespace MagicGladiators.Components.Composites
                 }
                 //save the currently pressed keys so we can compare on the next update
                 lastPressedKeys = pressedKeys;
-            } else
+            }
+            else
             {
                 if (threadUpdate == null)
                 {
                     threadUpdate = new Thread(ThreadUpdate);
                     threadUpdate.Start();
-                } else if (!threadUpdate.IsAlive)
+                }
+                else if (!threadUpdate.IsAlive)
                 {
                     threadUpdate.Start();
                 }
@@ -145,7 +152,7 @@ namespace MagicGladiators.Components.Composites
 
         private void TryConnect(PacketHeader packetHeader, Connection connection, TryConnectPackage incomingObject)
         {
-            if (incomingObject.connected)
+            if (incomingObject.connected && !players.ContainsKey(incomingObject.connectionInfo))
             {
                 idle = false;
                 Director dir = new Director(new PlayerBuilder());
@@ -173,7 +180,8 @@ namespace MagicGladiators.Components.Composites
                         if (players.Keys.Contains(key))
                         {
                             (players[key].GetComponent("Enemy") as Enemy).UpdateEnemyInfo(incomingObject.players[key][0], incomingObject.players[key][1]);
-                        } else
+                        }
+                        else
                         {
                             try
                             {
@@ -184,7 +192,8 @@ namespace MagicGladiators.Components.Composites
                                 go.LoadContent(GameWorld.Instance.Content);
                                 players.Add(key, go);
                                 GameWorld.gameObjects.Add(go);
-                            } catch (Exception e)
+                            }
+                            catch (Exception e)
                             {
                                 //HAHAAHAHAHAHAHA nope
                             }
@@ -203,7 +212,8 @@ namespace MagicGladiators.Components.Composites
                 try
                 {
                     tCPConn.SendObject<UpdatePackage>("UpdatePosition", playerPos.updatePackage);
-                } catch (ConnectionSendTimeoutException cste)
+                }
+                catch (ConnectionSendTimeoutException cste)
                 {
                     connected = false;
                     GameWorld.gameObjects.Remove(GameWorld.gameObjects.Find(x => x.GetComponent("Enemy") is Enemy));
