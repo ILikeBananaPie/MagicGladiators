@@ -25,7 +25,7 @@ namespace MagicGladiators
         public float KnockBackResistance { get; set; } = 1;
         public float ProjectileSpeed { get; set; } = 1;
         public float LifeSteal { get; set; } = 0;
-        public float CooldownReduction { get; set; } = 0;
+        public float CooldownReduction { get; set; } = 1;
 
         public List<Component> components = new List<Component>();
 

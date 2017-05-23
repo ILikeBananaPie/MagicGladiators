@@ -228,6 +228,7 @@ namespace MagicGladiators
             gameObject.KnockBackResistance = 1;
             gameObject.ProjectileSpeed = 1;
             gameObject.LifeSteal = 0;
+            gameObject.CooldownReduction = 1;
 
             foreach (GameObject go in items)
             {
@@ -239,7 +240,7 @@ namespace MagicGladiators
                 gameObject.KnockBackResistance -= item.KnockBackResistance / 10;
                 gameObject.ProjectileSpeed += item.ProjectileSpeed / 10;
                 gameObject.LifeSteal += item.LifeSteal / 10;
-                gameObject.CooldownReduction += item.CDR / 10;
+                gameObject.CooldownReduction -= item.CDR / 10;
             }
         }
     }

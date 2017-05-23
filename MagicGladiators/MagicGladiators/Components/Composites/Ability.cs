@@ -9,7 +9,7 @@ namespace MagicGladiators
 {
     public abstract class Ability : Component, ILoadable, IUpdateable, IAbility
     {
-        protected int cooldown;
+        protected float cooldown;
         protected bool canShoot = true;
         protected float cooldownTimer;
 
@@ -30,10 +30,10 @@ namespace MagicGladiators
         {
             if (!canShoot)
             {
-               // gameObject.CooldownReduction * cooldown 
+                cooldownTimer += GameWorld.Instance.deltaTime;
             }
 
-            if (cooldownTimer > cooldown)
+            if (cooldownTimer > cooldown * gameObject.CooldownReduction)
             {
                 cooldownTimer = 0;
                 canShoot = true;
