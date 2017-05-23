@@ -14,9 +14,9 @@ namespace MagicGladiators
         protected float cooldownTimer;
 
 
-        public Ability(GameObject gameObject, float cooldown, bool canShoot) : base(gameObject)
+        public Ability(GameObject gameObject) : base(gameObject)
         {
-            
+           
         }
 
         public abstract void LoadContent(ContentManager content);

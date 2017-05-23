@@ -30,9 +30,9 @@ namespace MagicGladiators
 
         
 
-        public HomingMissile(GameObject gameObject, Vector2 position, Vector2 target ,float cooldown, bool canShoot) : base(gameObject, cooldown, canShoot)
+        public HomingMissile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
-            
+            canShoot = true;   
             go = gameObject;
             originalPos = position;
             this.target = target;

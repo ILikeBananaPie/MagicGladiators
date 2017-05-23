@@ -21,7 +21,7 @@ namespace MagicGladiators
         {
             if (name == "HomingMissile")
             {
-                component = new HomingMissile(gameObject, position, Vector2.Zero, 5, true);
+                component = new HomingMissile(gameObject, position, Vector2.Zero);
             }
             if (name == "Blink")
             {
@@ -33,7 +33,7 @@ namespace MagicGladiators
             }
             if (name == "Drain")
             {
-                component = new Drain(gameObject , 5, true);
+                component = new Drain(gameObject);
             }
             if (name == "Deflect")
             {
