@@ -192,7 +192,7 @@ namespace MagicGladiators.Components.Composites
                                     go.AddComponent(new SpriteRenderer(go, "Player", 1));
                                     go.LoadContent(GameWorld.Instance.Content);
                                     players.Add(key, go);
-                                    GameWorld.gameObjects.Add(go);
+                                    GameWorld.newObjects.Add(go);
                                 } catch (Exception e)
                                 {
                                     //HAHAAHAHAHAHAHA nope
@@ -217,7 +217,7 @@ namespace MagicGladiators.Components.Composites
                 catch (ConnectionSendTimeoutException cste)
                 {
                     connected = false;
-                    GameWorld.gameObjects.Remove(GameWorld.gameObjects.Find(x => x.GetComponent("Enemy") is Enemy));
+                    GameWorld.objectsToRemove.Add(GameWorld.gameObjects.Find(x => x.GetComponent("Enemy") is Enemy));
                     Debug.Write(cste.Message);
                 }
             }

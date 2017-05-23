@@ -55,7 +55,7 @@ namespace MagicGladiators.Components.Composites
             Director dir = new Director(new PlayerBuilder());
             GameObject go = dir.Construct(new Vector2(50), 2);
             players.Add(oneself, go);
-            GameWorld.gameObjects.Add(go);
+            GameWorld.newObjects.Add(go);
             go.LoadContent(GameWorld.Instance.Content);
             playerPos = (GameWorld.gameObjects.Find(x => x.Tag == "Player").GetComponent("Player") as Player);
 
@@ -90,7 +90,7 @@ namespace MagicGladiators.Components.Composites
                     go.AddComponent(new SpriteRenderer(go, "Player", 1));
                     go.LoadContent(GameWorld.Instance.Content);
                     players.Add(connection, go);
-                    GameWorld.gameObjects.Add(go);
+                    GameWorld.newObjects.Add(go);
                     connection.SendObject<TryConnectPackage>("TryConnect", new TryConnectPackage(true, connection.ConnectionInfo));
                 } else
                 {
