@@ -11,15 +11,16 @@ namespace MagicGladiators
 {
     class Chain : OffensiveAbility
     {
-        private bool canShoot = true;
+       
 
         private float timer;
 
-        private float cooldown = 5;
+       
 
         public Chain(GameObject go) : base(go)
         {
-
+            canShoot = true;
+            cooldown = 5;
         }
 
 
@@ -28,15 +29,7 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (!canShoot)
-            {
-                timer += GameWorld.Instance.deltaTime;
-                if (timer > cooldown)
-                {
-                    timer = 0;
-                    canShoot = true;
-                }
-            }
+           
 
             if (keyState.IsKeyDown(Keys.T) && canShoot)
             {

@@ -31,6 +31,7 @@ namespace MagicGladiators
         public float KnockBackResistance { get; set; }
         public float ProjectileSpeed { get; set; }
         public float LifeSteal { get; set; }
+        public float CDR { get; set; }
         public int Value { get; set; }
         public int UpgradeValue { get; set; }
 
@@ -47,6 +48,7 @@ namespace MagicGladiators
             this.KnockBackResistance = int.Parse(stats[6]);
             this.ProjectileSpeed = int.Parse(stats[7]);
             this.LifeSteal = int.Parse(stats[8]);
+            this.CDR = int.Parse(stats[9]);
             this.UpgradeValue = (int)(Value + Value * 0.2F);
         }
 
@@ -64,6 +66,7 @@ namespace MagicGladiators
             animator.CreateAnimation("KnockRes", new Animation(1, 32, 0, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("ProjectileSpeed", new Animation(1, 32, 1, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("LifeSteal", new Animation(1, 32, 2, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("CDR", new Animation(1, 32, 3, 32, 32, 10, Vector2.Zero, sprite));
 
             animator.PlayAnimation(Name);
             strategy = new Idle(animator);
@@ -79,6 +82,7 @@ namespace MagicGladiators
             KnockBackResistance += KnockBackResistance * 0.1F;
             ProjectileSpeed += ProjectileSpeed * 0.1F;
             LifeSteal += LifeSteal * 0.1F;
+            CDR += CDR * 0.1F;
             UpgradeValue += (int)(UpgradeValue * 0.2F);
             upgradeLevel++;
         }

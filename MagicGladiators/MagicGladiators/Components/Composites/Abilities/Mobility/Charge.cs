@@ -28,7 +28,8 @@ namespace MagicGladiators
         private Physics physics;
         public Charge(GameObject go, Transform transform, Animator animator) : base(go)
         {
-            
+            canShoot = true;
+            cooldown = 5;
             this.go = go;
             this.animator = animator;
             this.transform = transform;
@@ -49,7 +50,7 @@ namespace MagicGladiators
             Vector2 translation = Vector2.Zero;
 
             //activate aim and move in a charge
-            if (keyState.IsKeyDown(Keys.C) && !on && !activated)
+            if (keyState.IsKeyDown(Keys.C) && !on && !activated && canShoot)
             {
 
 
@@ -61,6 +62,7 @@ namespace MagicGladiators
                 test = physics.GetVector(target, go.transform.position);
                 test.Normalize();
                 on = true;
+                canShoot = false;
             }
             if (on)
             {

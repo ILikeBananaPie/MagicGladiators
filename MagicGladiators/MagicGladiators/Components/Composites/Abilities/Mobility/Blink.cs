@@ -22,8 +22,8 @@ namespace MagicGladiators
         private Physics physics;
         public Blink(GameObject go, Transform transform, Animator animator) : base(go)
         {
-            
-            
+            canShoot = true;
+            cooldown = 5;
             this.go = go;
             this.animator = animator;
             this.transform = transform;
@@ -45,7 +45,7 @@ namespace MagicGladiators
             Vector2 translation = Vector2.Zero;
 
           
-            if (keyState.IsKeyDown(Keys.Space) && !activated)
+            if (keyState.IsKeyDown(Keys.Space) && !activated && canShoot)
             {
 
                 
@@ -61,7 +61,7 @@ namespace MagicGladiators
                     
                     gameObject.transform.position = target;
 
-                    
+                    canShoot = false;
                     
                     activated = false;
                 }
@@ -85,7 +85,7 @@ namespace MagicGladiators
                     
 
                     activated = false;
-
+                    canShoot = false;
 
                 }
 

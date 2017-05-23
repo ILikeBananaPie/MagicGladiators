@@ -30,7 +30,7 @@ namespace MagicGladiators
         {
             if (!canShoot)
             {
-                cooldownTimer += GameWorld.Instance.deltaTime;
+               // gameObject.CooldownReduction * cooldown 
             }
 
             if (cooldownTimer > cooldown)

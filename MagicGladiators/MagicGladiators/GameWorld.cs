@@ -168,22 +168,25 @@ namespace MagicGladiators
             gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16)));
             gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
 
-            // name, hp, speed, dmgRes, lavaRes, value, knockRes, projectileSpeed, LifeSteal
+            // name, hp, speed, dmgRes, lavaRes, value, knockRes, projectileSpeed, LifeSteal, CDR
             director = new Director(new ItemBuilder());
-            string[] testItem = new string[] { "Speed", "0", "1", "0", "0", "100", "0", "0", "0" };
+            string[] testItem = new string[] { "Speed", "0", "1", "0", "0", "100", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Hp", "10", "0", "0", "0", "100", "0", "0", "0" };
+            testItem = new string[] { "Hp", "10", "0", "0", "0", "100", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LavaRes", "0", "0", "0", "-1", "100", "0", "0", "0" };
+            testItem = new string[] { "LavaRes", "0", "0", "0", "-1", "100", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "DmgRes", "0", "0", "-1", "0", "100", "0", "0", "0" };
+            testItem = new string[] { "DmgRes", "0", "0", "-1", "0", "100", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "1", "0", "0" };
+            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "1", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "1", "0" };
+            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "1", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "1" };
+            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "1", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "CDR", "0", "0", "0", "0", "100", "0", "0", "0","1" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+
 
             director = new Director(new AbilityIconBuilder());
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 100, "Fires a projectile in the target \n direction, moving towards the \n closest enemy."));
