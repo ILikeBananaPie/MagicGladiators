@@ -18,7 +18,7 @@ namespace MagicGladiators
         
         
 
-        public Boomerang(GameObject go, float cooldownTimer, bool canShoot) : base(go, cooldownTimer, canShoot)
+        public Boomerang(GameObject go) : base(go)
         {
 
         }
