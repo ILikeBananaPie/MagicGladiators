@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MagicGladiators;
 using NetworkCommsDotNet;
-using NetworkCommsDotNet.Connections.TCP;
+using NetworkCommsDotNet.Connections.UDP;
 using System.Threading;
 using System.Diagnostics;
 
@@ -34,13 +34,13 @@ namespace MagicGladiators.Components.Composites
 
         private Keys[] lastPressedKeys;
 
-        Connection tCPConn;
+        Connection udpConn;
         //Es is client!
         public Client(GameObject gameObject) : base(gameObject)
         {
             connected = false;
             updatingHostInfo = false;
-            tCPConn = null;
+            udpConn = null;
             ip = string.Empty;
             lastPressedKeys = Keyboard.GetState().GetPressedKeys();
             players = new Dictionary<string, GameObject>();
@@ -115,12 +115,12 @@ namespace MagicGladiators.Components.Composites
                             ConnectionInfo connInfo = new ConnectionInfo(serverIP, serverPort);
                             try
                             {
-                                tCPConn = TCPConnection.GetConnection(connInfo);
-                                tCPConn.AppendIncomingPacketHandler<bool>("JoinedServerRespond", JoinedServerRespond, NetworkComms.DefaultSendReceiveOptions);
-                                tCPConn.AppendIncomingPacketHandler<UpdatePackage>("HostPos", HostPos, NetworkComms.DefaultSendReceiveOptions);
-                                tCPConn.AppendIncomingPacketHandler<ServerPackage>("ServerPackage", IncommingServerPackage, NetworkComms.DefaultSendReceiveOptions);
-                                tCPConn.AppendIncomingPacketHandler<TryConnectPackage>("TryConnect", TryConnect, NetworkComms.DefaultSendReceiveOptions);
-                                tCPConn.SendObject<string>("JoinServer", "Player2");
+                                udpConn = UDPConnection.GetConnection(connInfo, UDPOptions.None, false, false);
+                                udpConn.AppendIncomingPacketHandler<bool>("JoinedServerRespond", JoinedServerRespond, NetworkComms.DefaultSendReceiveOptions);
+                                udpConn.AppendIncomingPacketHandler<UpdatePackage>("HostPos", HostPos, NetworkComms.DefaultSendReceiveOptions);
+                                udpConn.AppendIncomingPacketHandler<ServerPackage>("ServerPackage", IncommingServerPackage, NetworkComms.DefaultSendReceiveOptions);
+                                udpConn.AppendIncomingPacketHandler<TryConnectPackage>("TryConnect", TryConnect, NetworkComms.DefaultSendReceiveOptions);
+                                udpConn.SendObject<string>("JoinServer", "Player2");
                             }
                             catch (Exception e)
                             {
@@ -212,7 +212,7 @@ namespace MagicGladiators.Components.Composites
             {
                 try
                 {
-                    tCPConn.SendObject<UpdatePackage>("UpdatePosition", playerPos.updatePackage);
+                    udpConn.SendObject<UpdatePackage>("UpdatePosition", playerPos.updatePackage);
                 }
                 catch (ConnectionSendTimeoutException cste)
                 {

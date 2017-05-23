@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
-using NetworkCommsDotNet.Connections.TCP;
+using NetworkCommsDotNet.Connections.UDP;
 
 namespace MagicGladiators.Components.Composites
 {
@@ -26,7 +26,7 @@ namespace MagicGladiators.Components.Composites
         }
         private Player playerPos;
 
-        TCPConnection oneself;
+        UDPConnection oneself;
         public Server(GameObject gameObject) : base(gameObject)
         {
             players = new Dictionary<Connection, GameObject>();
@@ -37,13 +37,13 @@ namespace MagicGladiators.Components.Composites
 
             //Start listening for incoming connections
 
-            Connection.StartListening(ConnectionType.TCP, new IPEndPoint(IPAddress.Any, 0));
+            Connection.StartListening(ConnectionType.UDP, new IPEndPoint(IPAddress.Any, 0));
 
-            foreach (System.Net.IPEndPoint localEndPoint in Connection.ExistingLocalListenEndPoints(ConnectionType.TCP))
+            foreach (System.Net.IPEndPoint localEndPoint in Connection.ExistingLocalListenEndPoints(ConnectionType.UDP))
             {
                 if (localEndPoint.Address.ToString().Contains("127."))
                 {
-                    oneself = TCPConnection.GetConnection(new ConnectionInfo(localEndPoint));
+                    oneself = UDPConnection.GetConnection(new ConnectionInfo(localEndPoint), UDPOptions.None, false, false);
                 }
             }
             Addself();
@@ -55,7 +55,7 @@ namespace MagicGladiators.Components.Composites
             Director dir = new Director(new PlayerBuilder());
             GameObject go = dir.Construct(new Vector2(50), 2);
             players.Add(oneself, go);
-            GameWorld.newObjects.Add(go);
+            GameWorld.gameObjects.Add(go);
             go.LoadContent(GameWorld.Instance.Content);
             playerPos = (GameWorld.gameObjects.Find(x => x.Tag == "Player").GetComponent("Player") as Player);
 
@@ -71,7 +71,7 @@ namespace MagicGladiators.Components.Composites
         public void Draw(SpriteBatch spriteBatch)
         {
             int incriment = 0;
-            foreach (System.Net.IPEndPoint localEndPoint in Connection.ExistingLocalListenEndPoints(ConnectionType.TCP))
+            foreach (System.Net.IPEndPoint localEndPoint in Connection.ExistingLocalListenEndPoints(ConnectionType.UDP))
             {
                 spriteBatch.DrawString(spriteFont, localEndPoint.Address.ToString() + ":" + localEndPoint.Port.ToString(), new Vector2(150, 10 + incriment), Color.Black);
                 incriment += 15;
