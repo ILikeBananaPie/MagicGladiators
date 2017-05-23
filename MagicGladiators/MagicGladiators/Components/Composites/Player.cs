@@ -208,6 +208,13 @@ namespace MagicGladiators
             spriteBatch.DrawString(fontText, "MouseY: " + mouse.Y, new Vector2(0, 80), Color.Black);
             spriteBatch.DrawString(fontText, "Gold: " + gold, new Vector2(0, 100), Color.Black);
             spriteBatch.DrawString(fontText, "speed: " + testSpeed, new Vector2(0, 160), Color.Black);
+            string phase;
+            if (GameWorld.buyPhase)
+            {
+                phase = "Buy Phase";
+            }
+            else phase = "Combat Phase";
+            spriteBatch.DrawString(fontText, phase, new Vector2(0, 180), Color.Black);
 
 
         }

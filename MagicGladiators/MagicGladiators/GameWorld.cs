@@ -70,6 +70,10 @@ namespace MagicGladiators
 
         private Vector2 mapCenter;
 
+        public static List<GameObject> playersAlive = new List<GameObject>();
+        public static bool buyPhase = true;
+        public static List<bool> readyList = new List<bool>();
+
         private static GameWorld instance;
         public static GameWorld Instance
 
@@ -280,49 +284,57 @@ namespace MagicGladiators
 
 
             //only in buy phase
-            foreach (GameObject go in itemList)
+            if (buyPhase)
             {
-                Item item = (go.GetComponent("Item") as Item);
-                if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+                foreach (GameObject go in itemList)
                 {
-                    if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.items.Count <= 5)
+                    Item item = (go.GetComponent("Item") as Item);
+                    if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                     {
-                        canBuy = false;
-                        if (Player.gold >= item.Value)
+                        if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.items.Count <= 5)
                         {
-                            Director director = new Director(new ItemBuilder());
-                            Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString() }));
-                            Player.gold -= item.Value;
-                            (player.GetComponent("Player") as Player).UpdateStats();
+                            canBuy = false;
+                            if (Player.gold >= item.Value)
+                            {
+                                Director director = new Director(new ItemBuilder());
+                                Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString() }));
+                                Player.gold -= item.Value;
+                                (player.GetComponent("Player") as Player).UpdateStats();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            if (buyPhase)
+            {
+                foreach (GameObject go in abilityList)
+                {
+                    if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+                    {
+                        if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.abilities.Count <= 7)
+                        {
+                            AbilityIcon ability = (go.GetComponent("AbilityIcon") as AbilityIcon);
+                            canBuy = false;
+
+                            Director director = new Director(new AbilityIconBuilder());
+                            int x = Player.abilities.Count * 34;
+                            Player.abilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), ability.Name, ability.Value, ability.Text));
+                            (Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).index = abilityIndex;
+                            abilityIndex++;
+                            Player.gold -= ability.Value;
+
+                            CreateAbility ca = new CreateAbility(ability.Name);
+                            player.AddComponent(ca.GetComponent(player, player.transform.position));
+                            abilityList.Remove(ability.gameObject);
                             break;
                         }
                     }
                 }
             }
 
-            foreach (GameObject go in abilityList)
-            {
-                if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
-                {
-                    if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.abilities.Count <= 7)
-                    {
-                        AbilityIcon ability = (go.GetComponent("AbilityIcon") as AbilityIcon);
-                        canBuy = false;
-
-                        Director director = new Director(new AbilityIconBuilder());
-                        int x = Player.abilities.Count * 34;
-                        Player.abilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), ability.Name, ability.Value, ability.Text));
-                        (Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).index = abilityIndex;
-                        abilityIndex++;
-                        Player.gold -= ability.Value;
-
-                        CreateAbility ca = new CreateAbility(ability.Name);
-                        player.AddComponent(ca.GetComponent(player, player.transform.position));
-                        abilityList.Remove(ability.gameObject);
-                        break;
-                    }
-                }
-            }
 
             foreach (GameObject go in Player.abilities)
             {
@@ -448,11 +460,32 @@ namespace MagicGladiators
                 go.Update();
             }
             UpdateLevel();
+            if (!buyPhase)
+            {
+                if (playersAlive.Count < 2)
+                {
+                    buyPhase = true;
+                    //revive all players & reset all stats
+                }
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.F6) && buyPhase && canBuy)
+            {
+                canBuy = false;
+                readyList.Add(true);
+            }
+            foreach (bool b in readyList)
+            {
+                if (!b) break;
+                else buyPhase = false;
+            }
+
             base.Update(gameTime);
         }
 
         public void UpdateLevel()
         {
+
             if (objectsToRemove.Count > 0)
             {
                 foreach (GameObject go in objectsToRemove)
@@ -467,6 +500,18 @@ namespace MagicGladiators
             {
                 gameObjects.AddRange(newObjects);
                 newObjects.Clear();
+            }
+            if (!buyPhase)
+            {
+                readyList.Clear();
+                playersAlive.Clear();
+                foreach (GameObject go in gameObjects)
+                {
+                    if (go.Tag == "Player" || go.Tag == "Dummy" || go.Tag == "Enemy")
+                    {
+                        playersAlive.Add(go);
+                    }
+                }
             }
         }
 
