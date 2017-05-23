@@ -153,7 +153,6 @@ namespace MagicGladiators.Components.Composites
         private void TryConnect(PacketHeader packetHeader, Connection connection, TryConnectPackage incomingObject)
         {
             idle = false;
-            if (incomingObject.connected)
             if (incomingObject.connected && !players.ContainsKey(incomingObject.connectionInfo))
             {
                 Director dir = new Director(new PlayerBuilder());
