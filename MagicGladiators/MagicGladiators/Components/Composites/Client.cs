@@ -159,7 +159,7 @@ namespace MagicGladiators.Components.Composites
                 GameObject go = dir.Construct(new Vector2(20), 2);
                 playerPos = go.GetComponent("Player") as Player;
                 go.LoadContent(GameWorld.Instance.Content);
-                GameWorld.gameObjects.Add(go);
+                GameWorld.newObjects.Add(go);
                 thisconninfo = incomingObject.connectionInfo;
                 players.Add(incomingObject.connectionInfo, go);
                 this.connected = incomingObject.connected;
