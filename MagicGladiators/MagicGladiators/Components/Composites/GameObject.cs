@@ -74,6 +74,10 @@ namespace MagicGladiators
                 {
                     (component as IUpdateable).Update();
                 }
+                if (component is IAbility)
+                {
+                    (component as IAbility).Cooldown();
+                }
             }
         }
 

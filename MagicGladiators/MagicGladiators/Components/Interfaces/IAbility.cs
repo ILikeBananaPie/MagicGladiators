@@ -8,6 +8,6 @@ namespace MagicGladiators
 {
     interface IAbility
     {
-
+        void Cooldown();
     }
 }

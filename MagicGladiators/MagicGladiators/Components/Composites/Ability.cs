@@ -7,28 +7,25 @@ using Microsoft.Xna.Framework.Content;
 
 namespace MagicGladiators
 {
-    public abstract class Ability : Component, ILoadable, IUpdateable
+    public abstract class Ability : Component, ILoadable, IUpdateable, IAbility
     {
         protected int cooldown;
-        protected bool canShoot;
+        protected bool canShoot = true;
         protected float cooldownTimer;
 
 
-        public Ability(GameObject gameObject, float cooldown, bool canShoot) : base(gameObject)
+        public Ability(GameObject gameObject) : base(gameObject)
         {
-            
+
         }
 
         public abstract void LoadContent(ContentManager content);
-        
-           
-        
+
+
+
 
         public abstract void Update();
-       
-            
-                      
-        
+
         public void Cooldown()
         {
             if (!canShoot)
@@ -42,8 +39,8 @@ namespace MagicGladiators
                 canShoot = true;
             }
         }
-        
-           
+
+
 
 
     }

@@ -30,7 +30,7 @@ namespace MagicGladiators
 
         
 
-        public HomingMissile(GameObject gameObject, Vector2 position, Vector2 target ,float cooldown, bool canShoot) : base(gameObject, cooldown, canShoot)
+        public HomingMissile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
             
             go = gameObject;
@@ -40,6 +40,7 @@ namespace MagicGladiators
             testVector = target - originalPos;
             testVector.Normalize();
             this.transform = gameObject.transform;
+            cooldown = 5;
             
         }
 

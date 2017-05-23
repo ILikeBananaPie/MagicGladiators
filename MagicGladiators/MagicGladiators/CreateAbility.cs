@@ -21,7 +21,7 @@ namespace MagicGladiators
         {
             if (name == "HomingMissile")
             {
-                component = new HomingMissile(gameObject, position, Vector2.Zero, 5, true);
+                component = new HomingMissile(gameObject, position, Vector2.Zero);
             }
             if (name == "Blink")
             {
@@ -33,7 +33,7 @@ namespace MagicGladiators
             }
             if (name == "Drain")
             {
-                component = new Drain(gameObject , 5, true);
+                component = new Drain(gameObject);
             }
             if (name == "Deflect")
             {
@@ -49,11 +49,11 @@ namespace MagicGladiators
             }
             if (name == "Chain")
             {
-                component = new Chain(gameObject, 5, true);
+                component = new Chain(gameObject);
             }
             if(name.Contains("Nova"))
             {
-                component = new Nova(gameObject, gameObject.transform.position, Vector2.Zero, 5 , true);
+                component = new Nova(gameObject, gameObject.transform.position, Vector2.Zero);
             }
             if (name.Contains("Spellshield"))
             {
@@ -65,7 +65,7 @@ namespace MagicGladiators
             }
             if (name == "Boomerang")
             {
-                component = new Boomerang(gameObject, 5,true);
+                component = new Boomerang(gameObject);
             }
             return component;
         }
