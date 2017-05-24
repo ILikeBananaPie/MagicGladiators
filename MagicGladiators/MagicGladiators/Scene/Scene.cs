@@ -46,6 +46,7 @@ namespace MagicGladiators
         #region Specific Standard Scenes
         public static Scene MainMenu()
         {
+            GameWorld.Instance.ResetItemsAndAbilities();
             GameObject[] included = new GameObject[4];
             for (int i = 0; i < included.Length; i++)
             {
@@ -80,6 +81,7 @@ namespace MagicGladiators
         }
         public static Scene NewGame()
         {
+            GameWorld.Instance.ResetItemsAndAbilities();
             GameObject[] included = new GameObject[4];
             for (int i = 0; i < included.Length; i++)
             {
@@ -169,6 +171,45 @@ namespace MagicGladiators
             }
             Scene send = new Scene(included);
             send.scenetype = "PracticeChooseRound";
+            return send;
+        }
+        public static Scene PracticeChooseMap()
+        {
+            GameObject[] included = new GameObject[5];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaMapMap", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 7) * 2 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "PracticeMapMap"));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaMapHoleMap", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 7) * 3 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "PracticeHoleMap"));
+                        break;
+                    case 2:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaMapPillarMap", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 7) * 4 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "PracticePillarMap"));
+                        break;
+                    case 3:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaMapPillarHoleMap", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 7) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "PillarHoleMap"));
+                        break;
+                    case 4:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 7) * 6 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "NewGame"));
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "PracticeChooseMap";
             return send;
         }
         #endregion

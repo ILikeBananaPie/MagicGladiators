@@ -457,9 +457,6 @@ namespace MagicGladiators
                     {
                         go.LoadContent(Content);
                     }
-                } else
-                {
-                    ResetItemsAndAbilities();
                 }
                 
                 NextScene = null;

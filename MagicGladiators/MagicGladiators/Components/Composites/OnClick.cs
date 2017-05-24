@@ -69,16 +69,32 @@ namespace MagicGladiators
                                 GameWorld.Instance.NextScene = Scene.PracticeChooseRound();
                                 break;
                             case "PracticeRoundsThree":
-                                GameWorld.Instance.NextScene = Scene.Practice();
+                                GameWorld.Instance.NextScene = Scene.PracticeChooseMap();
                                 GameWorld.numberOfRounds = 3;
                                 break;
                             case "PracticeRoundsFive":
-                                GameWorld.Instance.NextScene = Scene.Practice();
+                                GameWorld.Instance.NextScene = Scene.PracticeChooseMap();
                                 GameWorld.numberOfRounds = 5;
                                 break;
                             case "PracticeRoundsSeven":
-                                GameWorld.Instance.NextScene = Scene.Practice();
+                                GameWorld.Instance.NextScene = Scene.PracticeChooseMap();
                                 GameWorld.numberOfRounds = 7;
+                                break;
+                            case "PracticeMapMap":
+                                GameWorld.Instance.NextScene = Scene.Practice();
+                                GameWorld.selectedMap = "Map";
+                                break;
+                            case "PracticeHoleMap":
+                                GameWorld.Instance.NextScene = Scene.Practice();
+                                GameWorld.selectedMap = "HoleMap";
+                                break;
+                            case "PracticePillarMap":
+                                GameWorld.Instance.NextScene = Scene.Practice();
+                                GameWorld.selectedMap = "PillarMap";
+                                break;
+                            case "PillarHoleMap":
+                                GameWorld.Instance.NextScene = Scene.Practice();
+                                GameWorld.selectedMap = "PillarHoleMap";
                                 break;
                         }
                     }
