@@ -88,6 +88,7 @@ namespace MagicGladiators.Components.Composites
                     go.Tag = connection.ToString();
                     go.AddComponent(new Enemy(go));
                     go.AddComponent(new SpriteRenderer(go, "Player", 1));
+                    go.AddComponent(new Collider(go, true));
                     go.LoadContent(GameWorld.Instance.Content);
                     players.Add(connection, go);
                     GameWorld.newObjects.Add(go);
