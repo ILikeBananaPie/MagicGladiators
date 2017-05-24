@@ -445,6 +445,8 @@ namespace MagicGladiators
 
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
+                    Director ability = new Director(new AbilityIconBuilder());
+                    Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68,Window.ClientBounds.Height - 42), "Fireball", 0, ""));
                     newObjects.Add(player);
 
                     CreateDummies();
