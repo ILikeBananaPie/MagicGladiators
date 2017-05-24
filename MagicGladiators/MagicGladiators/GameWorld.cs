@@ -74,6 +74,9 @@ namespace MagicGladiators
         public static bool buyPhase = true;
         public static List<bool> readyList = new List<bool>();
 
+        public static int numberOfRounds = 5;
+        public static int currentRound = 1;
+
         private static GameWorld instance;
         public static GameWorld Instance
 
@@ -152,9 +155,16 @@ namespace MagicGladiators
         public void CreateDummies()
         {
             Director director = new Director(new DummyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16)));
-            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16)));
-            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
+            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16)));
+            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16)));
+            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
+            foreach (GameObject go in newObjects)
+            {
+                if (go.Tag == "Dummy")
+                {
+                    go.LoadContent(Content);
+                }
+            }
         }
 
         public void CreateVendorAbilities()
@@ -541,8 +551,18 @@ namespace MagicGladiators
             {
                 if (playersAlive.Count < 2)
                 {
-                    buyPhase = true;
-                    //revive all players & reset all stats
+                    if (currentRound < numberOfRounds)
+                    {
+                        //revive all players & reset all stats
+                        CreateDummies();
+                        buyPhase = true;
+                        currentRound++;
+                    }
+                    else
+                    {
+                        //show end screen
+                        currentRound = 1;
+                    }
                 }
             }
 
@@ -554,7 +574,11 @@ namespace MagicGladiators
             foreach (bool b in readyList)
             {
                 if (!b) break;
-                else buyPhase = false;
+                else
+                {
+                    //reset positions and stats
+                    buyPhase = false;
+                }
             }
         }
 
