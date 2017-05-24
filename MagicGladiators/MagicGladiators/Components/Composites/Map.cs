@@ -136,6 +136,7 @@ namespace MagicGladiators
 
                             Vector2 test = new Vector2((float)vx2, (float)vy2);
                             (go.GetComponent("Physics") as Physics).Velocity = test;
+                            go.transform.position += test;
                             if (abilities.Exists(x => x == go.Tag) || go.Tag.Contains("Nova"))
                             {
                                 test.Normalize();
