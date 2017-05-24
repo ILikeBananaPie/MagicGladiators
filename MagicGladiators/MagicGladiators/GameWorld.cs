@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NetworkCommsDotNet;
 using NetworkCommsDotNet.Connections;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -35,6 +36,9 @@ namespace MagicGladiators
 
         public static List<GameObject> itemList;
         public static List<GameObject> abilityList = new List<GameObject>();
+
+        public Scene CurrentScene { get; set; }
+        public Scene NextScene { get; set; }
 
         public List<Collider> Colliders { get; private set; }
         public List<Collider> newColliders { get; private set; }
@@ -111,9 +115,6 @@ namespace MagicGladiators
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            graphics.PreferredBackBufferHeight = 720;
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.ApplyChanges();
 
             TooltipBox.AddComponent(new SpriteRenderer(TooltipBox, "ToolTipBox", 1));
 
@@ -141,16 +142,7 @@ namespace MagicGladiators
             CircleColliders = new List<Collider>();
             newCircleColliders = new List<Collider>();
 
-            selectedMap = "PillarHoleMap";
-            CreateMap(selectedMap);
-
-            CreatePlayer();
-
-            CreateDummies();
-
-            CreateVendorItems();
-
-            CreateVendorAbilities();
+            CurrentScene = Scene.MainMenu();
 
             base.Initialize();
         }
@@ -273,15 +265,15 @@ namespace MagicGladiators
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
             testItem = new string[] { "Hp", "10", "0", "0", "0", "100", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LavaRes", "0", "0", "0", "-1", "100", "0", "0", "0", "0" };
+            testItem = new string[] { "LavaRes", "0", "0", "0", "-0.01", "100", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "DmgRes", "0", "0", "-1", "0", "100", "0", "0", "0", "0" };
+            testItem = new string[] { "DmgRes", "0", "0", "-0.01", "0", "100", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "1", "0", "0", "0" };
+            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "0.01", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "1", "0", "0" };
+            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "0.01", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "1", "0" };
+            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "0.01", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
             testItem = new string[] { "CDR", "0", "0", "0", "0", "100", "0", "0", "0", "0.05" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
@@ -319,13 +311,6 @@ namespace MagicGladiators
                 newObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
                 newObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
             }
-            foreach (GameObject go in newObjects)
-            {
-                if (go.Tag == "Pillar" || go.Tag == "LavaSpot" || go.Tag == "Map")
-                {
-                    go.LoadContent(Content);
-                }
-            }
             #endregion
         }
 
@@ -353,11 +338,13 @@ namespace MagicGladiators
             TooltipBox.LoadContent(Content);
 
             // TODO: use this.Content to load your game content here
-            //map.LoadContent(Content);
-            foreach (GameObject go in gameObjects)
-            {
-                go.LoadContent(Content);
-            }
+
+            CurrentScene.LoadContent(Content);
+
+            //foreach (GameObject go in gameObjects)
+            //{
+            //    go.LoadContent(Content);
+            //}
         }
 
         /// <summary>
@@ -376,18 +363,26 @@ namespace MagicGladiators
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            //graphics.ApplyChanges();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            // TODO: Add your update logic here
+            try
+            {
+                graphics.ApplyChanges();
+            }
+            catch (NullReferenceException nre) { }
+          
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
-            foreach (GameObject go in gameObjects)
+            if (CurrentScene.scenetype == "Practice")
             {
-                if (go.CurrentHealth < 0)
+                foreach (GameObject go in gameObjects)
                 {
-                    objectsToRemove.Add(go);
+                    if (go.CurrentHealth < 0)
+                    {
+                        objectsToRemove.Add(go);
+                    }
                 }
             }
 
@@ -407,16 +402,6 @@ namespace MagicGladiators
 
             UpdateMouseRelease(mouse);
 
-            if (Keyboard.GetState().IsKeyDown(Keys.F2))
-            {
-
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.F3))
-            {
-
-            }
-
             UpdateMouseOnIcon(mouseCircle);
 
 
@@ -428,17 +413,45 @@ namespace MagicGladiators
 
             PhaseCheck();
 
+            if (NextScene != null)
+            {
+                if (NextScene.scenetype == "Practice")
+                {
+                    CreateMap("PillarHoleMap");
 
+                    Director director = new Director(new PlayerBuilder());
+                    player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
+                    newObjects.Add(player);
+
+                    CreateDummies();
+
+                    CreateVendorItems();
+
+                    CreateVendorAbilities();
+
+                    foreach (GameObject go in gameObjects)
+                    {
+                        go.LoadContent(Content);
+                    }
+                }
+                NextScene.LoadContent(Content);
+                CurrentScene = NextScene;
+                NextScene = null;
+                GC.Collect();
+            }
             base.Update(gameTime);
         }
 
         public void UpdateDeathAbilities()
         {
-            if (player.CurrentHealth <= 0)
+            if (CurrentScene.scenetype == "Practice")
             {
-                (player.GetComponent("DeathMine") as DeathMine).Update();
-                (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
-                (player.GetComponent("ShrinkMap") as ShrinkMap).Update();
+                if (player.CurrentHealth <= 0)
+                {
+                    (player.GetComponent("DeathMine") as DeathMine).Update();
+                    (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
+                    (player.GetComponent("ShrinkMap") as ShrinkMap).Update();
+                }
             }
         }
 
@@ -667,7 +680,6 @@ namespace MagicGladiators
 
         public void UpdateLevel()
         {
-
             if (objectsToRemove.Count > 0)
             {
                 foreach (GameObject go in objectsToRemove)
@@ -685,6 +697,7 @@ namespace MagicGladiators
 
             if (newObjects.Count > 0)
             {
+                foreach(GameObject obj in newObjects) { obj.LoadContent(Content); }
                 gameObjects.AddRange(newObjects);
                 newObjects.Clear();
             }

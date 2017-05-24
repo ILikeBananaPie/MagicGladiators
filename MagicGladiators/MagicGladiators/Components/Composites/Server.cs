@@ -12,7 +12,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Threading;
 
-namespace MagicGladiators.Components.Composites
+namespace MagicGladiators
 {
     class Server : Component, IDrawable, ILoadable, IUpdateable
     {
