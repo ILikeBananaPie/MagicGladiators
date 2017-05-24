@@ -187,3 +187,9 @@
 /processorParam:TextureFormat=Color
 /build:AlphaPractice.png
 
+#begin lunchtime.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:lunchtime.spritefont
+

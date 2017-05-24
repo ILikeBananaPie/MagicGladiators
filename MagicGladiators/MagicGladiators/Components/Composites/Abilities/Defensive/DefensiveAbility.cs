@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 
-namespace MagicGladiators.Components.Composites.Abilities
+namespace MagicGladiators
 {
-    abstract class DefensiveAbility:Component, ILoadable, IUpdateable
+    abstract class DefensiveAbility: Ability, ILoadable, IUpdateable
     {
        
         //Something stationary or character based
@@ -15,8 +15,6 @@ namespace MagicGladiators.Components.Composites.Abilities
         {
         }
         
-        public abstract void LoadContent(ContentManager content);
-
-        public abstract void Update();
+       
     }
 }

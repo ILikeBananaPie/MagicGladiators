@@ -17,18 +17,45 @@ namespace MagicGladiators
             throw new NotImplementedException();
         }
 
+        public void BuildIcon(Vector2 position, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void BuildIcon(Vector2 position, string name, int value, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void BuildItem(Vector2 position, string[] stats)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void BuildMapPart(Vector2 position, string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public void FireProjectile(Vector2 position, Vector2 targetVector)
         {
+            throw new NotImplementedException();
+        }
+
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
+        {
             gameObject = new GameObject();
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "ProjectileSheet", 1));
             gameObject.AddComponent(new Animator(gameObject));
+            gameObject.Tag = ability;
+            gameObject.AddComponent(new Physics(gameObject));
             gameObject.AddComponent(new Projectile(gameObject, position, targetVector));
-            gameObject.Tag = "Ability";
             gameObject.AddComponent(new Collider(gameObject, true));
             gameObject.transform.position = position;
             gameObject.LoadContent(GameWorld.Instance.Content);
             //GameWorld.newObjects.Add(gameObject);
 
+            gameObject.CurrentHealth = 100;
             gameObject.transform.position = position;
 
         }

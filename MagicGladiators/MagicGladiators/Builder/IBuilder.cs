@@ -12,6 +12,9 @@ namespace MagicGladiators
         GameObject GetResult();
 
         void BuildGameObject(Vector2 position);
-        void FireProjectile(Vector2 position, Vector2 targetVector);
+        void BuildItem(Vector2 position, string[] stats);
+        void BuildIcon(Vector2 position, string name, int value, string text);
+        void FireProjectile(Vector2 position, Vector2 targetVector, string ability);
+        void BuildMapPart(Vector2 position, string name);
     }
 }

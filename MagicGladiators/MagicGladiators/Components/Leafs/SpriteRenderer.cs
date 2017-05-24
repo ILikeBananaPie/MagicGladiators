@@ -13,6 +13,8 @@ namespace MagicGladiators
     {
         public Rectangle Rectangle { get; set; }
 
+        public float Scale { get; set; } = 1;
+
         public Texture2D Sprite { get; set; }
 
         public Vector2 Offset { get; set; }
@@ -38,7 +40,7 @@ namespace MagicGladiators
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Sprite, gameObject.transform.position + Offset, Rectangle, Color, 0, Vector2.Zero, 1, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(Sprite, gameObject.transform.position + Offset * Scale, Rectangle, Color, 0, Vector2.Zero, Scale, SpriteEffects.None, layerDepth);
 
         }
 
