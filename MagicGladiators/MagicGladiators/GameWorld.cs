@@ -150,6 +150,7 @@ namespace MagicGladiators
 
         public void CreatePlayer()
         {
+            /*
             Director director = new Director(new PlayerBuilder());
             player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
             newObjects.Add(player);
@@ -160,6 +161,7 @@ namespace MagicGladiators
                     go.LoadContent(Content);
                 }
             }
+            */
         }
 
         public void StartRound()
