@@ -156,6 +156,8 @@ namespace MagicGladiators
 
 
                             (go.GetComponent("Physics") as Physics).Velocity = new Vector2((float)vx2, (float)vy2);
+                            go.transform.position += new Vector2((float)vx2, (float)vy2);
+
                             //(gameObject.GetComponent("Physics") as Physics).Velocity = new Vector2((float)vx1, (float)vy1);
                             //go.transform.position = new Vector2(go.transform.position.X + newVelX, go.transform.position.Y + newVelY);
                             /*
