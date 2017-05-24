@@ -489,6 +489,9 @@ namespace MagicGladiators
             readyList.Clear();
             buySpellX = Window.ClientBounds.Width - 144;
             buySpellY = Window.ClientBounds.Height - 144;
+            Player.items.Clear();
+            Player.abilities.Clear();
+            Player.gold = 10000;
         }
 
         public void UpdateBuyItem(MouseState mouse, Circle mouseCircle)
