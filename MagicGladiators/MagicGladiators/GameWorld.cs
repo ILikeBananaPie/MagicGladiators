@@ -485,7 +485,7 @@ namespace MagicGladiators
         public void ResetItemsAndAbilities()
         {
             abilityList.Clear();
-            //buyPhase = false;
+            buyPhase = true;
             currentRound = 1;
             itemList.Clear();
             numberOfRounds = 0;
