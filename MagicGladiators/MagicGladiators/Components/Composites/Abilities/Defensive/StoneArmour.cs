@@ -12,19 +12,20 @@ namespace MagicGladiators
     class StoneArmour : DefensiveAbility, IUpdateable, ILoadable
     {
 
-        private bool canShoot = true;
+       
         private float activated;
         private float activatedTimer = 4f;
         private float slowSpeed = 0.5f;
         private float resist = 0.5f;
         private bool activatedAbility;
-        private float cooldown = 6f;
         private bool cooldownbool = false;
         private float cooldownTimer;
 
 
         public StoneArmour(GameObject go) : base(go)
         {
+            canShoot = true;
+            cooldown = 5;
             
         }
 

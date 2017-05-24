@@ -24,15 +24,15 @@ namespace MagicGladiators
         private GameObject player;
         private float timer;
 
-        private bool canShoot = true;
-       
+        
 
         public Nova(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
+            canShoot = true;
             go = gameObject;
             originalPos = position;
             this.target = target;
-           
+            cooldown = 5;
             testVector = target - originalPos;
             testVector.Normalize();
             this.transform = gameObject.transform;
@@ -61,15 +61,7 @@ namespace MagicGladiators
                 director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "UpLeftNova");
 
             }
-            if (!canShoot)
-            {
-                timer += GameWorld.Instance.deltaTime;
-            }
-            if (timer > 5)
-            {
-                timer = 0;
-                canShoot = true;
-            }
+            
         }
     }
 }

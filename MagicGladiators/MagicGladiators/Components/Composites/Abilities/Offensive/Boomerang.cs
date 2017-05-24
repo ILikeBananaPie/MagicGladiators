@@ -11,16 +11,15 @@ namespace MagicGladiators
 {
     class Boomerang : OffensiveAbility
     {
-        private bool canShoot = true;
-        private float cooldown = 2f;
-        private float cooldowntimer;
+        
         
         
         
 
         public Boomerang(GameObject go) : base(go)
         {
-
+            canShoot = true;
+            cooldown = 5;
         }
 
         public override void LoadContent(ContentManager content)
@@ -41,15 +40,8 @@ namespace MagicGladiators
 
 
             }
-            if (!canShoot)
-            {
-                cooldowntimer += GameWorld.Instance.deltaTime;
-            }
-            if(cooldowntimer >= cooldown)
-            {
-                canShoot = true;
-                cooldowntimer = 0;
-            }
+           
+           
 
         }
     }

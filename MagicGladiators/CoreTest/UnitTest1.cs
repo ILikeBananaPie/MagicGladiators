@@ -13,7 +13,7 @@ namespace CoreTest
         [TestMethod]
         public void GetVectorTestPositiveValuesNegativeResult()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.GetVector(new Vector2(1, 1), new Vector2(2, 2));
             Vector2 expected = new Vector2(-1, -1);
             Assert.AreEqual(actual, expected);
@@ -22,7 +22,7 @@ namespace CoreTest
         [TestMethod]
         public void GetVectorTestPositiveValuesPositiveResult()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.GetVector(new Vector2(2, 2), new Vector2(1, 1));
             Vector2 expected = new Vector2(1, 1);
             Assert.AreEqual(actual, expected);
@@ -31,7 +31,7 @@ namespace CoreTest
         [TestMethod]
         public void GetVectorTestNegativeValuesNegativeResult()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.GetVector(new Vector2(-2, -2), new Vector2(-1, -1));
             Vector2 expected = new Vector2(-1, -1);
             Assert.AreEqual(actual, expected);
@@ -40,7 +40,7 @@ namespace CoreTest
         [TestMethod]
         public void GetVectorTestNegativeValuesPositiveResult()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.GetVector(new Vector2(-1, -1), new Vector2(-2, -2));
             Vector2 expected = new Vector2(1, 1);
             Assert.AreEqual(actual, expected);
@@ -49,7 +49,7 @@ namespace CoreTest
         [TestMethod]
         public void GetVectorTestEqualValues()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.GetVector(new Vector2(1, 1), new Vector2(1, 1));
             Vector2 expected = new Vector2(0, 0);
             Assert.AreEqual(actual, expected);
@@ -58,7 +58,7 @@ namespace CoreTest
         [TestMethod]
         public void GetVectorTestMaxPositiveValuePostitiveResult()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.GetVector(new Vector2(int.MaxValue, int.MaxValue), new Vector2(0, 0));
             Vector2 expected = new Vector2(int.MaxValue, int.MaxValue);
             Assert.AreEqual(actual, expected);
@@ -67,7 +67,7 @@ namespace CoreTest
         [TestMethod]
         public void GetVectorTestMaxPositiveValueNegativeResult()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.GetVector(new Vector2(0, 0), new Vector2(int.MaxValue, int.MaxValue));
             Vector2 expected = new Vector2(-int.MaxValue, -int.MaxValue);
             Assert.AreEqual(actual, expected);
@@ -76,7 +76,7 @@ namespace CoreTest
         [TestMethod]
         public void GetVectorTestMinPositiveValueNegativeResult()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.GetVector(new Vector2(int.MinValue, int.MinValue), new Vector2(0, 0));
             Vector2 expected = new Vector2(-int.MaxValue, -int.MaxValue);
             Assert.AreEqual(actual, expected);
@@ -85,7 +85,7 @@ namespace CoreTest
         [TestMethod]
         public void GetVectorTestMinPositiveValuePositiveResult()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.GetVector(new Vector2(0, 0), new Vector2(int.MinValue, int.MinValue));
             Vector2 expected = new Vector2(int.MaxValue, int.MaxValue);
             Assert.AreEqual(actual, expected);
@@ -97,7 +97,7 @@ namespace CoreTest
         [TestMethod]
         public void PhysicsBreakTestIf()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.physicsBreak(0.05F, new Vector2(1, 1));
             Vector2 expected = new Vector2(-0.05F, -0.05F);
             Assert.AreEqual(actual, expected);
@@ -106,7 +106,7 @@ namespace CoreTest
         [TestMethod]
         public void PhysicsBreakTestElse()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.physicsBreak(0.05F, new Vector2(0.0025F, 0.0025F));
             Vector2 expected = new Vector2(0, 0);
             //Assert.AreEqual(actual, expected);
@@ -117,7 +117,7 @@ namespace CoreTest
         [TestMethod]
         public void UpdateVelocityTestPositiveValues()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.UpdateVelocity(new Vector2(1, 1), new Vector2(1, 1));
             Vector2 expected = new Vector2(2, 2);
             Assert.AreEqual(actual, expected);
@@ -126,7 +126,7 @@ namespace CoreTest
         [TestMethod]
         public void UpdateVelocityTestNegativeValues()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.UpdateVelocity(new Vector2(-1, -1), new Vector2(-1, -1));
             Vector2 expected = new Vector2(-2, -2);
             Assert.AreEqual(actual, expected);
@@ -135,7 +135,7 @@ namespace CoreTest
         [TestMethod]
         public void UpdateVelocityTestMaxValue()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.UpdateVelocity(new Vector2(float.MaxValue, float.MaxValue), new Vector2(-1, -1));
             Vector2 expected = new Vector2(float.MaxValue, float.MaxValue);
             Assert.AreEqual(actual, expected);
@@ -144,7 +144,7 @@ namespace CoreTest
         [TestMethod]
         public void UpdateVelocityTestMinValue()
         {
-            Physics physics = new Physics(new GameObject(1));
+            Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.UpdateVelocity(new Vector2(float.MinValue, float.MinValue), new Vector2(0, 0));
             Vector2 expected = new Vector2(float.MinValue, float.MinValue);
             Assert.AreEqual(actual, expected);

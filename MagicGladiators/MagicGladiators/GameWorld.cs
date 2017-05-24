@@ -134,58 +134,32 @@ namespace MagicGladiators
             CircleColliders = new List<Collider>();
             newCircleColliders = new List<Collider>();
 
-            Director director = new Director(new MapBuilder());
-            Texture2D sprite = Content.Load<Texture2D>("StandardMap");
-            gameObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2), "Map"));
+            CreateMap("PillarHoleMap");
 
-            foreach (GameObject go in gameObjects)
-            {
-                if (go.Tag == "Map")
-                {
-                    mapCenter = new Vector2(go.transform.position.X + sprite.Width / 2, go.transform.position.Y + sprite.Height / 2);
-                }
-            }
-
-            #region "Hole Map"
-            //Lava spot for "Hole map"
-            Texture2D lavaSpot = Content.Load<Texture2D>("LavaSpot");
-            gameObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - lavaSpot.Width / 2, Window.ClientBounds.Height / 2 - lavaSpot.Height / 2), "LavaSpot"));
-            #endregion
-
-            //Pillars for Pillars Map
-            gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
-            gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
-            gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
-            gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
-
-
-            director = new Director(new PlayerBuilder());
+            Director director = new Director(new PlayerBuilder());
             player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
             gameObjects.Add(player);
 
-            director = new Director(new DummyBuilder());
+            CreateDummies();
+
+            CreateVendorItems();
+
+            CreateVendorAbilities();
+
+            base.Initialize();
+        }
+
+        public void CreateDummies()
+        {
+            Director director = new Director(new DummyBuilder());
             gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16)));
             gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16)));
             gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
+        }
 
-            // name, hp, speed, dmgRes, lavaRes, value, knockRes, projectileSpeed, LifeSteal
-            director = new Director(new ItemBuilder());
-            string[] testItem = new string[] { "Speed", "0", "1", "0", "0", "100", "0", "0", "0" };
-            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Hp", "10", "0", "0", "0", "100", "0", "0", "0" };
-            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LavaRes", "0", "0", "0", "-1", "100", "0", "0", "0" };
-            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "DmgRes", "0", "0", "-1", "0", "100", "0", "0", "0" };
-            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "1", "0", "0" };
-            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "1", "0" };
-            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "1" };
-            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-
-            director = new Director(new AbilityIconBuilder());
+        public void CreateVendorAbilities()
+        {
+            Director director = new Director(new AbilityIconBuilder());
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 100, "Fires a projectile in the target \n direction, moving towards the \n closest enemy."));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100, "Sends you in the direction of the \n mouse. Exploding on contact."));
@@ -209,8 +183,63 @@ namespace MagicGladiators
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "StoneArmour", 100, "Grants reduced knockback \n effect for a period of time, \n while reducing movement speed."));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Boomerang", 100, "Fires a projectile that return to \n your position"));
+        }
 
-            base.Initialize();
+        public void CreateVendorItems()
+        {
+            // name, hp, speed, dmgRes, lavaRes, value, knockRes, projectileSpeed, LifeSteal
+            Director director = new Director(new ItemBuilder());
+            string[] testItem = new string[] { "Speed", "0", "1", "0", "0", "100", "0", "0", "0", "0" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "Hp", "10", "0", "0", "0", "100", "0", "0", "0", "0" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "LavaRes", "0", "0", "0", "-1", "100", "0", "0", "0", "0" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "DmgRes", "0", "0", "-1", "0", "100", "0", "0", "0", "0" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "1", "0", "0", "0" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "1", "0", "0" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "1", "0" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "CDR", "0", "0", "0", "0", "100", "0", "0", "0", "0.05" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+        }
+
+        public void CreateMap(string map)
+        {
+            Director director = new Director(new MapBuilder());
+            Texture2D sprite = Content.Load<Texture2D>("StandardMap");
+            gameObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2), "Map"));
+
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.Tag == "Map")
+                {
+                    mapCenter = new Vector2(go.transform.position.X + sprite.Width / 2, go.transform.position.Y + sprite.Height / 2);
+                }
+            }
+
+            #region "Hole Map"
+            if (map == "HoleMap" || map == "PillarHoleMap")
+            {
+                //Lava spot for "Hole map"
+                Texture2D lavaSpot = Content.Load<Texture2D>("LavaSpot");
+                gameObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - lavaSpot.Width / 2, Window.ClientBounds.Height / 2 - lavaSpot.Height / 2), "LavaSpot"));
+            }
+            #endregion
+
+            #region "Pillar map"
+            if (map == "PillarMap" || map == "PillarHoleMap")
+            {
+                //Pillars for Pillars Map
+                gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
+                gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
+                gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
+                gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
+            }
+            #endregion
         }
 
         public void buySpellPosition()
@@ -275,14 +304,55 @@ namespace MagicGladiators
                 }
             }
 
+            UpdateDeathAbilities();
+
+            UpdateBuyItem(mouse, mouseCircle);
+
+            UpdateBuyAbility(mouse, mouseCircle);
+
+            UpdateAbilityUpgrade(mouse, mouseCircle);
+
+            UpdateItemUpgrade(mouse, mouseCircle);
+
+            UpdateMouseRelease(mouse);
+
+            if (Keyboard.GetState().IsKeyDown(Keys.F2))
+            {
+
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.F3))
+            {
+
+            }
+
+            UpdateMouseOnIcon(mouseCircle);
+
+
+            deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            UpdateLists();
+
+            UpdateLevel();
+
+            PhaseCheck();
+
+
+            base.Update(gameTime);
+        }
+
+        public void UpdateDeathAbilities()
+        {
             if (player.CurrentHealth <= 0)
             {
                 (player.GetComponent("DeathMine") as DeathMine).Update();
                 (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
                 (player.GetComponent("ShrinkMap") as ShrinkMap).Update();
             }
+        }
 
-
+        public void UpdateBuyItem(MouseState mouse, Circle mouseCircle)
+        {
             //only in buy phase
             if (buyPhase)
             {
@@ -297,7 +367,7 @@ namespace MagicGladiators
                             if (Player.gold >= item.Value)
                             {
                                 Director director = new Director(new ItemBuilder());
-                                Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString() }));
+                                Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString(), item.CDR.ToString() }));
                                 Player.gold -= item.Value;
                                 (player.GetComponent("Player") as Player).UpdateStats();
                                 break;
@@ -306,8 +376,10 @@ namespace MagicGladiators
                     }
                 }
             }
+        }
 
-
+        public void UpdateBuyAbility(MouseState mouse, Circle mouseCircle)
+        {
             if (buyPhase)
             {
                 foreach (GameObject go in abilityList)
@@ -334,8 +406,10 @@ namespace MagicGladiators
                     }
                 }
             }
+        }
 
-
+        public void UpdateAbilityUpgrade(MouseState mouse, Circle mouseCircle)
+        {
             foreach (GameObject go in Player.abilities)
             {
                 if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
@@ -351,7 +425,10 @@ namespace MagicGladiators
                     }
                 }
             }
+        }
 
+        public void UpdateItemUpgrade(MouseState mouse, Circle mouseCircle)
+        {
             //only in buy phase
             foreach (GameObject go in Player.items)
             {
@@ -388,26 +465,10 @@ namespace MagicGladiators
                     MouseOnIcon = false;
                 }
             }
+        }
 
-            if (mouse.RightButton == ButtonState.Released)
-            {
-                canBuy = true;
-            }
-            if (mouse.LeftButton == ButtonState.Released)
-            {
-                canUpgrade = true;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.F2))
-            {
-
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.F3))
-            {
-
-            }
-
+        public void UpdateMouseOnIcon(Circle mouseCircle)
+        {
             testList.Clear();
             foreach (GameObject go in abilityList)
             {
@@ -438,9 +499,22 @@ namespace MagicGladiators
                 }
                 else MouseOnIcon = false;
             }
+        }
 
-            deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+        public void UpdateMouseRelease(MouseState mouse)
+        {
+            if (mouse.RightButton == ButtonState.Released)
+            {
+                canBuy = true;
+            }
+            if (mouse.LeftButton == ButtonState.Released)
+            {
+                canUpgrade = true;
+            }
+        }
 
+        public void UpdateLists()
+        {
             //map.Update();
             foreach (GameObject go in gameObjects)
             {
@@ -459,7 +533,10 @@ namespace MagicGladiators
             {
                 go.Update();
             }
-            UpdateLevel();
+        }
+
+        public void PhaseCheck()
+        {
             if (!buyPhase)
             {
                 if (playersAlive.Count < 2)
@@ -479,8 +556,6 @@ namespace MagicGladiators
                 if (!b) break;
                 else buyPhase = false;
             }
-
-            base.Update(gameTime);
         }
 
         public void UpdateLevel()
@@ -528,32 +603,54 @@ namespace MagicGladiators
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            //Texture2D tex = (map.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite;
-            //Rectangle rect = (map.GetComponent("SpriteRenderer") as SpriteRenderer).Rectangle;
-            
-            //spriteBatch.Draw(tex, map.transform.position, null, Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
-
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(spriteBatch);
             }
-            //only in buy phase
-            int x = 10;
-            int y = Window.ClientBounds.Height - 138;
-            //only in buy phase
-            foreach (GameObject go in itemList)
+            DrawVendorItems();
+
+            DrawPlayerItems();
+
+            DrawVendorAbilities();
+
+            DrawPlayerAbilities();
+
+            DrawTooltipVenderItem(mouse, mouseCircle);
+
+            DrawTooltipVenderAbility(mouse, mouseCircle);
+
+            DrawTooltipPlayerAbility(mouse, mouseCircle);
+
+            DrawTooltipPlayerItem(mouse, mouseCircle);
+            
+            spriteBatch.End();
+            base.Draw(gameTime);
+        }
+
+        public void DrawVendorItems()
+        {
+            if (buyPhase)
             {
-                go.transform.position = new Vector2(x, y);
-                go.Draw(spriteBatch);
-                if (x == 112)
+                int x = 10;
+                int y = Window.ClientBounds.Height - 138;
+                foreach (GameObject go in itemList)
                 {
-                    x = 10;
-                    y += 34;
+                    go.transform.position = new Vector2(x, y);
+                    go.Draw(spriteBatch);
+                    if (x == 112)
+                    {
+                        x = 10;
+                        y += 34;
+                    }
+                    else x += 34;
                 }
-                else x += 34;
             }
-            x = 180;
-            y = Window.ClientBounds.Height - 138;
+        }
+
+        public void DrawPlayerItems()
+        {
+            int x = 180;
+            int y = Window.ClientBounds.Height - 138;
             foreach (GameObject go in Player.items)
             {
                 go.transform.position = new Vector2(x, y);
@@ -565,16 +662,30 @@ namespace MagicGladiators
                 }
                 else x += 34;
             }
+        }
 
-            foreach (GameObject go in abilityList)
+        public void DrawVendorAbilities()
+        {
+            if (buyPhase)
             {
-                go.Draw(spriteBatch);
+                foreach (GameObject go in abilityList)
+                {
+                    go.Draw(spriteBatch);
+                }
             }
+        }
+
+        public void DrawPlayerAbilities()
+        {
             foreach (GameObject go in Player.abilities)
             {
                 go.Draw(spriteBatch);
 
             }
+        }
+
+        public void DrawTooltipVenderItem(MouseState mouse, Circle mouseCircle)
+        {
             foreach (GameObject go in itemList)
             {
                 Item item = (go.GetComponent("Item") as Item);
@@ -586,7 +697,10 @@ namespace MagicGladiators
                     item.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
             }
+        }
 
+        public void DrawTooltipVenderAbility(MouseState mouse, Circle mouseCircle)
+        {
             foreach (GameObject go in abilityList)
             {
                 AbilityIcon icon = (go.GetComponent("AbilityIcon") as AbilityIcon);
@@ -602,7 +716,10 @@ namespace MagicGladiators
                     //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
             }
+        }
 
+        public void DrawTooltipPlayerAbility(MouseState mouse, Circle mouseCircle)
+        {
             //Collision detection currently failing
             foreach (GameObject go in Player.abilities)
             {
@@ -618,7 +735,10 @@ namespace MagicGladiators
                     //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
             }
+        }
 
+        public void DrawTooltipPlayerItem(MouseState mouse, Circle mouseCircle)
+        {
             foreach (GameObject go in Player.items)
             {
                 Item item = (go.GetComponent("Item") as Item);
@@ -630,10 +750,9 @@ namespace MagicGladiators
                     item.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
             }
-            
-            spriteBatch.End();
-            base.Draw(gameTime);
         }
+
+
         public GameObject FindGameObjectWithTag(string tag)
         {
             return gameObjects.Find(x => x.Tag == tag);

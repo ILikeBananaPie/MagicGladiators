@@ -147,7 +147,7 @@ namespace MagicGladiators
                     travelDistance = 200;
                 }
             }
-
+        
             if (gameObject.Tag == "Mine")
             {
                 animator.PlayAnimation("Mine");

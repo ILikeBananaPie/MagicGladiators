@@ -28,18 +28,20 @@ namespace MagicGladiators
         private GameObject player;
         private float timer;
 
-        private bool canShoot = true;
+        
 
         public HomingMissile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
+            canShoot = true;   
             go = gameObject;
             originalPos = position;
             this.target = target;
-
+            this.timer = cooldownTimer;
             testVector = target - originalPos;
             testVector.Normalize();
             this.transform = gameObject.transform;
-
+            cooldown = 5;
+            
         }
 
         public override void Update()
@@ -49,20 +51,15 @@ namespace MagicGladiators
 
             if (keyState.IsKeyDown(Keys.Q) && canShoot)
             {
+                
                 canShoot = false;
                 Director director = new Director(new ProjectileBuilder());
                 director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "HomingMissile");
             }
-            if (!canShoot)
-            {
-                timer += GameWorld.Instance.deltaTime;
-            }
-            if (timer > 5)
-            {
-                timer = 0;
-                canShoot = true;
-            }
+          
         }
+
+       
 
         public override void LoadContent(ContentManager content)
         {

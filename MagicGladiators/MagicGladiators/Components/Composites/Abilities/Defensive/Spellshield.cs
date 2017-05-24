@@ -12,8 +12,8 @@ namespace MagicGladiators
 {
     class Spellshield : DefensiveAbility, IDrawable
     {
-        private float cooldown = 1;
-        private bool canUse = true;
+        
+       
         private float timer;
         private bool activated = false;
         private float activationTime;
@@ -28,6 +28,8 @@ namespace MagicGladiators
 
         public Spellshield(GameObject go) : base(go)
         {
+            cooldown = 5;
+            canShoot = true;
             effect = new GameObject();
             effect.AddComponent(new SpriteRenderer(effect, "SpellShield", 1));
         }
@@ -70,19 +72,11 @@ namespace MagicGladiators
                 }
             }
 
-            if (!canUse)
-            {
-                timer += GameWorld.Instance.deltaTime;
-                if (timer > cooldown)
-                {
-                    canUse = true;
-                    timer = 0;
-                }
-            }
+            
 
-            if (keyState.IsKeyDown(Keys.V) && canUse)
+            if (keyState.IsKeyDown(Keys.V) && canShoot)
             {
-                canUse = false;
+                canShoot = false;
                 activated = true;
             }
 
