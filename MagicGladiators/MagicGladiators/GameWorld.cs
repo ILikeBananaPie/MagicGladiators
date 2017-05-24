@@ -186,6 +186,10 @@ namespace MagicGladiators
 
             foreach (GameObject go in gameObjects)
             {
+                if (go.Tag != "Player" && go.Tag != "Ability" && go.Tag != "Untagged")
+                {
+
+                }
                 go.Update();
                 
             }

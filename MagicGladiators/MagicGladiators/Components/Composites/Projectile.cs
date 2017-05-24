@@ -88,7 +88,7 @@ namespace MagicGladiators
                         {
                             (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
                         }
-                        else if (go.gameObject.Tag == "Enemy")
+                        else if (go.gameObject.Tag != "Ability")
                         {
                             (go.gameObject.GetComponent("Enemy") as Enemy).isPushed(vectorBetween);
                         }
