@@ -17,6 +17,11 @@ namespace MagicGladiators
         //public static Vector2 velocityTest;
         //private float breakTest = 0.050F;
 
+        private bool testPush;
+        private Vector2 testVector;
+        private float testTimer;
+        private int testSpeed = 10;
+
         private readonly Object thisLock = new Object();
         private UpdatePackage _updatePackage;
         public UpdatePackage updatePackage
@@ -51,9 +56,34 @@ namespace MagicGladiators
 
             }
             */
+            if (testPush)
+            {
+                if (testTimer < 1)
+                {
+                    testTimer += GameWorld.Instance.deltaTime;
+                    gameObject.transform.position += testVector * testSpeed;
+                    if (testSpeed > 0)
+                    {
+                        testSpeed--;
+                    }
+                }
+                else
+                {
+                    testTimer = 0;
+                    testPush = false;
+                    testSpeed = 10;
+                }
+            }
             trnsfrm.position += velocity;
             updatePackage.InfoUpdate(trnsfrm.position, velocity);
         }
+
+        public void isPushed(Vector2 vectorBetween)
+        {
+            testPush = true;
+            testVector = vectorBetween;
+        }
+
 
         public void UpdateEnemyInfo(UpdatePackage package)
         {

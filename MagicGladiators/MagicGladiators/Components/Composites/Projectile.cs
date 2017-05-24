@@ -88,6 +88,10 @@ namespace MagicGladiators
                         {
                             (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
                         }
+                        else if (go.gameObject.Tag == "Enemy")
+                        {
+                            (go.gameObject.GetComponent("Enemy") as Enemy).isPushed(vectorBetween);
+                        }
                     }
                 }
                 GameWorld.objectsToRemove.Add(gameObject);
