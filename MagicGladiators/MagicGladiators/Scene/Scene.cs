@@ -74,7 +74,9 @@ namespace MagicGladiators
                         break;
                 }
             }
-            return new Scene(included);
+            Scene send = new Scene(included);
+            send.scenetype = "MainMenu";
+            return send;
         }
         public static Scene NewGame()
         {
@@ -106,21 +108,27 @@ namespace MagicGladiators
                         break;
                 }
             }
-            return new Scene(included);
+            Scene send = new Scene(included);
+            send.scenetype = "NewGame";
+            return send;
         }
         public static Scene Join()
         {
             GameObject[] included = new GameObject[1];
             included[0] = new GameObject();
             included[0].AddComponent(new Client(included[0]));
-            return new Scene(included);
+            Scene send = new Scene(included);
+            send.scenetype = "Join";
+            return send;
         }
         public static Scene Host()
         {
             GameObject[] included = new GameObject[0];
             included[0] = new GameObject();
             included[0].AddComponent(new Server(included[0]));
-            return new Scene(included);
+            Scene send = new Scene(included);
+            send.scenetype = "Host";
+            return send;
         }
         public static Scene Practice()
         {

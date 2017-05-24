@@ -357,6 +357,7 @@ namespace MagicGladiators
             // TODO: Unload any non ContentManager content here
         }
 
+        bool pressed = false;
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -365,7 +366,24 @@ namespace MagicGladiators
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            {
+                if (!pressed)
+                {
+                    if (CurrentScene.scenetype == "Practice")
+                    {
+                        NextScene = Scene.MainMenu();
+                    } else
+                    if (CurrentScene.scenetype == "NewGame")
+                    {
+                        NextScene = Scene.MainMenu();
+                    } else
+                    {
+                        Exit();
+                    }
+                }
+                pressed = true;
+            } else { pressed = false; }
+
             // TODO: Add your update logic here
             try
             {
@@ -416,6 +434,8 @@ namespace MagicGladiators
 
             if (NextScene != null)
             {
+                NextScene.LoadContent(Content);
+                CurrentScene = NextScene;
                 if (NextScene.scenetype == "Practice")
                 {
                     CreateMap(selectedMap);
@@ -434,9 +454,11 @@ namespace MagicGladiators
                     {
                         go.LoadContent(Content);
                     }
+                } else
+                {
+                    ResetItemsAndAbilities();
                 }
-                NextScene.LoadContent(Content);
-                CurrentScene = NextScene;
+                
                 NextScene = null;
                 GC.Collect();
             }
@@ -454,6 +476,22 @@ namespace MagicGladiators
                     (player.GetComponent("ShrinkMap") as ShrinkMap).Update();
                 }
             }
+        }
+
+        public void ResetItemsAndAbilities()
+        {
+            abilityList.Clear();
+            //buyPhase = false;
+            currentRound = 0;
+            itemList.Clear();
+            numberOfRounds = 0;
+            playersAlive.Clear();
+            readyList.Clear();
+            buySpellX = Window.ClientBounds.Width - 144;
+            buySpellY = Window.ClientBounds.Height - 144;
+            Player.items.Clear();
+            Player.abilities.Clear();
+            Player.gold = 10000;
         }
 
         public void UpdateBuyItem(MouseState mouse, Circle mouseCircle)
