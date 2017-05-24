@@ -11,8 +11,8 @@ namespace MagicGladiators
 {
 
     public enum ObjectType { }
-    
-    
+
+
 
 
 
@@ -146,68 +146,32 @@ namespace MagicGladiators
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            graphics.ApplyChanges();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
+            try
+            {
+                graphics.ApplyChanges();
+            }
+            catch (NullReferenceException nre) { }
 
-            //foreach (GameObject go in gameObjects)
-            //{
-            //    if (go.CurrentHealth < 0)
-            //    {
-            //        objectsToRemove.Add(go);
-            //    }
-            //}
-
-            //if (Keyboard.GetState().IsKeyDown(Keys.F2))
-            //{
-            //    bool testfor = false;
-            //    foreach (GameObject obj in gameObjects)
-            //    {
-            //        if (obj.GetComponent("Server") is Server || obj.GetComponent("Client") is Client)
-            //        {
-            //            testfor = true;
-            //        }
-            //    }
-            //    if (!testfor)
-            //    {
-            //        GameObject server = new GameObject();
-            //        server.AddComponent(new Server(server));
-            //        server.LoadContent(this.Content);
-            //        gameObjects.Add(server);
-            //    }
-            //} else if (Keyboard.GetState().IsKeyDown(Keys.F3))
-            //{
-            //    bool testfor = false;
-            //    foreach (GameObject obj in gameObjects)
-            //    {
-            //        if (obj.GetComponent("Server") is Server || obj.GetComponent("Client") is Client)
-            //        {
-            //            testfor = true;
-            //        }
-            //    }
-            //    if (!testfor)
-            //    {
-            //        GameObject client = new GameObject();
-            //        client.AddComponent(new Client(client));
-            //        client.LoadContent(this.Content);
-            //        gameObjects.Add(client);
-            //    }
-            //}
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.CurrentHealth < 0)
+                {
+                    objectsToRemove.Add(go);
+                }
+            }
 
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-
-            //foreach (GameObject go in gameObjects)
-            //{
-            //    go.Update();
-                
-            //}
-            UpdateLevel();
-            if (CurrentScene != null)
+            foreach (GameObject go in gameObjects)
             {
-                CurrentScene.Update();
+                go.Update();
+
             }
+
+            UpdateLevel();
             if (NextScene != null)
             {
                 NextScene.LoadContent(Content);
@@ -220,21 +184,21 @@ namespace MagicGladiators
 
         public void UpdateLevel()
         {
-            //if (objectsToRemove.Count > 0)
-            //{
-            //    foreach (GameObject go in objectsToRemove)
-            //    {
-            //        CircleColliders.Remove((go.GetComponent("Collider") as Collider));
-            //        gameObjects.Remove(go);
-            //    }
-            //    objectsToRemove.Clear();
-            //}
+            if (objectsToRemove.Count > 0)
+            {
+                foreach (GameObject go in objectsToRemove)
+                {
+                    CircleColliders.Remove((go.GetComponent("Collider") as Collider));
+                    gameObjects.Remove(go);
+                }
+                objectsToRemove.Clear();
+            }
 
-            //if (newObjects.Count > 0)
-            //{
-            //    gameObjects.AddRange(newObjects);
-            //    newObjects.Clear();
-            //}
+            if (newObjects.Count > 0)
+            {
+                gameObjects.AddRange(newObjects);
+                newObjects.Clear();
+            }
 
         }
 
@@ -249,10 +213,10 @@ namespace MagicGladiators
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            //foreach (GameObject go in gameObjects)
-            //{
-            //    go.Draw(spriteBatch);
-            //}
+            foreach (GameObject go in gameObjects)
+            {
+                go.Draw(spriteBatch);
+            }
             CurrentScene.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);

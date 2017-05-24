@@ -53,11 +53,17 @@ namespace MagicGladiators
                             case "MainMenu":
                                 GameWorld.Instance.NextScene = Scene.MainMenu();
                                 break;
-                            case "Join":
-                                GameWorld.Instance.NextScene = Scene.Join();
+                            //case "Join":
+                            //    GameWorld.Instance.NextScene = Scene.Join();
+                            //    break;
+                            //case "Host":
+                            //    GameWorld.Instance.NextScene = Scene.Host();
+                            //    break;
+                            case "Practice":
+                                GameWorld.Instance.NextScene = Scene.Practice();
                                 break;
-                            case "Host":
-                                GameWorld.Instance.NextScene = Scene.Host();
+                            case "ExitGame":
+                                GameWorld.Instance.Exit();
                                 break;
                         }
                     }
