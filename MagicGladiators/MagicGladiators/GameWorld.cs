@@ -376,6 +376,9 @@ namespace MagicGladiators
                     if (CurrentScene.scenetype == "NewGame")
                     {
                         NextScene = Scene.MainMenu();
+                    } else if (CurrentScene.scenetype == "PracticeChooseRound")
+                    {
+                        NextScene = Scene.NewGame();
                     } else
                     {
                         Exit();

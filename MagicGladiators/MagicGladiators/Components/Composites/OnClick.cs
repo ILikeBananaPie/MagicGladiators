@@ -65,6 +65,21 @@ namespace MagicGladiators
                             case "ExitGame":
                                 GameWorld.Instance.Exit();
                                 break;
+                            case "PracticeChooseRound":
+                                GameWorld.Instance.NextScene = Scene.PracticeChooseRound();
+                                break;
+                            case "PracticeRoundsThree":
+                                GameWorld.Instance.NextScene = Scene.Practice();
+                                GameWorld.numberOfRounds = 3;
+                                break;
+                            case "PracticeRoundsFive":
+                                GameWorld.Instance.NextScene = Scene.Practice();
+                                GameWorld.numberOfRounds = 5;
+                                break;
+                            case "PracticeRoundsSeven":
+                                GameWorld.Instance.NextScene = Scene.Practice();
+                                GameWorld.numberOfRounds = 7;
+                                break;
                         }
                     }
                 }
