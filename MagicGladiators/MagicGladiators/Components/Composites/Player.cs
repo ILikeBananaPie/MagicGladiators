@@ -215,7 +215,7 @@ namespace MagicGladiators
             }
             else phase = "Combat Phase";
             spriteBatch.DrawString(fontText, phase, new Vector2(0, 180), Color.Black);
-
+            spriteBatch.DrawString(fontText, GameWorld.currentRound + " / " + GameWorld.numberOfRounds, new Vector2(0, 200), Color.Black);
 
         }
 

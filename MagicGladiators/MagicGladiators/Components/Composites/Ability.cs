@@ -12,6 +12,7 @@ namespace MagicGladiators
         protected float cooldown;
         protected bool canShoot = true;
         protected float cooldownTimer;
+        private bool canUse;
 
 
         public Ability(GameObject gameObject) : base(gameObject)
@@ -28,20 +29,24 @@ namespace MagicGladiators
 
         public void Cooldown()
         {
-            if (!canShoot)
+            if (GameWorld.buyPhase)
             {
-                cooldownTimer += GameWorld.Instance.deltaTime;
+                canUse = false;
             }
-
-            if (cooldownTimer > cooldown * gameObject.CooldownReduction)
+            else canUse = true;
+            if (canUse)
             {
-                cooldownTimer = 0;
-                canShoot = true;
+                if (!canShoot)
+                {
+                    cooldownTimer += GameWorld.Instance.deltaTime;
+                }
+
+                if (cooldownTimer > cooldown * gameObject.CooldownReduction)
+                {
+                    cooldownTimer = 0;
+                    canShoot = true;
+                }
             }
         }
-
-
-
-
     }
 }

@@ -78,6 +78,9 @@ namespace MagicGladiators
         public static bool buyPhase = true;
         public static List<bool> readyList = new List<bool>();
 
+        public static int numberOfRounds = 5;
+        public static int currentRound = 1;
+
         private static GameWorld instance;
         public static GameWorld Instance
 
@@ -146,6 +149,13 @@ namespace MagicGladiators
             newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16)));
             newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16)));
             newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
+            foreach (GameObject go in newObjects)
+            {
+                if (go.Tag == "Dummy")
+                {
+                    go.LoadContent(Content);
+                }
+            }
         }
 
         public void CreateVendorAbilities()
@@ -184,15 +194,15 @@ namespace MagicGladiators
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
             testItem = new string[] { "Hp", "10", "0", "0", "0", "100", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LavaRes", "0", "0", "0", "-1", "100", "0", "0", "0", "0" };
+            testItem = new string[] { "LavaRes", "0", "0", "0", "-0.01", "100", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "DmgRes", "0", "0", "-1", "0", "100", "0", "0", "0", "0" };
+            testItem = new string[] { "DmgRes", "0", "0", "-0.01", "0", "100", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "1", "0", "0", "0" };
+            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "0.01", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "1", "0", "0" };
+            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "0.01", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "1", "0" };
+            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "0.01", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
             testItem = new string[] { "CDR", "0", "0", "0", "0", "100", "0", "0", "0", "0.05" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
@@ -560,8 +570,18 @@ namespace MagicGladiators
             {
                 if (playersAlive.Count < 2)
                 {
-                    buyPhase = true;
-                    //revive all players & reset all stats
+                    if (currentRound < numberOfRounds)
+                    {
+                        //revive all players & reset all stats
+                        CreateDummies();
+                        buyPhase = true;
+                        currentRound++;
+                    }
+                    else
+                    {
+                        //show end screen
+                        currentRound = 1;
+                    }
                 }
             }
 
@@ -573,7 +593,11 @@ namespace MagicGladiators
             foreach (bool b in readyList)
             {
                 if (!b) break;
-                else buyPhase = false;
+                else
+                {
+                    //reset positions and stats
+                    buyPhase = false;
+                }
             }
         }
 
