@@ -250,6 +250,8 @@ namespace MagicGladiators
             {
                 GameWorld.objectsToRemove.Add(obj);
             }
+            GameWorld.characters.Clear();
+            GameWorld.characterColliders.Clear();
         }
     }
 }
