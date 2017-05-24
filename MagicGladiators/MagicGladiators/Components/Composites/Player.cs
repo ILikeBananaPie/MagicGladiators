@@ -28,7 +28,6 @@ namespace MagicGladiators
         private bool testPush;
         private Vector2 testVector;
         private float testTimer;
-        private bool canShoot;
         private SpriteRenderer sprite;
         private float regenTimer;
 
@@ -167,28 +166,11 @@ namespace MagicGladiators
             }
             strategy.Execute(ref direction);
 
-            MouseState mouse = Mouse.GetState();
-            if (mouse.LeftButton == ButtonState.Pressed && canShoot && !GameWorld.Instance.MouseOnIcon)
-            {
-                Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball");
-                canShoot = false;
-            }
-
-            if (mouse.LeftButton == ButtonState.Released)
-            {
-                canShoot = true;
-            }
+        
+           
+         
             updatePackage.InfoUpdate(transform.position, phys.Velocity);
-            /*
-            if (keyState.IsKeyDown(Keys.Q) && canShoot)
-            {
-                canShoot = false;
-                Director director = new Director(new HomingMissileBuilder());
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), );
-               
-            }
-           */
+         
            
         }
 
