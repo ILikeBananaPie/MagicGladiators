@@ -16,7 +16,7 @@ namespace MagicGladiators
     {
         public Dictionary<string, Vector2[]> players { get; set; }
 
-        public Dictionary<string, ProjectileInfo> projectiles { get; set; }
+        public Dictionary<string, ProjectileInfo[]> projectiles { get; set; }
 
         [ProtoMember(1)]
         private float[] xypos;
@@ -35,6 +35,9 @@ namespace MagicGladiators
 
         [ProtoMember(6)]
         private float[] pxyvel;
+
+        [ProtoMember(7)]
+        private int[] pskip;
 
         private ServerPackage() { }
 
@@ -62,8 +65,40 @@ namespace MagicGladiators
             xypos = new float[length * 2];
             xyvel = new float[length * 2];
             ci = new string[length];
-
             int current = 0;
+
+            if (projectiles != null)
+            {
+                pskip = new int[projectiles.Count];
+                length = 0;
+                foreach (string key in projectiles.Keys)
+                {
+                    pskip[current] = length;
+                    length += projectiles[key].Length;
+                    current++;
+                }
+                pname = new string[length];
+                pxypos = new float[length * 2];
+                pxyvel = new float[length * 2];
+
+                current = 0;
+                foreach (string key in projectiles.Keys)
+                {
+                    foreach (ProjectileInfo pi in projectiles[key])
+                    {
+                        pname[current / 2] = pi.ProjectileName;
+                        pxypos[current] = pi.Position.X;
+                        pxyvel[current] = pi.Velocity.X;
+                        current++;
+                        pxypos[current] = pi.Position.X;
+                        pxyvel[current] = pi.Velocity.X;
+                        current++;
+                    }
+                }
+            }
+
+
+            current = 0;
             foreach (string key in players.Keys)
             {
                 ci[current / 2] = key;
@@ -92,8 +127,28 @@ namespace MagicGladiators
                 current++;
                 pos.Y = xypos[current];
                 vel.Y = xyvel[current];
-                players.Add(t, new Vector2[2] {pos, vel });
+                players.Add(t, new Vector2[2] { pos, vel });
                 current++;
+            }
+
+            if (pname != null && pxypos != null && pxyvel != null && pskip != null)
+            {
+                current = 0;
+                length = pxypos.Length;
+                int posa = 0;
+                while (current < length)
+                {
+                    if (current < pskip[posa])
+                    {
+
+                    } else
+                    {
+                        if (posa + 1 < pskip.Length)
+                        {
+                            posa++;
+                        }
+                    }
+                }
             }
         }
     }
