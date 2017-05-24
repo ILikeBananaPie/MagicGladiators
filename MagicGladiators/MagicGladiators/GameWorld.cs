@@ -135,18 +135,7 @@ namespace MagicGladiators
             CircleColliders = new List<Collider>();
             newCircleColliders = new List<Collider>();
 
-            CreateMap("PillarHoleMap");
-
-            Director director = new Director(new PlayerBuilder());
-            player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
-            gameObjects.Add(player);
-
-            CreateDummies();
             CurrentScene = Scene.MainMenu();
-
-            CreateVendorItems();
-
-            CreateVendorAbilities();
 
             base.Initialize();
         }
@@ -154,9 +143,9 @@ namespace MagicGladiators
         public void CreateDummies()
         {
             Director director = new Director(new DummyBuilder());
-            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16)));
-            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16)));
-            gameObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
+            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16)));
+            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16)));
+            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
         }
 
         public void CreateVendorAbilities()
@@ -213,9 +202,9 @@ namespace MagicGladiators
         {
             Director director = new Director(new MapBuilder());
             Texture2D sprite = Content.Load<Texture2D>("StandardMap");
-            gameObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2), "Map"));
+            newObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2), "Map"));
 
-            foreach (GameObject go in gameObjects)
+            foreach (GameObject go in newObjects)
             {
                 if (go.Tag == "Map")
                 {
@@ -228,7 +217,7 @@ namespace MagicGladiators
             {
                 //Lava spot for "Hole map"
                 Texture2D lavaSpot = Content.Load<Texture2D>("LavaSpot");
-                gameObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - lavaSpot.Width / 2, Window.ClientBounds.Height / 2 - lavaSpot.Height / 2), "LavaSpot"));
+                newObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - lavaSpot.Width / 2, Window.ClientBounds.Height / 2 - lavaSpot.Height / 2), "LavaSpot"));
             }
             #endregion
 
@@ -236,10 +225,10 @@ namespace MagicGladiators
             if (map == "PillarMap" || map == "PillarHoleMap")
             {
                 //Pillars for Pillars Map
-                gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
-                gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
-                gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
-                gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
+                newObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
+                newObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
+                newObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
+                newObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
             }
             #endregion
         }
@@ -301,19 +290,18 @@ namespace MagicGladiators
                 graphics.ApplyChanges();
             }
             catch (NullReferenceException nre) { }
-
-            //graphics.ApplyChanges();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))              
-            Exit();
           
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
-            foreach (GameObject go in gameObjects)
+            if (CurrentScene.scenetype == "Pracitce")
             {
-                if (go.CurrentHealth < 0)
+                foreach (GameObject go in gameObjects)
                 {
-                    objectsToRemove.Add(go);
+                    if (go.CurrentHealth < 0)
+                    {
+                        objectsToRemove.Add(go);
+                    }
                 }
             }
 
@@ -329,16 +317,6 @@ namespace MagicGladiators
 
             UpdateMouseRelease(mouse);
 
-            if (Keyboard.GetState().IsKeyDown(Keys.F2))
-            {
-
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.F3))
-            {
-
-            }
-
             UpdateMouseOnIcon(mouseCircle);
 
 
@@ -350,17 +328,45 @@ namespace MagicGladiators
 
             PhaseCheck();
 
+            if (NextScene != null)
+            {
+                if (NextScene.scenetype == "Practice")
+                {
+                    CreateMap("PillarHoleMap");
 
+                    Director director = new Director(new PlayerBuilder());
+                    player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
+                    newObjects.Add(player);
+
+                    CreateDummies();
+
+                    CreateVendorItems();
+
+                    CreateVendorAbilities();
+
+                    foreach (GameObject go in gameObjects)
+                    {
+                        go.LoadContent(Content);
+                    }
+                }
+                NextScene.LoadContent(Content);
+                CurrentScene = NextScene;
+                NextScene = null;
+                GC.Collect();
+            }
             base.Update(gameTime);
         }
 
         public void UpdateDeathAbilities()
         {
-            if (player.CurrentHealth <= 0)
+            if (CurrentScene.scenetype == "Practice")
             {
-                (player.GetComponent("DeathMine") as DeathMine).Update();
-                (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
-                (player.GetComponent("ShrinkMap") as ShrinkMap).Update();
+                if (player.CurrentHealth <= 0)
+                {
+                    (player.GetComponent("DeathMine") as DeathMine).Update();
+                    (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
+                    (player.GetComponent("ShrinkMap") as ShrinkMap).Update();
+                }
             }
         }
 
@@ -548,17 +554,6 @@ namespace MagicGladiators
             }
         }
 
-            UpdateLevel();
-            if (NextScene != null)
-            {
-                NextScene.LoadContent(Content);
-                CurrentScene = NextScene;
-                NextScene = null;
-                GC.Collect();
-            }
-            base.Update(gameTime);
-        }
-
         public void PhaseCheck()
         {
             if (!buyPhase)
@@ -596,6 +591,7 @@ namespace MagicGladiators
 
             if (newObjects.Count > 0)
             {
+                foreach(GameObject obj in newObjects) { obj.LoadContent(Content); }
                 gameObjects.AddRange(newObjects);
                 newObjects.Clear();
             }

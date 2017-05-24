@@ -13,6 +13,7 @@ namespace MagicGladiators
     public class Scene:ILoadable, IUpdateable, IDrawable
     {
         List<GameObject> gameObjects;
+        public string scenetype;
 
         #region Constructors
         public Scene(GameObject[] go)
@@ -123,9 +124,10 @@ namespace MagicGladiators
         }
         public static Scene Practice()
         {
-            GameObject[] included = new GameObject[1];
-            included[0] = new Director(new PlayerBuilder()).Construct(new Vector2(50));
-            return new Scene(included);
+            GameObject[] included = new GameObject[0];
+            Scene send = new Scene(included);
+            send.scenetype = "Practice";
+            return send;
         }
         #endregion
 
