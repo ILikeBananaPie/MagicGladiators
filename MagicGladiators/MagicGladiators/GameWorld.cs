@@ -486,7 +486,7 @@ namespace MagicGladiators
         {
             abilityList.Clear();
             //buyPhase = false;
-            currentRound = 0;
+            currentRound = 1;
             itemList.Clear();
             numberOfRounds = 0;
             playersAlive.Clear();
