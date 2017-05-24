@@ -354,7 +354,7 @@ namespace MagicGladiators
                     chainActivated = false;
                     (chainTarget.GetComponent("Physics") as Physics).chainDeactivated = true;
                     (chainTarget.GetComponent("Physics") as Physics).chainActivated = false;
-                    //GameWorld.objectsToRemove.Add(gameObject);
+                    GameWorld.objectsToRemove.Add(gameObject);
                 }
             }
             if (gameObject.Tag == "Mine")
@@ -414,7 +414,14 @@ namespace MagicGladiators
         {
             if (distanceTravelled > travelDistance)
             {
-                GameWorld.objectsToRemove.Add(gameObject);
+                if (gameObject.Tag != "Chain")
+                {
+                    GameWorld.objectsToRemove.Add(gameObject);
+                }
+                if (gameObject.Tag == "Chain" && !chainActivated)
+                {
+                    GameWorld.objectsToRemove.Add(gameObject);
+                }
             }
         }
     }
