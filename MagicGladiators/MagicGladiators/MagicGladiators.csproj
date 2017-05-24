@@ -105,6 +105,8 @@
     <Compile Include="Components\Leafs\SpriteRenderer.cs" />
     <Compile Include="Components\Leafs\Transform.cs" />
     <Compile Include="StringExt.cs" />
+    <Compile Include="TestClient.cs" />
+    <Compile Include="TestServer.cs" />
     <Compile Include="UpdatePackage.cs" />
   </ItemGroup>
   <ItemGroup>

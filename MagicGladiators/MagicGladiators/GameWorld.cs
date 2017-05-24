@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Drawing;
+using System.Threading;
 
 namespace MagicGladiators
 {
@@ -68,7 +69,6 @@ namespace MagicGladiators
         private List<string> defensiveAbilities = new List<string>() { "Deflect", "Invisibility", "Stone Armor" };
         private List<string> movementAbilities = new List<string>() { "Charge", "Blink", "Leap" };
         //v.0.2
-
         private GameObject map;
         public float MapScale { get; set; } = 1;
         public static string selectedMap;
@@ -84,6 +84,13 @@ namespace MagicGladiators
 
         public static List<GameObject> characters = new List<GameObject>();
         public static List<Collider> characterColliders = new List<Collider>();
+
+        private bool showServer = false;
+        private bool canServer = true;
+        private bool canClient = true;
+        private TestClient client;
+        private TestServer server;
+        private List<Thread> threads = new List<Thread>();
 
         private static GameWorld instance;
         public static GameWorld Instance
@@ -423,6 +430,52 @@ namespace MagicGladiators
                 UpdateItemUpgrade(mouse, mouseCircle);
             }
 
+            if (Keyboard.GetState().IsKeyDown(Keys.F2) && canServer)
+            {
+                server = new TestServer();
+                canServer = false;
+                showServer = true;
+
+                //Thread update = new Thread(ServerUpdate);
+                //update.IsBackground = true;
+                //update.Start();
+                //threads.Add(update);
+            }
+            if (!canServer)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.F6))
+                {
+                    server.SendMessage("Server sending text!");
+                }
+
+                server.Update();
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.F3) && canClient)
+            {
+                client = new TestClient();
+                canClient = false;
+                showServer = true;
+
+                //Thread update = new Thread(ClientUpdate);
+                //update.IsBackground = true;
+                //update.Start();
+                //threads.Add(update);
+
+                //Thread draw = new Thread(ClientDraw);
+                //draw.IsBackground = true;
+                //draw.Start();
+                //threads.Add(draw);
+            }
+            if (!canClient)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.F4))
+                {
+                    client.SendMessage("Client sending text!");
+                }
+
+                client.Update();
+                //client.Draw();
+            }
 
             UpdateMouseRelease(mouse);
 
@@ -467,6 +520,30 @@ namespace MagicGladiators
                 GC.Collect();
             }
             base.Update(gameTime);
+        }
+
+        public void ServerUpdate()
+        {
+            while (true)
+            {
+                server.Update();
+            }
+        }
+
+        public void ClientUpdate()
+        {
+            while (true)
+            {
+                client.Update();
+            }
+        }
+
+        public void ClientDraw()
+        {
+            while (true)
+            {
+                client.Draw();
+            }
         }
 
         public void UpdateDeathAbilities()
@@ -666,7 +743,10 @@ namespace MagicGladiators
             foreach (GameObject go in gameObjects)
             {
                 go.Update();
-
+                if (go.Tag == "Player" && client != null)
+                {
+                    client.SendPositions(go.transform.position);
+                }
             }
             foreach (GameObject go in abilityList)
             {
@@ -770,6 +850,9 @@ namespace MagicGladiators
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
+
+            spriteBatch.DrawString(fontText, TestClient.text, new Vector2(0, Window.ClientBounds.Height / 2), Color.Black);
 
             foreach (GameObject go in gameObjects)
             {
