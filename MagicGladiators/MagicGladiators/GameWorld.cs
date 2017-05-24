@@ -304,7 +304,7 @@ namespace MagicGladiators
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
-            if (CurrentScene.scenetype == "Pracitce")
+            if (CurrentScene.scenetype == "Practice")
             {
                 foreach (GameObject go in gameObjects)
                 {
