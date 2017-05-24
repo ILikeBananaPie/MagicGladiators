@@ -89,7 +89,7 @@ namespace MagicGladiators
                     case 0:
                         included[i].AddComponent(new SpriteRenderer(included[i], "AlphaPractice", 0));
                         included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
-                        included[i].AddComponent(new OnClick(included[i], "Practice"));
+                        included[i].AddComponent(new OnClick(included[i], "PracticeChooseRound"));
                         break;
                     case 1:
                         included[i].AddComponent(new SpriteRenderer(included[i], "AlphaJoin", 0));
@@ -135,6 +135,40 @@ namespace MagicGladiators
             GameObject[] included = new GameObject[0];
             Scene send = new Scene(included);
             send.scenetype = "Practice";
+            return send;
+        }
+        public static Scene PracticeChooseRound()
+        {
+            GameObject[] included = new GameObject[4];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaRoundsThree", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "PracticeRoundsThree"));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaRoundsFive", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 3 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "PracticeRoundsFive"));
+                        break;
+                    case 2:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaRoundsSeven", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "PracticeRoundsSeven"));
+                        break;
+                    case 3:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "NewGame"));
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "PracticeChooseRound";
             return send;
         }
         #endregion
