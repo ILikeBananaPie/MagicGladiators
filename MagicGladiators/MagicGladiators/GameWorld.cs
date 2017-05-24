@@ -143,6 +143,7 @@ namespace MagicGladiators
             newCircleColliders = new List<Collider>();
 
             CurrentScene = Scene.MainMenu();
+            selectedMap = "PillarHoleMap";
 
             base.Initialize();
         }
@@ -417,7 +418,7 @@ namespace MagicGladiators
             {
                 if (NextScene.scenetype == "Practice")
                 {
-                    CreateMap("PillarHoleMap");
+                    CreateMap(selectedMap);
 
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
