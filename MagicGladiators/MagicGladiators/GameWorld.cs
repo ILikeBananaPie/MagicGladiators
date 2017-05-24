@@ -67,6 +67,7 @@ namespace MagicGladiators
 
         private GameObject map;
         public float MapScale { get; set; } = 1;
+        public static string selectedMap;
 
         private Vector2 mapCenter;
 
@@ -76,6 +77,9 @@ namespace MagicGladiators
 
         public static int numberOfRounds = 5;
         public static int currentRound = 1;
+
+        public static List<GameObject> characters = new List<GameObject>();
+        public static List<Collider> characterColliders = new List<Collider>();
 
         private static GameWorld instance;
         public static GameWorld Instance
@@ -137,11 +141,10 @@ namespace MagicGladiators
             CircleColliders = new List<Collider>();
             newCircleColliders = new List<Collider>();
 
-            CreateMap("PillarHoleMap");
+            selectedMap = "PillarHoleMap";
+            CreateMap(selectedMap);
 
-            Director director = new Director(new PlayerBuilder());
-            player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
-            gameObjects.Add(player);
+            CreatePlayer();
 
             CreateDummies();
 
@@ -150,6 +153,27 @@ namespace MagicGladiators
             CreateVendorAbilities();
 
             base.Initialize();
+        }
+
+        public void CreatePlayer()
+        {
+            Director director = new Director(new PlayerBuilder());
+            player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
+            newObjects.Add(player);
+            foreach (GameObject go in newObjects)
+            {
+                if (go.Tag == "Player")
+                {
+                    go.LoadContent(Content);
+                }
+            }
+        }
+
+        public void StartRound()
+        {
+            CreateMap(selectedMap);
+            ResetCharacters();
+
         }
 
         public void CreateDummies()
@@ -165,6 +189,52 @@ namespace MagicGladiators
                     go.LoadContent(Content);
                 }
             }
+        }
+        public void ResetCharacters()
+        {
+            int index = 0;
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.Tag == "Player" || go.Tag == "Dummy")
+                {
+                    characters.Add(go);
+                    characterColliders.Add((go.GetComponent("Collider") as Collider));
+                }
+            }
+            gameObjects.Clear();
+            CircleColliders.Clear();
+            foreach (Collider col in characterColliders)
+            {
+                CircleColliders.Add(col);
+            }
+            foreach (GameObject go in characters)
+            {
+                go.CurrentHealth = go.MaxHealth;
+                newObjects.Add(go);
+                if (go.Tag == "Player")
+                {
+                    go.transform.position = new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16);
+                }
+                if (go.Tag == "Dummy")
+                {
+                    if (index == 0)
+                    {
+                        go.transform.position = new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16);
+                    }
+                    if (index == 1)
+                    {
+                        go.transform.position = new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16);
+                    }
+                    if (index == 2)
+                    {
+                        go.transform.position = new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280);
+                    }
+                    index++;
+                }
+            }
+            characters.Clear();
+            characterColliders.Clear();
+            index = 0;
         }
 
         public void CreateVendorAbilities()
@@ -221,9 +291,9 @@ namespace MagicGladiators
         {
             Director director = new Director(new MapBuilder());
             Texture2D sprite = Content.Load<Texture2D>("StandardMap");
-            gameObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2), "Map"));
+            newObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2), "Map"));
 
-            foreach (GameObject go in gameObjects)
+            foreach (GameObject go in newObjects)
             {
                 if (go.Tag == "Map")
                 {
@@ -236,7 +306,7 @@ namespace MagicGladiators
             {
                 //Lava spot for "Hole map"
                 Texture2D lavaSpot = Content.Load<Texture2D>("LavaSpot");
-                gameObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - lavaSpot.Width / 2, Window.ClientBounds.Height / 2 - lavaSpot.Height / 2), "LavaSpot"));
+                newObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - lavaSpot.Width / 2, Window.ClientBounds.Height / 2 - lavaSpot.Height / 2), "LavaSpot"));
             }
             #endregion
 
@@ -244,10 +314,17 @@ namespace MagicGladiators
             if (map == "PillarMap" || map == "PillarHoleMap")
             {
                 //Pillars for Pillars Map
-                gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
-                gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
-                gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
-                gameObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
+                newObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
+                newObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 - sprite.Height / 4), "Pillar"));
+                newObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 - sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
+                newObjects.Add(director.ConstructMapPart(new Vector2(mapCenter.X - 16 + sprite.Width / 4, mapCenter.Y - 16 + sprite.Height / 4), "Pillar"));
+            }
+            foreach (GameObject go in newObjects)
+            {
+                if (go.Tag == "Pillar" || go.Tag == "LavaSpot" || go.Tag == "Map")
+                {
+                    go.LoadContent(Content);
+                }
             }
             #endregion
         }
@@ -300,9 +377,9 @@ namespace MagicGladiators
         protected override void Update(GameTime gameTime)
         {
             //graphics.ApplyChanges();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))              
-            Exit();
-          
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
@@ -316,13 +393,17 @@ namespace MagicGladiators
 
             UpdateDeathAbilities();
 
-            UpdateBuyItem(mouse, mouseCircle);
+            if (buyPhase)
+            {
+                UpdateBuyItem(mouse, mouseCircle);
 
-            UpdateBuyAbility(mouse, mouseCircle);
+                UpdateBuyAbility(mouse, mouseCircle);
 
-            UpdateAbilityUpgrade(mouse, mouseCircle);
+                UpdateAbilityUpgrade(mouse, mouseCircle);
 
-            UpdateItemUpgrade(mouse, mouseCircle);
+                UpdateItemUpgrade(mouse, mouseCircle);
+            }
+
 
             UpdateMouseRelease(mouse);
 
@@ -554,7 +635,8 @@ namespace MagicGladiators
                     if (currentRound < numberOfRounds)
                     {
                         //revive all players & reset all stats
-                        CreateDummies();
+                        //CreateDummies();
+                        StartRound();
                         buyPhase = true;
                         currentRound++;
                     }
@@ -577,6 +659,7 @@ namespace MagicGladiators
                 else
                 {
                     //reset positions and stats
+                    StartRound();
                     buyPhase = false;
                 }
             }
@@ -589,6 +672,11 @@ namespace MagicGladiators
             {
                 foreach (GameObject go in objectsToRemove)
                 {
+                    if (go.Tag == "Player" || go.Tag == "Dummy")
+                    {
+                        characters.Add(go);
+                        characterColliders.Add((go.GetComponent("Collider") as Collider));
+                    }
                     CircleColliders.Remove((go.GetComponent("Collider") as Collider));
                     gameObjects.Remove(go);
                 }
@@ -631,22 +719,27 @@ namespace MagicGladiators
             {
                 go.Draw(spriteBatch);
             }
-            DrawVendorItems();
 
-            DrawPlayerItems();
-
-            DrawVendorAbilities();
 
             DrawPlayerAbilities();
 
-            DrawTooltipVenderItem(mouse, mouseCircle);
+            if (buyPhase)
+            {
+                DrawVendorItems();
 
-            DrawTooltipVenderAbility(mouse, mouseCircle);
+                DrawPlayerItems();
+
+                DrawVendorAbilities();
+
+                DrawTooltipVenderItem(mouse, mouseCircle);
+
+                DrawTooltipVenderAbility(mouse, mouseCircle);
+
+                DrawTooltipPlayerItem(mouse, mouseCircle);
+            }
 
             DrawTooltipPlayerAbility(mouse, mouseCircle);
 
-            DrawTooltipPlayerItem(mouse, mouseCircle);
-            
             spriteBatch.End();
             base.Draw(gameTime);
         }
