@@ -13,7 +13,7 @@ using NetworkCommsDotNet;
 using NetworkCommsDotNet.Connections.TCP;
 using System.Threading;
 
-namespace MagicGladiators.Components.Composites
+namespace MagicGladiators
 {
     class Client:Component, IUpdateable, IDrawable, ILoadable
     {

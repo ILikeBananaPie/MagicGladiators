@@ -7,15 +7,46 @@ using Microsoft.Xna.Framework.Content;
 
 namespace MagicGladiators
 {
-    class Ability : Component, ILoadable
+    public abstract class Ability : Component, ILoadable, IUpdateable, IAbility
     {
+        protected float cooldown;
+        protected bool canShoot = true;
+        protected float cooldownTimer;
+        private bool canUse;
+
+
         public Ability(GameObject gameObject) : base(gameObject)
         {
+
         }
 
-        public void LoadContent(ContentManager content)
+        public abstract void LoadContent(ContentManager content);
+
+
+
+
+        public abstract void Update();
+
+        public void Cooldown()
         {
-            throw new NotImplementedException();
+            if (GameWorld.buyPhase)
+            {
+                canUse = false;
+            }
+            else canUse = true;
+            if (canUse)
+            {
+                if (!canShoot)
+                {
+                    cooldownTimer += GameWorld.Instance.deltaTime;
+                }
+
+                if (cooldownTimer > cooldown * gameObject.CooldownReduction)
+                {
+                    cooldownTimer = 0;
+                    canShoot = true;
+                }
+            }
         }
     }
 }

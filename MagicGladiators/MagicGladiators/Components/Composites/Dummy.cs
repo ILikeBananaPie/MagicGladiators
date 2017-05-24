@@ -70,20 +70,15 @@ namespace MagicGladiators
 
             if (testPush)
             {
-                if (testTimer < 1)
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector * 5) * gameObject.KnockBackResistance;
+                if (testTimer < 0.0025F)
                 {
                     testTimer += GameWorld.Instance.deltaTime;
-                    gameObject.transform.position += testVector * testSpeed;
-                    if (testSpeed > 0)
-                    {
-                        testSpeed--;
-                    }
                 }
                 else
                 {
                     testTimer = 0;
                     testPush = false;
-                    testSpeed = 10;
                 }
             }
 

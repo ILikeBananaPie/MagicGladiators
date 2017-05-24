@@ -17,12 +17,7 @@ namespace MagicGladiators
             throw new NotImplementedException();
         }
 
-        public void BuildIcon(Vector2 position, string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void BuildIcon(Vector2 position, string name, int value)
+        public void BuildIcon(Vector2 position, string name, int value, string text)
         {
             throw new NotImplementedException();
         }
@@ -44,6 +39,11 @@ namespace MagicGladiators
             gameObject.Tag = "Icon";
 
             gameObject.transform.position = position;
+        }
+
+        public void BuildMapPart(Vector2 position, string name)
+        {
+            throw new NotImplementedException();
         }
 
         public void FireProjectile(Vector2 position, Vector2 targetVector)

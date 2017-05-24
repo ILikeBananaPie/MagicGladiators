@@ -14,10 +14,12 @@ namespace MagicGladiators
         private GameObject go;
         private Vector2 originalPos;
         private float timer;
-        private bool canShoot = true;
+      
 
         public Mine(GameObject gameObject, Vector2 position) : base(gameObject)
         {
+            canShoot = true;
+            cooldown = 5;
             go = gameObject;
             originalPos = position;
 
@@ -40,21 +42,13 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (keyState.IsKeyDown(Keys.R) && canShoot)
+            if (keyState.IsKeyDown(Keys.R) && canShoot && gameObject.CurrentHealth >= 0)
             {
                 canShoot = false;
                 Director director = new Director(new ProjectileBuilder());
                 director.ConstructProjectile(gameObject.transform.position, Vector2.Zero, "Mine");
             }
-            if (!canShoot)
-            {
-                timer += GameWorld.Instance.deltaTime;
-            }
-            if (timer > 5)
-            {
-                timer = 0;
-                canShoot = true;
-            }
+            
         }
 
      

@@ -20,7 +20,7 @@ namespace MagicGladiators
 
         private DIRECTION direction;
 
-        public static int gold = 1000;
+        public static int gold = 10000;
         public static float speed = 1;
 
         private Transform transform;
@@ -28,7 +28,6 @@ namespace MagicGladiators
         private bool testPush;
         private Vector2 testVector;
         private float testTimer;
-        private bool canShoot;
         private SpriteRenderer sprite;
         private float regenTimer;
 
@@ -99,13 +98,13 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (other.gameObject.Tag != "Ability" && other.gameObject.Tag != "Map" && other.gameObject.Tag != "Icon")
+            if (other.gameObject.Tag == "Dummy")
             {
                 //gameObject.CurrentHealth -= (other.gameObject.GetComponent("Dummy") as Dummy).Damage;
                 Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
                 testVector = (gameObject.GetComponent("Physics") as Physics).GetVector(test, (other.gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center);
                 testVector.Normalize();
-               // testPush = true;
+                testPush = true;
             }
             
         }
@@ -122,6 +121,9 @@ namespace MagicGladiators
 
         public void Update()
         {
+            Vector2 oldPos = gameObject.transform.position;
+            gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
+
             if (gameObject.CurrentHealth >= gameObject.MaxHealth)
             {
                 gameObject.CurrentHealth = gameObject.MaxHealth;
@@ -135,11 +137,9 @@ namespace MagicGladiators
                 }
                 else regenTimer += GameWorld.Instance.deltaTime;
             }
-            gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
-
             if (testPush)
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += testVector * 10;
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector * 5) * gameObject.KnockBackResistance;
                 if (testTimer < 0.0025F)
                 {
                     testTimer += GameWorld.Instance.deltaTime;
@@ -166,28 +166,11 @@ namespace MagicGladiators
             }
             strategy.Execute(ref direction);
 
-            MouseState mouse = Mouse.GetState();
-            if (mouse.LeftButton == ButtonState.Pressed && canShoot)
-            {
-                Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball");
-                canShoot = false;
-            }
-
-            if (mouse.LeftButton == ButtonState.Released)
-            {
-                canShoot = true;
-            }
+        
+           
+         
             updatePackage.InfoUpdate(transform.position, phys.Velocity);
-            /*
-            if (keyState.IsKeyDown(Keys.Q) && canShoot)
-            {
-                canShoot = false;
-                Director director = new Director(new HomingMissileBuilder());
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), );
-               
-            }
-           */
+         
            
         }
 
@@ -207,7 +190,14 @@ namespace MagicGladiators
             spriteBatch.DrawString(fontText, "MouseY: " + mouse.Y, new Vector2(0, 80), Color.Black);
             spriteBatch.DrawString(fontText, "Gold: " + gold, new Vector2(0, 100), Color.Black);
             spriteBatch.DrawString(fontText, "speed: " + testSpeed, new Vector2(0, 160), Color.Black);
-
+            string phase;
+            if (GameWorld.buyPhase)
+            {
+                phase = "Buy Phase";
+            }
+            else phase = "Combat Phase";
+            spriteBatch.DrawString(fontText, phase, new Vector2(0, 180), Color.Black);
+            spriteBatch.DrawString(fontText, GameWorld.currentRound + " / " + GameWorld.numberOfRounds, new Vector2(0, 200), Color.Black);
 
         }
 
@@ -217,14 +207,22 @@ namespace MagicGladiators
             gameObject.Speed = 1;
             gameObject.DamageResistance = 1;
             gameObject.LavaResistance = 1;
+            gameObject.KnockBackResistance = 1;
+            gameObject.ProjectileSpeed = 1;
+            gameObject.LifeSteal = 0;
+            gameObject.CooldownReduction = 1;
 
             foreach (GameObject go in items)
             {
                 Item item = (go.GetComponent("Item") as Item);
                 gameObject.MaxHealth += item.Health;
-                gameObject.DamageResistance += item.DamageResistance / 10;
-                gameObject.Speed += item.Speed / 10;
-                gameObject.LavaResistance += item.LavaResistance / 10;
+                gameObject.DamageResistance += item.DamageResistance;
+                gameObject.Speed += item.Speed;
+                gameObject.LavaResistance += item.LavaResistance;
+                gameObject.KnockBackResistance -= item.KnockBackResistance;
+                gameObject.ProjectileSpeed += item.ProjectileSpeed;
+                gameObject.LifeSteal += item.LifeSteal;
+                gameObject.CooldownReduction -= item.CDR;
             }
         }
     }

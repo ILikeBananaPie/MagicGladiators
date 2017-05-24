@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Lidgren.Network;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -13,6 +14,7 @@ namespace MagicGladiators
     {
         public Transform transform { get; set; }
         public ContentManager content { get; private set; }
+        public NetConnection Connection { get; set; }
 
         public float MaxHealth { get; set; }
         public float CurrentHealth { get; set; }
@@ -20,6 +22,10 @@ namespace MagicGladiators
         public float DamageResistance { get; set; } = 1;
         public float LavaResistance { get; set; } = 1;
         public float HealthRegen { get; set; } = 0.1F;
+        public float KnockBackResistance { get; set; } = 1;
+        public float ProjectileSpeed { get; set; } = 1;
+        public float LifeSteal { get; set; } = 0;
+        public float CooldownReduction { get; set; } = 1;
 
         public List<Component> components = new List<Component>();
 
@@ -69,6 +75,10 @@ namespace MagicGladiators
                 {
                     (component as IUpdateable).Update();
                 }
+                if (component is IAbility)
+                {
+                    (component as IAbility).Cooldown();
+                }
             }
         }
 
@@ -97,6 +107,11 @@ namespace MagicGladiators
             components.Add(component);
         }
 
+        public void RemoveComponent(Component component)
+        {
+            components.Remove(component);
+        }
+
         /// <summary>
         /// Returns the specified component if it exists
         /// </summary>
@@ -105,10 +120,6 @@ namespace MagicGladiators
         public Component GetComponent(string component)
         {
             return components.Find(x => x.GetType().Name == component);
-        }
-        public void RemoveComponent(Component component)
-        {
-            components.Remove(component);
         }
 
         public void OnAnimationDone(string animationName)

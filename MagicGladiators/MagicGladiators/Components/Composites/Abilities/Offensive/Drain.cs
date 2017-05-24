@@ -11,18 +11,15 @@ namespace MagicGladiators
 {
     class Drain : OffensiveAbility, IUpdateable
     {
-        private bool canShoot = true;
-
-        private float timer;
-
-        private float cooldown = 5;
+        
 
         public int damage { get; set; } = 10;
         public int healing { get; set; } = 5;
 
         public Drain(GameObject go) : base(go)
         {
-
+            canShoot = true;
+            cooldown = 5;
         }
 
         public override void LoadContent(ContentManager content)
@@ -35,15 +32,7 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (!canShoot)
-            {
-                timer += GameWorld.Instance.deltaTime;
-                if (timer > cooldown)
-                {
-                    timer = 0;
-                    canShoot = true;
-                }
-            }
+           
 
             if (keyState.IsKeyDown(Keys.E) && canShoot)
             {

@@ -16,7 +16,7 @@ namespace MagicGladiators
             throw new NotImplementedException();
         }
 
-        public void BuildIcon(Vector2 position, string name, int value)
+        public void BuildIcon(Vector2 position, string name, int value, string text)
         {
             gameObject = new GameObject();
 
@@ -24,18 +24,24 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Animator(gameObject));
 
-            gameObject.AddComponent(new AbilityIcon(gameObject, name, value));
-
-            gameObject.AddComponent(new Collider(gameObject, true));
+            gameObject.AddComponent(new AbilityIcon(gameObject, name, value, text));
 
             gameObject.LoadContent(GameWorld.Instance.Content);
-
-            gameObject.Tag = "Icon";
-
+            
             gameObject.transform.position = position;
+
+            gameObject.AddComponent(new Collider(gameObject, false));
+
+            gameObject.Tag = "AbilityIcon";
+
         }
 
         public void BuildItem(Vector2 position, string[] stats)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void BuildMapPart(Vector2 position, string name)
         {
             throw new NotImplementedException();
         }

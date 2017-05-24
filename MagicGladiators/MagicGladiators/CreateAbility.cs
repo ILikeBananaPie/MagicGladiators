@@ -51,6 +51,22 @@ namespace MagicGladiators
             {
                 component = new Chain(gameObject);
             }
+            if(name.Contains("Nova"))
+            {
+                component = new Nova(gameObject, gameObject.transform.position, Vector2.Zero);
+            }
+            if (name.Contains("Spellshield"))
+            {
+                component = new Spellshield(gameObject);
+            }
+            if(name == "StoneArmour")
+            {
+                component = new StoneArmour(gameObject);
+            }
+            if (name == "Boomerang")
+            {
+                component = new Boomerang(gameObject);
+            }
             return component;
         }
 

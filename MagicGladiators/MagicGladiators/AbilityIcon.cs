@@ -16,11 +16,13 @@ namespace MagicGladiators
         public string Name { get; set; }
         public int Value { get; set; }
         public int index { get; set; }
+        public string Text { get; set; }
 
-        public AbilityIcon(GameObject gameObject, string name, int value) : base(gameObject)
+        public AbilityIcon(GameObject gameObject, string name, int value, string text) : base(gameObject)
         {
             this.Name = name;
             this.Value = value;
+            this.Text = text;
         }
 
         public void LoadContent(ContentManager content)
@@ -38,6 +40,10 @@ namespace MagicGladiators
             animator.CreateAnimation("Mine", new Animation(1, 32, 1, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("SpeedBoost", new Animation(1, 32, 2, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Chain", new Animation(1, 32, 3, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Nova", new Animation(1, 64, 1, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Spellshield", new Animation(1, 64, 2, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("StoneArmour", new Animation(1, 64, 3, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Boomerang", new Animation(1, 96, 0, 32, 32, 10, Vector2.Zero, sprite));
 
 
             animator.PlayAnimation(Name);

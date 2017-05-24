@@ -38,6 +38,19 @@ namespace MagicGladiators
 
         public string AnimationName { get; private set; }
 
+        public Rectangle[] Rectangles
+        {
+            get
+            {
+                return rectangles;
+            }
+
+            set
+            {
+                rectangles = value;
+            }
+        }
+
         public Animator(GameObject gameObject) : base(gameObject)
         {
             this.spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");

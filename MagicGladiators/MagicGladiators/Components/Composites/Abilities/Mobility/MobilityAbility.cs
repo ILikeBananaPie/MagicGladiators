@@ -7,15 +7,13 @@ using Microsoft.Xna.Framework.Content;
 
 namespace MagicGladiators
 {
-    public abstract class MobilityAbility:Component, ILoadable, IUpdateable
+    public abstract class MobilityAbility: Ability
     {
         //Manipulating character movement, speed, velocity and/or position
         public MobilityAbility(GameObject go) : base(go)
         {
         }
 
-        public abstract void LoadContent(ContentManager content);
-
-        public abstract void Update();
+        
     }
 }
