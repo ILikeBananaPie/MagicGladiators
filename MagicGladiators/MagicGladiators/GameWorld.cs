@@ -479,6 +479,7 @@ namespace MagicGladiators
                     (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
                     (player.GetComponent("ShrinkMap") as ShrinkMap).Update();
                     (player.GetComponent("SlowField") as SlowField).Update();
+                   // (player.GetComponent("IceField") as IceField).Update();
                 }
             }
         }

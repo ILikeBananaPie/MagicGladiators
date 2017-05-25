@@ -46,6 +46,7 @@
     <Compile Include="Builder\ItemBuilder.cs" />
     <Compile Include="Builder\MapBuilder.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\DeathMine.cs" />
+    <Compile Include="Components\Composites\Abilities\DeathAbilities\IceField.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\RollingMeteor.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\ShrinkMap.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\SlowField.cs" />
