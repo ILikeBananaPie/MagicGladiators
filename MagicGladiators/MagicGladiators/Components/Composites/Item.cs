@@ -32,6 +32,7 @@ namespace MagicGladiators
         public float ProjectileSpeed { get; set; }
         public float LifeSteal { get; set; }
         public float CDR { get; set; }
+        public float AOEBonus { get; set; }
         public int Value { get; set; }
         public int UpgradeValue { get; set; }
 
@@ -49,6 +50,7 @@ namespace MagicGladiators
             this.ProjectileSpeed = float.Parse(stats[7]);
             this.LifeSteal = float.Parse(stats[8]);
             this.CDR = float.Parse(stats[9]);
+            this.AOEBonus = float.Parse(stats[10]);
             this.UpgradeValue = (int)(Value + Value * 0.2F);
         }
 
@@ -67,6 +69,8 @@ namespace MagicGladiators
             animator.CreateAnimation("ProjectileSpeed", new Animation(1, 32, 1, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("LifeSteal", new Animation(1, 32, 2, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("CDR", new Animation(1, 32, 3, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("AOE", new Animation(1, 64, 0, 32, 32, 10, Vector2.Zero, sprite));
+
 
             animator.PlayAnimation(Name);
             strategy = new Idle(animator);
@@ -83,6 +87,7 @@ namespace MagicGladiators
             ProjectileSpeed += ProjectileSpeed * 0.25F;
             LifeSteal += LifeSteal * 0.25F;
             CDR += CDR * 0.25F;
+            AOEBonus += AOEBonus * 0.25F;
             UpgradeValue += (int)(UpgradeValue * 0.2F);
             upgradeLevel++;
         }

@@ -36,7 +36,7 @@ namespace MagicGladiators
             {
                 canShoot = false;
                 Director dir = new Director(new ProjectileBuilder());
-                dir.ConstructProjectile(gameObject.transform.position, new Vector2(mouse.Position.X, mouse.Position.Y), "Boomerang");
+                dir.ConstructProjectile(gameObject.transform.position, new Vector2(mouse.Position.X, mouse.Position.Y), "Boomerang", new GameObject());
 
 
             }
