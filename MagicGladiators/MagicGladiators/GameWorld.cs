@@ -478,6 +478,7 @@ namespace MagicGladiators
                     (player.GetComponent("DeathMine") as DeathMine).Update();
                     (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
                     (player.GetComponent("ShrinkMap") as ShrinkMap).Update();
+                    (player.GetComponent("SlowField") as SlowField).Update();
                 }
             }
         }
