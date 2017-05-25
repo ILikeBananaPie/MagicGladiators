@@ -8,5 +8,9 @@ namespace MagicGladiators
 {
     class AttackTarget
     {
+        public void FireAtTarget()
+        {
+
+        }
     }
 }

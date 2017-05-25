@@ -87,6 +87,13 @@ namespace MagicGladiators
                 strategy = new Idle(animator);
             }
             strategy.Execute(ref direction);
+
+            //some place in here 
+            //if(strategy is Idle && !(strategy is ChooseTarget)
+            {
+                strategy = new ChooseTarget(Vector2.Zero, gameObject.transform, animator);
+            } 
+
         }
 
         public void isPushed(Vector2 vectorBetween)
