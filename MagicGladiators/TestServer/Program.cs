@@ -116,7 +116,9 @@ namespace TestServer
         static void Main(string[] args)
         {
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
-            config.Port = 24049;
+            config.Port = 51234;
+            config.MaximumConnections = 8;
+            //config.EnableMessageType(NetIncomingMessageType.)
             config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
             config.EnableMessageType(NetIncomingMessageType.StatusChanged);
             //config.EnableMessageType(NetIncomingMessageType.)

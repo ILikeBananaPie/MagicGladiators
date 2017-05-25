@@ -28,7 +28,7 @@ namespace MagicGladiators
             spriteBatch = new SpriteBatch(GameWorld.Instance.GraphicsDevice);
             font = GameWorld.Instance.Content.Load<SpriteFont>("fontText");
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
-           // config.Port = 24049;
+            //config.Port = 24049;
             config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
             client = new NetClient(config);
             client.Start();
