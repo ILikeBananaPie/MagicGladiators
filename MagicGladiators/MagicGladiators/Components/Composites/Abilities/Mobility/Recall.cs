@@ -9,25 +9,19 @@ using Microsoft.Xna.Framework;
 
 namespace MagicGladiators
 {
-    class StoneArmour : DefensiveAbility, IUpdateable, ILoadable
+    class Recall: MobilityAbility, IUpdateable, ILoadable
     {
-
-       
         private float activated;
         private float activatedTimer = 4f;
-        private float slowSpeed = 0.5f;
-        private float resist = 0.5f;
         private bool activatedAbility;
         private bool cooldownbool = false;
-     
+        private float cooldownTimer;
+        private Vector2 startPos;
 
-
-        public StoneArmour(GameObject go) : base(go)
+        public Recall(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 5;
-            
-            
+            cooldown = 6;
         }
 
         public override void LoadContent(ContentManager content)
@@ -38,36 +32,36 @@ namespace MagicGladiators
         public override void Update()
         {
             KeyboardState keyState = Keyboard.GetState();
-           
 
-            if (keyState.IsKeyDown(Keys.B) && canShoot)
+
+            if (keyState.IsKeyDown(Keys.V) && canShoot)
             {
                 activatedAbility = true;
                 canShoot = false;
-                gameObject.Speed -= slowSpeed;
-                gameObject.KnockBackResistance -= resist;
-                (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.DarkSlateGray;
-               
+                (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.DarkBlue;
+                startPos = gameObject.transform.position;
             }
-            if(activatedAbility)
+
+            if (activatedAbility)
             {
                 activated += GameWorld.Instance.deltaTime;
             }
 
-            if(activated >= activatedTimer)
-            {
-                gameObject.Speed +=  slowSpeed;
-                gameObject.KnockBackResistance += resist;
+            if (activated >= activatedTimer)
+            {          
                 cooldownbool = true;
                 activatedAbility = false;
                 activated = 0;
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+                gameObject.transform.position = startPos;
             }
+
             if (cooldownbool)
             {
                 cooldownTimer += GameWorld.Instance.deltaTime;
             }
-            if(cooldownTimer >= cooldown)
+
+            if (cooldownTimer >= cooldown)
             {
                 canShoot = true;
                 cooldownTimer = 0;

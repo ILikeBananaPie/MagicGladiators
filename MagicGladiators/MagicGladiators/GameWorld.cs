@@ -67,7 +67,7 @@ namespace MagicGladiators
         private List<Collider> testList = new List<Collider>();
         private List<string> offensiveAbilities = new List<string>() { "HomingMissile", "Fireball", "Ricochet" };
         private List<string> defensiveAbilities = new List<string>() { "Deflect", "Invisibility", "Stone Armor" };
-        private List<string> movementAbilities = new List<string>() { "Charge", "Blink", "Leap" };
+        private List<string> movementAbilities = new List<string>() { "Charge", "Blink", "Leap", "Recall" };
         //v.0.2
         private GameObject map;
         public float MapScale { get; set; } = 1;
@@ -267,27 +267,32 @@ namespace MagicGladiators
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "StoneArmour", 100, "Grants reduced knockback \n effect for a period of time, \n while reducing movement speed."));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Boomerang", 100, "Fires a projectile that return to \n your position"));
+            buySpellPosition();
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Recall", 100, "teleport you to the position, you \n had when casting the spell"));
+
         }
 
         public void CreateVendorItems()
         {
             // name, hp, speed, dmgRes, lavaRes, value, knockRes, projectileSpeed, LifeSteal
             Director director = new Director(new ItemBuilder());
-            string[] testItem = new string[] { "Speed", "0", "1", "0", "0", "100", "0", "0", "0", "0" };
+            string[] testItem = new string[] { "Speed", "0", "1", "0", "0", "100", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Hp", "10", "0", "0", "0", "100", "0", "0", "0", "0" };
+            testItem = new string[] { "Hp", "10", "0", "0", "0", "100", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LavaRes", "0", "0", "0", "-0.01", "100", "0", "0", "0", "0" };
+            testItem = new string[] { "LavaRes", "0", "0", "0", "-0.01", "100", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "DmgRes", "0", "0", "-0.01", "0", "100", "0", "0", "0", "0" };
+            testItem = new string[] { "DmgRes", "0", "0", "-0.01", "0", "100", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "0.01", "0", "0", "0" };
+            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "0.01", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "0.01", "0", "0" };
+            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "0.01", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "0.01", "0" };
+            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "0.01", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "CDR", "0", "0", "0", "0", "100", "0", "0", "0", "0.05" };
+            testItem = new string[] { "CDR", "0", "0", "0", "0", "100", "0", "0", "0", "0.05", "0" };
+            itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
+            testItem = new string[] { "AOE", "0", "0", "0", "0", "100", "0", "0", "0", "0", "0.1" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
         }
 
@@ -376,6 +381,9 @@ namespace MagicGladiators
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+            Rectangle rec = new Rectangle(10, 10, 10, 10);
+            Circle circle = new Circle(10, 10, 10);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 if (!pressed)
@@ -593,7 +601,7 @@ namespace MagicGladiators
                             if (Player.gold >= item.Value)
                             {
                                 Director director = new Director(new ItemBuilder());
-                                Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString(), item.CDR.ToString() }));
+                                Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString(), item.CDR.ToString(), item.AOEBonus.ToString() }));
                                 Player.gold -= item.Value;
                                 (player.GetComponent("Player") as Player).UpdateStats();
                                 break;
