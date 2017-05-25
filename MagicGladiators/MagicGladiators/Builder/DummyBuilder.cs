@@ -21,7 +21,7 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Dummy(gameObject));
 
-            gameObject.AddComponent(new Collider(gameObject, false));
+            gameObject.AddComponent(new Collider(gameObject, false, true));
 
             gameObject.AddComponent(new Physics(gameObject));
 

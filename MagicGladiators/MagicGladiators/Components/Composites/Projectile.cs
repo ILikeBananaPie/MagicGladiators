@@ -139,6 +139,7 @@ namespace MagicGladiators
             animator.CreateAnimation("DeathMeteor", new Animation(1, 32, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("Chain", new Animation(1, 32, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("Boomerang", new Animation(1, 0, 1, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Firewave", new Animation(1, 0, 1, 600, 100, 10, Vector2.Zero, spriteRenderer.Sprite));
             foreach (GameObject go in GameWorld.newObjects)
             {
                 if (go.Tag.Contains("Nova"))
@@ -186,14 +187,24 @@ namespace MagicGladiators
                 animator.PlayAnimation("Boomerang");
                 travelDistance = 1000;
             }
+            if (gameObject.Tag == "Firewave")
+            {
+                animator.PlayAnimation("Firewave");
+                travelDistance = 1920;
+            }
             strategy = new Idle(animator);
         }
 
         public void LoadContent(ContentManager content)
         {
             animator = (Animator)gameObject.GetComponent("Animator");
+            Texture2D sprite;
+            if (gameObject.Tag == "Firewave")
+            {
+                sprite = content.Load<Texture2D>("Firewave");
+            }
+            else sprite = content.Load<Texture2D>("ProjectileSheet");
 
-            Texture2D sprite = content.Load<Texture2D>("ProjectileSheet");
             GameWorld.newObjects.Add(gameObject);
             //go.Tag = "Ability";
 
@@ -251,11 +262,34 @@ namespace MagicGladiators
                     }
                 }
             }
-            if (gameObject.Tag != "Chain" && gameObject.Tag != "Deflect" && gameObject.Tag != "Spellshield")
+            if (gameObject.Tag != "Chain" && gameObject.Tag != "Deflect" && gameObject.Tag != "Spellshield" && gameObject.Tag != "Firewave")
             {
                 GameWorld.Instance.player.CurrentHealth += 10 * GameWorld.Instance.player.LifeSteal;
                 GameWorld.objectsToRemove.Add(gameObject);
             }
+        }
+
+        public void FirewavePush(GameObject go)
+        {
+            (go.GetComponent("Physics") as Physics).Velocity += target;
+        }
+
+        public bool intersects(Circle cir, Rectangle rec)
+        {
+            Vector2 circleDistance;
+            float cornorDistance;
+            circleDistance.X = Math.Abs(cir.Center.X - (rec.X + rec.Width / 2));
+            circleDistance.Y = Math.Abs(cir.Center.Y - (rec.Y + rec.Height / 2));
+
+            if (circleDistance.X > (rec.Width / 2 + cir.Radius)) return false;
+            if (circleDistance.Y > (rec.Height / 2 + cir.Radius)) return false;
+
+            if (circleDistance.X <= (rec.Width / 2)) return true;
+            if (circleDistance.Y <= (rec.Height / 2)) return true;
+
+            cornorDistance = (int)(circleDistance.X - rec.Width / 2) * (int)(circleDistance.X - rec.Width / 2) + (int)(circleDistance.Y - rec.Height / 2) * (int)(circleDistance.Y - rec.Height / 2);
+
+            return (cornorDistance <= ((int)cir.Radius ^ 2));
         }
 
 
@@ -263,8 +297,9 @@ namespace MagicGladiators
         public void Update()
         {
             KeyboardState keyState = Keyboard.GetState();
-   
 
+
+            #region Boomerang
             if (gameObject.Tag == "Boomerang")
             {
                 if (Vector2.Distance(originalPos, gameObject.transform.position) > 100)
@@ -294,7 +329,7 @@ namespace MagicGladiators
                     }
                 }
             }
-
+            #endregion
 
 
             if (gameObject.Tag == "DeathMeteor")
@@ -317,11 +352,25 @@ namespace MagicGladiators
             }
 
 
-            if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain" || gameObject.Tag.Contains("Nova"))
+            if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain" || gameObject.Tag.Contains("Nova") || gameObject.Tag == "Firewave")
             {
                 if (gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
                 {
                     (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 10) * projectileSpeed;
+                }
+                else if (gameObject.Tag == "Firewave")
+                {
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += target / 15;
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        if (go.Tag == "Player" || go.Tag == "Dummy")
+                        {
+                            if (intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox, (gameObject.GetComponent("Collider") as Collider).CollisionBox))
+                            {
+                                FirewavePush(go);
+                            }
+                        }
+                    }
                 }
                 else (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 2) * projectileSpeed;
 
@@ -338,6 +387,7 @@ namespace MagicGladiators
                 }
             }
 
+            #region ChainActivated
             if (chainActivated)
             {
                 chainTimer += GameWorld.Instance.deltaTime;
@@ -357,11 +407,14 @@ namespace MagicGladiators
                     GameWorld.objectsToRemove.Add(gameObject);
                 }
             }
+            #endregion
+
             if (gameObject.Tag == "Mine")
             {
 
             }
 
+            #region HomingMissile
             if (gameObject.Tag == "HomingMissile")
             {
                 if (homingTimer > 1)
@@ -395,6 +448,15 @@ namespace MagicGladiators
                     (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 10) * projectileSpeed;
                 }
             }
+            #endregion
+
+            /*
+            if (gameObject.Tag == "Firewave")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += target;
+            }
+            */
+
             Vector2 oldPos = gameObject.transform.position;
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
             distanceTravelled += Vector2.Distance(oldPos, gameObject.transform.position);
