@@ -66,7 +66,7 @@ namespace MagicGladiators
         private List<Collider> testList = new List<Collider>();
         private List<string> offensiveAbilities = new List<string>() { "HomingMissile", "Fireball", "Ricochet" };
         private List<string> defensiveAbilities = new List<string>() { "Deflect", "Invisibility", "Stone Armor" };
-        private List<string> movementAbilities = new List<string>() { "Charge", "Blink", "Leap" };
+        private List<string> movementAbilities = new List<string>() { "Charge", "Blink", "Leap", "Recall" };
         //v.0.2
 
         private GameObject map;
@@ -258,6 +258,9 @@ namespace MagicGladiators
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "StoneArmour", 100, "Grants reduced knockback \n effect for a period of time, \n while reducing movement speed."));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Boomerang", 100, "Fires a projectile that return to \n your position"));
+            buySpellPosition();
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Recall", 100, "teleport you to the position, you \n had when casting the spell"));
+
         }
 
         public void CreateVendorItems()
