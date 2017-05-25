@@ -26,9 +26,9 @@ namespace TestServer
 
         }
 
-        public static void SendPosition(NetConnection con, float x, float y)
+        public static void SendPosition(NetConnection con, int x, int y)
         {
-
+            connections.Clear();
             foreach (NetConnection con2 in server.Connections)
             {
                 connections.Add(con2);
@@ -44,6 +44,11 @@ namespace TestServer
                 msgOut.Write(x);
                 msgOut.Write(y);
                 server.SendMessage(msgOut, connections, NetDeliveryMethod.ReliableOrdered, 0);
+                Console.WriteLine("Sending (" + x + ", " + y + "to players: ");
+                for (int i = 0; i < connections.Count; i++)
+                {
+                    Console.Write(connections[i].ToString() + ", ");
+                }
             }
 
         }
@@ -94,10 +99,11 @@ namespace TestServer
                                 //TestClient.text += ", " + msgIn.ReadFloat().ToString(".") + ")";
                                 //string test = msgIn.ReadFloat().ToString(".");
                                 //test += "," + msgIn.ReadFloat().ToString(".");
-                                float x = msgIn.ReadFloat();
-                                float y = msgIn.ReadFloat();
+                                int x = msgIn.ReadInt32();
+                                int y = msgIn.ReadInt32();
 
                                 //UpdateConnectionList(msgIn.SenderConnection);
+                                Console.WriteLine("Receiving (" + x + ", " + y + ") from player: " + msgIn.SenderConnection.ToString());
                                 SendPosition(msgIn.SenderConnection, x, y);
                             }
                             if (type == (byte)PacketType.CreatePlayer)

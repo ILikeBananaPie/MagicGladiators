@@ -117,8 +117,8 @@ namespace MagicGladiators
                             //TestClient.text += ", " + msgIn.ReadFloat().ToString(".") + ")";
                             //string test = msgIn.ReadFloat().ToString(".");
                             //test += "," + msgIn.ReadFloat().ToString(".");
-                            float x = msgIn.ReadFloat();
-                            float y = msgIn.ReadFloat();
+                            int x = msgIn.ReadInt32();
+                            int y = msgIn.ReadInt32();
 
                             //UpdateConnectionList(msgIn.SenderConnection);
                             SendPosition(msgIn.SenderConnection, x, y);

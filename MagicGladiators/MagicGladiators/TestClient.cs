@@ -41,17 +41,16 @@ namespace MagicGladiators
         }
         public void SendPositions(Vector2 vector)
         {
-            lock (locker)
-            {
-                float x = vector.X;
-                float y = vector.Y;
-                NetOutgoingMessage msgOut;
-                msgOut = client.CreateMessage();
-                msgOut.Write((byte)PacketType.PlayerPos);
-                msgOut.Write(x);
-                msgOut.Write(y);
-                client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
-            }
+
+            int x = (int)vector.X;
+            int y = (int)vector.Y;
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.PlayerPos);
+            msgOut.Write(x);
+            msgOut.Write(y);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+
 
         }
 
@@ -102,8 +101,8 @@ namespace MagicGladiators
                         {
                             //string test = msgIn.ReadFloat().ToString();
                             //string[] arr = test.Split(',');
-                            float x = msgIn.ReadFloat();
-                            float y = msgIn.ReadFloat();
+                            int x = msgIn.ReadInt32();
+                            int y = msgIn.ReadInt32();
 
                             foreach (GameObject go in GameWorld.gameObjects)
                             {

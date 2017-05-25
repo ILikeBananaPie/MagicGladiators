@@ -448,7 +448,7 @@ namespace MagicGladiators
                     server.SendMessage("Server sending text!");
                 }
 
-                server.Update();
+                //server.Update();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && canClient)
             {
