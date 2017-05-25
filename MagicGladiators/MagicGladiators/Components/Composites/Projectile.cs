@@ -46,9 +46,11 @@ namespace MagicGladiators
         private float travelDistance = 1000;
         private float distanceTravelled;
 
+        private float Aoe = 50;
+
         private float abilityTimer = 0;
 
-
+        private GameObject shooter;
         private Vector2 target;
 
         private float projectileSpeed;
@@ -66,9 +68,10 @@ namespace MagicGladiators
             }
         }
 
-        public Projectile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
+        public Projectile(GameObject gameObject, Vector2 position, Vector2 target, GameObject shooter) : base(gameObject)
         {
             //go = gameObject;
+            this.shooter = shooter;
             projectileSpeed = GameWorld.Instance.player.ProjectileSpeed;
             originalPos = position;
             if (gameObject.Tag == "DeathMeteor")
@@ -237,13 +240,13 @@ namespace MagicGladiators
         {
             foreach (Collider go in GameWorld.Instance.CircleColliders)
             {
-                if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < 100)
+                if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < Aoe * shooter.AoeBonus)
                 {
                     Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
                     vectorBetween.Normalize();
                     if (go.gameObject.Tag == "Player")
                     {
-                        // (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
+                        (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
                     }
                     else if (go.gameObject.Tag == "Dummy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
                     {

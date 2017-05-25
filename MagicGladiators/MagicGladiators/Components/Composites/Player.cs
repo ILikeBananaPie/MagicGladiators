@@ -211,6 +211,7 @@ namespace MagicGladiators
             gameObject.ProjectileSpeed = 1;
             gameObject.LifeSteal = 0;
             gameObject.CooldownReduction = 1;
+            gameObject.AoeBonus = 1;
 
             foreach (GameObject go in items)
             {
@@ -223,6 +224,7 @@ namespace MagicGladiators
                 gameObject.ProjectileSpeed += item.ProjectileSpeed;
                 gameObject.LifeSteal += item.LifeSteal;
                 gameObject.CooldownReduction -= item.CDR;
+                gameObject.AoeBonus += item.AOEBonus;
             }
         }
     }
