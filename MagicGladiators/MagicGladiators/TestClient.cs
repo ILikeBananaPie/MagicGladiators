@@ -20,7 +20,7 @@ namespace MagicGladiators
 
         public TestClient()
         {
-            string hostip = "192.168.1.206";
+            string hostip = "213.32.242.96";
             spriteBatch = new SpriteBatch(GameWorld.Instance.GraphicsDevice);
             font = GameWorld.Instance.Content.Load<SpriteFont>("fontText");
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
