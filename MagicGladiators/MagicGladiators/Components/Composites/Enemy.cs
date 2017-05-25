@@ -11,7 +11,7 @@ namespace MagicGladiators
     class Enemy:Component, ILoadable, IUpdateable
     {
         private Transform trnsfrm;
-        private Vector2 velocity;
+        public Vector2 velocity { get; set; }
 
         //public static Vector2 accelerationTest;
         //public static Vector2 velocityTest;
@@ -57,7 +57,7 @@ namespace MagicGladiators
             }
             */
             trnsfrm.position += velocity;
-            updatePackage.InfoUpdate(trnsfrm.position, velocity);
+            //updatePackage.InfoUpdate(trnsfrm.position, velocity);
         }
 
         public void UpdateEnemyInfo(UpdatePackage package)

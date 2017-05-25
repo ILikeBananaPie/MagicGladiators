@@ -91,6 +91,8 @@ namespace MagicGladiators
         private TestClient client;
         private TestServer server;
         private List<Thread> threads = new List<Thread>();
+        private float clientTimer = 0;
+        private bool sendPos = false;
 
         private static GameWorld instance;
         public static GameWorld Instance
@@ -740,12 +742,19 @@ namespace MagicGladiators
         public void UpdateLists()
         {
             //map.Update();
+            clientTimer += deltaTime;
             foreach (GameObject go in gameObjects)
             {
                 go.Update();
-                if (go.Tag == "Player" && client != null)
+                if (go.Tag == "Enemy")
+                {
+                    sendPos = true;
+                }
+                if (go.Tag == "Player" && client != null && sendPos)
                 {
                     client.SendPositions(go.transform.position);
+                    client.SendVelocity((go.GetComponent("Physics") as Physics).Velocity);
+                    clientTimer = 0;
                 }
             }
             foreach (GameObject go in abilityList)

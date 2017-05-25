@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MagicGladiators
 {
-    public enum PacketType { Position, Velocity, PlayerPos, EnemyPos, CreatePlayer }
+    //public enum PacketType { Position, Velocity, PlayerPos, EnemyPos, CreatePlayer }
 
 
     class TestServer

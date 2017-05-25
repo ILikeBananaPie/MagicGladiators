@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace MagicGladiators
 {
+    public enum PacketType { Position, Velocity, PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel }
+
+
     class TestClient
     {
         private NetClient client;
@@ -50,8 +53,18 @@ namespace MagicGladiators
             msgOut.Write(x);
             msgOut.Write(y);
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+        }
 
-
+        public void SendVelocity(Vector2 vector)
+        {
+            float x = vector.X;
+            float y = vector.Y;
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.PlayerVel);
+            msgOut.Write(x);
+            msgOut.Write(y);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
         }
 
         public void Draw()
@@ -81,18 +94,40 @@ namespace MagicGladiators
                         break;
                     case NetIncomingMessageType.StatusChanged:
                         //text = msgIn.ReadString();
-                        text = "Connected!";
-                        NetOutgoingMessage msgOut;
-                        msgOut = client.CreateMessage();
-                        msgOut.Write((byte)PacketType.CreatePlayer);
-                        client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+                        /*
+                        if (msgIn.ToString() == "5")
+                        {
+                            text = "Connected!";
+                            NetOutgoingMessage msgOut;
+                            msgOut = client.CreateMessage();
+                            msgOut.Write((byte)PacketType.CreatePlayer);
+                            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+                        }
+                        */
+                        //text = msgIn.ReadByte().ToString();
+
 
                         break;
                     case NetIncomingMessageType.UnconnectedData:
 
                         break;
                     case NetIncomingMessageType.ConnectionApproval:
-
+                        text = msgIn.ReadByte().ToString();
+                        GameObject go2 = new GameObject();
+                        go2.AddComponent(new Enemy(go2));
+                        go2.AddComponent(new SpriteRenderer(go2, "Player", 1));
+                        //go2.AddComponent(new Physics(gameob)
+                        go2.Tag = "Enemy";
+                        GameWorld.newObjects.Add(go2);
+                        foreach (GameObject dummy in GameWorld.gameObjects)
+                        {
+                            if (dummy.Tag == "Dummy")
+                            {
+                                go2.transform.position = dummy.transform.position;
+                                GameWorld.objectsToRemove.Add(dummy);
+                                break;
+                            }
+                        }
                         break;
                     case NetIncomingMessageType.Data:
                         //text = msgIn.ReadString();
@@ -109,6 +144,19 @@ namespace MagicGladiators
                                 if (go.Tag == "Enemy")
                                 {
                                     go.transform.position = new Vector2(x, y);
+                                }
+                            }
+                        }
+                        if (type == (byte)PacketType.EnemyVel)
+                        {
+                            float x = msgIn.ReadFloat();
+                            float y = msgIn.ReadFloat();
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Enemy")
+                                {
+                                    //(go.GetComponent("Physics") as Physics).Velocity = new Vector2(x, y);
+                                    (go.GetComponent("Enemy") as Enemy).velocity = new Vector2(x, y);
                                 }
                             }
                         }

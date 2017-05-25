@@ -8,34 +8,39 @@ using MagicGladiators;
 
 namespace TestServer
 {
+
     class Program
     {
         private static NetServer server;
-        private static List<NetConnection> connections = new List<NetConnection>();
+        private static List<NetConnection> connectionList = new List<NetConnection>();
 
         public static void SendConnection()
         {
-            if (connections.Count > 0)
+            if (server.Connections.Count > 1)
             {
                 NetOutgoingMessage msgOut;
                 msgOut = server.CreateMessage();
                 msgOut.Write((byte)PacketType.CreatePlayer);
-                //msgOut.Write("test");
-                server.SendMessage(msgOut, connections, NetDeliveryMethod.ReliableOrdered, 0);
+                msgOut.Write("test");
+                server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.ReliableOrdered, 0);
             }
 
         }
 
-        public static void SendPosition(NetConnection con, int x, int y)
+        public static void UpdateConnectionList(NetConnection con)
         {
-            connections.Clear();
+            connectionList.Clear();
             foreach (NetConnection con2 in server.Connections)
             {
-                connections.Add(con2);
+                connectionList.Add(con2);
             }
-            connections.Remove(con);
+            connectionList.Remove(con);
+        }
 
-            if (connections.Count > 0)
+        public static void SendPosition(NetConnection con, int x, int y)
+        {
+
+            if (connectionList.Count > 0)
             {
                 NetOutgoingMessage msgOut;
                 msgOut = server.CreateMessage();
@@ -43,21 +48,31 @@ namespace TestServer
                 //int[] test = new int[2] { 0, 1 };
                 msgOut.Write(x);
                 msgOut.Write(y);
-                server.SendMessage(msgOut, connections, NetDeliveryMethod.ReliableOrdered, 0);
-                Console.WriteLine("Sending (" + x + ", " + y + "to players: ");
-                for (int i = 0; i < connections.Count; i++)
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                Console.WriteLine("Sending (" + x + ", " + y + ") to players: ");
+                for (int i = 0; i < connectionList.Count; i++)
                 {
-                    Console.Write(connections[i].ToString() + ", ");
+                    Console.Write(connectionList[i].ToString() + ", ");
                 }
             }
-
         }
+        public static void SendVelocity(float x, float y)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write(x);
+            msgOut.Write(y);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
 
         static void Main(string[] args)
         {
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
             config.Port = 24049;
             config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
+            config.EnableMessageType(NetIncomingMessageType.StatusChanged);
+            //config.EnableMessageType(NetIncomingMessageType.)
             //config.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
             server = new NetServer(config);
             server.Start();
@@ -65,7 +80,6 @@ namespace TestServer
             while (true)
             {
                 NetIncomingMessage msgIn;
-                NetOutgoingMessage msgOut;
                 while ((msgIn = server.ReadMessage()) != null)
                 {
                     switch (msgIn.MessageType)
@@ -73,6 +87,19 @@ namespace TestServer
                         case NetIncomingMessageType.Error:
                             break;
                         case NetIncomingMessageType.StatusChanged:
+                            if (msgIn.SenderConnection.Status == NetConnectionStatus.Connected)
+                            {
+                                Console.WriteLine("Player Connected!");
+                                SendConnection();
+                            }
+                            if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnecting)
+                            {
+                                Console.WriteLine("Player Disconnecting!");
+                            }
+                            if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnected)
+                            {
+                                Console.WriteLine("Player Disconnected!");
+                            }
                             break;
                         case NetIncomingMessageType.UnconnectedData:
                             break;
@@ -80,9 +107,9 @@ namespace TestServer
 
                             //Someone is trying to connect to server. Check for password
                             msgIn.SenderConnection.Approve();
-                            Console.WriteLine("Player Connected!");
+                            //Console.WriteLine("Player Connected!");
 
-                            //server response to the connecting client (doesn't work, the connect hasn't been established yet)
+                            //server response to the connecting client (doesn't work, the connection hasn't been established yet)
                             /*
                             SendConnection();
                             msgOut = server.CreateMessage();
@@ -104,10 +131,18 @@ namespace TestServer
 
                                 //UpdateConnectionList(msgIn.SenderConnection);
                                 Console.WriteLine("Receiving (" + x + ", " + y + ") from player: " + msgIn.SenderConnection.ToString());
+                                UpdateConnectionList(msgIn.SenderConnection);
                                 SendPosition(msgIn.SenderConnection, x, y);
+                            }
+                            if (type == (byte)PacketType.PlayerVel)
+                            {
+                                float x = msgIn.ReadFloat();
+                                float y = msgIn.ReadFloat();
+                                
                             }
                             if (type == (byte)PacketType.CreatePlayer)
                             {
+                                
                                 SendConnection();
                             }
 
