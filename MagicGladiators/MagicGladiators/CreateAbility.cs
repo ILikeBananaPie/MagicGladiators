@@ -67,6 +67,10 @@ namespace MagicGladiators
             {
                 component = new Boomerang(gameObject);
             }
+            if (name == "Recall")
+            {
+                component = new Recall(gameObject);
+            }
             return component;
         }
 
