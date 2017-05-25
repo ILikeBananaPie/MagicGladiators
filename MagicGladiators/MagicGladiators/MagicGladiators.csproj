@@ -94,6 +94,8 @@
     <Compile Include="Components\Composites\Player.cs" />
     <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Builder\PlayerBuilder.cs" />
+    <Compile Include="Strategies\AttackTarget.cs" />
+    <Compile Include="Strategies\ChooseTarget.cs" />
     <Compile Include="Strategies\FollowTarget.cs" />
     <Compile Include="Components\Composites\Item.cs" />
     <Compile Include="Scene\Scene.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Components\Leafs\SpriteRenderer.cs" />
     <Compile Include="Components\Leafs\Transform.cs" />
+    <Compile Include="Strategies\Movement.cs" />
     <Compile Include="StringExt.cs" />
     <Compile Include="UpdatePackage.cs" />
   </ItemGroup>
