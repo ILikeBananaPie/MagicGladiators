@@ -26,16 +26,19 @@ namespace MagicGladiators
         {
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
-
-            if (mouse.LeftButton == ButtonState.Pressed && canShoot && !GameWorld.Instance.MouseOnIcon)
+            if (mouse.Position.X > 0 && mouse.Position.X < GameWorld.Instance.Window.ClientBounds.Width && mouse.Y > 0 && mouse.Y < GameWorld.Instance.Window.ClientBounds.Height)
             {
-                Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball", gameObject);
-                canShoot = false;
+                if (mouse.LeftButton == ButtonState.Pressed && canShoot && !GameWorld.Instance.MouseOnIcon)
+                {
+                    Director director = new Director(new ProjectileBuilder());
+                    director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball", gameObject);
+                    if (GameWorld.Instance.client != null)
+                    {
+                        GameWorld.Instance.client.SendProjectile("FireballCreate", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                    }
+                    canShoot = false;
+                }
             }
-
-
-
         }
     }
 }

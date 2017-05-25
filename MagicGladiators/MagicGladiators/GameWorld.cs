@@ -88,7 +88,7 @@ namespace MagicGladiators
         private bool showServer = false;
         private bool canServer = true;
         private bool canClient = true;
-        private TestClient client;
+        public TestClient client;
         private TestServer server;
         private List<Thread> threads = new List<Thread>();
         private float clientTimer = 0;

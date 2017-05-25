@@ -155,12 +155,12 @@ namespace MagicGladiators
             {
                 animator.PlayAnimation("Mine");
             }
-            if (gameObject.Tag == "Fireball")
+            if (gameObject.Tag == "Fireball" || gameObject.Tag == "FireballEnemy")
             {
                 animator.PlayAnimation("Fireball");
                 travelDistance = 200;
             }
-            if (gameObject.Tag == "HomingMissile")
+            if (gameObject.Tag == "HomingMissile" || gameObject.Tag == "HomingMissileEnemy")
             {
                 animator.PlayAnimation("HomingMissile");
                 travelDistance = 1000;
@@ -223,7 +223,10 @@ namespace MagicGladiators
                 }
                 if (gameObject.Tag != "DeathMine" && other.gameObject.Tag != "Pillar")
                 {
-                    Push();
+                    if (!gameObject.Tag.Contains("Enemy"))
+                    {
+                        Push();
+                    }
                 }
             }
         }
@@ -258,6 +261,10 @@ namespace MagicGladiators
             {
                 GameWorld.Instance.player.CurrentHealth += 10 * GameWorld.Instance.player.LifeSteal;
                 GameWorld.objectsToRemove.Add(gameObject);
+                if (GameWorld.Instance.client != null)
+                {
+                    //GameWorld.Instance.client.SendRemoval();
+                }
             }
         }
 
@@ -320,14 +327,16 @@ namespace MagicGladiators
             }
 
 
-            if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain" || gameObject.Tag.Contains("Nova"))
+            if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain" || gameObject.Tag.Contains("Nova") || gameObject.Tag == "FireballEnemy")
             {
                 if (gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
                 {
                     (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 10) * projectileSpeed;
                 }
-                else (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 2) * projectileSpeed;
-
+                else
+                {
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 2) * projectileSpeed;
+                }
                 if (distanceTravelled > travelDistance)
                 {
                     if (gameObject.Tag == "Chain" && !chainActivated)
@@ -365,7 +374,7 @@ namespace MagicGladiators
 
             }
 
-            if (gameObject.Tag == "HomingMissile")
+            if (gameObject.Tag == "HomingMissile" || gameObject.Tag == "HomingMissileEnemy")
             {
                 if (homingTimer > 1)
                 {
@@ -402,6 +411,13 @@ namespace MagicGladiators
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
             distanceTravelled += Vector2.Distance(oldPos, gameObject.transform.position);
             CheckDistance();
+            if (GameWorld.Instance.client != null)
+            {
+                if (!gameObject.Tag.Contains("Enemy"))
+                {
+                    GameWorld.Instance.client.SendProjectile(gameObject.Tag + ",Update", gameObject.transform.position, Vector2.Zero);
+                }
+            }
 
             if (abilityTimer > 2)
             {

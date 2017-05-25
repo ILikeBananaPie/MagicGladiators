@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MagicGladiators;
+using Microsoft.Xna.Framework;
 
 namespace TestServer
 {
@@ -49,10 +50,10 @@ namespace TestServer
                 msgOut.Write(x);
                 msgOut.Write(y);
                 server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
-                Console.WriteLine("Sending (" + x + ", " + y + ") to players: ");
+                //Console.WriteLine("Sending (" + x + ", " + y + ") to players: ");
                 for (int i = 0; i < connectionList.Count; i++)
                 {
-                    Console.Write(connectionList[i].ToString() + ", ");
+                    //Console.Write(connectionList[i].ToString() + ", ");
                 }
             }
         }
@@ -63,6 +64,52 @@ namespace TestServer
             msgOut.Write(x);
             msgOut.Write(y);
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
+        public static void SendProjectile(string name, Vector2 position, Vector2 velVector)
+        {
+            if (connectionList.Count > 0)
+            {
+                NetOutgoingMessage msgOut;
+                msgOut = server.CreateMessage();
+                if (name == "FireballCreate")
+                {
+                    float posX = position.X;
+                    float posY = position.Y;
+                    float velX = velVector.X;
+                    float velY = velVector.Y;
+                    msgOut.Write((byte)PacketType.FireballCreate);
+                    msgOut.Write(name);
+                    msgOut.Write(posX);
+                    msgOut.Write(posY);
+                    msgOut.Write(velX);
+                    msgOut.Write(velY);
+                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                }
+                if (name.Contains("Update"))
+                {
+                    name = name.Split(',').First();
+                    msgOut.Write((byte)PacketType.FireballUpdate);
+                    msgOut.Write(name);
+                    msgOut.Write(position.X);
+                    msgOut.Write(position.Y);
+                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                }
+                if (name == "HomingCreate")
+                {
+                    float posX = position.X;
+                    float posY = position.Y;
+                    float velX = velVector.X;
+                    float velY = velVector.Y;
+                    msgOut.Write((byte)PacketType.HomingCreate);
+                    msgOut.Write(name);
+                    msgOut.Write(posX);
+                    msgOut.Write(posY);
+                    msgOut.Write(velX);
+                    msgOut.Write(velY);
+                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                }
+            }
         }
 
 
@@ -130,20 +177,51 @@ namespace TestServer
                                 int y = msgIn.ReadInt32();
 
                                 //UpdateConnectionList(msgIn.SenderConnection);
-                                Console.WriteLine("Receiving (" + x + ", " + y + ") from player: " + msgIn.SenderConnection.ToString());
+                                //Console.WriteLine("Receiving (" + x + ", " + y + ") from player: " + msgIn.SenderConnection.ToString());
                                 UpdateConnectionList(msgIn.SenderConnection);
+
                                 SendPosition(msgIn.SenderConnection, x, y);
+
                             }
                             if (type == (byte)PacketType.PlayerVel)
                             {
                                 float x = msgIn.ReadFloat();
                                 float y = msgIn.ReadFloat();
-                                
+
                             }
                             if (type == (byte)PacketType.CreatePlayer)
                             {
-                                
                                 SendConnection();
+                            }
+                            if (type == (byte)PacketType.FireballCreate)
+                            {
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                string name = msgIn.ReadString();
+                                float posX = msgIn.ReadFloat();
+                                float posY = msgIn.ReadFloat();
+                                float velX = msgIn.ReadFloat();
+                                float velY = msgIn.ReadFloat();
+                                Console.WriteLine("Fireball Created!");
+                                SendProjectile(name, new Vector2(posX, posY), new Vector2(velX, velY));
+                            }
+                            if (type == (byte)PacketType.FireballUpdate)
+                            {
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                string name = msgIn.ReadString();
+                                float posX = msgIn.ReadFloat();
+                                float posY = msgIn.ReadFloat();
+                                SendProjectile(name, new Vector2(posX, posY), Vector2.Zero);
+                            }
+                            if (type == (byte)PacketType.HomingCreate)
+                            {
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                string name = msgIn.ReadString();
+                                float posX = msgIn.ReadFloat();
+                                float posY = msgIn.ReadFloat();
+                                float velX = msgIn.ReadFloat();
+                                float velY = msgIn.ReadFloat();
+                                Console.WriteLine("Homing Created!");
+                                SendProjectile(name, new Vector2(posX, posY), new Vector2(velX, velY));
                             }
 
                             break;
