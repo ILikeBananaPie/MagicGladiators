@@ -24,15 +24,15 @@ namespace MagicGladiators
 
         public TestClient()
         {
-            string hostip = "213.32.242.96";
+            string hostip = "25.28.211.248";
             spriteBatch = new SpriteBatch(GameWorld.Instance.GraphicsDevice);
             font = GameWorld.Instance.Content.Load<SpriteFont>("fontText");
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
-            config.Port = 24049;
+           // config.Port = 24049;
             config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
             client = new NetClient(config);
             client.Start();
-            client.Connect(hostip, 24049);
+            client.Connect(hostip, 51234);
             //client.DiscoverLocalPeers(24049);
         }
 
