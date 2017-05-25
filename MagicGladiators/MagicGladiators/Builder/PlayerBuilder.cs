@@ -55,6 +55,10 @@ namespace MagicGladiators
             //gameObject.AddComponent(new Boomerang(gameObject));
             gameObject.AddComponent(new Fireball(gameObject));
 
+            //gameObject.AddComponent(new Recall(gameObject));
+
+
+
 
             MouseState mouse = Mouse.GetState();
             gameObject.transform.position = position;
@@ -95,12 +99,12 @@ namespace MagicGladiators
             throw new NotImplementedException();
         }
 
-        public void FireProjectile(Vector2 position, Vector2 targetVector)
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
         {
             throw new NotImplementedException();
         }
 
-        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability, GameObject shooter)
         {
             throw new NotImplementedException();
         }
