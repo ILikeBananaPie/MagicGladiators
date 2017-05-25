@@ -67,6 +67,10 @@ namespace MagicGladiators
             {
                 component = new Boomerang(gameObject);
             }
+            if ( name == "GravityWell")
+            {
+                component = new GravityWell(gameObject);
+            }
             return component;
         }
 

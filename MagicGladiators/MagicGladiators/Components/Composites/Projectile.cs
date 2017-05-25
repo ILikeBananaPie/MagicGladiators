@@ -48,6 +48,10 @@ namespace MagicGladiators
 
         private float abilityTimer = 0;
 
+        private GameObject gravityWellTarget;
+        private float gravityWellTimer;
+
+        
 
         private Vector2 target;
 
@@ -186,6 +190,12 @@ namespace MagicGladiators
                 animator.PlayAnimation("Boomerang");
                 travelDistance = 1000;
             }
+
+            if(gameObject.Tag == "GravityWell")
+            {
+                animator.PlayAnimation("HomingMissile");
+                travelDistance = 400;
+            }
             strategy = new Idle(animator);
         }
 
@@ -314,6 +324,21 @@ namespace MagicGladiators
                     (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
                 }
                 //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
+
+            }
+
+            if (gameObject.Tag == "GravityWell")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += (TestVector / 4) * projectileSpeed;
+
+                //if ( )
+                //{
+                //    gravityWellTimer += GameWorld.Instance.deltaTime;
+                //    gameObject.transform.position = gravityWellTarget.transform.position;
+                //    Vector2 pull = (gameObject.GetComponent("Physics") as Physics).GetVector(GameWorld.Instance.player.transform.position, gravityWellTarget.transform.position);
+                //    pull.Normalize();
+                //}
+
             }
 
 
@@ -337,6 +362,8 @@ namespace MagicGladiators
                     }
                 }
             }
+
+
 
             if (chainActivated)
             {

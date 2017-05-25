@@ -52,6 +52,9 @@ namespace MagicGladiators
             //gameObject.LoadContent(GameWorld.Instance.Content);
 
             //gameObject.AddComponent(new Boomerang(gameObject));
+
+            gameObject.AddComponent(new GravityWell(gameObject));
+
             gameObject.AddComponent(new Fireball(gameObject));
 
 
