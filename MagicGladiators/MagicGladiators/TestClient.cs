@@ -153,15 +153,13 @@ namespace MagicGladiators
             client.SendMessage(msgout, NetDeliveryMethod.ReliableOrdered);
         }
 
-        public void UpdateStats(string id, float MaxHealth, float DamageResistance, float KnockBackResistance)
+        public void UpdateStats(string id, float DamageResistance)
         {
             NetOutgoingMessage msgOut;
             msgOut = client.CreateMessage();
             msgOut.Write((byte)PacketType.UpdateStats);
             msgOut.Write(id);
-            msgOut.Write(MaxHealth);
             msgOut.Write(DamageResistance);
-            msgOut.Write(KnockBackResistance);
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
 
         }
@@ -405,6 +403,24 @@ namespace MagicGladiators
                                 }
                             }
                             //GameWorld.Instance.player.Id = id;
+                        }
+                        if (type == (byte)PacketType.UpdateStats)
+                        {
+                            string id = msgIn.ReadString();
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                string test2 = go.Id;
+                                if (test2 != null && go.Tag == "Enemy")
+                                {
+                                    test2 = go.Id.Split(' ').Last();
+                                    test2 = test2.Remove(test2.Length - 1);
+                                }
+
+                                if (test2 == id)
+                                {
+                                    go.DamageResistance = msgIn.ReadFloat();
+                                }
+                            }
                         }
 
                         break;
