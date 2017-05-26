@@ -45,7 +45,7 @@ namespace MagicGladiators
             animator.CreateAnimation("StoneArmour", new Animation(1, 64, 3, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Boomerang", new Animation(1, 96, 0, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Recall", new Animation(1, 96, 1, 32, 32, 10, Vector2.Zero, sprite));
-
+            animator.CreateAnimation("GravityWell", new Animation(1, 96, 2, 32, 32, 10, Vector2.Zero, sprite));
 
 
             animator.PlayAnimation(Name);

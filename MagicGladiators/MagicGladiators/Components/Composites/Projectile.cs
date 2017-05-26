@@ -331,12 +331,30 @@ namespace MagicGladiators
             {
                 (gameObject.GetComponent("Physics") as Physics).Acceleration += (TestVector / 4) * projectileSpeed;
 
-                //if ( )
+                if (Vector2.Distance(gameObject.transform.position, gameObject.transform.position) < 100)
+                {
+
+
+                    if (gameObject.Tag == "Dummy" || gameObject.Tag == "Enemy")
+                    {
+                        gameObject.transform.position = gravityWellTarget.transform.position;
+                        Vector2 pull = (gameObject.GetComponent("Physics") as Physics).GetVector(GameWorld.Instance.player.transform.position, gravityWellTarget.transform.position);
+                        pull.Normalize();
+                        (gravityWellTarget.GetComponent("Physics") as Physics).Acceleration += pull / 10;
+                    }
+                }
+
+                //if (Vector2.Distance(gameObject.transform.position, gameObject.transform.position) < 100)
                 //{
                 //    gravityWellTimer += GameWorld.Instance.deltaTime;
-                //    gameObject.transform.position = gravityWellTarget.transform.position;
+                //    //gameObject.transform.position = gravityWellTarget.transform.position;
                 //    Vector2 pull = (gameObject.GetComponent("Physics") as Physics).GetVector(GameWorld.Instance.player.transform.position, gravityWellTarget.transform.position);
                 //    pull.Normalize();
+                //    (GameWorld.Instance.player.GetComponent("Physics") as Physics).Acceleration -= pull / 10;
+                //    if (gravityWellTarget.Tag == "Dummy" || gravityWellTarget.Tag == "Enemy")
+                //    {
+                //        (gravityWellTarget.GetComponent("Physics") as Physics).Acceleration += pull / 10;
+                //    }
                 //}
 
             }
