@@ -344,6 +344,10 @@ namespace TestServer
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 SendColor(id, R, G, B, A);
                             }
+                            if (type == (byte)PacketType.UpdateStats)
+                            {
+
+                            }
 
                             break;
                         case NetIncomingMessageType.DebugMessage:

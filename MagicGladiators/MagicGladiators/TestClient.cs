@@ -12,7 +12,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { Position, Velocity, PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats }
 
 
     public class TestClient
@@ -153,6 +153,19 @@ namespace MagicGladiators
             client.SendMessage(msgout, NetDeliveryMethod.ReliableOrdered);
         }
 
+        public void UpdateStats(string id, float MaxHealth, float DamageResistance, float KnockBackResistance)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.UpdateStats);
+            msgOut.Write(id);
+            msgOut.Write(MaxHealth);
+            msgOut.Write(DamageResistance);
+            msgOut.Write(KnockBackResistance);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+
+        }
+
         public void Draw()
         {
             lock (locker)
@@ -199,30 +212,10 @@ namespace MagicGladiators
                         {
                             Console.WriteLine("Player Disconnected!");
                         }
-
                         break;
                     case NetIncomingMessageType.UnconnectedData:
-
                         break;
                     case NetIncomingMessageType.ConnectionApproval:
-                        /*
-                        text = msgIn.ReadByte().ToString();
-                        GameObject go2 = new GameObject();
-                        go2.AddComponent(new Enemy(go2));
-                        go2.AddComponent(new SpriteRenderer(go2, "Player", 1));
-                        //go2.AddComponent(new Physics(gameob)
-                        go2.Tag = "Enemy";
-                        GameWorld.newObjects.Add(go2);
-                        foreach (GameObject dummy in GameWorld.gameObjects)
-                        {
-                            if (dummy.Tag == "Dummy")
-                            {
-                                go2.transform.position = dummy.transform.position;
-                                GameWorld.objectsToRemove.Add(dummy);
-                                break;
-                            }
-                        }
-                        */
                         break;
                     case NetIncomingMessageType.Data:
                         //text = msgIn.ReadString();
