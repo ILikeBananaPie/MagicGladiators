@@ -226,8 +226,10 @@ namespace MagicGladiators
                 gameObject.CooldownReduction -= item.CDR;
                 gameObject.AoeBonus += item.AOEBonus;
             }
-
-            GameWorld.Instance.client.UpdateStats(gameObject.Id, gameObject.MaxHealth, gameObject.DamageResistance, gameObject.KnockBackResistance);
+            if (GameWorld.Instance.client != null)
+            {
+                GameWorld.Instance.client.UpdateStats(gameObject.Id, gameObject.DamageResistance);
+            }
         }
     }
 }

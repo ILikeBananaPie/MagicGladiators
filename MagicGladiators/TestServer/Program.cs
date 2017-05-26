@@ -164,9 +164,14 @@ namespace TestServer
             server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
-        public static void UpdateStats(string id, float MaxHealth, float DamageResistance, float KnockBackResistance)
+        public static void UpdateStats(string id, float DamageResistance)
         {
-
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.UpdateStats);
+            msgOut.Write(id);
+            msgOut.Write(DamageResistance);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         public static void RemoveProjectile(string name, NetConnection sender, string id)
@@ -351,7 +356,8 @@ namespace TestServer
                             }
                             if (type == (byte)PacketType.UpdateStats)
                             {
-                                UpdateStats(msgIn.ReadString(), msgIn.ReadFloat(), msgIn.ReadFloat(), msgIn.ReadFloat());
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                UpdateStats(msgIn.ReadString(), msgIn.ReadFloat());
                             }
 
                             break;
