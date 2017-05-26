@@ -50,8 +50,6 @@ namespace MagicGladiators
                 oldSpeed = Player.speed;
                 canUse = false;
                 activated = true;
-                Color color = new Color();
-                color.A = 20;
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.DarkSlateGray;
                 Color color = Color.DarkSlateGray;
                 GameWorld.Instance.client.SendColor(gameObject.Id, color.R, color.G, color.B, color.A);
