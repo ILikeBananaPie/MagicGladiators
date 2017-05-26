@@ -92,37 +92,37 @@ namespace MagicGladiators
             //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
             this.target = target;
             testVector = target - new Vector2(originalPos.X + 16, originalPos.Y + 16);
-            if (gameObject.Tag.Contains("UpNova"))
-            {
-                testVector = new Vector2(0, 0.2f);
-            }
-            if (gameObject.Tag.Contains("UpRightNova"))
-            {
-                testVector = new Vector2(0.2f, 0.2f);
-            }
-            if (gameObject.Tag.Contains("RightNova"))
-            {
-                testVector = new Vector2(0.2f, 0);
-            }
-            if (gameObject.Tag.Contains("DownRightNova"))
-            {
-                testVector = new Vector2(0.2f, -0.2f);
-            }
-            if (gameObject.Tag.Contains("DownNova"))
+            if (gameObject.Tag == "UpNova")
             {
                 testVector = new Vector2(0, -0.2f);
             }
-            if (gameObject.Tag.Contains("DownLeftNova"))
+            if (gameObject.Tag == "UpRightNova")
             {
-                testVector = new Vector2(-0.2f, -0.2f);
+                testVector = new Vector2(0.2f, -0.2f);
             }
-            if (gameObject.Tag.Contains("LeftNova"))
+            if (gameObject.Tag == "RightNova")
+            {
+                testVector = new Vector2(0.2f, 0);
+            }
+            if (gameObject.Tag == "DownRightNova")
+            {
+                testVector = new Vector2(0.2f, 0.2f);
+            }
+            if (gameObject.Tag == "DownNova")
+            {
+                testVector = new Vector2(0, 0.2f);
+            }
+            if (gameObject.Tag == "DownLeftNova")
+            {
+                testVector = new Vector2(-0.2f, 0.2f);
+            }
+            if (gameObject.Tag == "LeftNova")
             {
                 testVector = new Vector2(-0.2f, 0);
             }
-            if (gameObject.Tag.Contains("UpLeftNova"))
+            if (gameObject.Tag == "UpLeftNova")
             {
-                testVector = new Vector2(-0.2f, 0.2f);
+                testVector = new Vector2(-0.2f, -0.2f);
             }
             testVector.Normalize();
             //target = target - originalPos;
