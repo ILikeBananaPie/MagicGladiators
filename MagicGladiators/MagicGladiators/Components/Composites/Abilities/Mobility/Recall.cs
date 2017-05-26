@@ -40,6 +40,8 @@ namespace MagicGladiators
                 canShoot = false;
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.DarkBlue;
                 startPos = gameObject.transform.position;
+                Color color = Color.DarkBlue;
+                GameWorld.Instance.client.SendColor(gameObject.Id, color.R, color.G, color.B, color.A);
             }
 
             if (activatedAbility)
@@ -54,6 +56,8 @@ namespace MagicGladiators
                 activated = 0;
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
                 gameObject.transform.position = startPos;
+                Color color = Color.White;
+                GameWorld.Instance.client.SendColor(gameObject.Id, color.R, color.G, color.B, color.A);
             }
 
             if (cooldownbool)

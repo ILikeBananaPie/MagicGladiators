@@ -47,7 +47,8 @@ namespace MagicGladiators
                 gameObject.Speed -= slowSpeed;
                 gameObject.KnockBackResistance -= resist;
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.DarkSlateGray;
-               
+                Color color = Color.DarkSlateGray;
+                GameWorld.Instance.client.SendColor(gameObject.Id, color.R, color.G, color.B, color.A);
             }
             if(activatedAbility)
             {
@@ -62,6 +63,8 @@ namespace MagicGladiators
                 activatedAbility = false;
                 activated = 0;
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+                Color color = Color.White;
+                GameWorld.Instance.client.SendColor(gameObject.Id, color.R, color.G, color.B, color.A);
             }
             if (cooldownbool)
             {

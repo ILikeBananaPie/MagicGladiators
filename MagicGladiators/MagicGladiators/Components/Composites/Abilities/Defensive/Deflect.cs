@@ -185,6 +185,8 @@ namespace MagicGladiators
                             if (GameWorld.Instance.client != null)
                             {
                                 GameWorld.Instance.client.Deflect(go.Id, go.Tag, go.transform.position, (go.GetComponent("Physics") as Physics).Velocity);
+                                //GameWorld.Instance.client.TestID = go.Id;
+                                //GameWorld.Instance.client.TestName = go.Tag;
                             }
                         }
                     }

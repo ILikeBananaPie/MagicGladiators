@@ -12,7 +12,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { Position, Velocity, PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel }
+    public enum PacketType { Position, Velocity, PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID }
 
 
     public class TestClient
@@ -25,6 +25,9 @@ namespace MagicGladiators
         private int test = 0;
         private string playerIDTest;
         private string EnemyIDTest;
+        public string TestName { get; set; } = "";
+        public string TestID { get; set; } = "";
+        //private float TestTimer;
 
         public TestClient()
         {
@@ -123,6 +126,19 @@ namespace MagicGladiators
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
         }
 
+        public void SendColor(string id, byte R, byte G, byte B, byte A)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.ColorChange);
+            msgOut.Write(id);
+            msgOut.Write(R);
+            msgOut.Write(G);
+            msgOut.Write(B);
+            msgOut.Write(A);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+        }
+
         public void Deflect(string id, string name, Vector2 position, Vector2 newVel)
         {
             NetOutgoingMessage msgout;
@@ -169,8 +185,8 @@ namespace MagicGladiators
                             {
                                 if (player.Tag == "Player")
                                 {
-                                    player.Id = client.ServerConnection.ToString();
-                                    playerIDTest = client.ServerConnection.ToString();
+                                    //player.Id = client.ServerConnection.ToString();
+                                    //playerIDTest = client.ServerConnection.ToString();
                                     //player.Id = 
                                 }
                             }
@@ -276,13 +292,13 @@ namespace MagicGladiators
                                 if (go.Tag == name && go.Id == id)
                                 {
                                     go.transform.position = new Vector2(posX, posY);
-                                    /*
+                                    
                                     if (name != "Deflect")
                                     {
                                         (go.GetComponent("Physics") as Physics).Velocity = new Vector2(velX, velY);
-                                        (go.GetComponent("Projectile") as Projectile).TestVector = new Vector2(velX, velY);
+                                        //(go.GetComponent("Projectile") as Projectile).TestVector = new Vector2(velX, velY);
                                     }
-                                    */
+                                    
                                 }
                             }
                         }
@@ -354,6 +370,48 @@ namespace MagicGladiators
                                     (go.GetComponent("Physics") as Physics).Velocity = new Vector2(velX, velY);
                                 }
                             }
+                        }
+
+                        if (type == (byte)PacketType.ColorChange)
+                        {
+                            string id = msgIn.ReadString();
+                            Color color = new Color();
+                            byte R = msgIn.ReadByte();
+                            byte G = msgIn.ReadByte();
+                            byte B = msgIn.ReadByte();
+                            byte A = msgIn.ReadByte();
+                            color.R = R;
+                            color.G = G;
+                            color.B = B;
+                            color.A = A;
+                            GameObject test = GameWorld.Instance.player;
+
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                string test2 = go.Id;
+                                if (test2 != null && go.Tag == "Enemy")
+                                {
+                                    test2 = go.Id.Split(' ').Last();
+                                    test2 = test2.Remove(test2.Length - 1);
+                                }
+
+                                if (test2 == id)
+                                {
+                                    (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = color;
+                                }
+                            }
+                        }
+                        if (type == (byte)PacketType.AssignID)
+                        {
+                            string id = msgIn.ReadString();
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Player")
+                                {
+                                    go.Id = id;
+                                }
+                            }
+                            //GameWorld.Instance.player.Id = id;
                         }
 
                         break;

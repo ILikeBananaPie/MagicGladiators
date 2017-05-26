@@ -39,6 +39,22 @@ namespace TestServer
 
         }
 
+        public static void AssignID(NetConnection con)
+        {
+
+            for (int i = 0; i < server.Connections.Count; i++)
+            {
+                NetOutgoingMessage msgOut;
+                msgOut = server.CreateMessage();
+                msgOut.Write((byte)PacketType.AssignID);
+                msgOut.Write(con.RemoteEndPoint.ToString());
+                connectionList.Clear();
+                connectionList.Add(con);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            }
+
+        }
+
         public static void UpdateConnectionList(NetConnection con)
         {
             connectionList.Clear();
@@ -135,6 +151,19 @@ namespace TestServer
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
+        public static void SendColor(string id, byte R, byte G, byte B, byte A)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.ColorChange);
+            msgOut.Write(id);
+            msgOut.Write(R);
+            msgOut.Write(G);
+            msgOut.Write(B);
+            msgOut.Write(A);
+            server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
         public static void RemoveProjectile(string name, NetConnection sender, string id)
         {
             NetOutgoingMessage msgOut;
@@ -200,6 +229,7 @@ namespace TestServer
                             {
                                 Console.WriteLine("Player Connected!");
                                 SendConnection(msgIn.SenderConnection);
+                                AssignID(msgIn.SenderConnection);
                             }
                             if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnecting)
                             {
@@ -303,6 +333,16 @@ namespace TestServer
                                 float velX = msgIn.ReadFloat();
                                 float velY = msgIn.ReadFloat();
                                 Deflect(id, name, new Vector2(posX, posY), new Vector2(velX, velY));
+                            }
+                            if (type == (byte)PacketType.ColorChange)
+                            {
+                                string id = msgIn.ReadString();
+                                byte R = msgIn.ReadByte();
+                                byte G = msgIn.ReadByte();
+                                byte B = msgIn.ReadByte();
+                                byte A = msgIn.ReadByte();
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                SendColor(id, R, G, B, A);
                             }
 
                             break;
