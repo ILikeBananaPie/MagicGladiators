@@ -114,7 +114,7 @@ namespace MagicGladiators
                 CorrectStartPoint();
                 
                 Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(pointA, pointB, "DeathMeteor");
+                director.ConstructProjectile(pointA, pointB, "DeathMeteor", new GameObject(), gameObject.Id);
                 mousePressedBool = false;
                 mouseReleasedBool = true;
                 activated = false;

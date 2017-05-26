@@ -15,15 +15,26 @@ namespace TestServer
         private static NetServer server;
         private static List<NetConnection> connectionList = new List<NetConnection>();
 
-        public static void SendConnection()
+        public static void SendConnection(NetConnection sender)
         {
             if (server.Connections.Count > 1)
             {
-                NetOutgoingMessage msgOut;
-                msgOut = server.CreateMessage();
-                msgOut.Write((byte)PacketType.CreatePlayer);
-                msgOut.Write("test");
-                server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.ReliableOrdered, 0);
+                for (int i = 0; i < server.Connections.Count; i++)
+                {
+                    NetOutgoingMessage msgOut;
+                    msgOut = server.CreateMessage();
+                    msgOut.Write((byte)PacketType.CreatePlayer);
+                    msgOut.Write(server.Connections[i].ToString());
+                    connectionList.Clear();
+                    foreach (NetConnection con in server.Connections)
+                    {
+                        connectionList.Add(con);
+                    }
+                    connectionList.Remove(server.Connections[i]);
+                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                }
+                //msgOut.Write(sender.ToString());
+                //server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.ReliableOrdered, 0);
             }
 
         }
@@ -38,7 +49,7 @@ namespace TestServer
             connectionList.Remove(con);
         }
 
-        public static void SendPosition(NetConnection con, int x, int y)
+        public static void SendPosition(int x, int y, NetConnection sender)
         {
 
             if (connectionList.Count > 0)
@@ -46,27 +57,31 @@ namespace TestServer
                 NetOutgoingMessage msgOut;
                 msgOut = server.CreateMessage();
                 msgOut.Write((byte)PacketType.EnemyPos);
-                //int[] test = new int[2] { 0, 1 };
+                msgOut.Write(sender.ToString());
                 msgOut.Write(x);
                 msgOut.Write(y);
                 server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
-                //Console.WriteLine("Sending (" + x + ", " + y + ") to players: ");
-                for (int i = 0; i < connectionList.Count; i++)
-                {
-                    //Console.Write(connectionList[i].ToString() + ", ");
-                }
             }
         }
-        public static void SendVelocity(float x, float y)
+
+        public static void SendProjectileVel(string name, Vector2 velocity, NetConnection sender)
         {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write(x);
-            msgOut.Write(y);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            if (connectionList.Count > 0)
+            {
+                NetOutgoingMessage msgOut;
+                msgOut = server.CreateMessage();
+
+                name = name.Split(',').First();
+                msgOut.Write((byte)PacketType.ProjectileVel);
+                msgOut.Write(sender.ToString());
+                msgOut.Write(name);
+                msgOut.Write(velocity.X);
+                msgOut.Write(velocity.Y);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            }
         }
 
-        public static void SendProjectile(string name, Vector2 position, Vector2 target)
+        public static void SendProjectile(string name, Vector2 position, Vector2 target, NetConnection sender)
         {
             if (connectionList.Count > 0)
             {
@@ -76,15 +91,19 @@ namespace TestServer
                 {
                     name = name.Split(',').First();
                     msgOut.Write((byte)PacketType.UpdateProjectile);
+                    msgOut.Write(sender.ToString());
                     msgOut.Write(name);
                     msgOut.Write(position.X);
                     msgOut.Write(position.Y);
+                    msgOut.Write(target.X);
+                    msgOut.Write(target.Y);
                     server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
                 }
                 if (name.Contains("Create"))
                 {
                     string name2 = name.Split(',').First();
                     msgOut.Write((byte)PacketType.CreateProjectile);
+                    msgOut.Write(sender.ToString());
                     msgOut.Write(name2);
                     msgOut.Write(position.X);
                     msgOut.Write(position.Y);
@@ -95,14 +114,62 @@ namespace TestServer
             }
         }
 
-        public static void RemoveProjectile(string name)
+        public static void Push(string id, Vector2 vector)
         {
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
-            string name2 = name + "Enemy";
-            msgOut.Write((byte)PacketType.RemoveProjectile);
-            msgOut.Write(name2);
+            connectionList.Clear();
+            string test = id.Split(' ').Last();
+            test = test.Remove(test.Length - 1);
+            foreach (NetConnection con in server.Connections)
+            {
+                string test2 = con.RemoteEndPoint.ToString();
+                if (test2 == test)
+                {
+                    connectionList.Add(con);
+                }
+            }
+            msgOut.Write((byte)PacketType.Push);
+            msgOut.Write(vector.X);
+            msgOut.Write(vector.Y);
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
+        public static void RemoveProjectile(string name, NetConnection sender, string id)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            //string name2 = name + "Enemy";
+            msgOut.Write((byte)PacketType.RemoveProjectile);
+            msgOut.Write(id);
+            msgOut.Write(sender.ToString());
+            msgOut.Write(name);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
+        public static void Deflect(string id, string name, Vector2 position, Vector2 newVel)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            connectionList.Clear();
+            string test = id.Split(' ').Last();
+            test = test.Remove(test.Length - 1);
+            foreach (NetConnection con in server.Connections)
+            {
+                string test2 = con.RemoteEndPoint.ToString();
+                if (test2 == test)
+                {
+                    connectionList.Add(con);
+                }
+            }
+            msgOut.Write((byte)PacketType.Deflect);
+            msgOut.Write(name);
+            msgOut.Write(position.X);
+            msgOut.Write(position.Y);
+            msgOut.Write(newVel.X);
+            msgOut.Write(newVel.Y);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+
         }
 
 
@@ -132,7 +199,7 @@ namespace TestServer
                             if (msgIn.SenderConnection.Status == NetConnectionStatus.Connected)
                             {
                                 Console.WriteLine("Player Connected!");
-                                SendConnection();
+                                SendConnection(msgIn.SenderConnection);
                             }
                             if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnecting)
                             {
@@ -175,7 +242,7 @@ namespace TestServer
                                 //Console.WriteLine("Receiving (" + x + ", " + y + ") from player: " + msgIn.SenderConnection.ToString());
                                 UpdateConnectionList(msgIn.SenderConnection);
 
-                                SendPosition(msgIn.SenderConnection, x, y);
+                                SendPosition(x, y, msgIn.SenderConnection);
 
                             }
                             if (type == (byte)PacketType.PlayerVel)
@@ -186,7 +253,7 @@ namespace TestServer
                             }
                             if (type == (byte)PacketType.CreatePlayer)
                             {
-                                SendConnection();
+                                SendConnection(msgIn.SenderConnection);
                             }
                             if (type == (byte)PacketType.UpdateProjectile)
                             {
@@ -194,7 +261,9 @@ namespace TestServer
                                 string name = msgIn.ReadString();
                                 float posX = msgIn.ReadFloat();
                                 float posY = msgIn.ReadFloat();
-                                SendProjectile(name, new Vector2(posX, posY), Vector2.Zero);
+                                float velX = msgIn.ReadFloat();
+                                float velY = msgIn.ReadFloat();
+                                SendProjectile(name, new Vector2(posX, posY), new Vector2(velX, velY), msgIn.SenderConnection);
                             }
                             if (type == (byte)PacketType.CreateProjectile)
                             {
@@ -206,15 +275,34 @@ namespace TestServer
                                 float velY = msgIn.ReadFloat();
                                 string writeline = name.Split(',').First();
                                 Console.WriteLine(writeline + " Created!");
-                                SendProjectile(name, new Vector2(posX, posY), new Vector2(velX, velY));
+                                SendProjectile(name, new Vector2(posX, posY), new Vector2(velX, velY), msgIn.SenderConnection);
                             }
                             if (type == (byte)PacketType.RemoveProjectile)
                             {
+                                string id = msgIn.ReadString();
                                 string name = msgIn.ReadString();
-                                string name2 = name.Split(',').First();
-                                Console.WriteLine("Removing " + name2);
+                                //string name2 = name.Split(',').First();
+                                Console.WriteLine("Removing " + name);
                                 UpdateConnectionList(msgIn.SenderConnection);
-                                RemoveProjectile(name);
+                                RemoveProjectile(name, msgIn.SenderConnection, id);
+                            }
+                            if (type == (byte)PacketType.Push)
+                            {
+                                string id = msgIn.ReadString();
+                                float x = msgIn.ReadFloat();
+                                float y = msgIn.ReadFloat();
+                                Vector2 vector = new Vector2(x, y);
+                                Push(id, vector);
+                            }
+                            if (type == (byte)PacketType.Deflect)
+                            {
+                                string id = msgIn.ReadString();
+                                string name = msgIn.ReadString();
+                                float posX = msgIn.ReadFloat();
+                                float posY = msgIn.ReadFloat();
+                                float velX = msgIn.ReadFloat();
+                                float velY = msgIn.ReadFloat();
+                                Deflect(id, name, new Vector2(posX, posY), new Vector2(velX, velY));
                             }
 
                             break;

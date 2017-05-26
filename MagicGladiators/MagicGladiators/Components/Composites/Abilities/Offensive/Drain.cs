@@ -38,7 +38,7 @@ namespace MagicGladiators
             {
                 canShoot = false;
                 Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Drain", new GameObject());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Drain", new GameObject(), gameObject.Id);
                 if (GameWorld.Instance.client != null)
                 {
                     GameWorld.Instance.client.SendProjectile("Drain,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));

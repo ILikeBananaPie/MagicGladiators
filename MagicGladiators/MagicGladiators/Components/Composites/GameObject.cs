@@ -14,7 +14,7 @@ namespace MagicGladiators
     {
         public Transform transform { get; set; }
         public ContentManager content { get; private set; }
-        public NetConnection Connection { get; set; }
+        public string Id { get; set; }
 
         public float MaxHealth { get; set; }
         public float CurrentHealth { get; set; }
