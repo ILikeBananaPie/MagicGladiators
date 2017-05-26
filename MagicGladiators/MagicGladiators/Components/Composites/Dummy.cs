@@ -21,6 +21,7 @@ namespace MagicGladiators
         private Vector2 testVector;
         private float testTimer;
         private int testSpeed = 10;
+        private GameObject lastHit;
 
         public float Damage { get; private set; } = 5F;
         public bool isAlive { get; set; } = true;
@@ -89,10 +90,26 @@ namespace MagicGladiators
             strategy.Execute(ref direction);
         }
 
-        public void isPushed(Vector2 vectorBetween)
+        public void isPushed(Vector2 vectorBetween, GameObject go)
         {
+            if (go.GetComponent("Player") is Player)
+            {
+                (go.GetComponent("Player") as Player).GoldReward(3);
+            }
+            lastHit = go;
             testPush = true;
             testVector = vectorBetween;
+        }
+
+        public void UponDeath()
+        {
+            if (lastHit != null)
+            {
+                if (lastHit.GetComponent("Player") is Player)
+                {
+                    (lastHit.GetComponent("Player") as Player).GoldReward(20);
+                }
+            }
         }
     }
 }

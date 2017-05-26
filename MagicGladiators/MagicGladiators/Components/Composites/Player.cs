@@ -227,5 +227,10 @@ namespace MagicGladiators
                 gameObject.AoeBonus += item.AOEBonus;
             }
         }
+
+        public void GoldReward(int amount)
+        {
+            gold += amount;
+        }
     }
 }

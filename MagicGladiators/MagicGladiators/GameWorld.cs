@@ -413,6 +413,10 @@ namespace MagicGladiators
                 {
                     if (go.CurrentHealth < 0)
                     {
+                        if (go.GetComponent("Dummy") is Dummy)
+                        {
+                            (go.GetComponent("Dummy") as Dummy).UponDeath();
+                        }
                         objectsToRemove.Add(go);
                     }
                 }

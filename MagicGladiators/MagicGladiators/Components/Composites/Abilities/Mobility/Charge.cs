@@ -103,7 +103,7 @@ namespace MagicGladiators
                         {
 
                             
-                            (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+                            (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween, this.go);
                             
                         }
                     }
