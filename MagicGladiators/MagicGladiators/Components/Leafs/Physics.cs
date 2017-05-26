@@ -9,6 +9,7 @@ namespace MagicGladiators
 {
     public class Physics : Component, IUpdateable
     {
+        private IceField iceField;
         public Vector2 Velocity { get; set; }
         public Vector2 Acceleration { get; set; }
         private float breakFactor = 0.050F;
@@ -38,7 +39,7 @@ namespace MagicGladiators
             {
                 if (gameObject.Tag == "HomingMissile" || gameObject.Tag == "Boomerang")
                 {
-                    if(gameObject.Tag == "Boomerang")
+                    if (gameObject.Tag == "Boomerang")
                     {
                         Acceleration = 0.001F * -velocity;
                         //Acceleration = new Vector2(Acceleration.X + Acceleration.X * 10F, Acceleration.Y);
@@ -73,6 +74,7 @@ namespace MagicGladiators
                 Acceleration = Vector2.Zero;
                 Velocity = Vector2.Zero;
             }
+           
             Velocity = UpdateVelocity(Acceleration, Velocity);
             return Acceleration;
         }

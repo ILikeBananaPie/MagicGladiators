@@ -16,6 +16,8 @@ namespace MagicGladiators
         private float cooldownTimer;
         private float cooldown = 5;
 
+        public bool test = false;
+
         private float speedFactor = 0.5f;
 
         private float activationTime = 2;
@@ -47,7 +49,7 @@ namespace MagicGladiators
                 use = false;
             }
 
-            if (keyState.IsKeyDown(Keys.I) && !activated)
+            if (keyState.IsKeyDown(Keys.I) && !activated && !test)
             {
                 foreach (var go in GameWorld.gameObjects)
                 {
