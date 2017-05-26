@@ -443,6 +443,7 @@ namespace MagicGladiators
             if (Keyboard.GetState().IsKeyDown(Keys.F2) && canServer)
             {
                 server = new TestServer();
+
                 canServer = false;
                 showServer = true;
 

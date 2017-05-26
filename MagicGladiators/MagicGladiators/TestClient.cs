@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MagicGladiators;
 
 namespace MagicGladiators
 {
-    public enum PacketType { Position, Velocity, PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, FireballCreate, FireballUpdate, HomingCreate, RemoveProjectile }
+    public enum PacketType { Position, Velocity, PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, FireballCreate, FireballUpdate, HomingCreate, RemoveProjectile, CreateProjectile, UpdateProjectile }
 
 
     public class TestClient
@@ -24,7 +25,7 @@ namespace MagicGladiators
 
         public TestClient()
         {
-            string hostip = "213.32.242.96";
+            string hostip = "192.168.1.206";
             spriteBatch = new SpriteBatch(GameWorld.Instance.GraphicsDevice);
             font = GameWorld.Instance.Content.Load<SpriteFont>("fontText");
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
@@ -56,55 +57,41 @@ namespace MagicGladiators
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
         }
 
-        public void SendProjectile(string name, Vector2 position, Vector2 velVector)
+        public void SendProjectile(string name, Vector2 position, Vector2 target)
         {
             NetOutgoingMessage msgOut;
             msgOut = client.CreateMessage();
-            if (name == "FireballCreate")
-            {
-                float posX = position.X;
-                float posY = position.Y;
-                float velX = velVector.X;
-                float velY = velVector.Y;
-                msgOut.Write((byte)PacketType.FireballCreate);
-                msgOut.Write(name);
-                msgOut.Write(posX);
-                msgOut.Write(posY);
-                msgOut.Write(velX);
-                msgOut.Write(velY);
-                client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
-            }
             if (name.Contains("Update"))
             {
                 //name = name.Split(',').First();
                 float posX = position.X;
                 float posY = position.Y;
-                msgOut.Write((byte)PacketType.FireballUpdate);
+                msgOut.Write((byte)PacketType.UpdateProjectile);
                 msgOut.Write(name);
                 msgOut.Write(posX);
                 msgOut.Write(posY);
                 client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
             }
-            if (name == "HomingCreate")
+            if (name.Contains("Create"))
             {
-                float posX = position.X;
-                float posY = position.Y;
-                float velX = velVector.X;
-                float velY = velVector.Y;
-                msgOut.Write((byte)PacketType.HomingCreate);
+                msgOut.Write((byte)PacketType.CreateProjectile);
                 msgOut.Write(name);
-                msgOut.Write(posX);
-                msgOut.Write(posY);
-                msgOut.Write(velX);
-                msgOut.Write(velY);
+                msgOut.Write(position.X);
+                msgOut.Write(position.Y);
+                msgOut.Write(target.X);
+                msgOut.Write(target.Y);
                 client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
             }
-
         }
 
-        public void SendRemoval()
+        public void SendRemoval(string name)
         {
-            //send removing message
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.RemoveProjectile);
+            msgOut.Write(name);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+
         }
 
         public void SendVelocity(Vector2 vector)
@@ -218,6 +205,7 @@ namespace MagicGladiators
                             go.AddComponent(new Enemy(go));
                             go.AddComponent(new SpriteRenderer(go, "Player", 1));
                             go.AddComponent(new Collider(go, true));
+                            go.AddComponent(new Physics(go));
                             go.Tag = "Enemy";
                             GameWorld.newObjects.Add(go);
                             foreach (GameObject dummy in GameWorld.gameObjects)
@@ -230,20 +218,7 @@ namespace MagicGladiators
                                 }
                             }
                         }
-                        if (type == (byte)PacketType.FireballCreate)
-                        {
-                            string name = msgIn.ReadString();
-                            float posX = msgIn.ReadFloat();
-                            float posY = msgIn.ReadFloat();
-                            float velX = msgIn.ReadFloat();
-                            float velY = msgIn.ReadFloat();
-                            Vector2 target = new Vector2(velX, velY);
-                            //target.Normalize();
-                            test++;
-                            Director director = new Director(new ProjectileBuilder());
-                            director.ConstructProjectile(new Vector2(posX, posY), target, "FireballEnemy", new GameObject());
-                        }
-                        if (type == (byte)PacketType.FireballUpdate)
+                        if (type == (byte)PacketType.UpdateProjectile)
                         {
                             string name = msgIn.ReadString();
                             float posX = msgIn.ReadFloat();
@@ -256,17 +231,29 @@ namespace MagicGladiators
                                 }
                             }
                         }
-                        if (type == (byte)PacketType.HomingCreate)
+                        if (type == (byte)PacketType.CreateProjectile)
                         {
                             string name = msgIn.ReadString();
                             float posX = msgIn.ReadFloat();
                             float posY = msgIn.ReadFloat();
-                            float velX = msgIn.ReadFloat();
-                            float velY = msgIn.ReadFloat();
-                            Vector2 target = new Vector2(velX, velY);
-                            //target.Normalize();
+                            float targetX = msgIn.ReadFloat();
+                            float targetY = msgIn.ReadFloat();
+
                             Director director = new Director(new ProjectileBuilder());
-                            director.ConstructProjectile(new Vector2(posX, posY), new Vector2(velX, velY), "HomingMissileEnemy", new GameObject());
+                            director.ConstructProjectile(new Vector2(posX, posY), new Vector2(targetX, targetY), name + "Enemy", new GameObject());
+
+
+                        }
+                        if (type == (byte)PacketType.RemoveProjectile)
+                        {
+                            string name = msgIn.ReadString();
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == name)
+                                {
+                                    GameWorld.objectsToRemove.Add(go);
+                                }
+                            }
                         }
 
                         break;

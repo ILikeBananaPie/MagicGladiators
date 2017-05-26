@@ -51,14 +51,26 @@ namespace MagicGladiators
                 
                 canShoot = false;
                 Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "UpNova");
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y),Vector2.Zero, "UpRightNova");
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "RightNova");
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "DownRightNova");
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "DownNova");
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "DownLeftNova");
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "LeftNova");
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "UpLeftNova");
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "UpNova", new GameObject());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y),Vector2.Zero, "UpRightNova", new GameObject());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "RightNova", new GameObject());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "DownRightNova", new GameObject());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "DownNova", new GameObject());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "DownLeftNova", new GameObject());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "LeftNova", new GameObject());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), Vector2.Zero, "UpLeftNova", new GameObject());
+                if (GameWorld.Instance.client != null)
+                {
+                    GameWorld.Instance.client.SendProjectile("UpNova,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                    GameWorld.Instance.client.SendProjectile("UpRightNova,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                    GameWorld.Instance.client.SendProjectile("RightNova,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                    GameWorld.Instance.client.SendProjectile("DownRightNova,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                    GameWorld.Instance.client.SendProjectile("DownNova,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                    GameWorld.Instance.client.SendProjectile("DownLeftNova,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                    GameWorld.Instance.client.SendProjectile("LeftNova,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                    GameWorld.Instance.client.SendProjectile("UpLeftNova,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+
+                }
 
             }
             

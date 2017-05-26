@@ -98,7 +98,7 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (other.gameObject.Tag == "Dummy")
+            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy")
             {
                 //gameObject.CurrentHealth -= (other.gameObject.GetComponent("Dummy") as Dummy).Damage;
                 Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;

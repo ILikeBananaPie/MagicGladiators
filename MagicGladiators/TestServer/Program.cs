@@ -66,50 +66,43 @@ namespace TestServer
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
-        public static void SendProjectile(string name, Vector2 position, Vector2 velVector)
+        public static void SendProjectile(string name, Vector2 position, Vector2 target)
         {
             if (connectionList.Count > 0)
             {
                 NetOutgoingMessage msgOut;
                 msgOut = server.CreateMessage();
-                if (name == "FireballCreate")
-                {
-                    float posX = position.X;
-                    float posY = position.Y;
-                    float velX = velVector.X;
-                    float velY = velVector.Y;
-                    msgOut.Write((byte)PacketType.FireballCreate);
-                    msgOut.Write(name);
-                    msgOut.Write(posX);
-                    msgOut.Write(posY);
-                    msgOut.Write(velX);
-                    msgOut.Write(velY);
-                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
-                }
                 if (name.Contains("Update"))
                 {
                     name = name.Split(',').First();
-                    msgOut.Write((byte)PacketType.FireballUpdate);
+                    msgOut.Write((byte)PacketType.UpdateProjectile);
                     msgOut.Write(name);
                     msgOut.Write(position.X);
                     msgOut.Write(position.Y);
                     server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
                 }
-                if (name == "HomingCreate")
+                if (name.Contains("Create"))
                 {
-                    float posX = position.X;
-                    float posY = position.Y;
-                    float velX = velVector.X;
-                    float velY = velVector.Y;
-                    msgOut.Write((byte)PacketType.HomingCreate);
-                    msgOut.Write(name);
-                    msgOut.Write(posX);
-                    msgOut.Write(posY);
-                    msgOut.Write(velX);
-                    msgOut.Write(velY);
+                    string name2 = name.Split(',').First();
+                    msgOut.Write((byte)PacketType.CreateProjectile);
+                    msgOut.Write(name2);
+                    msgOut.Write(position.X);
+                    msgOut.Write(position.Y);
+                    msgOut.Write(target.X);
+                    msgOut.Write(target.Y);
                     server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
                 }
             }
+        }
+
+        public static void RemoveProjectile(string name)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            string name2 = name + "Enemy";
+            msgOut.Write((byte)PacketType.RemoveProjectile);
+            msgOut.Write(name2);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
 
@@ -195,18 +188,7 @@ namespace TestServer
                             {
                                 SendConnection();
                             }
-                            if (type == (byte)PacketType.FireballCreate)
-                            {
-                                UpdateConnectionList(msgIn.SenderConnection);
-                                string name = msgIn.ReadString();
-                                float posX = msgIn.ReadFloat();
-                                float posY = msgIn.ReadFloat();
-                                float velX = msgIn.ReadFloat();
-                                float velY = msgIn.ReadFloat();
-                                Console.WriteLine("Fireball Created!");
-                                SendProjectile(name, new Vector2(posX, posY), new Vector2(velX, velY));
-                            }
-                            if (type == (byte)PacketType.FireballUpdate)
+                            if (type == (byte)PacketType.UpdateProjectile)
                             {
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 string name = msgIn.ReadString();
@@ -214,7 +196,7 @@ namespace TestServer
                                 float posY = msgIn.ReadFloat();
                                 SendProjectile(name, new Vector2(posX, posY), Vector2.Zero);
                             }
-                            if (type == (byte)PacketType.HomingCreate)
+                            if (type == (byte)PacketType.CreateProjectile)
                             {
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 string name = msgIn.ReadString();
@@ -222,8 +204,17 @@ namespace TestServer
                                 float posY = msgIn.ReadFloat();
                                 float velX = msgIn.ReadFloat();
                                 float velY = msgIn.ReadFloat();
-                                Console.WriteLine("Homing Created!");
+                                string writeline = name.Split(',').First();
+                                Console.WriteLine(writeline + " Created!");
                                 SendProjectile(name, new Vector2(posX, posY), new Vector2(velX, velY));
+                            }
+                            if (type == (byte)PacketType.RemoveProjectile)
+                            {
+                                string name = msgIn.ReadString();
+                                string name2 = name.Split(',').First();
+                                Console.WriteLine("Removing " + name2);
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                RemoveProjectile(name);
                             }
 
                             break;

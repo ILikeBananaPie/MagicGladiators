@@ -89,35 +89,35 @@ namespace MagicGladiators
             //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
             this.target = target;
             testVector = target - new Vector2(originalPos.X + 16, originalPos.Y + 16);
-            if (gameObject.Tag == "UpNova")
+            if (gameObject.Tag == "UpNova" || gameObject.Tag == "UpNovaEnemy")
             {
                 testVector = new Vector2(0, 0.2f);
             }
-            if (gameObject.Tag == "UpRightNova")
+            if (gameObject.Tag.Contains("UpRightNova"))
             {
                 testVector = new Vector2(0.2f, 0.2f);
             }
-            if (gameObject.Tag == "RightNova")
+            if (gameObject.Tag.Contains("RightNova"))
             {
                 testVector = new Vector2(0.2f, 0);
             }
-            if (gameObject.Tag == "DownRightNova")
+            if (gameObject.Tag.Contains("DownRightNova"))
             {
                 testVector = new Vector2(0.2f, -0.2f);
             }
-            if (gameObject.Tag == "DownNova")
+            if (gameObject.Tag.Contains("DownNova"))
             {
                 testVector = new Vector2(0, -0.2f);
             }
-            if (gameObject.Tag == "DownLeftNova")
+            if (gameObject.Tag.Contains("DownLeftNova"))
             {
                 testVector = new Vector2(-0.2f, -0.2f);
             }
-            if (gameObject.Tag == "LeftNova")
+            if (gameObject.Tag.Contains("LeftNova"))
             {
                 testVector = new Vector2(-0.2f, 0);
             }
-            if (gameObject.Tag == "UpLeftNova")
+            if (gameObject.Tag.Contains("UpLeftNova"))
             {
                 testVector = new Vector2(-0.2f, 0.2f);
             }
@@ -151,21 +151,21 @@ namespace MagicGladiators
                 }
             }
         
-            if (gameObject.Tag == "Mine")
+            if (gameObject.Tag.Contains("Mine"))
             {
                 animator.PlayAnimation("Mine");
             }
-            if (gameObject.Tag == "Fireball" || gameObject.Tag == "FireballEnemy")
+            if (gameObject.Tag.Contains("Fireball"))
             {
                 animator.PlayAnimation("Fireball");
                 travelDistance = 200;
             }
-            if (gameObject.Tag == "HomingMissile" || gameObject.Tag == "HomingMissileEnemy")
+            if (gameObject.Tag.Contains("HomingMissile"))
             {
                 animator.PlayAnimation("HomingMissile");
                 travelDistance = 1000;
             }
-            if (gameObject.Tag == "Drain")
+            if (gameObject.Tag.Contains("Drain"))
             {
                 animator.PlayAnimation("Drain");
                 travelDistance = 200;
@@ -179,12 +179,12 @@ namespace MagicGladiators
             {
                 animator.PlayAnimation("Mine");
             }
-            if (gameObject.Tag == "Chain")
+            if (gameObject.Tag.Contains("Chain"))
             {
                 animator.PlayAnimation("Chain");
                 travelDistance = 200;
             }
-            if (gameObject.Tag == "Boomerang")
+            if (gameObject.Tag.Contains("Boomerang"))
             {
                 animator.PlayAnimation("Boomerang");
                 travelDistance = 1000;
@@ -205,11 +205,15 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (gameObject.Tag == "Boomerang" && other.gameObject.Tag == "Player" && boomerangReturn)
+            if (gameObject.Tag.Contains("Boomerang") && other.gameObject.Tag == "Player" && boomerangReturn)
             {
                 GameWorld.objectsToRemove.Add(gameObject);
+                if (GameWorld.Instance.client != null)
+                {
+                    GameWorld.Instance.client.SendRemoval(gameObject.Tag);
+                }
             }
-            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" && gameObject.Tag != "DeathMine" || other.gameObject.Tag == "Pillar")
+            if ((other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy") && gameObject.Tag != "DeathMine" || other.gameObject.Tag == "Pillar")
             {
                 if (gameObject.Tag == "Drain")
                 {
@@ -251,19 +255,19 @@ namespace MagicGladiators
                     {
                         (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
                     }
-                    else if (go.gameObject.Tag == "Dummy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
+                    else if (go.gameObject.Tag == "Dummy" && (!gameObject.Tag.Contains("Chain") && gameObject.Tag != "Pillar"))
                     {
                         (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
                     }
                 }
             }
-            if (gameObject.Tag != "Chain" && gameObject.Tag != "Deflect" && gameObject.Tag != "Spellshield")
+            if (!gameObject.Tag.Contains("Chain") && !gameObject.Tag.Contains("Deflect") && !gameObject.Tag.Contains("SpellShield"))
             {
                 GameWorld.Instance.player.CurrentHealth += 10 * GameWorld.Instance.player.LifeSteal;
                 GameWorld.objectsToRemove.Add(gameObject);
                 if (GameWorld.Instance.client != null)
                 {
-                    //GameWorld.Instance.client.SendRemoval();
+                    GameWorld.Instance.client.SendRemoval(gameObject.Tag);
                 }
             }
         }
@@ -275,7 +279,7 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
    
 
-            if (gameObject.Tag == "Boomerang")
+            if (gameObject.Tag.Contains("Boomerang"))
             {
                 if (Vector2.Distance(originalPos, gameObject.transform.position) > 100)
                 {
@@ -327,9 +331,9 @@ namespace MagicGladiators
             }
 
 
-            if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain" || gameObject.Tag.Contains("Nova") || gameObject.Tag == "FireballEnemy")
+            if (gameObject.Tag.Contains("Fireball") || gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain") || gameObject.Tag.Contains("Nova"))
             {
-                if (gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
+                if (gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain"))
                 {
                     (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 10) * projectileSpeed;
                 }
@@ -339,7 +343,7 @@ namespace MagicGladiators
                 }
                 if (distanceTravelled > travelDistance)
                 {
-                    if (gameObject.Tag == "Chain" && !chainActivated)
+                    if (gameObject.Tag.Contains("Chain") && !chainActivated)
                     {
                         //GameWorld.objectsToRemove.Add(gameObject);
                     }
@@ -367,6 +371,10 @@ namespace MagicGladiators
                     (chainTarget.GetComponent("Physics") as Physics).chainDeactivated = true;
                     (chainTarget.GetComponent("Physics") as Physics).chainActivated = false;
                     GameWorld.objectsToRemove.Add(gameObject);
+                    if (GameWorld.Instance.client != null)
+                    {
+                        GameWorld.Instance.client.SendRemoval(gameObject.Tag);
+                    }
                 }
             }
             if (gameObject.Tag == "Mine")
@@ -374,7 +382,7 @@ namespace MagicGladiators
 
             }
 
-            if (gameObject.Tag == "HomingMissile" || gameObject.Tag == "HomingMissileEnemy")
+            if (gameObject.Tag.Contains("HomingMissile"))
             {
                 if (homingTimer > 1)
                 {
@@ -433,13 +441,21 @@ namespace MagicGladiators
         {
             if (distanceTravelled > travelDistance)
             {
-                if (gameObject.Tag != "Chain")
+                if (!gameObject.Tag.Contains("Chain"))
                 {
                     GameWorld.objectsToRemove.Add(gameObject);
+                    if (GameWorld.Instance.client != null)
+                    {
+                        GameWorld.Instance.client.SendRemoval(gameObject.Tag);
+                    }
                 }
-                if (gameObject.Tag == "Chain" && !chainActivated)
+                if (gameObject.Tag.Contains("Chain") && !chainActivated)
                 {
                     GameWorld.objectsToRemove.Add(gameObject);
+                    if (GameWorld.Instance.client != null)
+                    {
+                        GameWorld.Instance.client.SendRemoval(gameObject.Tag);
+                    }
                 }
             }
         }
