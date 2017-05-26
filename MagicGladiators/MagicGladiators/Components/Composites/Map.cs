@@ -150,7 +150,7 @@ namespace MagicGladiators
 
         public void OnCollisionStay(Collider other)
         {
-            if (gameObject.Tag == "LavaSpot" && (other.gameObject.Tag == "Player" || other.gameObject.Tag == "Dummy") && other.gameObject.Tag != "Enemy")
+            if (gameObject.Tag == "LavaSpot" && (other.gameObject.Tag == "Player" || other.gameObject.Tag == "Dummy"))
             {
                 float LavaRadius = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Radius;
                 float otherRadius = (other.gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Radius;
@@ -173,7 +173,7 @@ namespace MagicGladiators
         {
             foreach (GameObject go in objects)
             {
-                if (go.Tag == "Player" || go.Tag == "Enemy" || go.Tag == "Dummy")
+                if ((go.Tag == "Player" || go.Tag == "Dummy") && go.Tag != "Enemy")
                 {
                     if (timer >= 0.25F)
                     {

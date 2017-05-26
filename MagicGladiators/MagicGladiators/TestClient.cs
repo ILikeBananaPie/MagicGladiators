@@ -12,7 +12,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain }
 
 
     public class TestClient
@@ -50,6 +50,15 @@ namespace MagicGladiators
             msgOut.Write(text);
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
         }
+
+        public void ShrinkMap()
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.ShrinkMap);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+        }
+
         public void SendPositions(Vector2 vector)
         {
 
@@ -126,12 +135,13 @@ namespace MagicGladiators
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
         }
 
-        public void SendColor(string id, byte R, byte G, byte B, byte A)
+        public void SendColor(string id, string name, byte R, byte G, byte B, byte A)
         {
             NetOutgoingMessage msgOut;
             msgOut = client.CreateMessage();
             msgOut.Write((byte)PacketType.ColorChange);
             msgOut.Write(id);
+            msgOut.Write(name);
             msgOut.Write(R);
             msgOut.Write(G);
             msgOut.Write(B);
@@ -141,6 +151,8 @@ namespace MagicGladiators
 
         public void Deflect(string id, string name, Vector2 position, Vector2 newVel)
         {
+            TestName = name;
+            TestID = id;
             NetOutgoingMessage msgout;
             msgout = client.CreateMessage();
             msgout.Write((byte)PacketType.Deflect);
@@ -161,7 +173,17 @@ namespace MagicGladiators
             msgOut.Write(id);
             msgOut.Write(DamageResistance);
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+        }
 
+        public void Chain(string id, Vector2 vector)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.Chain);
+            msgOut.Write(id);
+            msgOut.Write(vector.X);
+            msgOut.Write(vector.Y);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
         }
 
         public void Draw()
@@ -278,20 +300,24 @@ namespace MagicGladiators
                             float posY = msgIn.ReadFloat();
                             float velX = msgIn.ReadFloat();
                             float velY = msgIn.ReadFloat();
-                            foreach (GameObject go in GameWorld.gameObjects)
+                            if (TestID != id && TestName != name)
                             {
-                                if (go.Tag == name && go.Id == id)
+                                foreach (GameObject go in GameWorld.gameObjects)
                                 {
-                                    go.transform.position = new Vector2(posX, posY);
-                                    
-                                    if (name != "Deflect")
+                                    if (go.Tag == name && go.Id == id)
                                     {
-                                        (go.GetComponent("Physics") as Physics).Velocity = new Vector2(velX, velY);
-                                        //(go.GetComponent("Projectile") as Projectile).TestVector = new Vector2(velX, velY);
+                                        go.transform.position = new Vector2(posX, posY);
+
+                                        if (name != "Deflect")
+                                        {
+                                            (go.GetComponent("Physics") as Physics).Velocity = new Vector2(velX, velY);
+                                            (go.GetComponent("Projectile") as Projectile).TestVector = new Vector2(velX, velY);
+                                        }
+
                                     }
-                                    
                                 }
                             }
+
                         }
                         if (type == (byte)PacketType.CreateProjectile)
                         {
@@ -301,6 +327,10 @@ namespace MagicGladiators
                             float posY = msgIn.ReadFloat();
                             float targetX = msgIn.ReadFloat();
                             float targetY = msgIn.ReadFloat();
+                            if (name == "Chain")
+                            {
+
+                            }
 
                             if (name.Contains("Drain"))
                             {
@@ -333,7 +363,21 @@ namespace MagicGladiators
                             {
                                 if (go.Tag == name && go.Id == sender)
                                 {
+                                    if (name == "Deflect")
+                                    {
+                                        TestName = "";
+                                        TestID = "";
+                                    }
                                     GameWorld.objectsToRemove.Add(go);
+                                }
+                            }
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Player" && name == "Chain")
+                                {
+                                    (go.GetComponent("Physics") as Physics).chainDeactivated = true;
+                                    (go.GetComponent("Physics") as Physics).chainActivated = false;
+
                                 }
                             }
                         }
@@ -346,12 +390,16 @@ namespace MagicGladiators
                         }
                         if (type == (byte)PacketType.Deflect)
                         {
+                            string id = msgIn.ReadString();
                             string name = msgIn.ReadString();
                             float posX = msgIn.ReadFloat();
                             float posY = msgIn.ReadFloat();
                             float velX = msgIn.ReadFloat();
                             float velY = msgIn.ReadFloat();
-
+                            
+                            //TestName = name;
+                            //TestID = id;
+                            
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (name == go.Tag && go.Id == GameWorld.Instance.player.Id)
@@ -366,6 +414,7 @@ namespace MagicGladiators
                         if (type == (byte)PacketType.ColorChange)
                         {
                             string id = msgIn.ReadString();
+                            string name = msgIn.ReadString();
                             Color color = new Color();
                             byte R = msgIn.ReadByte();
                             byte G = msgIn.ReadByte();
@@ -380,7 +429,7 @@ namespace MagicGladiators
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 string test2 = go.Id;
-                                if (test2 != null && go.Tag == "Enemy")
+                                if (test2 != null && go.Tag == name)
                                 {
                                     test2 = go.Id.Split(' ').Last();
                                     test2 = test2.Remove(test2.Length - 1);
@@ -419,6 +468,33 @@ namespace MagicGladiators
                                 if (test2 == id)
                                 {
                                     go.DamageResistance = msgIn.ReadFloat();
+                                }
+                            }
+                        }
+
+                        if (type == (byte)PacketType.ShrinkMap)
+                        {
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Map")
+                                {
+                                    (go.GetComponent("SpriteRenderer") as SpriteRenderer).Scale -= 0.1F;
+                                    (go.GetComponent("Collider") as Collider).Scale -= 0.1F;
+                                    SpriteRenderer sprite = (go.GetComponent("SpriteRenderer") as SpriteRenderer);
+                                    go.transform.position = new Vector2(640 - (sprite.Sprite.Width * sprite.Scale) / 2, 360 - (sprite.Sprite.Height * sprite.Scale) / 2);
+                                }
+                            }
+                        }
+
+                        if (type == (byte)PacketType.Chain)
+                        {
+                            string id = msgIn.ReadString();
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Player")
+                                {
+                                    (go.GetComponent("Physics") as Physics).Acceleration += new Vector2(msgIn.ReadFloat(), msgIn.ReadFloat());
+                                    (go.GetComponent("Physics") as Physics).chainActivated = true;
                                 }
                             }
                         }
