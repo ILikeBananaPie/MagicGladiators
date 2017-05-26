@@ -69,7 +69,7 @@ namespace MagicGladiators
                 if (activationTimer > activationTime)
                 {
                     //Player.speed = oldSpeed;
-                    gameObject.Speed -= speedFactor;
+                    gameObject.Speed = gameObject.Speed - speedFactor;
                     activated = false;
                     activationTimer = 0;
                     (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
