@@ -97,7 +97,12 @@ namespace MagicGladiators
             //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
             //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
             this.target = target;
-            testVector = target - new Vector2(originalPos.X + 16, originalPos.Y + 16);
+            if (gameObject.Tag.Contains("Firewave"))
+            {
+                testVector = target;
+            }
+            else testVector = target - new Vector2(originalPos.X + 16, originalPos.Y + 16);
+
             if (gameObject.Tag == "UpNova")
             {
                 testVector = new Vector2(0, -0.2f);
@@ -454,7 +459,7 @@ namespace MagicGladiators
 
                 if (gameObject.Tag.Contains("Fireball") || gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain") || gameObject.Tag.Contains("Nova") || gameObject.Tag.Contains("Firewave"))
                 {
-                    if (gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain"))
+                    if (gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain") || gameObject.Tag.Contains("Firewave"))
                     {
                         (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 10) * projectileSpeed;
                     }

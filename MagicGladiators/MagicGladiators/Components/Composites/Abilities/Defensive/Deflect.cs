@@ -93,7 +93,7 @@ namespace MagicGladiators
                 activated = true;
                 effect = new GameObject();
                 effect.AddComponent(new SpriteRenderer(effect, "Deflect", 1));
-                effect.AddComponent(new Collider(effect, true));
+                effect.AddComponent(new Collider(effect, true, true));
                 effect.Tag = "Deflect";
                 effect.Id = gameObject.Id;
                 GameWorld.newObjects.Add(effect);

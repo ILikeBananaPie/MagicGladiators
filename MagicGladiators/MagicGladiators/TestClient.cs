@@ -278,7 +278,7 @@ namespace MagicGladiators
                             GameObject go = new GameObject();
                             go.AddComponent(new Enemy(go));
                             go.AddComponent(new SpriteRenderer(go, "Player", 1));
-                            go.AddComponent(new Collider(go, true));
+                            go.AddComponent(new Collider(go, true, true));
                             go.AddComponent(new Physics(go));
                             go.Tag = "Enemy";
                             go.Id = id;
@@ -332,7 +332,7 @@ namespace MagicGladiators
                             {
                                 GameObject effect = new GameObject();
                                 effect.AddComponent(new SpriteRenderer(effect, "Deflect", 1));
-                                effect.AddComponent(new Collider(effect, true));
+                                effect.AddComponent(new Collider(effect, true, true));
                                 effect.Tag = "Deflect";
                                 effect.Id = id;
                                 //effect.transform.position = new Vector2(posX, posY);
@@ -342,7 +342,7 @@ namespace MagicGladiators
                             {
                                 GameObject effect = new GameObject();
                                 effect.AddComponent(new SpriteRenderer(effect, "Spellshield", 1));
-                                effect.AddComponent(new Collider(effect, true));
+                                effect.AddComponent(new Collider(effect, true, true));
                                 effect.Tag = "Spellshield";
                                 effect.Id = id;
                                 //effect.transform.position = new Vector2(posX, posY);
