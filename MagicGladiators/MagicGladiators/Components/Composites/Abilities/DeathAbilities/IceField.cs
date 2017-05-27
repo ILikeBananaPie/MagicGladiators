@@ -20,7 +20,7 @@ namespace MagicGladiators
 
         private float speedFactor = 0.5f;
 
-        private float activationTime = 2;
+        private float activationTime = 1;
         private float activationTimer;
 
         private Vector2 testVector;
@@ -53,10 +53,11 @@ namespace MagicGladiators
             {
                 foreach (var go in GameWorld.gameObjects)
                 {
-                    if (go.Tag != "Ability")
+                    if (go.Tag != "Ability" && go.Tag != "Map" && go.Tag != "Pillar")
                     {
-                        
-                        
+
+                        (go.GetComponent("Physics") as Physics).breakFactor = 0.001F;
+                        //(go.GetComponent("Physics") as Physics).test = 0.9F;
                     }
 
                 }
@@ -88,9 +89,10 @@ namespace MagicGladiators
                 {
                     foreach (var go in GameWorld.gameObjects)
                     {
-                        if (go.Tag != "Ability")
+                        if (go.Tag != "Ability" && go.Tag != "Map" && go.Tag != "Pillar")
                         {
-                            
+                            (go.GetComponent("Physics") as Physics).breakFactor = 0.050F;
+                            //(go.GetComponent("Physics") as Physics).test = 1;
                         }
 
                     }
