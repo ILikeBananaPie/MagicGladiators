@@ -25,7 +25,7 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Player(gameObject, gameObject.transform));
 
-            gameObject.AddComponent(new Collider(gameObject, false));
+            gameObject.AddComponent(new Collider(gameObject, false, true));
 
             gameObject.AddComponent(new Physics(gameObject));
 
@@ -33,6 +33,8 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new ShrinkMap(gameObject));
             gameObject.AddComponent(new SlowField(gameObject));
+
+            gameObject.AddComponent(new Firewave(gameObject));
 
             //gameObject.AddComponent(new StoneArmour(gameObject));
 
