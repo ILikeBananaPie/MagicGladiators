@@ -157,7 +157,7 @@ namespace MagicGladiators
                 GameObject host = new GameObject();
                 host.AddComponent(new Enemy(host));
                 host.AddComponent(new SpriteRenderer(host, "Player", 1));
-                host.AddComponent(new Collider(host, false));
+                host.AddComponent(new Collider(host, false, true));
                 host.LoadContent(GameWorld.Instance.Content);
                 GameWorld.newObjects.Add(host);
                 hostPos = host.GetComponent("Enemy") as Enemy;

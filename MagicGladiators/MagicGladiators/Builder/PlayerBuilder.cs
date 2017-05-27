@@ -41,13 +41,15 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Player(gameObject, gameObject.transform));
 
-            gameObject.AddComponent(new Collider(gameObject, false));
+            gameObject.AddComponent(new Collider(gameObject, false, true));
 
             gameObject.AddComponent(new Physics(gameObject));
 
             gameObject.AddComponent(new RollingMeteor(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
             gameObject.AddComponent(new ShrinkMap(gameObject));
+
+            gameObject.AddComponent(new Firewave(gameObject));
 
             //gameObject.AddComponent(new StoneArmour(gameObject));
 

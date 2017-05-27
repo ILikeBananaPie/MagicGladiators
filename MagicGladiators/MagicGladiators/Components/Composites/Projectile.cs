@@ -151,6 +151,9 @@ namespace MagicGladiators
             animator.CreateAnimation("DeathMeteor", new Animation(1, 32, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("Chain", new Animation(1, 32, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("Boomerang", new Animation(1, 0, 1, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("FirewaveTopBottom", new Animation(1, 0, 1, 200, 100, 10, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("FirewaveLeftRight", new Animation(1, 0, 0, 100, 200, 10, Vector2.Zero, spriteRenderer.Sprite));
+
             foreach (GameObject go in GameWorld.newObjects)
             {
                 if (go.Tag.Contains("Nova"))
@@ -198,14 +201,28 @@ namespace MagicGladiators
                 animator.PlayAnimation("Boomerang");
                 travelDistance = 1000;
             }
+            if (gameObject.Tag.Contains("Firewave"))
+            {
+                if (gameObject.Tag.Contains("Top"))
+                {
+                    animator.PlayAnimation("FirewaveTopBottom");
+                }
+                else animator.PlayAnimation("FirewaveLeftRight");
+                travelDistance = 1920;
+            }
             strategy = new Idle(animator);
         }
 
         public void LoadContent(ContentManager content)
         {
             animator = (Animator)gameObject.GetComponent("Animator");
+            Texture2D sprite;
+            if (gameObject.Tag.Contains("Firewave"))
+            {
+                sprite = content.Load<Texture2D>("Firewave");
+            }
+            else sprite = content.Load<Texture2D>("ProjectileSheet");
 
-            Texture2D sprite = content.Load<Texture2D>("ProjectileSheet");
             GameWorld.newObjects.Add(gameObject);
             //go.Tag = "Ability";
 
@@ -307,7 +324,7 @@ namespace MagicGladiators
                     }
                 }
             }
-            if (!gameObject.Tag.Contains("Chain") && !gameObject.Tag.Contains("Deflect") && !gameObject.Tag.Contains("SpellShield"))
+            if (!gameObject.Tag.Contains("Chain") && !gameObject.Tag.Contains("Deflect") && !gameObject.Tag.Contains("SpellShield") && !gameObject.Tag.Contains("Firewave"))
             {
                 GameWorld.Instance.player.CurrentHealth += 10 * GameWorld.Instance.player.LifeSteal;
                 GameWorld.objectsToRemove.Add(gameObject);
@@ -316,6 +333,29 @@ namespace MagicGladiators
                     GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
                 }
             }
+        }
+
+        public void FirewavePush(GameObject go)
+        {
+            (go.GetComponent("Physics") as Physics).Velocity += target;
+        }
+
+        public bool intersects(Circle cir, Rectangle rec)
+        {
+            Vector2 circleDistance;
+            float cornorDistance;
+            circleDistance.X = Math.Abs(cir.Center.X - (rec.X + rec.Width / 2));
+            circleDistance.Y = Math.Abs(cir.Center.Y - (rec.Y + rec.Height / 2));
+
+            if (circleDistance.X > (rec.Width / 2 + cir.Radius)) return false;
+            if (circleDistance.Y > (rec.Height / 2 + cir.Radius)) return false;
+
+            if (circleDistance.X <= (rec.Width / 2)) return true;
+            if (circleDistance.Y <= (rec.Height / 2)) return true;
+
+            cornorDistance = (int)(circleDistance.X - rec.Width / 2) * (int)(circleDistance.X - rec.Width / 2) + (int)(circleDistance.Y - rec.Height / 2) * (int)(circleDistance.Y - rec.Height / 2);
+
+            return (cornorDistance <= ((int)cir.Radius ^ 2));
         }
 
 
@@ -392,11 +432,12 @@ namespace MagicGladiators
                     }
                 }
 
-                if (gameObject.Tag == "DeathMeteor")
-                {
-                    (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector / 10;
-                    abilityTimer += 0.001f;
-                }
+
+            if (gameObject.Tag == "DeathMeteor")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector / 10;
+                abilityTimer += 0.001f;
+            }
 
                 if (gameObject.Tag == "DeathMine")
                 {
@@ -411,7 +452,7 @@ namespace MagicGladiators
                     //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
                 }
 
-                if (gameObject.Tag.Contains("Fireball") || gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain") || gameObject.Tag.Contains("Nova"))
+                if (gameObject.Tag.Contains("Fireball") || gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain") || gameObject.Tag.Contains("Nova") || gameObject.Tag.Contains("Firewave"))
                 {
                     if (gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain"))
                     {
