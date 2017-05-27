@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Drawing;
 using System.Threading;
+using System.Diagnostics;
 
 namespace MagicGladiators
 {
@@ -89,7 +90,8 @@ namespace MagicGladiators
         private bool canServer = true;
         private bool canClient = true;
         public TestClient client;
-        private TestServer server;
+        public Process server;
+        //private TestServer server;
         private List<Thread> threads = new List<Thread>();
         private float clientTimer = 0;
         private bool sendPos = false;
@@ -400,6 +402,10 @@ namespace MagicGladiators
                         NextScene = Scene.NewGame();
                     } else
                     {
+                        if (server != null)
+                        {
+                            server.Kill();
+                        }
                         Exit();
                     }
                 }
@@ -451,7 +457,7 @@ namespace MagicGladiators
 
             if (Keyboard.GetState().IsKeyDown(Keys.F2) && canServer)
             {
-                server = new TestServer();
+                //server = new TestServer();
 
                 canServer = false;
                 showServer = true;
@@ -465,14 +471,14 @@ namespace MagicGladiators
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.F6))
                 {
-                    server.SendMessage("Server sending text!");
+                    //server.SendMessage("Server sending text!");
                 }
 
                 //server.Update();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && canClient)
             {
-                client = new TestClient();
+                client = new TestClient("localhost");
                 canClient = false;
                 showServer = true;
 
@@ -546,7 +552,7 @@ namespace MagicGladiators
         {
             while (true)
             {
-                server.Update();
+                //server.Update();
             }
         }
 
