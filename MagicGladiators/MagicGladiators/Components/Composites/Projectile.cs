@@ -340,8 +340,12 @@ namespace MagicGladiators
             }
         }
 
-        public void FirewavePush(GameObject go)
+        public void FirewavePush(GameObject go, string id)
         {
+            if (GameWorld.Instance.client != null)
+            {
+                //GameWorld.Instance.client.SendPush(id, target);
+            }
             (go.GetComponent("Physics") as Physics).Velocity += target;
         }
 
@@ -367,6 +371,20 @@ namespace MagicGladiators
 
         public void Update()
         {
+            if (gameObject.Tag.Contains("Firewave"))
+            {
+                foreach (GameObject go in GameWorld.gameObjects)
+                {
+                    if (go.Tag == "Player" || go.Tag == "Dummy" || go.Tag == "Enemy")
+                    {
+                        if (intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox, (gameObject.GetComponent("Collider") as Collider).CollisionBox))
+                        {
+                            FirewavePush(go, go.Id);
+                        }
+                    }
+                }
+            }
+
             if (gameObject.Id == GameWorld.Instance.player.Id || (testName.Exists(x => x == gameObject.Tag) && testID.Exists(x => x == gameObject.Id)))
             {
 
@@ -457,9 +475,9 @@ namespace MagicGladiators
                     //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
                 }
 
-                if (gameObject.Tag.Contains("Fireball") || gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain") || gameObject.Tag.Contains("Nova") || gameObject.Tag.Contains("Firewave"))
+                if (gameObject.Tag.Contains("Fireball") || gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain") || gameObject.Tag.Contains("Nova") || !gameObject.Tag.Contains("Firewave"))
                 {
-                    if (gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain") || gameObject.Tag.Contains("Firewave"))
+                    if (gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain"))
                     {
                         (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 10) * projectileSpeed;
                     }
@@ -478,6 +496,11 @@ namespace MagicGladiators
                             //GameWorld.objectsToRemove.Add(gameObject);
                         }
                     }
+                }
+
+                if (gameObject.Tag.Contains("Firewave"))
+                {
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 15);
                 }
 
                 if (chainActivated)

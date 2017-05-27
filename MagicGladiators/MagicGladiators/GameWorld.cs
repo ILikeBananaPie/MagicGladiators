@@ -461,7 +461,11 @@ namespace MagicGladiators
 
                 canServer = false;
                 showServer = true;
-
+                server = new Process();
+                server.StartInfo.FileName = "TestServer.exe";
+                server.EnableRaisingEvents = true;
+                server.Start();
+                //GameWorld.Instance.client = new TestClient("localhost");
                 //Thread update = new Thread(ServerUpdate);
                 //update.IsBackground = true;
                 //update.Start();
