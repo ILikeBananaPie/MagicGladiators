@@ -97,6 +97,14 @@ namespace TestServer
             }
         }
 
+        public static void ShrinkMap()
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.ShrinkMap);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
         public static void SendProjectile(string name, Vector2 position, Vector2 target, NetConnection sender)
         {
             if (connectionList.Count > 0)
@@ -151,12 +159,13 @@ namespace TestServer
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
-        public static void SendColor(string id, byte R, byte G, byte B, byte A)
+        public static void SendColor(string id, string name, byte R, byte G, byte B, byte A)
         {
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
             msgOut.Write((byte)PacketType.ColorChange);
             msgOut.Write(id);
+            msgOut.Write(name);
             msgOut.Write(R);
             msgOut.Write(G);
             msgOut.Write(B);
@@ -202,6 +211,7 @@ namespace TestServer
                 }
             }
             msgOut.Write((byte)PacketType.Deflect);
+            msgOut.Write(id);
             msgOut.Write(name);
             msgOut.Write(position.X);
             msgOut.Write(position.Y);
@@ -209,6 +219,30 @@ namespace TestServer
             msgOut.Write(newVel.Y);
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
 
+        }
+
+        public static void Chain(string id, Vector2 vector)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Chain);
+            msgOut.Write(id);
+            msgOut.Write(vector.X);
+            msgOut.Write(vector.Y);
+
+            string test = id.Split(' ').Last();
+            test = test.Remove(test.Length - 1);
+            connectionList.Clear();
+            foreach (NetConnection con in server.Connections)
+            {
+                string test2 = con.RemoteEndPoint.ToString();
+                if (test2 == test)
+                {
+                    connectionList.Add(con);
+                }
+            }
+
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
 
@@ -347,17 +381,27 @@ namespace TestServer
                             if (type == (byte)PacketType.ColorChange)
                             {
                                 string id = msgIn.ReadString();
+                                string name = msgIn.ReadString();
                                 byte R = msgIn.ReadByte();
                                 byte G = msgIn.ReadByte();
                                 byte B = msgIn.ReadByte();
                                 byte A = msgIn.ReadByte();
                                 UpdateConnectionList(msgIn.SenderConnection);
-                                SendColor(id, R, G, B, A);
+                                SendColor(id, name, R, G, B, A);
                             }
                             if (type == (byte)PacketType.UpdateStats)
                             {
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 UpdateStats(msgIn.ReadString(), msgIn.ReadFloat());
+                            }
+                            if (type == (byte)PacketType.ShrinkMap)
+                            {
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                ShrinkMap();
+                            }
+                            if (type == (byte)PacketType.Chain)
+                            {
+                                Chain(msgIn.ReadString(), new Vector2(msgIn.ReadFloat(), msgIn.ReadFloat()));
                             }
 
                             break;

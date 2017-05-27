@@ -420,9 +420,18 @@ namespace MagicGladiators
             {
                 foreach (GameObject go in gameObjects)
                 {
+                    string name = go.Tag;
                     if (go.CurrentHealth < 0)
                     {
                         objectsToRemove.Add(go);
+                        if (client != null)
+                        {
+                            if (go.Tag == "Player")
+                            {
+                                name = "Enemy";
+                            }
+                            client.SendRemoval(name, go.Id);
+                        }
                     }
                 }
             }

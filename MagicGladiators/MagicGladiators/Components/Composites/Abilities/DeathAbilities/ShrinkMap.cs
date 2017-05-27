@@ -34,6 +34,11 @@ namespace MagicGladiators
                         (go.GetComponent("Collider") as Collider).Scale -= 0.1F;
                         SpriteRenderer sprite = (go.GetComponent("SpriteRenderer") as SpriteRenderer);
                         go.transform.position = new Vector2(640 - (sprite.Sprite.Width * sprite.Scale) / 2, 360 - (sprite.Sprite.Height * sprite.Scale) / 2);
+
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.ShrinkMap();
+                        }
                     }
                 }
             }
