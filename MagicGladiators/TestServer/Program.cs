@@ -14,6 +14,8 @@ namespace TestServer
     {
         private static NetServer server;
         private static List<NetConnection> connectionList = new List<NetConnection>();
+        private static List<string> TestID = new List<string>();
+        private static List<string> TestName = new List<string>();
 
         public static void SendConnection(NetConnection sender)
         {
@@ -185,14 +187,17 @@ namespace TestServer
 
         public static void RemoveProjectile(string name, NetConnection sender, string id)
         {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            //string name2 = name + "Enemy";
-            msgOut.Write((byte)PacketType.RemoveProjectile);
-            msgOut.Write(id);
-            msgOut.Write(sender.ToString());
-            msgOut.Write(name);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            if (connectionList.Count > 0)
+            {
+                NetOutgoingMessage msgOut;
+                msgOut = server.CreateMessage();
+                //string name2 = name + "Enemy";
+                msgOut.Write((byte)PacketType.RemoveProjectile);
+                msgOut.Write(id);
+                msgOut.Write(sender.ToString());
+                msgOut.Write(name);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            }
         }
 
         public static void Deflect(string id, string name, Vector2 position, Vector2 newVel)
@@ -337,7 +342,10 @@ namespace TestServer
                                 float posY = msgIn.ReadFloat();
                                 float velX = msgIn.ReadFloat();
                                 float velY = msgIn.ReadFloat();
-                                SendProjectile(name, new Vector2(posX, posY), new Vector2(velX, velY), msgIn.SenderConnection);
+                                if (!TestName.Exists(x => x == name) && !TestID.Exists(x => x == msgIn.SenderConnection.RemoteEndPoint.ToString()))
+                                {
+                                    SendProjectile(name, new Vector2(posX, posY), new Vector2(velX, velY), msgIn.SenderConnection);
+                                }
                             }
                             if (type == (byte)PacketType.CreateProjectile)
                             {
@@ -357,8 +365,17 @@ namespace TestServer
                                 string name = msgIn.ReadString();
                                 //string name2 = name.Split(',').First();
                                 Console.WriteLine("Removing " + name);
+                                if (TestName.Exists(x => x == name) && TestID.Exists(x => x == id))
+                                {
+                                    TestName.Remove(name);
+                                    TestID.Remove(id);
+                                }
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 RemoveProjectile(name, msgIn.SenderConnection, id);
+
+                                if (!TestName.Exists(x => x == name) && !TestID.Exists(x => x == msgIn.SenderConnection.RemoteEndPoint.ToString()))
+                                {
+                                }
                             }
                             if (type == (byte)PacketType.Push)
                             {
@@ -372,6 +389,14 @@ namespace TestServer
                             {
                                 string id = msgIn.ReadString();
                                 string name = msgIn.ReadString();
+
+                                string test;
+                                test = id;
+                                test = test.Split(' ').Last();
+                                test = test.Remove(test.Length - 1);
+                                TestID.Add(test);
+                                TestName.Add(name);
+
                                 float posX = msgIn.ReadFloat();
                                 float posY = msgIn.ReadFloat();
                                 float velX = msgIn.ReadFloat();
