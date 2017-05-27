@@ -50,6 +50,7 @@ namespace TestServer
                 msgOut = server.CreateMessage();
                 msgOut.Write((byte)PacketType.AssignID);
                 msgOut.Write(con.RemoteEndPoint.ToString());
+                msgOut.Write("lightGreen");
                 msgOut.Write("yellow");
                 msgOut.Write("blue");
                 msgOut.Write("green");

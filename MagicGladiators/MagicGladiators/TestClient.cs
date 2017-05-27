@@ -448,6 +448,7 @@ namespace MagicGladiators
                             {
                                 if (go.Tag == "Player")
                                 {
+                                    
                                     go.Id = id;
                                 }
                             }

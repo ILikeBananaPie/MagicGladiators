@@ -17,7 +17,7 @@ namespace MagicGladiators
 
         public void Execute(ref DIRECTION currentDirection)
         {
-            animator.PlayAnimation("Idle" + currentDirection);
+          //  animator.PlayAnimation("Idle"+ currentDirection);
         }
     }
 }

@@ -71,35 +71,35 @@ namespace MagicGladiators
                 testVector = new Vector2(10, 10);
                 testVector.Normalize();
                 testVector = new Vector2(testVector.X, 0);
-                currentDirection = Right;
+               // currentDirection = Right;
             }
             if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.A) && keyState.IsKeyUp(Keys.S) && keyState.IsKeyUp(Keys.D))
             {
                 //physics.Acceleration += new Vector2(0.25F * player.Speed, 0);
                 testVector = new Vector2(-10, -10);
                 testVector.Normalize();
-                currentDirection = Right;
+               // currentDirection = Right;
             }
             if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.D) && keyState.IsKeyUp(Keys.S) && keyState.IsKeyUp(Keys.A))
             {
                 //physics.Acceleration += new Vector2(0.25F * player.Speed, 0);
                 testVector = new Vector2(10, -10);
                 testVector.Normalize();
-                currentDirection = Right;
+                //currentDirection = Right;
             }
             if (keyState.IsKeyDown(Keys.S) && keyState.IsKeyDown(Keys.A) && keyState.IsKeyUp(Keys.W) && keyState.IsKeyUp(Keys.D))
             {
                 //physics.Acceleration += new Vector2(0.25F * player.Speed, 0);
                 testVector = new Vector2(-10, 10);
                 testVector.Normalize();
-                currentDirection = Right;
+               // currentDirection = Right;
             }
             if (keyState.IsKeyDown(Keys.S) && keyState.IsKeyDown(Keys.D) && keyState.IsKeyUp(Keys.W) && keyState.IsKeyUp(Keys.A))
             {
                 //physics.Acceleration += new Vector2(0.25F * player.Speed, 0);
                 testVector = new Vector2(10, 10);
                 testVector.Normalize();
-                currentDirection = Right;
+             //   currentDirection = Right;
             }
 
             Player.testSpeed = physics.Acceleration;
@@ -115,7 +115,7 @@ namespace MagicGladiators
 
             direction = currentDirection;
 
-            animator.PlayAnimation("Walk" + currentDirection);
+           // animator.PlayAnimation("Walk" + currentDirection);
         }
     }
 }
