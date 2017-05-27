@@ -168,6 +168,9 @@
     <Content Include="Content\Player.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\PlayerSheet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\ProjectileSheet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

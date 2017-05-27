@@ -275,13 +275,16 @@ namespace MagicGladiators
                         if (type == (byte)PacketType.CreatePlayer)
                         {
                             string id = msgIn.ReadString();
+                            string color = msgIn.ReadString();
                             GameObject go = new GameObject();
+                            go.AddComponent(new SpriteRenderer(go, "PlayerSheet", 1));
+                            go.AddComponent(new Animator(go));
                             go.AddComponent(new Enemy(go));
-                            go.AddComponent(new SpriteRenderer(go, "Player", 1));
                             go.AddComponent(new Collider(go, true, true));
                             go.AddComponent(new Physics(go));
                             go.Tag = "Enemy";
                             go.Id = id;
+                            (go.GetComponent("Animator") as Animator).PlayAnimation(color);
                             GameWorld.newObjects.Add(go);
                             foreach (GameObject dummy in GameWorld.gameObjects)
                             {
@@ -362,8 +365,14 @@ namespace MagicGladiators
                             string name = msgIn.ReadString();
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
-                                string test = id.Split(' ').Last();
-                                test = test.Remove(test.Length - 1);
+                                string test = "";
+                                if (id != "")
+                                {
+                                    test = id.Split(' ').Last();
+                                    test = test.Remove(test.Length - 1);
+                                }
+                                //test = id.Split(' ').Last();
+                                //test = test.Remove(test.Length - 1);
                                 if (go.Tag == "Player" && name == "Chain" && go.Id == test)
                                 {
                                     (go.GetComponent("Physics") as Physics).chainDeactivated = true;
@@ -371,7 +380,7 @@ namespace MagicGladiators
 
                                 }
                             }
-                            
+
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (go.Tag == name && go.Id == sender)
@@ -379,7 +388,7 @@ namespace MagicGladiators
                                     GameWorld.objectsToRemove.Add(go);
                                 }
                             }
-                            
+
                         }
 
                         if (type == (byte)PacketType.Push)
@@ -396,10 +405,10 @@ namespace MagicGladiators
                             float posY = msgIn.ReadFloat();
                             float velX = msgIn.ReadFloat();
                             float velY = msgIn.ReadFloat();
-                            
+
                             //TestName = name;
                             //TestID = id;
-                            
+
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (name == go.Tag && go.Id == GameWorld.Instance.player.Id)
@@ -444,12 +453,13 @@ namespace MagicGladiators
                         if (type == (byte)PacketType.AssignID)
                         {
                             string id = msgIn.ReadString();
+                            string color = msgIn.ReadString();
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (go.Tag == "Player")
                                 {
-                                    
                                     go.Id = id;
+                                    (go.GetComponent("Animator") as Animator).PlayAnimation(color);
                                 }
                             }
                             //GameWorld.Instance.player.Id = id;

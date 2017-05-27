@@ -61,18 +61,18 @@ namespace MagicGladiators
         {
             SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
 
-            animator.CreateAnimation("lightGreen", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            /*  animator.CreateAnimation("green", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-              animator.CreateAnimation("blue", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-              animator.CreateAnimation("red", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-              animator.CreateAnimation("orange", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-              animator.CreateAnimation("brown", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-              animator.CreateAnimation("yellow", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-              animator.CreateAnimation("purple", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            */
+            animator.CreateAnimation("LightGreen", new Animation(1, 64, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Green", new Animation(1, 96, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Blue", new Animation(1, 96, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Red", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Orange", new Animation(1, 32, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Brown", new Animation(1, 0, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Yellow", new Animation(1, 64, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Purple", new Animation(1, 32, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
 
-            animator.PlayAnimation("lightGreen");
-            
+
+            animator.PlayAnimation("LightGreen");
+
             strategy = new Idle(animator);
         }
 
@@ -106,7 +106,7 @@ namespace MagicGladiators
             //    testVector.Normalize();
             //    testPush = true;
             //}
-            
+
         }
 
         public void OnCollisionExit(Collider other)
@@ -165,19 +165,19 @@ namespace MagicGladiators
                     strategy = new Move(gameObject.transform, animator);
                 }
             }
-            
+
             else
             {
                 strategy = new Idle(animator);
             }
             strategy.Execute(ref direction);
 
-        
-           
-         
+
+
+
             updatePackage.InfoUpdate(transform.position, phys.Velocity);
-         
-           
+
+
         }
 
         public void OnCollisionStay(Collider other)

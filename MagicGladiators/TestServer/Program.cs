@@ -16,6 +16,8 @@ namespace TestServer
         private static List<NetConnection> connectionList = new List<NetConnection>();
         private static List<string> TestID = new List<string>();
         private static List<string> TestName = new List<string>();
+        private static List<string> colors = new List<string>() { "Blue", "Red", "Orange", "Purple", "Brown", "Green", "LightGreen", "Yellow" };
+        private static int colorIndex = 0;
 
         public static void SendConnection(NetConnection sender)
         {
@@ -27,6 +29,7 @@ namespace TestServer
                     msgOut = server.CreateMessage();
                     msgOut.Write((byte)PacketType.CreatePlayer);
                     msgOut.Write(server.Connections[i].ToString());
+                    msgOut.Write(colorIndex);
                     connectionList.Clear();
                     foreach (NetConnection con in server.Connections)
                     {
@@ -49,19 +52,12 @@ namespace TestServer
                 msgOut = server.CreateMessage();
                 msgOut.Write((byte)PacketType.AssignID);
                 msgOut.Write(con.RemoteEndPoint.ToString());
-                msgOut.Write("lightGreen");
-                msgOut.Write("yellow");
-                msgOut.Write("blue");
-                msgOut.Write("green");
-                msgOut.Write("purple");
-                msgOut.Write("orange");
-                msgOut.Write("red");
-                msgOut.Write("brown");
+                msgOut.Write(colors[colorIndex]);
                 connectionList.Clear();
                 connectionList.Add(con);
                 server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
             }
-
+            colorIndex++;
         }
 
         public static void UpdateConnectionList(NetConnection con)
@@ -294,6 +290,7 @@ namespace TestServer
                             if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnected)
                             {
                                 Console.WriteLine("Player Disconnected!");
+                                colorIndex--;
                             }
                             break;
                         case NetIncomingMessageType.UnconnectedData:

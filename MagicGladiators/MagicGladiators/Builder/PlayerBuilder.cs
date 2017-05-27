@@ -19,7 +19,7 @@ namespace MagicGladiators
 
             gameObject.Tag = "Player";
 
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "PlayerSheet", 1));
                      
             gameObject.AddComponent(new Animator(gameObject));
 

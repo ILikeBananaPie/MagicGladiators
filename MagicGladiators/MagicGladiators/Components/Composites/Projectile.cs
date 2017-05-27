@@ -514,7 +514,7 @@ namespace MagicGladiators
                     //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
                 }
 
-                if (gameObject.Tag.Contains("Fireball") || gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain") || gameObject.Tag.Contains("Nova") || !gameObject.Tag.Contains("Firewave"))
+                if ((gameObject.Tag.Contains("Fireball") || gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain") || gameObject.Tag.Contains("Nova")) && !gameObject.Tag.Contains("Firewave"))
                 {
                     if (gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain"))
                     {
@@ -570,12 +570,8 @@ namespace MagicGladiators
                         }
                     }
                 }
-                if (gameObject.Tag == "Mine")
-                {
 
-                }
-
-                if (gameObject.Tag.Contains("HomingMissile"))
+                if (gameObject.Tag == "HomingMissile")
                 {
                     if (homingTimer > 1)
                     {
