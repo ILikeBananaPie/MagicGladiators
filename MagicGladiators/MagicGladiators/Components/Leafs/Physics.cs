@@ -96,6 +96,7 @@ namespace MagicGladiators
             Vector2 temp = Velocity;
             if (gameObject.Tag == "Player" || gameObject.Tag == "Enemy" || gameObject.Tag == "Dummy")
             {
+                //increase testpush timer to be able to push "better/longer"
                 if (temp.X > MaxSpeedPositive.X && temp.X > 0)
                 {
                     Velocity = new Vector2(MaxSpeedPositive.X, Velocity.Y);
