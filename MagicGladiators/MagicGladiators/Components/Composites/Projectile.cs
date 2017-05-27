@@ -139,7 +139,9 @@ namespace MagicGladiators
             animator.CreateAnimation("DeathMeteor", new Animation(1, 32, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("Chain", new Animation(1, 32, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("Boomerang", new Animation(1, 0, 1, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("Firewave", new Animation(1, 0, 1, 600, 100, 10, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("FirewaveTopBottom", new Animation(1, 0, 1, 200, 100, 10, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("FirewaveLeftRight", new Animation(1, 0, 0, 100, 200, 10, Vector2.Zero, spriteRenderer.Sprite));
+
             foreach (GameObject go in GameWorld.newObjects)
             {
                 if (go.Tag.Contains("Nova"))
@@ -187,9 +189,13 @@ namespace MagicGladiators
                 animator.PlayAnimation("Boomerang");
                 travelDistance = 1000;
             }
-            if (gameObject.Tag == "Firewave")
+            if (gameObject.Tag.Contains("Firewave"))
             {
-                animator.PlayAnimation("Firewave");
+                if (gameObject.Tag.Contains("Top"))
+                {
+                    animator.PlayAnimation("FirewaveTopBottom");
+                }
+                else animator.PlayAnimation("FirewaveLeftRight");
                 travelDistance = 1920;
             }
             strategy = new Idle(animator);
@@ -199,7 +205,7 @@ namespace MagicGladiators
         {
             animator = (Animator)gameObject.GetComponent("Animator");
             Texture2D sprite;
-            if (gameObject.Tag == "Firewave")
+            if (gameObject.Tag.Contains("Firewave"))
             {
                 sprite = content.Load<Texture2D>("Firewave");
             }
@@ -262,7 +268,7 @@ namespace MagicGladiators
                     }
                 }
             }
-            if (gameObject.Tag != "Chain" && gameObject.Tag != "Deflect" && gameObject.Tag != "Spellshield" && gameObject.Tag != "Firewave")
+            if (gameObject.Tag != "Chain" && gameObject.Tag != "Deflect" && gameObject.Tag != "Spellshield" && !gameObject.Tag.Contains("Firewave"))
             {
                 GameWorld.Instance.player.CurrentHealth += 10 * GameWorld.Instance.player.LifeSteal;
                 GameWorld.objectsToRemove.Add(gameObject);
@@ -352,13 +358,13 @@ namespace MagicGladiators
             }
 
 
-            if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain" || gameObject.Tag.Contains("Nova") || gameObject.Tag == "Firewave")
+            if (gameObject.Tag == "Fireball" || gameObject.Tag == "Drain" || gameObject.Tag == "Chain" || gameObject.Tag.Contains("Nova") || gameObject.Tag.Contains("Firewave"))
             {
                 if (gameObject.Tag == "Drain" || gameObject.Tag == "Chain")
                 {
                     (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 10) * projectileSpeed;
                 }
-                else if (gameObject.Tag == "Firewave")
+                else if (gameObject.Tag.Contains("Firewave"))
                 {
                     (gameObject.GetComponent("Physics") as Physics).Acceleration += target / 15;
                     foreach (GameObject go in GameWorld.gameObjects)

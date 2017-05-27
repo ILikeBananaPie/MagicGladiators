@@ -12,6 +12,8 @@ namespace MagicGladiators
     class Firewave : Ability
     {
         public bool activated { get; set; } = false;
+        private string side;
+        private Random rnd = new Random();
 
         public Firewave(GameObject gameObject) : base(gameObject)
         {
@@ -56,14 +58,18 @@ namespace MagicGladiators
                             if (distanceLeft < distanceBottom)
                             {
                                 //left side
-                                position = new Vector2(0, height / 2 - 300);
-                                target = new Vector2(width, height / 2 - 300);
+                                int random = rnd.Next(height / 2 - 450, height / 2 + 300);
+                                position = new Vector2(0, random);
+                                target = new Vector2(width, random);
+                                side = "FirewaveLeftRight";
                             }
                             else
                             {
                                 //buttom side
-                                position = new Vector2(width / 2 - 300, height);
-                                target = new Vector2(width / 2 - 300, 0);
+                                int random = rnd.Next(width / 2 - 450, width / 2 + 300);
+                                position = new Vector2(random, height);
+                                target = new Vector2(random, 0);
+                                side = "FirewaveTopBottom";
                             }
                         }
                         else
@@ -71,14 +77,18 @@ namespace MagicGladiators
                             if (distanceRight < distanceBottom)
                             {
                                 //right side
-                                position = new Vector2(width, height / 2 - 300);
-                                target = new Vector2(0, height / 2 - 300);
+                                int random = rnd.Next(height / 2 - 450, height / 2 + 300);
+                                position = new Vector2(width, random);
+                                target = new Vector2(0, random);
+                                side = "FirewaveLeftRight";
                             }
                             else
                             {
                                 //buttom side
-                                position = new Vector2(width / 2 - 300, height);
-                                target = new Vector2(width / 2 - 300, 0);
+                                int random = rnd.Next(width / 2 - 450, width / 2 + 300);
+                                position = new Vector2(random, height);
+                                target = new Vector2(random, 0);
+                                side = "FirewaveTopBottom";
                             }
                         }
                     }
@@ -89,14 +99,18 @@ namespace MagicGladiators
                             if (distanceTop < distanceLeft)
                             {
                                 //top side
-                                position = new Vector2(width / 2 - 300, 0);
-                                target = new Vector2(width / 2 - 300, height);
+                                int random = rnd.Next(width / 2 - 450, width / 2 + 300);
+                                position = new Vector2(random, 0);
+                                target = new Vector2(random, height);
+                                side = "FirewaveTopBottom";
                             }
                             else
                             {
                                 //left side
-                                position = new Vector2(0, height / 2 - 300);
-                                target = new Vector2(width, height / 2 - 300);
+                                int random = rnd.Next(height / 2 - 450, height / 2 + 300);
+                                position = new Vector2(0, random);
+                                target = new Vector2(width, random);
+                                side = "FirewaveLeftRight";
                             }
                         }
                         else
@@ -104,21 +118,26 @@ namespace MagicGladiators
                             if (distanceRight < distanceTop)
                             {
                                 //right side
-                                position = new Vector2(width, height / 2 - 300);
-                                target = new Vector2(0, height / 2 - 300);
+                                int random = rnd.Next(height / 2 - 450, height / 2 + 300);
+                                position = new Vector2(width, random);
+                                target = new Vector2(0, random);
+                                side = "FirewaveLeftRight";
                             }
                             else
                             {
                                 //top side
-                                position = new Vector2(width / 2 - 300, 0);
-                                target = new Vector2(width / 2 - 300, height);
+                                int random = rnd.Next(width / 2 - 450, width / 2 + 300);
+                                position = new Vector2(random, 0);
+                                target = new Vector2(random, height);
+                                side = "FirewaveTopBottom";
                             }
                         }
                     }
                     target = target - position;
                     target.Normalize();
                     Director director = new Director(new ProjectileBuilder());
-                    GameWorld.newObjects.Add(director.ConstructProjectile(position, target, "Firewave"));
+                    GameWorld.newObjects.Add(director.ConstructProjectile(position, target, side));
+
                     activated = false;
                     canShoot = true;
                 }

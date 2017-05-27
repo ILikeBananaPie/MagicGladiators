@@ -45,7 +45,7 @@ namespace MagicGladiators
         public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
         {
             gameObject = new GameObject();
-            if (ability == "Firewave")
+            if (ability.Contains("Firewave"))
             {
                 gameObject.AddComponent(new SpriteRenderer(gameObject, "Firewave", 1));
             }
