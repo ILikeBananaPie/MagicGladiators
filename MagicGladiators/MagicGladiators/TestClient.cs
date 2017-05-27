@@ -308,7 +308,7 @@ namespace MagicGladiators
                                     {
                                         go.transform.position = new Vector2(posX, posY);
 
-                                        if (name != "Deflect")
+                                        if (name != "Deflect" && name != "Spellshield")
                                         {
                                             (go.GetComponent("Physics") as Physics).Velocity = new Vector2(velX, velY);
                                             (go.GetComponent("Projectile") as Projectile).TestVector = new Vector2(velX, velY);
@@ -327,24 +327,25 @@ namespace MagicGladiators
                             float posY = msgIn.ReadFloat();
                             float targetX = msgIn.ReadFloat();
                             float targetY = msgIn.ReadFloat();
-                            if (name == "Chain")
-                            {
 
-                            }
-
-                            if (name.Contains("Drain"))
-                            {
-
-                            }
-                            else if (name.Contains("Deflect"))
+                            if (name.Contains("Deflect"))
                             {
                                 GameObject effect = new GameObject();
                                 effect.AddComponent(new SpriteRenderer(effect, "Deflect", 1));
-                                //effect.AddComponent(new Deflect(effect));
-                                //effect.AddComponent(new Collider(effect, true));
+                                effect.AddComponent(new Collider(effect, true));
                                 effect.Tag = "Deflect";
                                 effect.Id = id;
-                                //(effect.GetComponent("Deflect") as Deflect).activated = true;
+                                //effect.transform.position = new Vector2(posX, posY);
+                                GameWorld.newObjects.Add(effect);
+                            }
+                            else if (name.Contains("Spellshield"))
+                            {
+                                GameObject effect = new GameObject();
+                                effect.AddComponent(new SpriteRenderer(effect, "Spellshield", 1));
+                                effect.AddComponent(new Collider(effect, true));
+                                effect.Tag = "Spellshield";
+                                effect.Id = id;
+                                //effect.transform.position = new Vector2(posX, posY);
                                 GameWorld.newObjects.Add(effect);
                             }
                             else
@@ -370,18 +371,15 @@ namespace MagicGladiators
 
                                 }
                             }
+                            
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (go.Tag == name && go.Id == sender)
                                 {
-                                    if (name == "Deflect")
-                                    {
-                                        TestName = "";
-                                        TestID = "";
-                                    }
                                     GameWorld.objectsToRemove.Add(go);
                                 }
                             }
+                            
                         }
 
                         if (type == (byte)PacketType.Push)
