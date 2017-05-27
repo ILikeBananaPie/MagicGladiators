@@ -361,6 +361,17 @@ namespace MagicGladiators
                             string name = msgIn.ReadString();
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
+                                string test = id.Split(' ').Last();
+                                test = test.Remove(test.Length - 1);
+                                if (go.Tag == "Player" && name == "Chain" && go.Id == test)
+                                {
+                                    (go.GetComponent("Physics") as Physics).chainDeactivated = true;
+                                    (go.GetComponent("Physics") as Physics).chainActivated = false;
+
+                                }
+                            }
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
                                 if (go.Tag == name && go.Id == sender)
                                 {
                                     if (name == "Deflect")
@@ -369,15 +380,6 @@ namespace MagicGladiators
                                         TestID = "";
                                     }
                                     GameWorld.objectsToRemove.Add(go);
-                                }
-                            }
-                            foreach (GameObject go in GameWorld.gameObjects)
-                            {
-                                if (go.Tag == "Player" && name == "Chain")
-                                {
-                                    (go.GetComponent("Physics") as Physics).chainDeactivated = true;
-                                    (go.GetComponent("Physics") as Physics).chainActivated = false;
-
                                 }
                             }
                         }
@@ -491,7 +493,9 @@ namespace MagicGladiators
                             string id = msgIn.ReadString();
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
-                                if (go.Tag == "Player")
+                                string test = id.Split(' ').Last();
+                                test = test.Remove(test.Length - 1);
+                                if (go.Tag == "Player" && go.Id == test)
                                 {
                                     (go.GetComponent("Physics") as Physics).Acceleration += new Vector2(msgIn.ReadFloat(), msgIn.ReadFloat());
                                     (go.GetComponent("Physics") as Physics).chainActivated = true;

@@ -98,14 +98,14 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy")
-            {
-                //gameObject.CurrentHealth -= (other.gameObject.GetComponent("Dummy") as Dummy).Damage;
-                Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
-                testVector = (gameObject.GetComponent("Physics") as Physics).GetVector(test, (other.gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center);
-                testVector.Normalize();
-                testPush = true;
-            }
+            //if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy")
+            //{
+            //    //gameObject.CurrentHealth -= (other.gameObject.GetComponent("Dummy") as Dummy).Damage;
+            //    Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
+            //    testVector = (gameObject.GetComponent("Physics") as Physics).GetVector(test, (other.gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center);
+            //    testVector.Normalize();
+            //    testPush = true;
+            //}
             
         }
 
@@ -117,6 +117,7 @@ namespace MagicGladiators
         {
             testPush = true;
             testVector = vectorBetween;
+            testVector.Normalize();
         }
 
         public void Update()
@@ -139,7 +140,12 @@ namespace MagicGladiators
             }
             if (testPush)
             {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector * 5) * gameObject.KnockBackResistance;
+                if ((gameObject.GetComponent("Physics") as Physics).chainActivated)
+                {
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector) * gameObject.KnockBackResistance;
+                }
+                else (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector * 5) * gameObject.KnockBackResistance;
+
                 if (testTimer < 0.0025F)
                 {
                     testTimer += GameWorld.Instance.deltaTime;

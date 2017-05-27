@@ -103,7 +103,15 @@ namespace MagicGladiators
             }
 
             Player.testSpeed = physics.Acceleration;
-            physics.Acceleration += testVector / 5 * player.Speed;
+
+            if ((transform.gameObject.GetComponent("Physics") as Physics).chainActivated || (transform.gameObject.GetComponent("Physics") as Physics).chainDeactivated)
+            {
+                //do nothing
+                //physics.Acceleration += (testVector / 5 * player.Speed) / 2;
+            }
+            else physics.Acceleration += testVector / 5 * player.Speed;
+
+
 
             direction = currentDirection;
 

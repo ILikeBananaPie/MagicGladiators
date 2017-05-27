@@ -57,7 +57,7 @@ namespace MagicGladiators
                 else if (chainDeactivated)
                 {
                     timer += GameWorld.Instance.deltaTime;
-                    if (timer > 1)
+                    if (timer > 0.5F)
                     {
                         chainDeactivated = false;
                         timer = 0;

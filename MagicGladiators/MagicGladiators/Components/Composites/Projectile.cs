@@ -388,18 +388,19 @@ namespace MagicGladiators
                     (chainTarget.GetComponent("Physics") as Physics).Acceleration += pull / 10;
                     if (GameWorld.Instance.client != null)
                     {
-                        GameWorld.Instance.client.Chain(chainTarget.Id, pull / 25);
+                        GameWorld.Instance.client.Chain(chainTarget.Id, pull / 10);
                     }
                 }
-                if (keyState.IsKeyDown(Keys.T) || chainTimer > 2 || Vector2.Distance(chainTarget.transform.position, GameWorld.Instance.player.transform.position) < 20)
+                if (keyState.IsKeyDown(Keys.T) || chainTimer > 2 || Vector2.Distance(new Vector2(chainTarget.transform.position.X + 16, chainTarget.transform.position.Y + 16), new Vector2(GameWorld.Instance.player.transform.position.X + 16, GameWorld.Instance.player.transform.position.Y + 16)) < 35)
                 {
                     chainActivated = false;
                     (chainTarget.GetComponent("Physics") as Physics).chainDeactivated = true;
                     (chainTarget.GetComponent("Physics") as Physics).chainActivated = false;
                     GameWorld.objectsToRemove.Add(gameObject);
+
                     if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
                     {
-                        GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
+                        GameWorld.Instance.client.SendRemoval(gameObject.Tag, chainTarget.Id);
                     }
                 }
             }
