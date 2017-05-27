@@ -342,11 +342,50 @@ namespace MagicGladiators
 
         public void FirewavePush(GameObject go, string id)
         {
-            if (GameWorld.Instance.client != null)
+            Vector2 vector = target;
+            Circle circle = (go.GetComponent("Collider") as Collider).CircleCollisionBox;
+            if (gameObject.Tag == "FirewaveTopBottom")
             {
-                //GameWorld.Instance.client.SendPush(id, target);
+                if (circle.Center.X < gameObject.transform.position.X)
+                {
+                    vector = new Vector2(-1, 0);
+                }
+                if (circle.Center.X > gameObject.transform.position.X + 200)
+                {
+                    vector = new Vector2(1, 0);
+                }
+
+                if (circle.Center.Y < gameObject.transform.position.Y)
+                {
+                    vector = new Vector2(0, -1);
+                }
+                if (circle.Center.Y > gameObject.transform.position.Y + 100)
+                {
+                    vector = new Vector2(0, 1);
+                }
             }
-            (go.GetComponent("Physics") as Physics).Velocity += target;
+            if (gameObject.Tag == "FirewaveLeftRight")
+            {
+                if (circle.Center.Y < gameObject.transform.position.Y)
+                {
+                    vector = new Vector2(0, -1);
+                }
+                if (circle.Center.Y > gameObject.transform.position.Y + 200)
+                {
+                    vector = new Vector2(0, 1);
+                }
+
+                if (circle.Center.X < gameObject.transform.position.X)
+                {
+                    vector = new Vector2(-1, 0);
+                }
+                if (circle.Center.X > gameObject.transform.position.X + 100)
+                {
+                    vector = new Vector2(1, 0);
+                }
+
+            }
+            (go.GetComponent("Physics") as Physics).Velocity += vector;
         }
 
         public bool intersects(Circle cir, Rectangle rec)
@@ -456,11 +495,11 @@ namespace MagicGladiators
                 }
 
 
-            if (gameObject.Tag == "DeathMeteor")
-            {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector / 10;
-                abilityTimer += 0.001f;
-            }
+                if (gameObject.Tag == "DeathMeteor")
+                {
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector / 10;
+                    abilityTimer += 0.001f;
+                }
 
                 if (gameObject.Tag == "DeathMine")
                 {
