@@ -55,8 +55,8 @@ namespace TestServer
                 msgOut.Write("green");
                 msgOut.Write("purple");
                 msgOut.Write("orange");
-                msgOut.Write("greena");
-                msgOut.Write("ting");
+                msgOut.Write("red");
+                msgOut.Write("brown");
                 connectionList.Clear();
                 connectionList.Add(con);
                 server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
