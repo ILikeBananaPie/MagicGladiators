@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System.Threading;
 
 namespace MagicGladiators
 {
@@ -53,16 +54,22 @@ namespace MagicGladiators
                             case "MainMenu":
                                 GameWorld.Instance.NextScene = Scene.MainMenu();
                                 break;
-                            //case "Join":
-                            //    GameWorld.Instance.NextScene = Scene.Join();
-                            //    break;
-                            //case "Host":
-                            //    GameWorld.Instance.NextScene = Scene.Host();
-                            //    break;
+                            case "Join":
+                                GameWorld.Instance.NextScene = Scene.Join();
+                                break;
+                            case "Host":
+                                GameWorld.Instance.NextScene = Scene.Host();
+                                break;
+                            case "Lobby":
+                                break;
                             case "Practice":
                                 GameWorld.Instance.NextScene = Scene.Practice();
                                 break;
                             case "ExitGame":
+                                if (GameWorld.Instance.server != null)
+                                {
+                                    GameWorld.Instance.server.Kill();
+                                }
                                 GameWorld.Instance.Exit();
                                 break;
                             case "PracticeChooseRound":

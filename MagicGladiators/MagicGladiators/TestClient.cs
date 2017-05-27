@@ -9,10 +9,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using MagicGladiators;
 using System.Net;
+using TestServer;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain }
+    //public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain }
 
 
     public class TestClient
@@ -29,9 +30,9 @@ namespace MagicGladiators
         public string TestID { get; set; } = "";
         //private float TestTimer;
 
-        public TestClient()
+        public TestClient(string ip)
         {
-            string hostip = "25.28.211.248";
+            string hostip = ip;
             spriteBatch = new SpriteBatch(GameWorld.Instance.GraphicsDevice);
             font = GameWorld.Instance.Content.Load<SpriteFont>("fontText");
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
@@ -317,7 +318,6 @@ namespace MagicGladiators
                                     }
                                 }
                             }
-
                         }
                         if (type == (byte)PacketType.CreateProjectile)
                         {

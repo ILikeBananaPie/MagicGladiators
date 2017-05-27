@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MagicGladiators;
 using Microsoft.Xna.Framework;
 
 namespace TestServer
 {
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain }
 
     class Program
     {
@@ -43,7 +43,6 @@ namespace TestServer
 
         public static void AssignID(NetConnection con)
         {
-
             for (int i = 0; i < server.Connections.Count; i++)
             {
                 NetOutgoingMessage msgOut;

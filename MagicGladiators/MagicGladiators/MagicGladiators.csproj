@@ -107,7 +107,6 @@
     <Compile Include="Components\Leafs\Transform.cs" />
     <Compile Include="StringExt.cs" />
     <Compile Include="TestClient.cs" />
-    <Compile Include="TestServer.cs" />
     <Compile Include="UpdatePackage.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -223,7 +222,12 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TestServer\TestServer.csproj">
+      <Project>{ddb68fe1-f3d4-4c50-9384-bc3cff512fc9}</Project>
+      <Name>TestServer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

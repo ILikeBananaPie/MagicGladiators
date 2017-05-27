@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace MagicGladiators
 {
@@ -119,18 +120,35 @@ namespace MagicGladiators
             GameObject[] included = new GameObject[1];
             included[0] = new GameObject();
             included[0].AddComponent(new Client(included[0]));
+            //included[0].AddComponent(new TestClient());
             Scene send = new Scene(included);
             send.scenetype = "Join";
             return send;
         }
         public static Scene Host()
         {
-            GameObject[] included = new GameObject[0];
+            //server start
+            GameWorld.Instance.server = new Process();
+            GameWorld.Instance.server.StartInfo.FileName = "TestServer.exe";
+            GameWorld.Instance.server.EnableRaisingEvents = true;
+            GameWorld.Instance.server.Start();
+            GameWorld.Instance.client = new TestClient("localhost");
+
+            
+            GameObject[] included = new GameObject[2];
             included[0] = new GameObject();
+            included[0].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
+            included[0].AddComponent(new OnClick(included[0], "MainMenu"));
+
+            included[0] = new GameObject();
+            included[0].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
+            included[0].AddComponent(new OnClick(included[0], "MainMenu"));
+
             included[0].AddComponent(new Server(included[0]));
             Scene send = new Scene(included);
             send.scenetype = "Host";
             return send;
+            
         }
         public static Scene Practice()
         {
