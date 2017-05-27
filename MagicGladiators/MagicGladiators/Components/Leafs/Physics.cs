@@ -22,6 +22,10 @@ namespace MagicGladiators
         private Vector2 normalAcc;
         private Vector2 changedAcc;
         private bool correctVel = false;
+        public bool Ice { get; set; } = false;
+        private Vector2 MaxSpeedPositive = new Vector2(2F, 2F);
+        private Vector2 MaxSpeedNegative = new Vector2(-2F, -2F);
+
 
         public Physics(GameObject gameObject) : base(gameObject)
         {
@@ -89,16 +93,37 @@ namespace MagicGladiators
             }
 
             Velocity = UpdateVelocity(Acceleration, Velocity);
+            Vector2 temp = Velocity;
+            if (gameObject.Tag == "Player" || gameObject.Tag == "Enemy" || gameObject.Tag == "Dummy")
+            {
+                if (temp.X > MaxSpeedPositive.X && temp.X > 0)
+                {
+                    Velocity = new Vector2(MaxSpeedPositive.X, Velocity.Y);
+                }
+                if (temp.X < MaxSpeedNegative.X && temp.X < 0)
+                {
+                    Velocity = new Vector2(MaxSpeedNegative.X, Velocity.Y);
+                }
+                if (temp.Y > MaxSpeedPositive.Y && temp.Y > 0)
+                {
+                    Velocity = new Vector2(Velocity.X, MaxSpeedPositive.Y);
+                }
+                if (temp.Y < MaxSpeedNegative.Y && temp.Y < 0)
+                {
+                    Velocity = new Vector2(Velocity.X, MaxSpeedNegative.Y);
+                }
+            }
             return Acceleration;
         }
 
         public Vector2 UpdateVelocity(Vector2 acceleration, Vector2 velocity)
         {
+
             //Vector2 testAcc2 = velocity + this.testAcc2;
 
             //Vector2 testAcc = velocity + this.testAcc;
 
-
+            /*
             if (this.normalAcc != Vector2.Zero && changedAcc != normalAcc && (gameObject.Tag == "Player" || gameObject.Tag == "Enemy" || gameObject.Tag == "Dummy"))
             {
                 float tempX = changedAcc.X;
@@ -126,6 +151,16 @@ namespace MagicGladiators
             {
                 return velocity += acceleration;
             }
+            */
+            if (Ice)
+            {
+                return velocity = acceleration;
+            }
+            else
+            {
+                return velocity += acceleration;
+            }
+
         }
 
         public void Update()
