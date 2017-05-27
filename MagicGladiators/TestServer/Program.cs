@@ -49,13 +49,14 @@ namespace TestServer
                 msgOut = server.CreateMessage();
                 msgOut.Write((byte)PacketType.AssignID);
                 msgOut.Write(con.RemoteEndPoint.ToString());
+                msgOut.Write("lightGreen");
                 msgOut.Write("yellow");
                 msgOut.Write("blue");
                 msgOut.Write("green");
                 msgOut.Write("purple");
                 msgOut.Write("orange");
-                msgOut.Write("greena");
-                msgOut.Write("ting");
+                msgOut.Write("red");
+                msgOut.Write("brown");
                 connectionList.Clear();
                 connectionList.Add(con);
                 server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);

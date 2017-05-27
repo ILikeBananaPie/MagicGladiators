@@ -20,23 +20,7 @@ namespace MagicGladiators
             gameObject.Tag = "Player";
 
             gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
-            foreach (GameObject go in GameWorld.gameObjects)
-            {
-                if(go.Tag == "Enemy" )
-                {
-                    gameObject.AddComponent(new SpriteRenderer(gameObject, "Player1", 1));
-                    gameObject.AddComponent(new SpriteRenderer(gameObject, "Player2", 1));
-                    gameObject.AddComponent(new SpriteRenderer(gameObject, "Player3", 1));
-                    gameObject.AddComponent(new SpriteRenderer(gameObject, "Player4", 1));
-                    gameObject.AddComponent(new SpriteRenderer(gameObject, "Player5", 1));
-                    gameObject.AddComponent(new SpriteRenderer(gameObject, "Player6", 1));
-                    gameObject.AddComponent(new SpriteRenderer(gameObject, "Player7", 1));
-                }
-            }
-               
-            
-
-
+                     
             gameObject.AddComponent(new Animator(gameObject));
 
             gameObject.AddComponent(new Player(gameObject, gameObject.transform));
