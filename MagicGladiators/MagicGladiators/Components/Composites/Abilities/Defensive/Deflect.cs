@@ -148,14 +148,29 @@ namespace MagicGladiators
             float oy = ex;
             double e1x = (0 * ex + 0 * ey) * ex;
             double e1y = (0 * ex + 0 * ey) * ey;
+            if (gameObject.Tag == "Player")
+            {
+                e1x = (physicsPlayer.Velocity.X * ex + physicsPlayer.Velocity.Y * ey) * ex;
+                e1y = (physicsPlayer.Velocity.X * ex + physicsPlayer.Velocity.Y * ey) * ey;
+            }
             double e2x = (physicsSpell.Velocity.X * ex + physicsSpell.Velocity.Y * ey) * ex;
             double e2y = (physicsSpell.Velocity.X * ex + physicsSpell.Velocity.Y * ey) * ey;
             double o1x = (0 * ox + 0 * oy) * ox;
             double o1y = (0 * ox + 0 * oy) * oy;
+            if (gameObject.Tag == "Player")
+            {
+                o1x = (physicsPlayer.Velocity.X * ox + physicsPlayer.Velocity.Y * oy) * ox;
+                o1y = (physicsPlayer.Velocity.X * ox + physicsPlayer.Velocity.Y * oy) * oy;
+            }
             double o2x = (physicsSpell.Velocity.X * ox + physicsSpell.Velocity.Y * oy) * ox;
             double o2y = (physicsSpell.Velocity.X * ox + physicsSpell.Velocity.Y * oy) * oy;
             int playerMass = 10;
             int spellMass = 1;
+            if (gameObject.Tag == "Player")
+            {
+                playerMass = 1;
+                spellMass = 10;
+            }
             double vxs = (playerMass * e1x + spellMass * e2x) / (playerMass + spellMass);
             double vys = (playerMass * e1y + spellMass * e2y) / (playerMass + spellMass);
             //Velocity Ball 1 after Collision
@@ -164,11 +179,25 @@ namespace MagicGladiators
             //Velocity Ball 2 after Collision
             double vx2 = -e2x + 2 * vxs + o2x;
             double vy2 = -e2y + 2 * vys + o2y;
-            (go.GetComponent("Physics") as Physics).Velocity = new Vector2((float)vx2, (float)vy2);
-            Vector2 temp = new Vector2((float)vx2, (float)vy2);
-            temp.Normalize();
-            (go.GetComponent("Projectile") as Projectile).TestVector = temp;
-            go.transform.position += new Vector2((float)vx2, (float)vy2);
+            if (gameObject.Tag == "Player")
+            {
+                (gameObject.GetComponent("Physics") as Physics).Velocity = new Vector2((float)vx1, (float)vy1);
+                gameObject.transform.position += new Vector2((float)vx1, (float)vy1) * 2 ;
+                /*
+                Vector2 test = new Vector2((float)vx2, (float)vy2);
+                (go.GetComponent("Physics") as Physics).Velocity = test;
+                go.transform.position += test;
+                */
+            }
+            else
+            {
+                (go.GetComponent("Physics") as Physics).Velocity = new Vector2((float)vx2, (float)vy2);
+                Vector2 temp = new Vector2((float)vx2, (float)vy2);
+                temp.Normalize();
+                (go.GetComponent("Projectile") as Projectile).TestVector = temp;
+                go.transform.position += new Vector2((float)vx2, (float)vy2);
+            }
+
 
             /*
             if (GameWorld.Instance.client != null)

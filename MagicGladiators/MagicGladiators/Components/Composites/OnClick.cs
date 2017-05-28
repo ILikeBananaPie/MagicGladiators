@@ -72,6 +72,9 @@ namespace MagicGladiators
                                 }
                                 GameWorld.Instance.Exit();
                                 break;
+                            case "Joining":
+                                GameWorld.Instance.client = new TestClient("192");
+                                break;
                             case "PracticeChooseRound":
                                 GameWorld.Instance.NextScene = Scene.PracticeChooseRound();
                                 break;

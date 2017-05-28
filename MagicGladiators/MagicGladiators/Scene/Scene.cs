@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace MagicGladiators
 {
-    public class Scene:ILoadable, IUpdateable, IDrawable
+    public class Scene : ILoadable, IUpdateable, IDrawable
     {
         List<GameObject> gameObjects;
         public string scenetype;
@@ -117,9 +117,22 @@ namespace MagicGladiators
         }
         public static Scene Join()
         {
+
             GameObject[] included = new GameObject[1];
             included[0] = new GameObject();
-            included[0].AddComponent(new Client(included[0]));
+            included[0].AddComponent(new SpriteRenderer(included[0], "AlphaTryJoinIP", 0));
+            included[0].AddComponent(new OnClick(included[0], "Joining"));
+
+
+            included[1] = new GameObject();
+            included[1].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
+            included[1].AddComponent(new OnClick(included[0], "NewGame"));
+
+            included[2] = new GameObject();
+            included[2].AddComponent(new SpriteRenderer(included[0], "AlphaTryJoinIP", 0));
+            included[2].AddComponent(new OnClick(included[0], "Joining"));
+
+
             //included[0].AddComponent(new TestClient());
             Scene send = new Scene(included);
             send.scenetype = "Join";
@@ -134,21 +147,24 @@ namespace MagicGladiators
             GameWorld.Instance.server.Start();
             GameWorld.Instance.client = new TestClient("localhost");
 
-            
             GameObject[] included = new GameObject[2];
             included[0] = new GameObject();
             included[0].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
             included[0].AddComponent(new OnClick(included[0], "MainMenu"));
 
-            included[0] = new GameObject();
-            included[0].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
-            included[0].AddComponent(new OnClick(included[0], "MainMenu"));
 
-            included[0].AddComponent(new Server(included[0]));
+
+            included[1] = new GameObject();
+            included[1].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
+            included[1].AddComponent(new OnClick(included[0], "MainMenu"));
+
+
+
+
             Scene send = new Scene(included);
             send.scenetype = "Host";
             return send;
-            
+
         }
         public static Scene Practice()
         {
