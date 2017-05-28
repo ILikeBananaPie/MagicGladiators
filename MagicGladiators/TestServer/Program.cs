@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility }
 
     class Program
     {
@@ -23,40 +23,43 @@ namespace TestServer
         {
             if (server.Connections.Count > 1)
             {
-                for (int i = 0; i < server.Connections.Count; i++)
+                connectionList.Clear();
+                foreach (NetConnection con in server.Connections)
                 {
-                    NetOutgoingMessage msgOut;
+                    connectionList.Add(con);
+                }
+                connectionList.Remove(sender);
+
+                NetOutgoingMessage msgOut;
+                msgOut = server.CreateMessage();
+                msgOut.Write((byte)PacketType.CreatePlayer);
+                msgOut.Write(sender.ToString());
+                msgOut.Write(colors[colorIndex]);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+
+                for (int i = 0; i < server.Connections.Count - 1; i++)
+                {
                     msgOut = server.CreateMessage();
                     msgOut.Write((byte)PacketType.CreatePlayer);
                     msgOut.Write(server.Connections[i].ToString());
-                    msgOut.Write(colorIndex);
-                    connectionList.Clear();
-                    foreach (NetConnection con in server.Connections)
-                    {
-                        connectionList.Add(con);
-                    }
-                    connectionList.Remove(server.Connections[i]);
-                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                    msgOut.Write(colors[i]);
+                    server.SendMessage(msgOut, sender, NetDeliveryMethod.ReliableOrdered, 0);
                 }
-                //msgOut.Write(sender.ToString());
-                //server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.ReliableOrdered, 0);
             }
-
         }
 
         public static void AssignID(NetConnection con)
         {
-            for (int i = 0; i < server.Connections.Count; i++)
-            {
-                NetOutgoingMessage msgOut;
-                msgOut = server.CreateMessage();
-                msgOut.Write((byte)PacketType.AssignID);
-                msgOut.Write(con.RemoteEndPoint.ToString());
-                msgOut.Write(colors[colorIndex]);
-                connectionList.Clear();
-                connectionList.Add(con);
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
-            }
+            //connectionList.Clear();
+            //connectionList.Add(con);
+
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.AssignID);
+            msgOut.Write(con.ToString());
+            msgOut.Write(colors[colorIndex]);
+            server.SendMessage(msgOut, con, NetDeliveryMethod.ReliableOrdered, 0);
+
             colorIndex++;
         }
 
@@ -145,19 +148,17 @@ namespace TestServer
 
         public static void Push(string id, Vector2 vector)
         {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
             connectionList.Clear();
-            string test = id.Split(' ').Last();
-            test = test.Remove(test.Length - 1);
             foreach (NetConnection con in server.Connections)
             {
-                string test2 = con.RemoteEndPoint.ToString();
-                if (test2 == test)
+                if (con.ToString() == id)
                 {
                     connectionList.Add(con);
                 }
             }
+
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
             msgOut.Write((byte)PacketType.Push);
             msgOut.Write(vector.X);
             msgOut.Write(vector.Y);
@@ -208,12 +209,12 @@ namespace TestServer
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
             connectionList.Clear();
-            string test = id.Split(' ').Last();
-            test = test.Remove(test.Length - 1);
+            //string test = id.Split(' ').Last();
+            //test = test.Remove(test.Length - 1);
             foreach (NetConnection con in server.Connections)
             {
-                string test2 = con.RemoteEndPoint.ToString();
-                if (test2 == test)
+                string test2 = con.ToString();
+                if (test2 == id)
                 {
                     connectionList.Add(con);
                 }
@@ -238,18 +239,28 @@ namespace TestServer
             msgOut.Write(vector.X);
             msgOut.Write(vector.Y);
 
-            string test = id.Split(' ').Last();
-            test = test.Remove(test.Length - 1);
+            //string test = id.Split(' ').Last();
+            //test = test.Remove(test.Length - 1);
             connectionList.Clear();
             foreach (NetConnection con in server.Connections)
             {
-                string test2 = con.RemoteEndPoint.ToString();
-                if (test2 == test)
+                string test2 = con.ToString();
+                if (test2 == id)
                 {
                     connectionList.Add(con);
                 }
             }
 
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
+        public static void SendInvisibility(string id, bool isInvis)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Invisibility);
+            msgOut.Write(id);
+            msgOut.Write(isInvis);
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
@@ -346,7 +357,7 @@ namespace TestServer
                                 float posY = msgIn.ReadFloat();
                                 float velX = msgIn.ReadFloat();
                                 float velY = msgIn.ReadFloat();
-                                if (!TestName.Exists(x => x == name) && !TestID.Exists(x => x == msgIn.SenderConnection.RemoteEndPoint.ToString()))
+                                if (!TestName.Exists(x => x == name) && !TestID.Exists(x => x == msgIn.SenderConnection.ToString()))
                                 {
                                     SendProjectile(name, new Vector2(posX, posY), new Vector2(velX, velY), msgIn.SenderConnection);
                                 }
@@ -377,7 +388,7 @@ namespace TestServer
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 RemoveProjectile(name, msgIn.SenderConnection, id);
 
-                                if (!TestName.Exists(x => x == name) && !TestID.Exists(x => x == msgIn.SenderConnection.RemoteEndPoint.ToString()))
+                                if (!TestName.Exists(x => x == name) && !TestID.Exists(x => x == msgIn.SenderConnection.ToString()))
                                 {
                                 }
                             }
@@ -394,12 +405,12 @@ namespace TestServer
                                 string id = msgIn.ReadString();
                                 string name = msgIn.ReadString();
 
-                                string test;
-                                test = id;
-                                test = test.Split(' ').Last();
-                                test = test.Remove(test.Length - 1);
-                                TestID.Add(test);
-                                TestName.Add(name);
+                                //string test;
+                                //test = id;
+                                //test = test.Split(' ').Last();
+                                //test = test.Remove(test.Length - 1);
+                                //TestID.Add(test);
+                                //TestName.Add(name);
 
                                 float posX = msgIn.ReadFloat();
                                 float posY = msgIn.ReadFloat();
@@ -431,6 +442,13 @@ namespace TestServer
                             if (type == (byte)PacketType.Chain)
                             {
                                 Chain(msgIn.ReadString(), new Vector2(msgIn.ReadFloat(), msgIn.ReadFloat()));
+                            }
+                            if (type == (byte)PacketType.Invisibility)
+                            {
+                                string id = msgIn.ReadString();
+                                bool isInvis = msgIn.ReadBoolean();
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                SendInvisibility(id, isInvis);
                             }
 
                             break;

@@ -73,6 +73,16 @@ namespace MagicGladiators
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
         }
 
+        public void SendInvisibility(string id, bool isInvis)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.Invisibility);
+            msgOut.Write(id);
+            msgOut.Write(isInvis);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+        }
+
         public void SendProjectile(string name, Vector2 position, Vector2 target)
         {
             NetOutgoingMessage msgOut;
@@ -243,10 +253,10 @@ namespace MagicGladiators
                         byte type = msgIn.ReadByte();
                         if (type == (byte)PacketType.EnemyPos)
                         {
-                            //string test = msgIn.ReadFloat().ToString();
-                            //string[] arr = test.Split(',');
                             string id = msgIn.ReadString();
-                            EnemyIDTest = id;
+                            //string corrected = id.Split(' ').Last();
+                            //corrected = corrected.Remove(corrected.Length - 1);
+                            //EnemyIDTest = id;
                             int x = msgIn.ReadInt32();
                             int y = msgIn.ReadInt32();
 
@@ -261,6 +271,8 @@ namespace MagicGladiators
                         if (type == (byte)PacketType.EnemyVel)
                         {
                             string id = msgIn.ReadString();
+                            //string corrected = id.Split(' ').Last();
+                            //corrected = corrected.Remove(corrected.Length - 1);
                             float x = msgIn.ReadFloat();
                             float y = msgIn.ReadFloat();
                             foreach (GameObject go in GameWorld.gameObjects)
@@ -299,6 +311,8 @@ namespace MagicGladiators
                         if (type == (byte)PacketType.UpdateProjectile)
                         {
                             string id = msgIn.ReadString();
+                            //tring corrected = id.Split(' ').Last();
+                            //corrected = corrected.Remove(corrected.Length - 1);
                             string name = msgIn.ReadString();
                             float posX = msgIn.ReadFloat();
                             float posY = msgIn.ReadFloat();
@@ -325,6 +339,8 @@ namespace MagicGladiators
                         if (type == (byte)PacketType.CreateProjectile)
                         {
                             string id = msgIn.ReadString();
+                            //string corrected = id.Split(' ').Last();
+                            //corrected = corrected.Remove(corrected.Length - 1);
                             string name = msgIn.ReadString();
                             float posX = msgIn.ReadFloat();
                             float posY = msgIn.ReadFloat();
@@ -362,18 +378,20 @@ namespace MagicGladiators
                         {
                             string id = msgIn.ReadString();
                             string sender = msgIn.ReadString();
+                            //string corrected = sender.Split(' ').Last();
+                            //corrected = corrected.Remove(corrected.Length - 1);
                             string name = msgIn.ReadString();
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 string test = "";
                                 if (id != "")
                                 {
-                                    test = id.Split(' ').Last();
-                                    test = test.Remove(test.Length - 1);
+                                    //test = id.Split(' ').Last();
+                                    //test = test.Remove(test.Length - 1);
                                 }
                                 //test = id.Split(' ').Last();
                                 //test = test.Remove(test.Length - 1);
-                                if (go.Tag == "Player" && name == "Chain" && go.Id == test)
+                                if (go.Tag == "Player" && name == "Chain" && go.Id == id)
                                 {
                                     (go.GetComponent("Physics") as Physics).chainDeactivated = true;
                                     (go.GetComponent("Physics") as Physics).chainActivated = false;
@@ -440,11 +458,11 @@ namespace MagicGladiators
                                 string test2 = go.Id;
                                 if (test2 != null && go.Tag == name)
                                 {
-                                    test2 = go.Id.Split(' ').Last();
-                                    test2 = test2.Remove(test2.Length - 1);
+                                    //test2 = go.Id.Split(' ').Last();
+                                    //test2 = test2.Remove(test2.Length - 1);
                                 }
 
-                                if (test2 == id)
+                                if (go.Id == id)
                                 {
                                     (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = color;
                                 }
@@ -472,11 +490,11 @@ namespace MagicGladiators
                                 string test2 = go.Id;
                                 if (test2 != null && go.Tag == "Enemy")
                                 {
-                                    test2 = go.Id.Split(' ').Last();
-                                    test2 = test2.Remove(test2.Length - 1);
+                                    //test2 = go.Id.Split(' ').Last();
+                                    //test2 = test2.Remove(test2.Length - 1);
                                 }
 
-                                if (test2 == id)
+                                if (go.Id == id)
                                 {
                                     go.DamageResistance = msgIn.ReadFloat();
                                 }
@@ -502,12 +520,23 @@ namespace MagicGladiators
                             string id = msgIn.ReadString();
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
-                                string test = id.Split(' ').Last();
-                                test = test.Remove(test.Length - 1);
-                                if (go.Tag == "Player" && go.Id == test)
+                                //string test = id.Split(' ').Last();
+                                //test = test.Remove(test.Length - 1);
+                                if (go.Tag == "Player" && go.Id == id)
                                 {
                                     (go.GetComponent("Physics") as Physics).Acceleration += new Vector2(msgIn.ReadFloat(), msgIn.ReadFloat());
                                     (go.GetComponent("Physics") as Physics).chainActivated = true;
+                                }
+                            }
+                        }
+
+                        if (type == (byte)PacketType.Invisibility)
+                        {
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Enemy" && go.Id == msgIn.ReadString())
+                                {
+                                    go.IsInvisible = msgIn.ReadBoolean();
                                 }
                             }
                         }

@@ -67,7 +67,7 @@ namespace MagicGladiators
             if (activated)
             {
                 activationTime += GameWorld.Instance.deltaTime;
-                if (activationTime > 60)
+                if (activationTime > 2)
                 {
                     activated = false;
                     activationTime = 0;

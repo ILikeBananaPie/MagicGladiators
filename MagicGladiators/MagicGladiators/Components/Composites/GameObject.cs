@@ -28,6 +28,9 @@ namespace MagicGladiators
         public float CooldownReduction { get; set; } = 1;
         public float AoeBonus { get; set; } = 1;
 
+        public bool IsInvisible { get; set; } = false;
+
+
         public List<Component> components = new List<Component>();
 
         public string Tag { get; set; } = "Untagged";

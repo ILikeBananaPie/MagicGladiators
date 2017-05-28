@@ -122,6 +122,16 @@ namespace MagicGladiators
 
         public void Update()
         {
+            Color color = (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color;
+            if (gameObject.IsInvisible)
+            {
+                (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = new Color(color, 0.001F);
+            }
+            else
+            {
+                (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = new Color(color, 1F);
+            }
+
             Vector2 oldPos = gameObject.transform.position;
             gameObject.transform.position += (gameObject.GetComponent("Physics") as Physics).Velocity;
 

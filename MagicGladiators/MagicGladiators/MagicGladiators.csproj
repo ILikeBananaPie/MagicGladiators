@@ -50,6 +50,7 @@
     <Compile Include="Components\Composites\Abilities\DeathAbilities\RollingMeteor.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\ShrinkMap.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\DefensiveAbility.cs" />
+    <Compile Include="Components\Composites\Abilities\Defensive\Invisibility.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\Spellshield.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\StoneArmour.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\Blink.cs" />

@@ -35,6 +35,8 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Firewave(gameObject));
 
+            gameObject.AddComponent(new Invisibility(gameObject));
+
             //gameObject.AddComponent(new StoneArmour(gameObject));
 
             //gameObject.AddComponent(new Spellshield(gameObject));

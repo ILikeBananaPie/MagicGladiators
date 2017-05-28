@@ -393,14 +393,17 @@ namespace MagicGladiators
                     if (CurrentScene.scenetype == "Practice")
                     {
                         NextScene = Scene.MainMenu();
-                    } else
+                    }
+                    else
                     if (CurrentScene.scenetype == "NewGame")
                     {
                         NextScene = Scene.MainMenu();
-                    } else if (CurrentScene.scenetype == "PracticeChooseRound")
+                    }
+                    else if (CurrentScene.scenetype == "PracticeChooseRound")
                     {
                         NextScene = Scene.NewGame();
-                    } else
+                    }
+                    else
                     {
                         if (server != null)
                         {
@@ -410,7 +413,8 @@ namespace MagicGladiators
                     }
                 }
                 pressed = true;
-            } else { pressed = false; }
+            }
+            else { pressed = false; }
 
             // TODO: Add your update logic here
             try
@@ -418,7 +422,7 @@ namespace MagicGladiators
                 graphics.ApplyChanges();
             }
             catch (NullReferenceException nre) { }
-          
+
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
@@ -531,7 +535,7 @@ namespace MagicGladiators
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
                     Director ability = new Director(new AbilityIconBuilder());
-                    Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68,Window.ClientBounds.Height - 42), "Fireball", 0, ""));
+                    Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68, Window.ClientBounds.Height - 42), "Fireball", 0, ""));
                     newObjects.Add(player);
 
                     CreateDummies();
@@ -545,7 +549,7 @@ namespace MagicGladiators
                         go.LoadContent(Content);
                     }
                 }
-                
+
                 NextScene = null;
                 GC.Collect();
             }
@@ -857,7 +861,7 @@ namespace MagicGladiators
 
             if (newObjects.Count > 0)
             {
-                foreach(GameObject obj in newObjects) { obj.LoadContent(Content); }
+                foreach (GameObject obj in newObjects) { obj.LoadContent(Content); }
                 gameObjects.AddRange(newObjects);
                 newObjects.Clear();
             }
@@ -893,7 +897,17 @@ namespace MagicGladiators
 
             foreach (GameObject go in gameObjects)
             {
-                go.Draw(spriteBatch);
+                if (!go.IsInvisible)
+                {
+                    go.Draw(spriteBatch);
+                }
+                else
+                {
+                    if (go.Tag == "Player")
+                    {
+                        go.Draw(spriteBatch);
+                    }
+                }
             }
 
 
