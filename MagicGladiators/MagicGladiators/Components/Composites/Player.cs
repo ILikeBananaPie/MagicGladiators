@@ -106,7 +106,10 @@ namespace MagicGladiators
             //    testVector.Normalize();
             //    testPush = true;
             //}
-
+            if (other.gameObject.Tag == "Enemy")
+            {
+                Deflect.SetVector(gameObject, other.gameObject);
+            }
         }
 
         public void OnCollisionExit(Collider other)
