@@ -32,6 +32,13 @@ namespace MagicGladiators
                 Director director = new Director(new ProjectileBuilder());
                 director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball", gameObject);
                 canShoot = false;
+                foreach (GameObject go in GameWorld.gameObjects)
+                {
+                    if (go.Tag.Contains("Clone"))
+                    {
+                        director.ConstructProjectile(new Vector2(go.transform.position.X, go.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball", go);
+                    }
+                }
             }
 
 

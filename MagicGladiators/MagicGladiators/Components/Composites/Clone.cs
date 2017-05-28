@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 
-namespace MagicGladiators.Components.Composites
+namespace MagicGladiators
 {
     class Clone : Component, IUpdateable, ILoadable
     {
@@ -14,6 +14,7 @@ namespace MagicGladiators.Components.Composites
 
         public Clone(GameObject gameObject) : base(gameObject)
         {
+
         }
 
         private void CreateAnimations()
@@ -36,12 +37,28 @@ namespace MagicGladiators.Components.Composites
 
         public void LoadContent(ContentManager content)
         {
-            throw new NotImplementedException();
+            animator = (Animator)gameObject.GetComponent("Animator");
+            CreateAnimations();
         }
 
         public void Update()
         {
-            gameObject.transform.position = new Vector2(GameWorld.Instance.player.transform.position.X, GameWorld.Instance.player.transform.position.Y);
+            if (gameObject.Tag.Contains("Left"))
+            {
+                gameObject.transform.position = new Vector2(GameWorld.Instance.player.transform.position.X - 64, GameWorld.Instance.player.transform.position.Y);
+            }
+            if (gameObject.Tag.Contains("Right"))
+            {
+                gameObject.transform.position = new Vector2(GameWorld.Instance.player.transform.position.X + 64, GameWorld.Instance.player.transform.position.Y);
+            }
+            if (gameObject.Tag.Contains("Up"))
+            {
+                gameObject.transform.position = new Vector2(GameWorld.Instance.player.transform.position.X, GameWorld.Instance.player.transform.position.Y - 64);
+            }
+            if (gameObject.Tag.Contains("Down"))
+            {
+                gameObject.transform.position = new Vector2(GameWorld.Instance.player.transform.position.X, GameWorld.Instance.player.transform.position.Y + 64);
+            }
 
         }
 

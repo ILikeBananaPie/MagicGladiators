@@ -15,11 +15,11 @@ namespace MagicGladiators
         private float timer;
         private bool activated = false;
         private float activationTime;
-        private List<GameObject> clones = new List<GameObject>();
+        private string[] directions = new string[4] { "Up", "Down", "Left", "Right" };
 
         public MirrorImage(GameObject gameObject) : base(gameObject)
         {
-            cooldown = 5;
+            cooldown = 20;
             canShoot = true;
         }
 
@@ -32,53 +32,49 @@ namespace MagicGladiators
         {
             KeyboardState keyState = Keyboard.GetState();
 
+            if (keyState.IsKeyDown(Keys.U) && canShoot)
+            {
+                canShoot = false;
+                activated = true;
+                for (int i = 0; i < 4; i++)
+                {
+                    GameObject clone = new GameObject();
+                    clone.AddComponent(new SpriteRenderer(clone, "Player", 0));
+                    clone.AddComponent(new Animator(clone));
+                    clone.AddComponent(new Clone(clone));
+                    clone.AddComponent(new Collider(gameObject, true));
+                    clone.AddComponent(new Physics(clone));
+                    clone.Tag = "Clone" + directions[i];
+                    clone.CurrentHealth = gameObject.CurrentHealth;
+                    clone.MaxHealth = gameObject.MaxHealth;
+                    clone.transform.position = new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y);
+                    GameWorld.newObjects.Add(clone);
+                }
+
+            }
 
             if (activated)
             {
                 activationTime += GameWorld.Instance.deltaTime;
-                if (activationTime > 2)
+                if (activationTime > 5)
                 {
                     activated = false;
                     activationTime = 0;
                     foreach (GameObject go in GameWorld.gameObjects)
                     {
-                        if (go.Tag == "Clone")
+                        if (go.Tag.Contains("Clone"))
                         {
                             GameWorld.objectsToRemove.Add(go);
-                            
+
                         }
                     }
                 }
-            }
-
-            if (keyState.IsKeyDown(Keys.U) && canShoot)
-            {
-                canShoot = false;
-                activated = true;
-                GameObject clone = new GameObject();
-
-                clone.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
-
-                clone.AddComponent(new Animator(gameObject));
-
-                clone.AddComponent(new Player(gameObject, gameObject.transform));
-
-                //clone.AddComponent(new Collider(gameObject, false));
-
-                clone.AddComponent(new Physics(gameObject));
-            }
-
-            if (activated)
-            {
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (GameObject go in clones)
-            {
-                go.Draw(spriteBatch);
-            }
+
         }
     }
 }
