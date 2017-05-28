@@ -13,6 +13,8 @@ namespace MagicGladiators
     public class IPInput:Component, IUpdateable, ILoadable, IDrawable
     {
         private string ip;
+        private string output;
+        private float skip;
         private Texture2D rect;
         private Keys[] lastPressedKeys;
         private SpriteFont spriteFont;
@@ -20,10 +22,15 @@ namespace MagicGladiators
         private Vector2 pos;
         private MouseState lastStates;
 
-        public IPInput(GameObject go, Vector2 pos) : base(go)
+        //
+        private bool quickDelete;
+        private float deleteTimer;
+        //
+
+        public IPInput(GameObject go) : base(go)
         {
-            this.pos = pos;
             ip = string.Empty;
+            output = string.Empty;
             lastPressedKeys = Keyboard.GetState().GetPressedKeys();
             lastStates = Mouse.GetState();
         }
@@ -36,8 +43,8 @@ namespace MagicGladiators
                 if (m.LeftButton == ButtonState.Pressed)
                 {
                     if (
-                        m.X > rect.Bounds.X && m.X < rect.Bounds.X + rect.Bounds.Width &&
-                        m.Y > rect.Bounds.Y && m.Y < rect.Bounds.Y + rect.Bounds.Height
+                        m.X > pos.X && m.X < pos.X + rect.Bounds.Width &&
+                        m.Y > pos.Y && m.Y < pos.Y + rect.Bounds.Height
                         )
                     {
                         clicked = true;
@@ -61,11 +68,32 @@ namespace MagicGladiators
             {
                 foreach (Keys key in pressedKeys)
                 {
-
+                    if (lastPressedKeys.Contains(Keys.Back))
+                    {
+                        deleteTimer += GameWorld.Instance.deltaTime;
+                        if (!quickDelete)
+                        {
+                            if (deleteTimer > 0.8f)
+                            {
+                                quickDelete = true;
+                                deleteTimer = 0;
+                            }
+                        } else
+                        {
+                            if (deleteTimer > 0.15f)
+                            {
+                                ip = ip.Truncate(ip.Length - 1);
+                            }
+                        }
+                    } else
+                    {
+                        deleteTimer = 0;
+                    }
 
                     if (!lastPressedKeys.Contains(key))
                     {
-                        if (key.ToString().Contains("D") && key.ToString().Length > 1)
+                        skip = 0;
+                        if ((key.ToString().Contains("D") || (key.ToString().Contains("NumPad"))) && key.ToString().Length > 1)
                         {
                             ip += key.ToString()[1];
                         } else if (key == Keys.OemPeriod)
@@ -90,24 +118,48 @@ namespace MagicGladiators
                         //}
                     }
                 }
+                skip += GameWorld.Instance.deltaTime;
+                if (skip >= 2)
+                {
+                    skip = 0;
+                }
+                if (skip < 1)
+                {
+                    output = ip + "|";
+                } else
+                {
+                    output = ip;
+                }
+            } else
+            {
+                skip = 0;
+                output = ip;
             }
             //save the currently pressed keys so we can compare on the next update
             lastPressedKeys = pressedKeys;
+
+
         }
 
         public void LoadContent(ContentManager content)
         {
             spriteFont = content.Load<SpriteFont>("fontText");
-            rect = new Texture2D(GameWorld.Instance.GraphicsDevice, 15 * 21, 14);
-            Color[] data = new Color[15*21*14];
+            rect = new Texture2D(GameWorld.Instance.GraphicsDevice, 15 * 21, 16);
+            Color[] data = new Color[15*21*16];
             for (int i = 0; i < data.Length; i++) data[i] = Color.White;
             rect.SetData(data);
+            this.pos = gameObject.transform.position;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(rect, pos, Color.White);
-            spriteBatch.DrawString(spriteFont, ip, pos, Color.Black);
+            spriteBatch.DrawString(spriteFont, output, pos, Color.Black);
+        }
+
+        public string GetIPString()
+        {
+            return ip;
         }
     }
 }

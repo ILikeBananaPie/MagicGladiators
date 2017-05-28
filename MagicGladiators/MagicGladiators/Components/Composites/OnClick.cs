@@ -15,6 +15,8 @@ namespace MagicGladiators
         private string destination;
         private Rectangle rectangle;
 
+        private IPInput IPRel;
+
         public OnClick(GameObject go, string destination) : base(go)
         {
             this.destination = destination;
@@ -73,7 +75,7 @@ namespace MagicGladiators
                                 GameWorld.Instance.Exit();
                                 break;
                             case "Joining":
-                                GameWorld.Instance.client = new TestClient("192");
+                                GameWorld.Instance.client = new TestClient(IPRel.GetIPString());
                                 break;
                             case "PracticeChooseRound":
                                 GameWorld.Instance.NextScene = Scene.PracticeChooseRound();
@@ -111,6 +113,11 @@ namespace MagicGladiators
                 }
             }
             lastStates = m;
+        }
+
+        public void AddIPRelation(IPInput IPRel)
+        {
+            this.IPRel = IPRel;
         }
     }
 }

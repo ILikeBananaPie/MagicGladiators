@@ -118,19 +118,22 @@ namespace MagicGladiators
         public static Scene Join()
         {
 
-            GameObject[] included = new GameObject[1];
+            GameObject[] included = new GameObject[3];
             included[0] = new GameObject();
             included[0].AddComponent(new SpriteRenderer(included[0], "AlphaTryJoinIP", 0));
+            included[0].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
             included[0].AddComponent(new OnClick(included[0], "Joining"));
 
 
             included[1] = new GameObject();
-            included[1].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
-            included[1].AddComponent(new OnClick(included[0], "NewGame"));
+            included[1].AddComponent(new SpriteRenderer(included[1], "AlphaBack", 0));
+            included[1].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+            included[1].AddComponent(new OnClick(included[1], "NewGame"));
 
             included[2] = new GameObject();
-            included[2].AddComponent(new SpriteRenderer(included[0], "AlphaTryJoinIP", 0));
-            included[2].AddComponent(new OnClick(included[0], "Joining"));
+            included[2].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
+            included[2].AddComponent(new IPInput(included[2]));
+            (included[0].GetComponent("OnClick") as OnClick).AddIPRelation((included[2].GetComponent("IPInput") as IPInput));
 
 
             //included[0].AddComponent(new TestClient());
