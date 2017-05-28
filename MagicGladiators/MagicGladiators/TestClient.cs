@@ -32,15 +32,29 @@ namespace MagicGladiators
 
         public TestClient(string ip)
         {
-            string hostip = ip;
-            spriteBatch = new SpriteBatch(GameWorld.Instance.GraphicsDevice);
-            font = GameWorld.Instance.Content.Load<SpriteFont>("fontText");
-            NetPeerConfiguration config = new NetPeerConfiguration("Server");
-            //config.Port = 24049;
-            config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
-            client = new NetClient(config);
-            client.Start();
-            client.Connect(hostip, 51234);
+            if (GameWorld.Instance.canClient)
+            {
+                string hostip = ip;
+                spriteBatch = new SpriteBatch(GameWorld.Instance.GraphicsDevice);
+                font = GameWorld.Instance.Content.Load<SpriteFont>("fontText");
+                NetPeerConfiguration config = new NetPeerConfiguration("Server");
+                //config.Port = 24049;
+                config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
+                client = new NetClient(config);
+                client.Start();
+
+                try
+                {
+                    client.Connect(hostip, 51234);
+                }
+                catch (Exception)
+                {
+                    client.Shutdown("Meh");
+                }
+            }
+
+
+
             //client.DiscoverLocalPeers(24049);
         }
 
@@ -470,6 +484,7 @@ namespace MagicGladiators
                         }
                         if (type == (byte)PacketType.AssignID)
                         {
+                            GameWorld.Instance.canClient = false;
                             string id = msgIn.ReadString();
                             string color = msgIn.ReadString();
                             foreach (GameObject go in GameWorld.gameObjects)

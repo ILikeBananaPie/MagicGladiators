@@ -309,7 +309,26 @@ namespace TestServer
                         case NetIncomingMessageType.ConnectionApproval:
 
                             //Someone is trying to connect to server. Check for password
-                            msgIn.SenderConnection.Approve();
+                            bool allow = true;
+                            string temp = msgIn.SenderConnection.ToString();
+                            temp = temp.Split(' ').Last();
+                            temp = temp.Remove(temp.Length - 1);
+                            foreach (NetConnection con in server.Connections)
+                            {
+                                string str = con.RemoteEndPoint.ToString();
+                                str = str.Split(' ').Last();
+                                str = str.Remove(str.Length - 1);
+                                if (str == temp)
+                                {
+                                    allow = false;
+                                    break;
+                                }
+                                else allow = true;
+                            }
+                            if (allow)
+                            {
+                                msgIn.SenderConnection.Approve();
+                            }
                             //Console.WriteLine("Player Connected!");
 
                             //server response to the connecting client (doesn't work, the connection hasn't been established yet)

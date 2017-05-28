@@ -88,7 +88,7 @@ namespace MagicGladiators
 
         private bool showServer = false;
         private bool canServer = true;
-        private bool canClient = true;
+        public bool canClient { get; set; } = true;
         public TestClient client;
         public Process server;
         //private TestServer server;
