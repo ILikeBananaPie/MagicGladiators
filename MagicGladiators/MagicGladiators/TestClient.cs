@@ -28,6 +28,8 @@ namespace MagicGladiators
         private string EnemyIDTest;
         public string TestName { get; set; } = "";
         public string TestID { get; set; } = "";
+        private string[] directions = new string[4] { "Up", "Down", "Left", "Right" };
+
         //private float TestTimer;
 
         public TestClient(string ip)
@@ -56,6 +58,18 @@ namespace MagicGladiators
 
 
             //client.DiscoverLocalPeers(24049);
+        }
+
+        public void SendClone(string id, Vector2 position)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.Clone);
+            msgOut.Write(id);
+            msgOut.Write(position.X);
+            msgOut.Write(position.Y);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+
         }
 
         public void SendMessage(string text)
@@ -552,6 +566,36 @@ namespace MagicGladiators
                                 if (go.Tag == "Enemy" && go.Id == msgIn.ReadString())
                                 {
                                     go.IsInvisible = msgIn.ReadBoolean();
+                                }
+                            }
+                        }
+                        if (type == (byte)PacketType.Clone)
+                        {
+                            string id = msgIn.ReadString();
+                            float posX = msgIn.ReadFloat();
+                            float posY = msgIn.ReadFloat();
+
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Id == id)
+                                {
+                                    for (int i = 0; i < 4; i++)
+                                    {
+                                        GameObject clone = new GameObject();
+                                        clone.AddComponent(new SpriteRenderer(clone, "PlayerSheet", 1));
+                                        clone.AddComponent(new Animator(clone));
+                                        clone.AddComponent(new Clone(clone));
+                                        clone.AddComponent(new Collider(clone, true, true));
+                                        clone.AddComponent(new Physics(clone));
+                                        clone.Tag = "Clone" + directions[i];
+                                        clone.Id = go.Id;
+                                        clone.CurrentHealth = go.CurrentHealth;
+                                        clone.MaxHealth = go.MaxHealth;
+                                        clone.LoadContent(GameWorld.Instance.Content);
+                                        (clone.GetComponent("Animator") as Animator).PlayAnimation((go.GetComponent("Animator") as Animator).AnimationName);
+                                        clone.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y);
+                                        GameWorld.newObjects.Add(clone);
+                                    }
                                 }
                             }
                         }

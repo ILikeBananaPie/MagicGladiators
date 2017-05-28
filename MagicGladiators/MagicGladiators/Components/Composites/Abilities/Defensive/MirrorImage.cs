@@ -39,16 +39,23 @@ namespace MagicGladiators
                 for (int i = 0; i < 4; i++)
                 {
                     GameObject clone = new GameObject();
-                    clone.AddComponent(new SpriteRenderer(clone, "Player", 0));
+                    clone.AddComponent(new SpriteRenderer(clone, "PlayerSheet", 1));
                     clone.AddComponent(new Animator(clone));
                     clone.AddComponent(new Clone(clone));
-                    clone.AddComponent(new Collider(gameObject, true));
+                    clone.AddComponent(new Collider(gameObject, true, true));
                     clone.AddComponent(new Physics(clone));
                     clone.Tag = "Clone" + directions[i];
+                    clone.Id = gameObject.Id;
                     clone.CurrentHealth = gameObject.CurrentHealth;
                     clone.MaxHealth = gameObject.MaxHealth;
+                    clone.LoadContent(GameWorld.Instance.Content);
+                    (clone.GetComponent("Animator") as Animator).PlayAnimation((gameObject.GetComponent("Animator") as Animator).AnimationName);
                     clone.transform.position = new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y);
                     GameWorld.newObjects.Add(clone);
+                }
+                if (GameWorld.Instance.client != null)
+                {
+                    GameWorld.Instance.client.SendClone(gameObject.Id, gameObject.transform.position);
                 }
 
             }
@@ -65,7 +72,10 @@ namespace MagicGladiators
                         if (go.Tag.Contains("Clone"))
                         {
                             GameWorld.objectsToRemove.Add(go);
-
+                            if (GameWorld.Instance.client != null)
+                            {
+                                GameWorld.Instance.client.SendRemoval(go.Tag, go.Id);
+                            }
                         }
                     }
                 }

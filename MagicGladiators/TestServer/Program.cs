@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone }
 
     class Program
     {
@@ -18,6 +18,7 @@ namespace TestServer
         private static List<string> TestName = new List<string>();
         private static List<string> colors = new List<string>() { "Blue", "Red", "Orange", "Purple", "Brown", "Green", "LightGreen", "Yellow" };
         private static int colorIndex = 0;
+        private static int spellId = 0;
 
         public static void SendConnection(NetConnection sender)
         {
@@ -46,6 +47,17 @@ namespace TestServer
                     server.SendMessage(msgOut, sender, NetDeliveryMethod.ReliableOrdered, 0);
                 }
             }
+        }
+
+        public static void SendClone(string id, Vector2 position)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Clone);
+            msgOut.Write(id);
+            msgOut.Write(position.X);
+            msgOut.Write(position.Y);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         public static void AssignID(NetConnection con)
@@ -468,6 +480,14 @@ namespace TestServer
                                 bool isInvis = msgIn.ReadBoolean();
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 SendInvisibility(id, isInvis);
+                            }
+                            if (type == (byte)PacketType.Clone)
+                            {
+                                string id = msgIn.ReadString();
+                                float posX = msgIn.ReadFloat();
+                                float posY = msgIn.ReadFloat();
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                SendClone(id, new Vector2(posX, posY));
                             }
 
                             break;
