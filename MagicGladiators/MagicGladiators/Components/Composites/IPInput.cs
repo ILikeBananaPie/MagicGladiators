@@ -93,9 +93,12 @@ namespace MagicGladiators
                     if (!lastPressedKeys.Contains(key))
                     {
                         skip = 0;
-                        if ((key.ToString().Contains("D") || (key.ToString().Contains("NumPad"))) && key.ToString().Length > 1)
+                        if (key.ToString().Contains("D") && key.ToString().Length > 1)
                         {
                             ip += key.ToString()[1];
+                        } else if (key.ToString().Contains("NumPad") && key.ToString().Length > 1)
+                        {
+                            ip += key.ToString()[6];
                         } else if (key == Keys.OemPeriod)
                         {
                             if (pressedKeys.Contains(Keys.LeftShift) || pressedKeys.Contains(Keys.RightShift))
