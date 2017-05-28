@@ -29,6 +29,7 @@ namespace MagicGladiators
         public float AoeBonus { get; set; } = 1;
 
         public List<Component> components = new List<Component>();
+        private List<Component> componentsToRemove = new List<Component>();
 
         public string Tag { get; set; } = "Untagged";
         public ObjectType objectType { get; set; }
@@ -81,8 +82,20 @@ namespace MagicGladiators
                     (component as IAbility).Cooldown();
                 }
             }
+            UpdateComponents();
         }
 
+        public void UpdateComponents()
+        {
+            if (componentsToRemove.Count > 0)
+            {
+                foreach (Component comp in componentsToRemove)
+                {
+                    components.Remove(comp);
+                }
+                componentsToRemove.Clear();
+            }
+        }
 
         /// <summary>
         /// Draws the GameObject
@@ -110,7 +123,7 @@ namespace MagicGladiators
 
         public void RemoveComponent(Component component)
         {
-            components.Remove(component);
+            componentsToRemove.Add(component);
         }
 
         /// <summary>

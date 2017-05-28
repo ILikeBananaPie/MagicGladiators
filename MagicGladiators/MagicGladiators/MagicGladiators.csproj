@@ -63,6 +63,7 @@
     <Compile Include="Components\Composites\Abilities\Offensive\Chain.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\Drain.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\Fireball.cs" />
+    <Compile Include="Components\Composites\Abilities\Defensive\MirrorImage.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\Nova.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\OffensiveAbility.cs" />
     <Compile Include="Builder\HomingMissileBuilder.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Components\Composites\Client.cs" />
     <Compile Include="Builder\ProjectileBuilder.cs" />
     <Compile Include="Circle.cs" />
+    <Compile Include="Components\Composites\Clone.cs" />
     <Compile Include="Components\Composites\Dummy.cs" />
     <Compile Include="Components\Composites\Enemy.cs" />
     <Compile Include="Components\Composites\InputReciever.cs" />

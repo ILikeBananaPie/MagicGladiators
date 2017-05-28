@@ -34,6 +34,8 @@ namespace MagicGladiators
             gameObject.AddComponent(new ShrinkMap(gameObject));
             gameObject.AddComponent(new SlowField(gameObject));
 
+            gameObject.AddComponent(new MirrorImage(gameObject));
+
             //gameObject.AddComponent(new StoneArmour(gameObject));
 
             //gameObject.AddComponent(new Spellshield(gameObject));
