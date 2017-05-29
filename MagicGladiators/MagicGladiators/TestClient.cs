@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex }
 
 
     public class TestClient
@@ -47,6 +47,15 @@ namespace MagicGladiators
             }
             hostip = ip;
             //client.DiscoverLocalPeers(24049);
+        }
+
+        public void CorrectPlayerIndex(int index)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.UpdatePlayerIndex);
+            msgOut.Write(index);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void ConnectToServer()
@@ -322,6 +331,20 @@ namespace MagicGladiators
                             }
                         }
                         #endregion
+                        #region UpdateIndex
+                        if (type == (byte)PacketType.UpdatePlayerIndex)
+                        {
+                            string id = msgIn.ReadString();
+                            int index = msgIn.ReadInt32();
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Id == id)
+                                {
+                                    go.ConnectionNumber = index;
+                                }
+                            }
+                        }
+                        #endregion
                         #region CreatePlayer
                         if (type == (byte)PacketType.CreatePlayer)
                         {
@@ -545,7 +568,7 @@ namespace MagicGladiators
                         if (type == (byte)PacketType.RemovePlayer)
                         {
                             string id = msgIn.ReadString();
-                            int connectionNumber = msgIn.ReadInt32();
+                            int number = msgIn.ReadInt32();
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (go.Id == id)
@@ -554,10 +577,10 @@ namespace MagicGladiators
                                 }
                                 if (go.Tag == "Player")
                                 {
-                                    go.ConnectionNumber = connectionNumber;
+                                    go.ConnectionNumber = number;
                                 }
                             }
-
+                            CorrectPlayerIndex(number);
                         }
                         #endregion
                         #region UpdateStats

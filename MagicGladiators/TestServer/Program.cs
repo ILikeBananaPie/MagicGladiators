@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex }
 
     public class Program
     {
@@ -22,35 +23,45 @@ namespace TestServer
         private static List<string> TestName = new List<string>();
         private static List<string> colors = new List<string>() { "Blue", "Red", "Orange", "Purple", "Brown", "Green", "LightGreen", "Yellow" };
         private static int colorIndex = 0;
+        private static int test = 0;
         //private static int spellId = 0;
 
-        private static void CorrectPlayerIndex(string command, NetConnection con)
+        private static void CorrectPlayerIndex(NetConnection con, string command, int index)
         {
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
-
-            if (command == "Connecting")
+            if (command == "Remove")
             {
-                //players.Add(new Player(playerIndex, server.Connections[playerIndex]));
-                //playerIndex++;
-
-            }
-            else if (command == "Disconnecting")
-            {
+                while (server.Connections.Count == players.Count)
+                {
+                    Thread.Sleep(50);
+                }
 
                 for (int i = 0; i < server.Connections.Count; i++)
                 {
                     //players[i].playerIndex = i;
-
                     msgOut = server.CreateMessage();
                     msgOut.Write((byte)PacketType.RemovePlayer);
                     msgOut.Write(con.ToString());
                     msgOut.Write(i);
                     server.SendMessage(msgOut, server.Connections[i], NetDeliveryMethod.ReliableOrdered, 0);
+                    test++;
                 }
                 playerIndex--;
                 colorIndex--;
+                test = 0;
             }
+
+            else
+            {
+                msgOut = server.CreateMessage();
+                msgOut.Write((byte)PacketType.UpdatePlayerIndex);
+                msgOut.Write(con.ToString());
+                msgOut.Write(index);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+            }
+
+
         }
 
 
@@ -82,7 +93,6 @@ namespace TestServer
                                 Console.WriteLine("Player Connected!");
                                 SendConnection(msgIn.SenderConnection);
                                 AssignID(msgIn.SenderConnection);
-                                CorrectPlayerIndex("Connecting", msgIn.SenderConnection);
                             }
                             if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnecting)
                             {
@@ -91,7 +101,7 @@ namespace TestServer
                             if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnected)
                             {
                                 Console.WriteLine("Player Disconnected!");
-                                CorrectPlayerIndex("Disconnecting", msgIn.SenderConnection);
+                                CorrectPlayerIndex(msgIn.SenderConnection, "Remove", 0);
                             }
                             break;
                         case NetIncomingMessageType.UnconnectedData:
@@ -153,6 +163,12 @@ namespace TestServer
                                 float x = msgIn.ReadFloat();
                                 float y = msgIn.ReadFloat();
 
+                            }
+                            if (type == (byte)PacketType.UpdatePlayerIndex)
+                            {
+                                int index = msgIn.ReadInt32();
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                CorrectPlayerIndex(msgIn.SenderConnection, "Update", index);
                             }
                             if (type == (byte)PacketType.CreatePlayer)
                             {
@@ -331,6 +347,7 @@ namespace TestServer
         {
             //connectionList.Clear();
             //connectionList.Add(con);
+            players.Add(new Player(playerIndex, con));
 
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
