@@ -419,6 +419,10 @@ namespace MagicGladiators
                         {
                             (go.GetComponent("Dummy") as Dummy).UponDeath();
                         }
+                        if (go.GetComponent("Enemy") is Enemy)
+                        {
+                            (go.GetComponent("Enemy") as Enemy).UponDeath();
+                        }
                         objectsToRemove.Add(go);
                     }
                 }

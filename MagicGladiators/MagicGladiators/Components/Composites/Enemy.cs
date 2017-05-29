@@ -12,6 +12,7 @@ namespace MagicGladiators
     {
         private Transform trnsfrm;
         private Vector2 velocity;
+        private GameObject lastHit;
 
         //public static Vector2 accelerationTest;
         //public static Vector2 velocityTest;
@@ -64,6 +65,22 @@ namespace MagicGladiators
         {
             this.trnsfrm.position = package.position;
             this.velocity = package.velocity;
+        }
+
+        public void Hit(GameObject go)
+        {
+            lastHit = go;
+        }
+
+        public void UponDeath()
+        {
+            if (lastHit != null)
+            {
+                if (lastHit.GetComponent("Player") is Player)
+                {
+                    (lastHit.GetComponent("Player") as Player).GoldReward(20);
+                }
+            }
         }
     }
 }

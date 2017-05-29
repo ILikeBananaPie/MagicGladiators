@@ -268,6 +268,9 @@ namespace MagicGladiators
                     else if (go.gameObject.Tag == "Dummy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
                     {
                         (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween, shooter);
+                    } else if (go.gameObject.Tag == "Enemy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
+                    {
+                        (go.gameObject.GetComponent("Enemy") as Enemy).Hit(shooter);
                     }
                 }
             }
