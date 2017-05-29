@@ -189,7 +189,7 @@ namespace MagicGladiators
                 animator.PlayAnimation("Chain");
                 travelDistance = 200;
             }
-            if (gameObject.Tag == "GracityWell")
+            if (gameObject.Tag == "GravityWell")
             {
                 animator.PlayAnimation("HomingMissile");
                 travelDistance = 400;
