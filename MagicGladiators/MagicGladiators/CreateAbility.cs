@@ -71,6 +71,10 @@ namespace MagicGladiators
             {
                 component = new Recall(gameObject);
             }
+            if ( name == "GravityWell")
+            {
+                component = new GravityWell(gameObject);
+            }
             return component;
         }
 
