@@ -108,8 +108,10 @@ namespace MagicGladiators
             {
                 //do nothing
                 //physics.Acceleration += (testVector / 5 * player.Speed) / 2;
+            } else if (GameWorld.gameState == GameState.ingame)
+            {
+                physics.Acceleration += testVector / 5 * player.Speed;
             }
-            else physics.Acceleration += testVector / 5 * player.Speed;
 
 
 

@@ -17,7 +17,7 @@ namespace MagicGladiators
 
     public enum ObjectType { }
 
-
+    public enum GameState { offgame, ingame}
 
 
 
@@ -95,6 +95,8 @@ namespace MagicGladiators
         private List<Thread> threads = new List<Thread>();
         private float clientTimer = 0;
         private bool sendPos = false;
+
+        public static GameState gameState = GameState.offgame;
 
         private static GameWorld instance;
         public static GameWorld Instance
