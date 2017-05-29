@@ -18,9 +18,9 @@ namespace MagicGladiators
         private IStrategy strategy;
         private SpriteFont fontText;
 
-        private int tooltipX;
-        private int tooltipY;
-        private bool showTooltip = false;
+        //private int tooltipX;
+        //private int tooltipY;
+        //private bool showTooltip = false;
         private string[] list = new string[2] { "Stat", "Value" };
 
         public string Name { get; set; }
@@ -33,9 +33,9 @@ namespace MagicGladiators
         public float LifeSteal { get; set; }
         public float CDR { get; set; }
         public float AOEBonus { get; set; }
+        public float GoldBonusPercent { get; set; }
         public int Value { get; set; }
         public int UpgradeValue { get; set; }
-        public float GoldBonusPercent { get; set; }
 
         public int upgradeLevel { get; private set; } = 0;
 
