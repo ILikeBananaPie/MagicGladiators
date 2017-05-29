@@ -514,6 +514,7 @@ namespace MagicGladiators
                         if (type == (byte)PacketType.UpdateStats)
                         {
                             string id = msgIn.ReadString();
+                            float damageResist = msgIn.ReadFloat();
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 string test2 = go.Id;
@@ -525,7 +526,7 @@ namespace MagicGladiators
 
                                 if (go.Id == id)
                                 {
-                                    go.DamageResistance = msgIn.ReadFloat();
+                                    go.DamageResistance = damageResist;
                                 }
                             }
                         }
