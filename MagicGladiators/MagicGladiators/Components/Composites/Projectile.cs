@@ -244,7 +244,7 @@ namespace MagicGladiators
                     GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
                 }
             }
-            if ((other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" || other.gameObject.Tag == "Pillar") && gameObject.Tag != "DeathMine")
+            if ((other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" || other.gameObject.Tag == "Pillar" || other.gameObject.Tag.Contains("Clone")) && gameObject.Tag != "DeathMine")
             {
                 if (gameObject.Tag == "Drain")
                 {

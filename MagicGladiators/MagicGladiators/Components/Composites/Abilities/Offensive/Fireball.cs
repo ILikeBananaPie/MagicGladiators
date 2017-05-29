@@ -41,10 +41,10 @@ namespace MagicGladiators
                     {
                         if (go.Tag.Contains("Clone") && go.Id == gameObject.Id)
                         {
-                            director.ConstructProjectile(new Vector2(go.transform.position.X, go.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball", go, gameObject.Id);
+                            director.ConstructProjectile(new Vector2(go.transform.position.X, go.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball" + go.Tag, go, gameObject.Id);
                             if (GameWorld.Instance.client != null)
                             {
-                                GameWorld.Instance.client.SendProjectile("Fireball,Create", new Vector2(go.transform.position.X, go.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                                GameWorld.Instance.client.SendProjectile("Fireball" + go.Tag + ",Create", new Vector2(go.transform.position.X, go.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
                             }
                         }
                     }
