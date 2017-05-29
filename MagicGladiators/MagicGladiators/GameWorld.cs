@@ -390,16 +390,11 @@ namespace MagicGladiators
             {
                 if (!pressed)
                 {
-                    if (CurrentScene.scenetype == "Practice")
+                    if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "NewGame")
                     {
                         NextScene = Scene.MainMenu();
                     }
-                    else
-                    if (CurrentScene.scenetype == "NewGame")
-                    {
-                        NextScene = Scene.MainMenu();
-                    }
-                    else if (CurrentScene.scenetype == "PracticeChooseRound")
+                    else if (CurrentScene.scenetype == "PracticeChooseRound" || CurrentScene.scenetype == "Host")
                     {
                         NextScene = Scene.NewGame();
                     }
@@ -486,7 +481,7 @@ namespace MagicGladiators
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && canClient)
             {
-                client = new TestClient();
+                client = new TestClient("LocalHost");
                 canClient = false;
                 showServer = true;
 
@@ -553,7 +548,11 @@ namespace MagicGladiators
                 {
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(50));
-                    //Connect To Server?
+                    newObjects.Add(player);
+
+                    UpdateLevel();
+
+                    client.ConnectToServer();
                 }
 
                 NextScene = null;

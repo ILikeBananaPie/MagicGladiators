@@ -29,10 +29,11 @@ namespace MagicGladiators
         public string TestName { get; set; } = "";
         public string TestID { get; set; } = "";
         private string[] directions = new string[4] { "Up", "Down", "Left", "Right" };
+        private string hostip;
 
         //private float TestTimer;
 
-        public TestClient()
+        public TestClient(string ip)
         {
             if (GameWorld.Instance.canClient)
             {
@@ -44,10 +45,11 @@ namespace MagicGladiators
                 client = new NetClient(config);
                 client.Start();
             }
+            hostip = ip;
             //client.DiscoverLocalPeers(24049);
         }
 
-        public void ConnectToServer(string hostip)
+        public void ConnectToServer()
         {
             try
             {
@@ -57,6 +59,12 @@ namespace MagicGladiators
             {
                 client.Shutdown("Meh");
             }
+        }
+
+        public void Disconnect()
+        {
+            client.Disconnect(string.Empty);
+            client.Shutdown(string.Empty);
         }
 
         public void SendClone(string id, Vector2 position)

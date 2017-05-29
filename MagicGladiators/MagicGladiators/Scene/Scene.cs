@@ -153,12 +153,14 @@ namespace MagicGladiators
             GameObject[] included = new GameObject[2];
             included[0] = new GameObject();
             included[0].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
-            included[0].AddComponent(new OnClick(included[0], "MainMenu"));
+            included[0].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+            included[0].AddComponent(new OnClick(included[0], "NewGame"));
 
 
 
             included[1] = new GameObject();
-            included[1].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
+            included[1].AddComponent(new SpriteRenderer(included[1], "AlphaStart", 0));
+            included[1].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
             included[1].AddComponent(new OnClick(included[0], "MainMenu"));
 
 
