@@ -549,7 +549,7 @@ namespace MagicGladiators
                         go.LoadContent(Content);
                     }
                 }
-                if (NextScene.scenetype == "Host")
+                if (NextScene.scenetype == "Host" || NextScene.scenetype == "Joined")
                 {
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(50));

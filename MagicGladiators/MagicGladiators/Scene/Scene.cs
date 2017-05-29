@@ -141,6 +141,34 @@ namespace MagicGladiators
             send.scenetype = "Join";
             return send;
         }
+        public static Scene Joined(string ip)
+        {
+            GameWorld.Instance.client = new TestClient(ip);
+            GameWorld.Instance.canClient = false;
+            GameWorld.Instance.showServer = true;
+
+            GameObject[] included = new GameObject[2];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "NewGame"));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaReady", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "Ready"));
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "Joined";
+            return send;
+        }
         public static Scene Host(string ip)
         {
             //server start
