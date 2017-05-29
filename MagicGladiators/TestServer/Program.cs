@@ -174,7 +174,10 @@ namespace TestServer
             msgOut.Write((byte)PacketType.Push);
             msgOut.Write(vector.X);
             msgOut.Write(vector.Y);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+            if (connectionList.Count > 0)
+            {
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+            }
         }
 
         public static void SendColor(string id, string name, byte R, byte G, byte B, byte A)
