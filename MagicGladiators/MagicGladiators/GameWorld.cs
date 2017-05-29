@@ -486,7 +486,7 @@ namespace MagicGladiators
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && canClient)
             {
-                client = new TestClient("localhost");
+                client = new TestClient();
                 canClient = false;
                 showServer = true;
 
