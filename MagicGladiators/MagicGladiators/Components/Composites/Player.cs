@@ -200,8 +200,18 @@ namespace MagicGladiators
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(fontText, "Name: " + gameObject.Id, new Vector2(gameObject.transform.position.X + 50, gameObject.transform.position.Y), Color.Black);
-            if (GameWorld.gameState == GameState.offgame) { return; }
+
+            if (GameWorld.gameState == GameState.offgame)
+            {
+                foreach (GameObject go in GameWorld.gameObjects)
+                {
+                    if (go.Tag == "Player" || go.Tag == "Enemy")
+                    {
+                        spriteBatch.DrawString(fontText, "Name: " + go.Id, new Vector2(go.transform.position.X + 50, go.transform.position.Y), Color.Black);
+                    }
+                }
+                return;
+            }
             MouseState mouse = Mouse.GetState();
 #if DEBUG
             spriteBatch.DrawString(fontText, "speed: " + testSpeed, new Vector2(0, 160), Color.Black);
