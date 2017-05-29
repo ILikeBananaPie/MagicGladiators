@@ -86,7 +86,7 @@ namespace MagicGladiators
         public static List<GameObject> characters = new List<GameObject>();
         public static List<Collider> characterColliders = new List<Collider>();
 
-        private bool showServer = false;
+        public bool showServer { get; set; } = false;
         private bool canServer = true;
         public bool canClient { get; set; } = true;
         public TestClient client;

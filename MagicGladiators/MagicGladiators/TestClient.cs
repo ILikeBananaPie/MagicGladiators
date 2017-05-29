@@ -9,11 +9,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using MagicGladiators;
 using System.Net;
-using TestServer;
+//using TestServer;
 
 namespace MagicGladiators
 {
-    //public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone }
 
 
     public class TestClient
@@ -43,7 +43,6 @@ namespace MagicGladiators
                 //config.Port = 24049;
                 config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
                 client = new NetClient(config);
-                client.Start();
             }
             hostip = ip;
             //client.DiscoverLocalPeers(24049);
@@ -53,11 +52,13 @@ namespace MagicGladiators
         {
             try
             {
+                Thread.Sleep(5000);
+                client.Start();
                 client.Connect(hostip, 51234);
             }
             catch (Exception)
             {
-                client.Shutdown("Meh");
+               // client.Shutdown("Meh");
             }
         }
 

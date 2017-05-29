@@ -149,6 +149,8 @@ namespace MagicGladiators
             GameWorld.Instance.server.EnableRaisingEvents = true;
             GameWorld.Instance.server.Start();
             GameWorld.Instance.client = new TestClient(ip);
+            GameWorld.Instance.canClient = false;
+            GameWorld.Instance.showServer = true;
 
             GameObject[] included = new GameObject[2];
             included[0] = new GameObject();
