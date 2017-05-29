@@ -561,11 +561,13 @@ namespace MagicGladiators
 
                         if (type == (byte)PacketType.Invisibility)
                         {
+                            string id = msgIn.ReadString();
+                            bool isInvis = msgIn.ReadBoolean();
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
-                                if (go.Tag == "Enemy" && go.Id == msgIn.ReadString())
+                                if (go.Tag == "Enemy" && go.Id == id)
                                 {
-                                    go.IsInvisible = msgIn.ReadBoolean();
+                                    go.IsInvisible = isInvis;
                                 }
                             }
                         }
