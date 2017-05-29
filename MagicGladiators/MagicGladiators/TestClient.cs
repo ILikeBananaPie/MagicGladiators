@@ -508,11 +508,15 @@ namespace MagicGladiators
                             GameWorld.Instance.canClient = false;
                             string id = msgIn.ReadString();
                             string color = msgIn.ReadString();
+                            int connectionNumber = msgIn.ReadInt32();
+                            connectionNumber++;
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (go.Tag == "Player")
                                 {
                                     go.Id = id;
+                                    go.ConnectionNumber = connectionNumber;
+                                    go.transform.position = new Vector2(50, 50 * connectionNumber);
                                     (go.GetComponent("Animator") as Animator).PlayAnimation(color);
                                 }
                             }

@@ -296,6 +296,7 @@ namespace TestServer
             msgOut.Write((byte)PacketType.AssignID);
             msgOut.Write(con.ToString());
             msgOut.Write(colors[colorIndex]);
+            msgOut.Write(colorIndex);
             server.SendMessage(msgOut, con, NetDeliveryMethod.Unreliable, 0);
 
             colorIndex++;
