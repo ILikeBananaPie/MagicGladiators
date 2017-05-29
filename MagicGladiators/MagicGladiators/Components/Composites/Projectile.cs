@@ -342,30 +342,15 @@ namespace MagicGladiators
                     if (go.Tag == "Dummy" || go.Tag == "Enemy")
                     {
 
-                        if (Vector2.Distance(gameObject.transform.position, go.transform.position) < 200)
+                        if (Vector2.Distance(gameObject.transform.position, go.transform.position) < 300)
                         {
 
                             (go.GetComponent("Physics") as Physics).Acceleration += pull / 10;
-
-                           
+                      
 
                         }
                     }
                 }
-
-
-                //if (Vector2.Distance(gameObject.transform.position, gameObject.transform.position) < 100)
-                //{
-                //    gravityWellTimer += GameWorld.Instance.deltaTime;
-                //    //gameObject.transform.position = gravityWellTarget.transform.position;
-                //    Vector2 pull = (gameObject.GetComponent("Physics") as Physics).GetVector(GameWorld.Instance.player.transform.position, gravityWellTarget.transform.position);
-                //    pull.Normalize();
-                //    (GameWorld.Instance.player.GetComponent("Physics") as Physics).Acceleration -= pull / 10;
-                //    if (gravityWellTarget.Tag == "Dummy" || gravityWellTarget.Tag == "Enemy")
-                //    {
-                //        (gravityWellTarget.GetComponent("Physics") as Physics).Acceleration += pull / 10;
-                //    }
-                //}
 
             }
 
