@@ -108,7 +108,7 @@ namespace MagicGladiators
             //}
             if (other.gameObject.Tag == "Enemy")
             {
-                Deflect.SetVector(gameObject, other.gameObject);
+                //Deflect.SetVector(gameObject, other.gameObject);
             }
         }
 
