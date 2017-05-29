@@ -92,7 +92,7 @@ namespace MagicGladiators
             CDR += CDR * 0.25F;
             AOEBonus += AOEBonus * 0.25F;
             UpgradeValue += (int)(UpgradeValue * 0.2F);
-            GoldBonusPercent += (UpgradeValue * 0.2f);
+            GoldBonusPercent += (GoldBonusPercent * 0.25f);
             upgradeLevel++;
         }
 
