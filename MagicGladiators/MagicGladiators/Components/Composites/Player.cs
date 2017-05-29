@@ -212,6 +212,7 @@ namespace MagicGladiators
             gameObject.LifeSteal = 0;
             gameObject.CooldownReduction = 1;
             gameObject.AoeBonus = 1;
+            gameObject.GoldBonusPercent = 0;
 
             foreach (GameObject go in items)
             {
@@ -225,12 +226,13 @@ namespace MagicGladiators
                 gameObject.LifeSteal += item.LifeSteal;
                 gameObject.CooldownReduction -= item.CDR;
                 gameObject.AoeBonus += item.AOEBonus;
+                gameObject.GoldBonusPercent += item.GoldBonusPercent;
             }
         }
 
         public void GoldReward(int amount)
         {
-            gold += amount;
+            gold += (int)(amount * (1 + gameObject.GoldBonusPercent));
         }
     }
 }

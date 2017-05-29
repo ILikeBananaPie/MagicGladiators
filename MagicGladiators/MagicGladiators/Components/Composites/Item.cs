@@ -35,6 +35,7 @@ namespace MagicGladiators
         public float AOEBonus { get; set; }
         public int Value { get; set; }
         public int UpgradeValue { get; set; }
+        public float GoldBonusPercent { get; set; }
 
         public int upgradeLevel { get; private set; } = 0;
 
@@ -51,6 +52,7 @@ namespace MagicGladiators
             this.LifeSteal = float.Parse(stats[8]);
             this.CDR = float.Parse(stats[9]);
             this.AOEBonus = float.Parse(stats[10]);
+            this.GoldBonusPercent = float.Parse(stats[11]);
             this.UpgradeValue = (int)(Value + Value * 0.2F);
         }
 
@@ -70,6 +72,7 @@ namespace MagicGladiators
             animator.CreateAnimation("LifeSteal", new Animation(1, 32, 2, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("CDR", new Animation(1, 32, 3, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("AOE", new Animation(1, 64, 0, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Gold", new Animation(1, 64, 1, 32, 32, 10, Vector2.Zero, sprite));
 
 
             animator.PlayAnimation(Name);
@@ -89,6 +92,7 @@ namespace MagicGladiators
             CDR += CDR * 0.25F;
             AOEBonus += AOEBonus * 0.25F;
             UpgradeValue += (int)(UpgradeValue * 0.2F);
+            GoldBonusPercent += (UpgradeValue * 0.2f);
             upgradeLevel++;
         }
 
