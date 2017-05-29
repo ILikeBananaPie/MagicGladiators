@@ -549,6 +549,12 @@ namespace MagicGladiators
                         go.LoadContent(Content);
                     }
                 }
+                if (NextScene.scenetype == "Host")
+                {
+                    Director director = new Director(new PlayerBuilder());
+                    player = director.Construct(new Vector2(50));
+                    //Connect To Server?
+                }
 
                 NextScene = null;
                 GC.Collect();

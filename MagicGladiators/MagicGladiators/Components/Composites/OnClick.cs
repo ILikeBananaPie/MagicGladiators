@@ -77,8 +77,7 @@ namespace MagicGladiators
                             case "Joining":
                                 if (GameWorld.Instance.canClient)
                                 {
-                                    GameWorld.Instance.NextScene = Scene.Practice();
-                                    GameWorld.Instance.client = new TestClient(IPRel.GetIPString());
+                                    GameWorld.Instance.NextScene = Scene.Host(IPRel.GetIPString());
                                 }
                                 break;
                             case "PracticeChooseRound":

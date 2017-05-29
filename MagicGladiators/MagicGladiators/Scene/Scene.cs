@@ -141,14 +141,14 @@ namespace MagicGladiators
             send.scenetype = "Join";
             return send;
         }
-        public static Scene Host()
+        public static Scene Host(string ip)
         {
             //server start
             GameWorld.Instance.server = new Process();
             GameWorld.Instance.server.StartInfo.FileName = "TestServer.exe";
             GameWorld.Instance.server.EnableRaisingEvents = true;
             GameWorld.Instance.server.Start();
-            GameWorld.Instance.client = new TestClient("localhost");
+            GameWorld.Instance.client = new TestClient(ip);
 
             GameObject[] included = new GameObject[2];
             included[0] = new GameObject();
