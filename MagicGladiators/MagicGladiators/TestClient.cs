@@ -32,11 +32,10 @@ namespace MagicGladiators
 
         //private float TestTimer;
 
-        public TestClient(string ip)
+        public TestClient()
         {
             if (GameWorld.Instance.canClient)
             {
-                string hostip = ip;
                 spriteBatch = new SpriteBatch(GameWorld.Instance.GraphicsDevice);
                 font = GameWorld.Instance.Content.Load<SpriteFont>("fontText");
                 NetPeerConfiguration config = new NetPeerConfiguration("Server");
@@ -44,20 +43,20 @@ namespace MagicGladiators
                 config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
                 client = new NetClient(config);
                 client.Start();
-
-                try
-                {
-                    client.Connect(hostip, 51234);
-                }
-                catch (Exception)
-                {
-                    client.Shutdown("Meh");
-                }
             }
-
-
-
             //client.DiscoverLocalPeers(24049);
+        }
+
+        public void ConnectToServer(string hostip)
+        {
+            try
+            {
+                client.Connect(hostip, 51234);
+            }
+            catch (Exception)
+            {
+                client.Shutdown("Meh");
+            }
         }
 
         public void SendClone(string id, Vector2 position)
