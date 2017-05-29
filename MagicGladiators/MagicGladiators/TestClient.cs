@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer }
 
 
     public class TestClient
@@ -284,8 +284,8 @@ namespace MagicGladiators
                     case NetIncomingMessageType.ConnectionApproval:
                         break;
                     case NetIncomingMessageType.Data:
-                        //text = msgIn.ReadString();
                         byte type = msgIn.ReadByte();
+                        #region EnemyPos
                         if (type == (byte)PacketType.EnemyPos)
                         {
                             string id = msgIn.ReadString();
@@ -303,6 +303,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
+                        #region EnemyVel
                         if (type == (byte)PacketType.EnemyVel)
                         {
                             string id = msgIn.ReadString();
@@ -319,10 +321,13 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
+                        #region CreatePlayer
                         if (type == (byte)PacketType.CreatePlayer)
                         {
                             string id = msgIn.ReadString();
                             string color = msgIn.ReadString();
+                            int index = msgIn.ReadInt32();
                             GameObject go = new GameObject();
                             go.AddComponent(new SpriteRenderer(go, "PlayerSheet", 1));
                             go.AddComponent(new Animator(go));
@@ -331,6 +336,7 @@ namespace MagicGladiators
                             go.AddComponent(new Physics(go));
                             go.Tag = "Enemy";
                             go.Id = id;
+                            go.ConnectionNumber = index;
                             (go.GetComponent("Animator") as Animator).PlayAnimation(color);
                             GameWorld.newObjects.Add(go);
                             foreach (GameObject dummy in GameWorld.gameObjects)
@@ -343,6 +349,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
+                        #region UpdateProjectile
                         if (type == (byte)PacketType.UpdateProjectile)
                         {
                             string id = msgIn.ReadString();
@@ -371,6 +379,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
+                        #region CreateProjectile
                         if (type == (byte)PacketType.CreateProjectile)
                         {
                             string id = msgIn.ReadString();
@@ -409,6 +419,8 @@ namespace MagicGladiators
                             }
 
                         }
+                        #endregion
+                        #region RemoveProjectile
                         if (type == (byte)PacketType.RemoveProjectile)
                         {
                             string id = msgIn.ReadString();
@@ -443,13 +455,16 @@ namespace MagicGladiators
                             }
 
                         }
-
+                        #endregion
+                        #region Push
                         if (type == (byte)PacketType.Push)
                         {
                             float x = msgIn.ReadFloat();
                             float y = msgIn.ReadFloat();
                             (GameWorld.Instance.player.GetComponent("Player") as Player).isPushed(new Vector2(x, y));
                         }
+                        #endregion
+                        #region Deflect
                         if (type == (byte)PacketType.Deflect)
                         {
                             string id = msgIn.ReadString();
@@ -472,7 +487,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
-
+                        #endregion
+                        #region ColorChange
                         if (type == (byte)PacketType.ColorChange)
                         {
                             string id = msgIn.ReadString();
@@ -503,13 +519,15 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
+                        #region AssignID
                         if (type == (byte)PacketType.AssignID)
                         {
                             GameWorld.Instance.canClient = false;
                             string id = msgIn.ReadString();
                             string color = msgIn.ReadString();
                             int connectionNumber = msgIn.ReadInt32();
-                            connectionNumber++;
+                            //connectionNumber++;
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (go.Tag == "Player")
@@ -517,11 +535,32 @@ namespace MagicGladiators
                                     go.Id = id;
                                     go.ConnectionNumber = connectionNumber;
                                     go.transform.position = new Vector2(50, 50 * connectionNumber);
-                                    (go.GetComponent("Animator") as Animator).PlayAnimation(color);
+                                    //(go.GetComponent("Animator") as Animator).PlayAnimation(color);
                                 }
                             }
                             //GameWorld.Instance.player.Id = id;
                         }
+                        #endregion
+                        #region RemovePlayer
+                        if (type == (byte)PacketType.RemovePlayer)
+                        {
+                            string id = msgIn.ReadString();
+                            int connectionNumber = msgIn.ReadInt32();
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Id == id)
+                                {
+                                    GameWorld.objectsToRemove.Add(go);
+                                }
+                                if (go.Tag == "Player")
+                                {
+                                    go.ConnectionNumber = connectionNumber;
+                                }
+                            }
+
+                        }
+                        #endregion
+                        #region UpdateStats
                         if (type == (byte)PacketType.UpdateStats)
                         {
                             string id = msgIn.ReadString();
@@ -541,7 +580,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
-
+                        #endregion
+                        #region ShrinkMap
                         if (type == (byte)PacketType.ShrinkMap)
                         {
                             foreach (GameObject go in GameWorld.gameObjects)
@@ -555,7 +595,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
-
+                        #endregion
+                        #region Chain
                         if (type == (byte)PacketType.Chain)
                         {
                             string id = msgIn.ReadString();
@@ -570,7 +611,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
-
+                        #endregion
+                        #region Invisibility
                         if (type == (byte)PacketType.Invisibility)
                         {
                             string id = msgIn.ReadString();
@@ -583,6 +625,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
+                        #region Clone
                         if (type == (byte)PacketType.Clone)
                         {
                             string id = msgIn.ReadString();
@@ -613,7 +657,7 @@ namespace MagicGladiators
                                 }
                             }
                         }
-
+                        #endregion
                         break;
                     case NetIncomingMessageType.Receipt:
 

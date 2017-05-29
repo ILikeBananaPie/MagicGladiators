@@ -7,17 +7,53 @@ using System.Threading.Tasks;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer }
 
     public class Program
     {
         private static NetServer server;
         private static List<NetConnection> connectionList = new List<NetConnection>();
+
+
+        private static List<Player> players = new List<Player>();
+        private static int playerIndex = 0;
+
         private static List<string> TestID = new List<string>();
         private static List<string> TestName = new List<string>();
         private static List<string> colors = new List<string>() { "Blue", "Red", "Orange", "Purple", "Brown", "Green", "LightGreen", "Yellow" };
         private static int colorIndex = 0;
         //private static int spellId = 0;
+
+        private static void CorrectPlayerIndex(string command, NetConnection con)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+
+            if (command == "Connecting")
+            {
+                //players.Add(new Player(playerIndex, server.Connections[playerIndex]));
+                //playerIndex++;
+
+            }
+            else if (command == "Disconnecting")
+            {
+
+                for (int i = 0; i < server.Connections.Count; i++)
+                {
+                    //players[i].playerIndex = i;
+
+                    msgOut = server.CreateMessage();
+                    msgOut.Write((byte)PacketType.RemovePlayer);
+                    msgOut.Write(con.ToString());
+                    msgOut.Write(i);
+                    server.SendMessage(msgOut, server.Connections[i], NetDeliveryMethod.ReliableOrdered, 0);
+                }
+                playerIndex--;
+                colorIndex--;
+            }
+        }
+
+
         static void Main(string[] args)
         {
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
@@ -46,6 +82,7 @@ namespace TestServer
                                 Console.WriteLine("Player Connected!");
                                 SendConnection(msgIn.SenderConnection);
                                 AssignID(msgIn.SenderConnection);
+                                CorrectPlayerIndex("Connecting", msgIn.SenderConnection);
                             }
                             if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnecting)
                             {
@@ -54,7 +91,7 @@ namespace TestServer
                             if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnected)
                             {
                                 Console.WriteLine("Player Disconnected!");
-                                colorIndex--;
+                                CorrectPlayerIndex("Disconnecting", msgIn.SenderConnection);
                             }
                             break;
                         case NetIncomingMessageType.UnconnectedData:
@@ -257,19 +294,23 @@ namespace TestServer
                 }
                 connectionList.Remove(sender);
 
+                //to all but the sender(connector). Create an enemy
                 NetOutgoingMessage msgOut;
                 msgOut = server.CreateMessage();
                 msgOut.Write((byte)PacketType.CreatePlayer);
                 msgOut.Write(sender.ToString());
                 msgOut.Write(colors[colorIndex]);
+                msgOut.Write(playerIndex);
                 server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
 
+                //to the sender(connector). Create enemies
                 for (int i = 0; i < server.Connections.Count - 1; i++)
                 {
                     msgOut = server.CreateMessage();
                     msgOut.Write((byte)PacketType.CreatePlayer);
                     msgOut.Write(server.Connections[i].ToString());
                     msgOut.Write(colors[i]);
+                    msgOut.Write(i);
                     server.SendMessage(msgOut, sender, NetDeliveryMethod.Unreliable, 0);
                 }
             }
@@ -296,10 +337,11 @@ namespace TestServer
             msgOut.Write((byte)PacketType.AssignID);
             msgOut.Write(con.ToString());
             msgOut.Write(colors[colorIndex]);
-            msgOut.Write(colorIndex);
+            msgOut.Write(playerIndex);
             server.SendMessage(msgOut, con, NetDeliveryMethod.Unreliable, 0);
 
             colorIndex++;
+            playerIndex++;
         }
 
         public static void UpdateConnectionList(NetConnection con)
