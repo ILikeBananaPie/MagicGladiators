@@ -23,7 +23,7 @@ namespace MagicGladiators
         private Vector2 testVector;
         private Vector2 test;
 
-        
+
 
         private Physics physics;
         public Charge(GameObject go, Transform transform, Animator animator) : base(go)
@@ -38,7 +38,7 @@ namespace MagicGladiators
 
         public override void LoadContent(ContentManager content)
         {
-            
+
         }
 
         public override void Update()
@@ -104,22 +104,17 @@ namespace MagicGladiators
                         //plz don't delete me
                         Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
                         vectorBetween.Normalize();
-                        if (go.gameObject.Tag == "Dummy" )
+                        if (go.gameObject.Tag == "Dummy")
                         {
-
-                            
                             (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
-                            
+                        }
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.SendPush(other.gameObject.Id, vectorBetween);
                         }
                     }
                 }
-                
             }
-
-
-
-
         }
-
     }
 }
