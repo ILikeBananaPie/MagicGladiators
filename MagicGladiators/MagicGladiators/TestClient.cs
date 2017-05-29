@@ -68,7 +68,7 @@ namespace MagicGladiators
             msgOut.Write(id);
             msgOut.Write(position.X);
             msgOut.Write(position.Y);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
 
         }
 
@@ -77,7 +77,7 @@ namespace MagicGladiators
             NetOutgoingMessage msgOut;
             msgOut = client.CreateMessage();
             msgOut.Write(text);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void ShrinkMap()
@@ -85,7 +85,7 @@ namespace MagicGladiators
             NetOutgoingMessage msgOut;
             msgOut = client.CreateMessage();
             msgOut.Write((byte)PacketType.ShrinkMap);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void SendPositions(Vector2 vector)
@@ -98,7 +98,7 @@ namespace MagicGladiators
             msgOut.Write((byte)PacketType.PlayerPos);
             msgOut.Write(x);
             msgOut.Write(y);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void SendInvisibility(string id, bool isInvis)
@@ -108,7 +108,7 @@ namespace MagicGladiators
             msgOut.Write((byte)PacketType.Invisibility);
             msgOut.Write(id);
             msgOut.Write(isInvis);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void SendProjectile(string name, Vector2 position, Vector2 target)
@@ -126,7 +126,7 @@ namespace MagicGladiators
                 msgOut.Write(posY);
                 msgOut.Write(target.X);
                 msgOut.Write(target.Y);
-                client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+                client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
             }
             if (name.Contains("Create"))
             {
@@ -136,7 +136,7 @@ namespace MagicGladiators
                 msgOut.Write(position.Y);
                 msgOut.Write(target.X);
                 msgOut.Write(target.Y);
-                client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+                client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
             }
         }
 
@@ -147,7 +147,7 @@ namespace MagicGladiators
             msgOut.Write((byte)PacketType.RemoveProjectile);
             msgOut.Write(id);
             msgOut.Write(name);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
 
         }
 
@@ -160,7 +160,7 @@ namespace MagicGladiators
             msgOut.Write((byte)PacketType.PlayerVel);
             msgOut.Write(x);
             msgOut.Write(y);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void SendPush(string id, Vector2 vector)
@@ -171,7 +171,7 @@ namespace MagicGladiators
             msgOut.Write(id);
             msgOut.Write(vector.X);
             msgOut.Write(vector.Y);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void SendColor(string id, string name, byte R, byte G, byte B, byte A)
@@ -185,7 +185,7 @@ namespace MagicGladiators
             msgOut.Write(G);
             msgOut.Write(B);
             msgOut.Write(A);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void Deflect(string id, string name, Vector2 position, Vector2 newVel)
@@ -201,7 +201,7 @@ namespace MagicGladiators
             msgout.Write(position.Y);
             msgout.Write(newVel.X);
             msgout.Write(newVel.Y);
-            client.SendMessage(msgout, NetDeliveryMethod.ReliableOrdered);
+            client.SendMessage(msgout, NetDeliveryMethod.Unreliable);
         }
 
         public void UpdateStats(string id, float DamageResistance)
@@ -211,7 +211,7 @@ namespace MagicGladiators
             msgOut.Write((byte)PacketType.UpdateStats);
             msgOut.Write(id);
             msgOut.Write(DamageResistance);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void Chain(string id, Vector2 vector)
@@ -222,7 +222,7 @@ namespace MagicGladiators
             msgOut.Write(id);
             msgOut.Write(vector.X);
             msgOut.Write(vector.Y);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void Draw()

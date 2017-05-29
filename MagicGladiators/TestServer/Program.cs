@@ -36,7 +36,7 @@ namespace TestServer
                 msgOut.Write((byte)PacketType.CreatePlayer);
                 msgOut.Write(sender.ToString());
                 msgOut.Write(colors[colorIndex]);
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
 
                 for (int i = 0; i < server.Connections.Count - 1; i++)
                 {
@@ -44,7 +44,7 @@ namespace TestServer
                     msgOut.Write((byte)PacketType.CreatePlayer);
                     msgOut.Write(server.Connections[i].ToString());
                     msgOut.Write(colors[i]);
-                    server.SendMessage(msgOut, sender, NetDeliveryMethod.ReliableOrdered, 0);
+                    server.SendMessage(msgOut, sender, NetDeliveryMethod.Unreliable, 0);
                 }
             }
         }
@@ -57,7 +57,7 @@ namespace TestServer
             msgOut.Write(id);
             msgOut.Write(position.X);
             msgOut.Write(position.Y);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
         public static void AssignID(NetConnection con)
@@ -70,7 +70,7 @@ namespace TestServer
             msgOut.Write((byte)PacketType.AssignID);
             msgOut.Write(con.ToString());
             msgOut.Write(colors[colorIndex]);
-            server.SendMessage(msgOut, con, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendMessage(msgOut, con, NetDeliveryMethod.Unreliable, 0);
 
             colorIndex++;
         }
@@ -96,7 +96,7 @@ namespace TestServer
                 msgOut.Write(sender.ToString());
                 msgOut.Write(x);
                 msgOut.Write(y);
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
             }
         }
 
@@ -113,7 +113,7 @@ namespace TestServer
                 msgOut.Write(name);
                 msgOut.Write(velocity.X);
                 msgOut.Write(velocity.Y);
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
             }
         }
 
@@ -122,7 +122,7 @@ namespace TestServer
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
             msgOut.Write((byte)PacketType.ShrinkMap);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
         public static void SendProjectile(string name, Vector2 position, Vector2 target, NetConnection sender)
@@ -141,7 +141,7 @@ namespace TestServer
                     msgOut.Write(position.Y);
                     msgOut.Write(target.X);
                     msgOut.Write(target.Y);
-                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
                 }
                 if (name.Contains("Create"))
                 {
@@ -153,7 +153,7 @@ namespace TestServer
                     msgOut.Write(position.Y);
                     msgOut.Write(target.X);
                     msgOut.Write(target.Y);
-                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
                 }
             }
         }
@@ -174,7 +174,7 @@ namespace TestServer
             msgOut.Write((byte)PacketType.Push);
             msgOut.Write(vector.X);
             msgOut.Write(vector.Y);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
         public static void SendColor(string id, string name, byte R, byte G, byte B, byte A)
@@ -188,7 +188,7 @@ namespace TestServer
             msgOut.Write(G);
             msgOut.Write(B);
             msgOut.Write(A);
-            server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.Unreliable, 0);
         }
 
         public static void UpdateStats(string id, float DamageResistance)
@@ -198,7 +198,7 @@ namespace TestServer
             msgOut.Write((byte)PacketType.UpdateStats);
             msgOut.Write(id);
             msgOut.Write(DamageResistance);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
         public static void RemoveProjectile(string name, NetConnection sender, string id)
@@ -212,7 +212,7 @@ namespace TestServer
                 msgOut.Write(id);
                 msgOut.Write(sender.ToString());
                 msgOut.Write(name);
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
             }
         }
 
@@ -238,7 +238,7 @@ namespace TestServer
             msgOut.Write(position.Y);
             msgOut.Write(newVel.X);
             msgOut.Write(newVel.Y);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
 
         }
 
@@ -263,7 +263,7 @@ namespace TestServer
                 }
             }
 
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
         public static void SendInvisibility(string id, bool isInvis)
@@ -273,7 +273,7 @@ namespace TestServer
             msgOut.Write((byte)PacketType.Invisibility);
             msgOut.Write(id);
             msgOut.Write(isInvis);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
 
@@ -348,7 +348,7 @@ namespace TestServer
                             SendConnection();
                             msgOut = server.CreateMessage();
                             msgOut.Write("Connection Approved");
-                            server.SendMessage(msgOut, msgIn.SenderConnection, NetDeliveryMethod.ReliableOrdered);
+                            server.SendMessage(msgOut, msgIn.SenderConnection, NetDeliveryMethod.Unreliable);
                             */
                             break;
                         case NetIncomingMessageType.Data:
