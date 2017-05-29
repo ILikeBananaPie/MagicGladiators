@@ -43,6 +43,7 @@ namespace MagicGladiators
                 //config.Port = 24049;
                 config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
                 client = new NetClient(config);
+                client.Start();
             }
             hostip = ip;
             //client.DiscoverLocalPeers(24049);
@@ -52,8 +53,6 @@ namespace MagicGladiators
         {
             try
             {
-                Thread.Sleep(5000);
-                client.Start();
                 client.Connect(hostip, 51234);
             }
             catch (Exception)
