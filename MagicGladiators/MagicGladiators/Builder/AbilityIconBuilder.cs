@@ -30,7 +30,7 @@ namespace MagicGladiators
             
             gameObject.transform.position = position;
 
-            gameObject.AddComponent(new Collider(gameObject, false));
+            gameObject.AddComponent(new Collider(gameObject, false, true));
 
             gameObject.Tag = "AbilityIcon";
 

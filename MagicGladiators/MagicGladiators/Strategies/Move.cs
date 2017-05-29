@@ -107,7 +107,7 @@ namespace MagicGladiators
 
             direction = currentDirection;
 
-            animator.PlayAnimation("Walk" + currentDirection);
+            //animator.PlayAnimation("Walk" + currentDirection);
         }
     }
 }
