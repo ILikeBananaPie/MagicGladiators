@@ -481,9 +481,10 @@ namespace MagicGladiators
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && canClient)
             {
-                client = new TestClient("LocalHost");
+                client = new TestClient("localhost");
                 canClient = false;
                 showServer = true;
+                client.ConnectToServer();
 
                 //Thread update = new Thread(ClientUpdate);
                 //update.IsBackground = true;
@@ -501,8 +502,10 @@ namespace MagicGladiators
                 {
                     client.SendMessage("Client sending text!");
                 }
-
-                client.Update();
+                if (client != null)
+                {
+                    client.Update();
+                }
                 //client.Draw();
             }
 
