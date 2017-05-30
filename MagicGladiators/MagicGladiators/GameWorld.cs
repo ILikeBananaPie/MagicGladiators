@@ -29,6 +29,9 @@ namespace MagicGladiators
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        public static Camera camera
+        public Matrix zoomMatrix { get; set }
+
         private int abilityIndex = 0;
         private List<IAbility> abilityListTest = new List<IAbility>();
 
@@ -130,6 +133,11 @@ namespace MagicGladiators
             // TODO: Add your initialization logic here
 
             TooltipBox.AddComponent(new SpriteRenderer(TooltipBox, "ToolTipBox", 1));
+
+            camera = new Camera(GraphicsDevice.Viewport)
+
+
+
 
             var culture = new CultureInfo("en-US");
             CultureInfo.DefaultThreadCurrentCulture = culture;
@@ -900,12 +908,20 @@ namespace MagicGladiators
             GraphicsDevice.Clear(Color.DarkRed);
             MouseState mouse = Mouse.GetState();
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
+            
+            
+            //tvunget dem i rødt så de kan findes nemt
+            var viewMatrix = camera.GetViewMatrix()
+            zoomMatrix = viewMatrix
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
+            spriteBatch.Begin(transformMatrix: viewMatrix);
+
 
 
             spriteBatch.DrawString(fontText, TestClient.text, new Vector2(0, Window.ClientBounds.Height / 2), Color.Black);
+           
 
+           
             foreach (GameObject go in gameObjects)
             {
                 if (!go.IsInvisible)
@@ -920,8 +936,7 @@ namespace MagicGladiators
                     }
                 }
             }
-
-
+           
             DrawPlayerAbilities();
 
             if (buyPhase)

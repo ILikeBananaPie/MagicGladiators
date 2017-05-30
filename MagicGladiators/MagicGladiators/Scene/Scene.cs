@@ -16,6 +16,8 @@ namespace MagicGladiators
         List<GameObject> gameObjects;
         public string scenetype;
 
+       
+
         #region Constructors
         public Scene(GameObject[] go)
         {
@@ -286,11 +288,13 @@ namespace MagicGladiators
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
+            
+            
             foreach (GameObject obj in gameObjects)
             {
                 obj.Draw(spriteBatch);
             }
+           
         }
 
         public void LoadContent(ContentManager content)
