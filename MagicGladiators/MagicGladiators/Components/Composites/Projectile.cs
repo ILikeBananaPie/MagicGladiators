@@ -66,7 +66,7 @@ namespace MagicGladiators
 
             set
             {
-                testVector = value;
+                testVector = value; 
             }
         }
 
@@ -137,13 +137,13 @@ namespace MagicGladiators
         {
             SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
 
-            animator.CreateAnimation("Mine", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("Fireball", new Animation(1, 32, 3, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("HomingMissile", new Animation(1, 32, 2, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("Drain", new Animation(1, 0, 3, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("DeathMeteor", new Animation(1, 32, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("Chain", new Animation(1, 32, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("Boomerang", new Animation(1, 0, 1, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Mine", new Animation(1, 0, 3, 32, 32, 8, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Fireball", new Animation(3, 128, 0, 32, 32, 5, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("HomingMissile", new Animation(1, 128, 2, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Drain", new Animation(4, 32, 0, 32, 32, 5, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("DeathMeteor", new Animation(3, 128, 0, 32, 32, 5, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Chain", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Boomerang", new Animation(4, 96, 0, 32, 32, 14, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("FirewaveTopBottom", new Animation(1, 0, 1, 200, 100, 10, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("FirewaveLeftRight", new Animation(1, 0, 0, 100, 200, 10, Vector2.Zero, spriteRenderer.Sprite));
 
