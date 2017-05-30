@@ -229,6 +229,13 @@ namespace TestServer
                                 SendSwitchPhase();
                             }
                             #endregion
+                            #region StartGame
+                            if (type == (byte)PacketType.StartGame)
+                            {
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                SendStartgame();
+                            }
+                            #endregion
                             #region Ready
                             if (type == (byte)PacketType.Ready)
                             {

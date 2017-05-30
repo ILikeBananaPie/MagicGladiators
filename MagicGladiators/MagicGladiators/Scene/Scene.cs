@@ -179,6 +179,7 @@ namespace MagicGladiators
             GameWorld.Instance.client = new TestClient(ip);
             GameWorld.Instance.canClient = false;
             GameWorld.Instance.showServer = true;
+            GameWorld.Instance.client.isHost = true;
 
             GameObject[] included = new GameObject[9];
             included[0] = new GameObject();

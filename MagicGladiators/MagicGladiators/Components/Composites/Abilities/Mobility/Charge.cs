@@ -53,13 +53,13 @@ namespace MagicGladiators
 
             if (!(gameObject.GetComponent("Physics") as Physics).chainActivated && !(gameObject.GetComponent("Physics") as Physics).chainDeactivated)
             {
-                if (keyState.IsKeyDown(Keys.C) && !on && !activated && canShoot)
+                if (keyState.IsKeyDown(key) && !on && !activated && canShoot)
                 {
 
 
                     activated = true;
                 }
-                if (activated && keyState.IsKeyUp(Keys.C))
+                if (activated && keyState.IsKeyUp(key))
                 {
                     target = new Vector2(mouse.Position.X, mouse.Position.Y);
                     test = physics.GetVector(target, go.transform.position);

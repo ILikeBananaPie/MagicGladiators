@@ -361,10 +361,17 @@ namespace MagicGladiators
                             if (GameWorld.buyPhase)
                             {
                                 GameWorld.buyPhase = false;
+                                GameWorld.Instance.player.isReady = false;
+                                GameWorld.currentRound++;
+                                GameWorld.Instance.StartRound();
+                                //GameWorld.Instance.ResetCharacters();
                             }
                             else
                             {
                                 GameWorld.buyPhase = true;
+                                GameWorld.Instance.StartRound();
+                                //GameWorld.CreateMap(GameWorld.selectedMap);
+                                //GameWorld.Instance.ResetCharacters();
                             }
                         }
                         #endregion

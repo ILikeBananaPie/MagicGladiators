@@ -46,7 +46,7 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (keyState.IsKeyDown(Keys.Z) && canShoot)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
                 
                 canShoot = false;

@@ -140,10 +140,8 @@ namespace MagicGladiators
                                     if (GameWorld.Instance.client != null)
                                     {
                                         GameWorld.Instance.client.SendMapSettings(GameWorld.selectedMap, GameWorld.numberOfRounds);
-                                    }
-                                    if (GameWorld.Instance.client != null)
-                                    {
                                         GameWorld.Instance.client.SendStartgame();
+
                                     }
                                 }
                                 break;

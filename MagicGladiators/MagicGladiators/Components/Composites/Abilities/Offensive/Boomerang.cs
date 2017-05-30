@@ -32,7 +32,7 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
             
-            if (keyState.IsKeyDown(Keys.G)&& canShoot == true)
+            if (keyState.IsKeyDown(key)&& canShoot == true)
             {
                 canShoot = false;
                 Director dir = new Director(new ProjectileBuilder());

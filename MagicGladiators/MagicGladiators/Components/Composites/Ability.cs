@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Content;
 
 namespace MagicGladiators
 {
+    public enum actions { Fireball, HomingMissile, Drain, Chain }
+
     public abstract class Ability : Component, ILoadable, IUpdateable, IAbility
     {
         protected float cooldown;

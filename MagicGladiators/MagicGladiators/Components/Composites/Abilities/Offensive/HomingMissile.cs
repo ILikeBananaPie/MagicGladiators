@@ -25,8 +25,6 @@ namespace MagicGladiators
         private GameObject player;
         private float timer;
 
-
-
         public HomingMissile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
             canShoot = true;
@@ -46,7 +44,7 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (keyState.IsKeyDown(Keys.Q) && canShoot)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
 
                 canShoot = false;

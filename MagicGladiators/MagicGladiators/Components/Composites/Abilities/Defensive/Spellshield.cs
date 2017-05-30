@@ -84,7 +84,7 @@ namespace MagicGladiators
 
             
 
-            if (keyState.IsKeyDown(Keys.V) && canShoot)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
                 canShoot = false;
                 activated = true;

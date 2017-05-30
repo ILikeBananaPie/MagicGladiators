@@ -34,7 +34,7 @@ namespace MagicGladiators
 
            
 
-            if (keyState.IsKeyDown(Keys.E) && canShoot)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
                 canShoot = false;
                 Director director = new Director(new ProjectileBuilder());

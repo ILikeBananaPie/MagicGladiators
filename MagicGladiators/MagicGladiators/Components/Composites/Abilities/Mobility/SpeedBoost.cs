@@ -45,7 +45,7 @@ namespace MagicGladiators
                 use = false;
             }
 
-            if (keyState.IsKeyDown(Keys.X) && canShoot)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
                 oldSpeed = Player.speed;
                 canUse = false;

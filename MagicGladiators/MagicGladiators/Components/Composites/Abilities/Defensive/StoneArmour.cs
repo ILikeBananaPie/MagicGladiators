@@ -40,7 +40,7 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
            
 
-            if (keyState.IsKeyDown(Keys.B) && canShoot)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
                 activatedAbility = true;
                 canShoot = false;
