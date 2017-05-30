@@ -558,14 +558,15 @@ namespace MagicGladiators
                 if (NextScene.scenetype == "Practice" || NextScene.scenetype == "Play")
                 {
                     CreateMap(selectedMap);
-
+                    ResetCharacters();
+                    /*
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
                     Director ability = new Director(new AbilityIconBuilder());
                     Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68, Window.ClientBounds.Height - 42), "Fireball", 0, ""));
                     newObjects.Add(player);
-
-                    CreateDummies();
+                    */
+                    //CreateDummies();
 
                     CreateVendorItems();
 
@@ -886,7 +887,7 @@ namespace MagicGladiators
             {
                 foreach (GameObject go in objectsToRemove)
                 {
-                    if (go.Tag == "Player" || go.Tag == "Dummy")
+                    if (go.Tag == "Player" || go.Tag == "Dummy" || go.Tag == "Enemy")
                     {
                         characters.Add(go);
                         characterColliders.Add((go.GetComponent("Collider") as Collider));
@@ -967,14 +968,18 @@ namespace MagicGladiators
             }
             if (CurrentScene.scenetype == "Practice")
             {
-                if (player.CurrentHealth < 0)
+                if (player != null)
                 {
-                    DrawPlayerDeathAbilities();
+                    if (player.CurrentHealth < 0)
+                    {
+                        DrawPlayerDeathAbilities();
+                    }
+                    else
+                    {
+                        DrawTooltipPlayerAbility(mouse, mouseCircle);
+                    }
                 }
-                else
-                {
-                    DrawTooltipPlayerAbility(mouse, mouseCircle);
-                }
+
             }
 
 

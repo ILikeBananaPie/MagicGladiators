@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame }
 
     public class Program
     {
@@ -109,6 +109,24 @@ namespace TestServer
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
+        private static void SendMapSettings(string map, int rounds)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.MapSettings);
+            msgOut.Write(map);
+            msgOut.Write(rounds);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+        }
+
+        public static void SendStartgame()
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.StartGame);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+        }
+
         static void Main(string[] args)
         {
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
@@ -187,6 +205,20 @@ namespace TestServer
                         case NetIncomingMessageType.Data:
                             //TestClient.text = msgIn.ReadString();
                             byte type = msgIn.ReadByte();
+                            #region StartGame
+                            if (type == (byte)PacketType.StartGame)
+                            {
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                SendStartgame();
+                            }
+                            #endregion
+                            #region MapSettings
+                            if (type == (byte)PacketType.MapSettings)
+                            {
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                SendMapSettings(msgIn.ReadString(), msgIn.ReadInt32());
+                            }
+                            #endregion
                             #region EnemyAcceleration
                             if (type == (byte)PacketType.EnemyAcceleration)
                             {

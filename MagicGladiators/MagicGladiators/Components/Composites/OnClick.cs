@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace MagicGladiators
 {
-    class OnClick:Component, IUpdateable, ILoadable
+    class OnClick : Component, IUpdateable, ILoadable
     {
         private string destination;
         private Rectangle rectangle;
@@ -134,6 +134,18 @@ namespace MagicGladiators
                                 break;
                             case "Play":
                                 GameWorld.Instance.NextScene = Scene.Play();
+
+                                if (GameWorld.gameObjects.Exists(x => x.Tag == "Enemy"))
+                                {
+                                    if (GameWorld.Instance.client != null)
+                                    {
+                                        GameWorld.Instance.client.SendMapSettings(GameWorld.selectedMap, GameWorld.numberOfRounds);
+                                    }
+                                    if (GameWorld.Instance.client != null)
+                                    {
+                                        GameWorld.Instance.client.SendStartgame();
+                                    }
+                                }
                                 break;
                         }
                     }

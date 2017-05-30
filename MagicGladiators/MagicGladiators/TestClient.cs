@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame }
 
 
     public class TestClient
@@ -47,6 +47,24 @@ namespace MagicGladiators
             }
             hostip = ip;
             //client.DiscoverLocalPeers(24049);
+        }
+
+        public void SendMapSettings(string map, int rounds)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.MapSettings);
+            msgOut.Write(map);
+            msgOut.Write(rounds);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
+        }
+
+        public void SendStartgame()
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.StartGame);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void SendEnemyAcceleration(string id, Vector2 vector)
@@ -318,6 +336,19 @@ namespace MagicGladiators
                         break;
                     case NetIncomingMessageType.Data:
                         byte type = msgIn.ReadByte();
+                        #region StartGame
+                        if (type == (byte)PacketType.StartGame)
+                        {
+                            GameWorld.Instance.NextScene = Scene.Play();
+                        }
+                        #endregion
+                        #region MapSettings
+                        if (type == (byte)PacketType.MapSettings)
+                        {
+                            GameWorld.selectedMap = msgIn.ReadString();
+                            GameWorld.numberOfRounds = msgIn.ReadInt32();
+                        }
+                        #endregion
                         #region EnemyAcceleration
                         if (type == (byte)PacketType.EnemyAcceleration)
                         {
