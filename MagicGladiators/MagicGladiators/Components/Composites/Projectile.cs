@@ -142,7 +142,7 @@ namespace MagicGladiators
             animator.CreateAnimation("HomingMissile", new Animation(1, 128, 2, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("Drain", new Animation(4, 32, 0, 32, 32, 5, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("DeathMeteor", new Animation(3, 128, 0, 32, 32, 5, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("Chain", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Chain", new Animation(1, 0, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("Boomerang", new Animation(4, 96, 0, 32, 32, 14, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("FirewaveTopBottom", new Animation(1, 0, 1, 200, 100, 10, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("FirewaveLeftRight", new Animation(1, 0, 0, 100, 200, 10, Vector2.Zero, spriteRenderer.Sprite));
