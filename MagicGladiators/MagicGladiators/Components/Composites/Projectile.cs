@@ -244,7 +244,7 @@ namespace MagicGladiators
                     GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
                 }
             }
-            if ((other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" || other.gameObject.Tag == "Pillar" || other.gameObject.Tag.Contains("Clone")) && gameObject.Tag != "DeathMine")
+            if ((other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" || other.gameObject.Tag == "Pillar" || other.gameObject.Tag.Contains("Clone") ||other.gameObject.Tag.Contains("Critter")) && gameObject.Tag != "DeathMine")
             {
                 if (gameObject.Tag == "Drain")
                 {
@@ -326,6 +326,14 @@ namespace MagicGladiators
                     else if (go.gameObject.Tag == "Dummy" && (!gameObject.Tag.Contains("Chain") && gameObject.Tag != "Pillar"))
                     {
                         (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+                    }
+                    else if (go.gameObject.Tag.Contains("Critter"))
+                    {
+                        GameWorld.objectsToRemove.Add(go.gameObject);
+                        if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
+                        {
+                            GameWorld.Instance.client.SendRemoval(go.gameObject.Tag, go.gameObject.Id);
+                        }
                     }
                 }
             }
