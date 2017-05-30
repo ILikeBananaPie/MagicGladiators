@@ -191,7 +191,7 @@ namespace MagicGladiators
             included[1] = new GameObject();
             included[1].AddComponent(new SpriteRenderer(included[1], "AlphaStart", 0));
             included[1].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
-            included[1].AddComponent(new OnClick(included[1], "MainMenu"));
+            included[1].AddComponent(new OnClick(included[1], "Play"));
 
 
 
@@ -322,6 +322,14 @@ namespace MagicGladiators
             }
             Scene send = new Scene(included);
             send.scenetype = "PracticeChooseMap";
+            return send;
+        }
+        public static Scene Play()
+        {
+            GameWorld.gameState = GameState.ingame;
+            GameObject[] included = new GameObject[0];
+            Scene send = new Scene(included);
+            send.scenetype = "Play";
             return send;
         }
         #endregion

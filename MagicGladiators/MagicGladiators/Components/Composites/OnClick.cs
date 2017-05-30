@@ -132,6 +132,9 @@ namespace MagicGladiators
                                 GameWorld.Instance.NextScene = Scene.Practice();
                                 GameWorld.selectedMap = "PillarHoleMap";
                                 break;
+                            case "Play":
+                                GameWorld.Instance.NextScene = Scene.Play();
+                                break;
                         }
                     }
                 }

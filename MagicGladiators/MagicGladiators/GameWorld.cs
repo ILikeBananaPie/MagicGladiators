@@ -411,7 +411,7 @@ namespace MagicGladiators
             {
                 if (!pressed)
                 {
-                    if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "NewGame")
+                    if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "NewGame" || CurrentScene.scenetype == "Play")
                     {
                         NextScene = Scene.MainMenu();
                     }
@@ -555,7 +555,7 @@ namespace MagicGladiators
             {
                 NextScene.LoadContent(Content);
                 CurrentScene = NextScene;
-                if (NextScene.scenetype == "Practice")
+                if (NextScene.scenetype == "Practice" || NextScene.scenetype == "Play")
                 {
                     CreateMap(selectedMap);
 
