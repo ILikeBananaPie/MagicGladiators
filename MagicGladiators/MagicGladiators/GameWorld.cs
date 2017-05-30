@@ -786,6 +786,13 @@ namespace MagicGladiators
                 {
                     if (component is Ability && component.Name == bindName)
                     {
+                        foreach (Component comp in player.components)
+                        {
+                            if (comp.key == keys.Last())
+                            {
+                                comp.key = component.key;
+                            }
+                        }
                         component.key = keys.Last();
                         Array.Clear(keys, 0, keys.Length);
                         bindName = "NoName";
