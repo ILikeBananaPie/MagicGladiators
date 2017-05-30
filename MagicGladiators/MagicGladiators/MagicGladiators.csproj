@@ -80,6 +80,7 @@
     <Compile Include="Components\Composites\Enemy.cs" />
     <Compile Include="Components\Composites\InputReciever.cs" />
     <Compile Include="Components\Composites\IPInput.cs" />
+    <Compile Include="Components\Composites\LobbyMenuButton.cs" />
     <Compile Include="Components\Composites\Map.cs" />
     <Compile Include="Components\Composites\OnClick.cs" />
     <Compile Include="Components\Composites\Projectile.cs" />

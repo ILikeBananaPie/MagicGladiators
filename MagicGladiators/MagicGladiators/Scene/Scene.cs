@@ -180,7 +180,7 @@ namespace MagicGladiators
             GameWorld.Instance.canClient = false;
             GameWorld.Instance.showServer = true;
 
-            GameObject[] included = new GameObject[2];
+            GameObject[] included = new GameObject[9];
             included[0] = new GameObject();
             included[0].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
             included[0].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
@@ -191,9 +191,51 @@ namespace MagicGladiators
             included[1] = new GameObject();
             included[1].AddComponent(new SpriteRenderer(included[1], "AlphaStart", 0));
             included[1].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
-            included[1].AddComponent(new OnClick(included[0], "MainMenu"));
+            included[1].AddComponent(new OnClick(included[1], "MainMenu"));
 
 
+
+            included[2] = new GameObject();
+            included[2].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 2, 64 * 2);
+            included[2].AddComponent(new SpriteRenderer(included[2], "LobbyMenuSheet", 0));
+            included[2].AddComponent(new Animator(included[2]));
+            included[2].AddComponent(new LobbyMenuButton(included[2], "PillarHole"));
+
+            included[3] = new GameObject();
+            included[3].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 3, 64 * 2);
+            included[3].AddComponent(new SpriteRenderer(included[3], "LobbyMenuSheet", 0));
+            included[3].AddComponent(new Animator(included[3]));
+            included[3].AddComponent(new LobbyMenuButton(included[3], "Hole"));
+
+            included[4] = new GameObject();
+            included[4].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 4, 64 * 2);
+            included[4].AddComponent(new SpriteRenderer(included[4], "LobbyMenuSheet", 0));
+            included[4].AddComponent(new Animator(included[4]));
+            included[4].AddComponent(new LobbyMenuButton(included[4], "Pillar"));
+
+            included[5] = new GameObject();
+            included[5].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 5, 64 * 2);
+            included[5].AddComponent(new SpriteRenderer(included[5], "LobbyMenuSheet", 0));
+            included[5].AddComponent(new Animator(included[5]));
+            included[5].AddComponent(new LobbyMenuButton(included[5], "Standard"));
+
+            included[6] = new GameObject();
+            included[6].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 3 + 32, 64 * 3);
+            included[6].AddComponent(new SpriteRenderer(included[6], "LobbyMenuSheet", 0));
+            included[6].AddComponent(new Animator(included[6]));
+            included[6].AddComponent(new LobbyMenuButton(included[6], "7"));
+
+            included[7] = new GameObject();
+            included[7].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 4 + 32, 64 * 3);
+            included[7].AddComponent(new SpriteRenderer(included[7], "LobbyMenuSheet", 0));
+            included[7].AddComponent(new Animator(included[7]));
+            included[7].AddComponent(new LobbyMenuButton(included[7], "5"));
+
+            included[8] = new GameObject();
+            included[8].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 5 + 32, 64 * 3);
+            included[8].AddComponent(new SpriteRenderer(included[8], "LobbyMenuSheet", 0));
+            included[8].AddComponent(new Animator(included[8]));
+            included[8].AddComponent(new LobbyMenuButton(included[8], "3"));
 
 
             Scene send = new Scene(included);
