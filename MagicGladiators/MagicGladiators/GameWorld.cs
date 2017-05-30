@@ -31,6 +31,9 @@ namespace MagicGladiators
 
         private int abilityIndex = 0;
         private List<IAbility> abilityListTest = new List<IAbility>();
+        private bool canBind = true;
+        private Keys[] keys;
+        private string bindName;
 
         public static List<GameObject> gameObjects;
         public static List<GameObject> newObjects;
@@ -735,7 +738,7 @@ namespace MagicGladiators
                             int x = Player.abilities.Count * 34;
                             Player.abilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), ability.Name, ability.Value, ability.Text));
                             (Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).index = abilityIndex;
-                            //(Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).
+                            //(Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).Name = go.Name;
                             abilityIndex++;
                             Player.gold -= ability.Value;
 
@@ -751,21 +754,47 @@ namespace MagicGladiators
 
         public void UpdateAbilityUpgrade(MouseState mouse, Circle mouseCircle)
         {
-            foreach (GameObject go in Player.abilities)
+            if (canBind)
             {
-                if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+                foreach (GameObject go in Player.abilities)
                 {
-                    if (canBuy && mouse.LeftButton == ButtonState.Pressed)
+                    if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                     {
-                        //rebind ability
-                    }
-                    if (canBuy && mouse.RightButton == ButtonState.Pressed)
-                    {
-                        //upgrade ability
-                        //giving ability icons ability components. Give each ability component an isBought bool and only allow Update to run if isBought is true. Set isBought to true when buying the ability.
+                        if (canBuy && mouse.LeftButton == ButtonState.Pressed)
+                        {
+                            //rebind ability
+                            KeyboardState keyState = Keyboard.GetState();
+                            keys = keyState.GetPressedKeys();
+                            if (keys.Length > 0)
+                            {
+                                canBind = false;
+                                bindName = (go.GetComponent("AbilityIcon") as AbilityIcon).Name;
+                            }
+
+                        }
+                        if (canBuy && mouse.RightButton == ButtonState.Pressed)
+                        {
+                            //upgrade ability
+                            //giving ability icons ability components. Give each ability component an isBought bool and only allow Update to run if isBought is true. Set isBought to true when buying the ability.
+                        }
                     }
                 }
             }
+            if (!canBind)
+            {
+                foreach (Component component in player.components)
+                {
+                    if (component is Ability && component.Name == bindName)
+                    {
+                        component.key = keys.Last();
+                        Array.Clear(keys, 0, keys.Length);
+                        bindName = "NoName";
+                        canBind = true;
+                        break;
+                    }
+                }
+            }
+
         }
 
         public void UpdateItemUpgrade(MouseState mouse, Circle mouseCircle)
@@ -1115,6 +1144,10 @@ namespace MagicGladiators
                         if (text == "Space")
                         {
                             text = "Spc";
+                        }
+                        if (text.Contains("D"))
+                        {
+                            text = text.Split('D').Last();
                         }
                         spriteBatch.DrawString(fontText, text, new Vector2(go.transform.position.X + 10, go.transform.position.Y + 16), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     }
