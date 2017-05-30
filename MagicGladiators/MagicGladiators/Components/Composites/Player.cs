@@ -35,6 +35,8 @@ namespace MagicGladiators
 
         public static List<GameObject> items = new List<GameObject>();
         public static List<GameObject> abilities = new List<GameObject>();
+        public static List<GameObject> deathAbilities = new List<GameObject>();
+
         private List<string> colors = new List<string>() { "Blue", "Red", "Orange", "Purple", "Brown", "Green", "LightGreen", "Yellow" };
 
 

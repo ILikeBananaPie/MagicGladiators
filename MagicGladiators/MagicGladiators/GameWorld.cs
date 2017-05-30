@@ -276,6 +276,21 @@ namespace MagicGladiators
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "GravityWell", 100, "shoot a projektile that pulls \n people in"));
 
+            int x = Player.deathAbilities.Count * 34;
+            Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "RollingMeteor", 0, "Does something"));
+            x = Player.deathAbilities.Count * 34;
+            Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "DeathMine", 0, "Does something"));
+            x = Player.deathAbilities.Count * 34;
+            Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "Firewave", 0, "Does something"));
+            x = Player.deathAbilities.Count * 34;
+            Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "Critters", 0, "Does something"));
+            x = Player.deathAbilities.Count * 34;
+            Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "ShrinkMap", 0, "Does something"));
+            x = Player.deathAbilities.Count * 34;
+            Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "SlowField", 0, "Does something"));
+            x = Player.deathAbilities.Count * 34;
+            Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "IceField", 0, "Does something"));
+
         }
 
         public void CreateVendorItems()
@@ -612,6 +627,7 @@ namespace MagicGladiators
                     (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
                     (player.GetComponent("ShrinkMap") as ShrinkMap).Update();
                     (player.GetComponent("SlowField") as SlowField).Update();
+
                 }
             }
         }
@@ -672,7 +688,6 @@ namespace MagicGladiators
                 }
             }
         }
-
 
         public void UpdateBuyAbility(MouseState mouse, Circle mouseCircle)
         {
@@ -950,8 +965,18 @@ namespace MagicGladiators
 
                 DrawTooltipPlayerItem(mouse, mouseCircle);
             }
+            if (CurrentScene.scenetype == "Practice")
+            {
+                if (player.CurrentHealth < 0)
+                {
+                    DrawPlayerDeathAbilities();
+                }
+                else
+                {
+                    DrawTooltipPlayerAbility(mouse, mouseCircle);
+                }
+            }
 
-            DrawTooltipPlayerAbility(mouse, mouseCircle);
 
             spriteBatch.End();
             base.Draw(gameTime);
@@ -1010,7 +1035,14 @@ namespace MagicGladiators
             foreach (GameObject go in Player.abilities)
             {
                 go.Draw(spriteBatch);
+            }
+        }
 
+        public void DrawPlayerDeathAbilities()
+        {
+            foreach (GameObject go in Player.deathAbilities)
+            {
+                go.Draw(spriteBatch);
             }
         }
 
