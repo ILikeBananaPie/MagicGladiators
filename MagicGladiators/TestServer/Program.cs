@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase }
 
     public class Program
     {
@@ -119,12 +119,29 @@ namespace TestServer
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
+        public static void SendSwitchPhase()
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.SwitchPhase);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+        }
+
         public static void SendStartgame()
         {
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
             msgOut.Write((byte)PacketType.StartGame);
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+        }
+
+        public static void SendReady(string id, bool isReady)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write(id);
+            msgOut.Write(isReady);
+            server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.Unreliable, 0);
         }
 
         static void Main(string[] args)
@@ -205,11 +222,17 @@ namespace TestServer
                         case NetIncomingMessageType.Data:
                             //TestClient.text = msgIn.ReadString();
                             byte type = msgIn.ReadByte();
-                            #region StartGame
-                            if (type == (byte)PacketType.StartGame)
+                            #region SwitchPhase
+                            if (type == (byte)PacketType.SwitchPhase)
                             {
                                 UpdateConnectionList(msgIn.SenderConnection);
-                                SendStartgame();
+                                SendSwitchPhase();
+                            }
+                            #endregion
+                            #region Ready
+                            if (type == (byte)PacketType.Ready)
+                            {
+                                SendReady(msgIn.ReadString(), msgIn.ReadBoolean());
                             }
                             #endregion
                             #region MapSettings

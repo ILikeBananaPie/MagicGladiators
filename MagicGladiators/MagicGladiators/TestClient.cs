@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase }
 
 
     public class TestClient
@@ -30,6 +30,7 @@ namespace MagicGladiators
         public string TestID { get; set; } = "";
         private string[] directions = new string[4] { "Up", "Down", "Left", "Right" };
         private string hostip;
+        public bool isHost { get; set; } = false;
 
         //private float TestTimer;
 
@@ -64,6 +65,24 @@ namespace MagicGladiators
             NetOutgoingMessage msgOut;
             msgOut = client.CreateMessage();
             msgOut.Write((byte)PacketType.StartGame);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
+        }
+
+        public void SendReady(string id, bool isReady)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.Ready);
+            msgOut.Write(id);
+            msgOut.Write(isReady);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
+        }
+
+        public void SendSwitchPhase()
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.SwitchPhase);
             client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
@@ -336,6 +355,36 @@ namespace MagicGladiators
                         break;
                     case NetIncomingMessageType.Data:
                         byte type = msgIn.ReadByte();
+                        #region SwitchPhase
+                        if (type == (byte)PacketType.SwitchPhase)
+                        {
+                            if (GameWorld.buyPhase)
+                            {
+                                GameWorld.buyPhase = false;
+                            }
+                            else
+                            {
+                                GameWorld.buyPhase = true;
+                            }
+                        }
+                        #endregion
+                        #region Ready
+                        if (type == (byte)PacketType.Ready)
+                        {
+                            string id = msgIn.ReadString();
+                            bool isReady = msgIn.ReadBoolean();
+                            if (isHost)
+                            {
+                                foreach (GameObject go in GameWorld.gameObjects)
+                                {
+                                    if (go.Tag == "Enemy" && go.Id == id)
+                                    {
+                                        go.isReady = isReady;
+                                    }
+                                }
+                            }
+                        }
+                        #endregion
                         #region StartGame
                         if (type == (byte)PacketType.StartGame)
                         {

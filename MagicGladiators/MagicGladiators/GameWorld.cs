@@ -844,39 +844,69 @@ namespace MagicGladiators
 
         public void PhaseCheck()
         {
-            if (!buyPhase)
+            if (client.isHost)
             {
-                if (playersAlive.Count < 2)
+                if (!buyPhase)
                 {
-                    if (currentRound < numberOfRounds)
+
+                    if (playersAlive.Count < 2)
                     {
-                        //revive all players & reset all stats
-                        //CreateDummies();
-                        StartRound();
-                        buyPhase = true;
-                        currentRound++;
+                        if (currentRound < numberOfRounds)
+                        {
+                            //revive all players & reset all stats
+                            //CreateDummies();
+                            StartRound();
+                            buyPhase = true;
+                            currentRound++;
+                        }
+                        else
+                        {
+                            //show end screen
+                            currentRound = 1;
+                        }
                     }
-                    else
+                }
+                if (!buyPhase)
+                {
+                    readyList.Clear();
+                    playersAlive.Clear();
+                    foreach (GameObject go in gameObjects)
                     {
-                        //show end screen
-                        currentRound = 1;
+                        if (go.Tag == "Player" || go.Tag == "Dummy" || go.Tag == "Enemy")
+                        {
+                            playersAlive.Add(go);
+                        }
                     }
                 }
             }
 
+
             if (Keyboard.GetState().IsKeyDown(Keys.F6) && buyPhase && canBuy)
             {
-                canBuy = false;
-                readyList.Add(true);
-            }
-            foreach (bool b in readyList)
-            {
-                if (!b) break;
-                else
+                if (client != null)
                 {
-                    //reset positions and stats
-                    StartRound();
-                    buyPhase = false;
+                    if (player.isReady)
+                    {
+                        client.SendReady(player.Id, false);
+                    }
+                    else client.SendReady(player.Id, true);
+                }
+            }
+
+            if (client != null)
+            {
+                if (client.isHost)
+                {
+                    foreach (GameObject go in gameObjects)
+                    {
+                        if ((go.Tag == "Enemy" || go.Tag == "Player") && !go.isReady)
+                        {
+                            //don't start the round
+                            break;
+                        }
+                        StartRound();
+                        buyPhase = false;
+                    }
                 }
             }
         }
@@ -903,18 +933,6 @@ namespace MagicGladiators
                 foreach (GameObject obj in newObjects) { obj.LoadContent(Content); }
                 gameObjects.AddRange(newObjects);
                 newObjects.Clear();
-            }
-            if (!buyPhase)
-            {
-                readyList.Clear();
-                playersAlive.Clear();
-                foreach (GameObject go in gameObjects)
-                {
-                    if (go.Tag == "Player" || go.Tag == "Dummy" || go.Tag == "Enemy")
-                    {
-                        playersAlive.Add(go);
-                    }
-                }
             }
         }
 
@@ -981,7 +999,6 @@ namespace MagicGladiators
                 }
 
             }
-
 
             spriteBatch.End();
             base.Draw(gameTime);

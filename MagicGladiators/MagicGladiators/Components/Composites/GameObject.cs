@@ -16,6 +16,7 @@ namespace MagicGladiators
         public ContentManager content { get; private set; }
         public string Id { get; set; }
         public int ConnectionNumber { get; set; }
+        public bool isReady = false;
 
         public float MaxHealth { get; set; }
         public float CurrentHealth { get; set; }
