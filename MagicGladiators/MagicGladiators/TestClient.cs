@@ -316,7 +316,7 @@ namespace MagicGladiators
                             if (command == "Create")
                             {
                                 GameObject critter = new GameObject();
-                                critter.AddComponent(new SpriteRenderer(critter, "Critter", 1));
+                                critter.AddComponent(new SpriteRenderer(critter, "Frog", 1));
                                 critter.AddComponent(new Animator(critter));
                                 critter.AddComponent(new Critter(critter));
                                 critter.AddComponent(new Physics(critter));

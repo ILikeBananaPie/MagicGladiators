@@ -32,14 +32,14 @@ namespace MagicGladiators
                 for (int i = 0; i < 4; i++)
                 {
                     critter = new GameObject();
-                    critter.AddComponent(new SpriteRenderer(critter, "Critter", 1));
+                    critter.AddComponent(new SpriteRenderer(critter, "Frog", 1));
                     critter.AddComponent(new Animator(critter));
                     critter.AddComponent(new Critter(critter));
                     critter.AddComponent(new Physics(critter));
                     critter.AddComponent(new Collider(critter, true, true));
                     critter.Tag = "Critter" + critterNumber.ToString();
-                    critter.CurrentHealth = 100;
-                    critter.MaxHealth = 100;
+                    critter.CurrentHealth = 1;
+                    critter.MaxHealth = 1;
                     critterNumber++;
                     critter.Id = gameObject.Id;
                     int x = rnd.Next(-128, 128);

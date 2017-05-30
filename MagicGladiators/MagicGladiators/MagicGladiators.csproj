@@ -160,6 +160,9 @@
     <Content Include="Content\Firewave.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Frog.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\ItemSheet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

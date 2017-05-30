@@ -14,6 +14,7 @@ namespace MagicGladiators
         //private Random rnd = new Random();
         private float timer;
         private bool canMove = true;
+        private float aliveTimer;
 
         public Critter(GameObject gameObject) : base(gameObject)
         {
@@ -40,6 +41,16 @@ namespace MagicGladiators
         {
             if (gameObject.Id == GameWorld.Instance.player.Id)
             {
+                aliveTimer += GameWorld.Instance.deltaTime;
+                if (aliveTimer > 5)
+                {
+                    aliveTimer = 0;
+                    GameWorld.objectsToRemove.Add(gameObject);
+                    if (GameWorld.Instance.client != null)
+                    {
+                        GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
+                    }
+                }
                 if (canMove)
                 {
                     canMove = false;
