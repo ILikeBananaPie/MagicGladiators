@@ -168,6 +168,7 @@ namespace TestServer
                         case NetIncomingMessageType.Data:
                             //TestClient.text = msgIn.ReadString();
                             byte type = msgIn.ReadByte();
+                            #region PlayerPos
                             if (type == (byte)PacketType.PlayerPos)
                             {
                                 //TestClient.text = "(" + msgIn.ReadFloat().ToString(".");
@@ -184,28 +185,37 @@ namespace TestServer
                                 SendPosition(x, y, msgIn.SenderConnection);
 
                             }
+                            #endregion
+                            #region PlayerVel
                             if (type == (byte)PacketType.PlayerVel)
                             {
                                 float x = msgIn.ReadFloat();
                                 float y = msgIn.ReadFloat();
 
                             }
+                            #endregion
+                            #region Critter
                             if (type == (byte)PacketType.Critter)
                             {
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 Critter(msgIn.ReadString(), msgIn.ReadString(), msgIn.ReadFloat(), msgIn.ReadFloat(), msgIn.ReadString());
                             }
-
+                            #endregion
+                            #region UpdatePlayerIndex
                             if (type == (byte)PacketType.UpdatePlayerIndex)
                             {
                                 int index = msgIn.ReadInt32();
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 CorrectPlayerIndex(msgIn.SenderConnection, "Update", index);
                             }
+                            #endregion
+                            #region CreatePlayer
                             if (type == (byte)PacketType.CreatePlayer)
                             {
                                 SendConnection(msgIn.SenderConnection);
                             }
+                            #endregion
+                            #region UpdateProjectile
                             if (type == (byte)PacketType.UpdateProjectile)
                             {
                                 UpdateConnectionList(msgIn.SenderConnection);
@@ -219,6 +229,8 @@ namespace TestServer
                                     SendProjectile(name, posX, posY, velX, velY, msgIn.SenderConnection);
                                 }
                             }
+                            #endregion
+                            #region CreateProjectile
                             if (type == (byte)PacketType.CreateProjectile)
                             {
                                 UpdateConnectionList(msgIn.SenderConnection);
@@ -231,6 +243,8 @@ namespace TestServer
                                 Console.WriteLine(writeline + " Created!");
                                 SendProjectile(name, posX, posY, velX, velY, msgIn.SenderConnection);
                             }
+                            #endregion
+                            #region RemoveProjectile
                             if (type == (byte)PacketType.RemoveProjectile)
                             {
                                 string id = msgIn.ReadString();
@@ -249,6 +263,8 @@ namespace TestServer
                                 {
                                 }
                             }
+                            #endregion
+                            #region Push
                             if (type == (byte)PacketType.Push)
                             {
                                 string id = msgIn.ReadString();
@@ -256,6 +272,8 @@ namespace TestServer
                                 float y = msgIn.ReadFloat();
                                 Push(id, x, y);
                             }
+                            #endregion
+                            #region Deflect
                             if (type == (byte)PacketType.Deflect)
                             {
                                 string id = msgIn.ReadString();
@@ -274,6 +292,8 @@ namespace TestServer
                                 float velY = msgIn.ReadFloat();
                                 Deflect(id, name, posX, posY, velX, velY);
                             }
+                            #endregion
+                            #region ColorChange
                             if (type == (byte)PacketType.ColorChange)
                             {
                                 string id = msgIn.ReadString();
@@ -285,20 +305,28 @@ namespace TestServer
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 SendColor(id, name, R, G, B, A);
                             }
+                            #endregion
+                            #region UpdateStats
                             if (type == (byte)PacketType.UpdateStats)
                             {
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 UpdateStats(msgIn.ReadString(), msgIn.ReadFloat());
                             }
+                            #endregion
+                            #region ShrinkMap
                             if (type == (byte)PacketType.ShrinkMap)
                             {
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 ShrinkMap();
                             }
+                            #endregion
+                            #region Chain
                             if (type == (byte)PacketType.Chain)
                             {
                                 Chain(msgIn.ReadString(), msgIn.ReadFloat(), msgIn.ReadFloat());
                             }
+                            #endregion
+                            #region Invisibility
                             if (type == (byte)PacketType.Invisibility)
                             {
                                 string id = msgIn.ReadString();
@@ -306,6 +334,8 @@ namespace TestServer
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 SendInvisibility(id, isInvis);
                             }
+                            #endregion
+                            #region Clone
                             if (type == (byte)PacketType.Clone)
                             {
                                 string id = msgIn.ReadString();
@@ -314,7 +344,7 @@ namespace TestServer
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 SendClone(id, posX, posY);
                             }
-
+                            #endregion
                             break;
                         case NetIncomingMessageType.DebugMessage:
                             break;
