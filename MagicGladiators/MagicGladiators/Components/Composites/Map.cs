@@ -93,7 +93,7 @@ namespace MagicGladiators
             {
                 foreach (GameObject go in GameWorld.gameObjects)
                 {
-                    if (go.Tag != "Map" && go.Tag != "Pillar" && go.Tag != "Lava" && gameObject.Tag != "Map" && gameObject.Tag != "Lava" && gameObject.Tag != "LavaSpot")
+                    if (go.Tag != "Map" && go.Tag != "Pillar" && go.Tag != "Lava" && gameObject.Tag != "Map" && gameObject.Tag != "Lava" && gameObject.Tag != "LavaSpot" && !gameObject.Tag.Contains("Critter"))
                     {
                         Circle playerCircle = new Circle();
                         playerCircle.Center = new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16);
@@ -173,7 +173,7 @@ namespace MagicGladiators
         {
             foreach (GameObject go in objects)
             {
-                if ((go.Tag == "Player" || go.Tag == "Dummy") && go.Tag != "Enemy")
+                if ((go.Tag == "Player" || go.Tag == "Dummy") && go.Tag != "Enemy" && !go.Tag.Contains("Critter"))
                 {
                     if (timer >= 0.25F)
                     {

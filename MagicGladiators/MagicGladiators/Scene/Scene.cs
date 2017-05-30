@@ -203,6 +203,7 @@ namespace MagicGladiators
         }
         public static Scene Practice()
         {
+            GameWorld.gameState = GameState.ingame;
             GameObject[] included = new GameObject[0];
             Scene send = new Scene(included);
             send.scenetype = "Practice";

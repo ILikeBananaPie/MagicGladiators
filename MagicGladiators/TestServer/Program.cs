@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter }
 
     public class Program
     {
@@ -32,7 +32,15 @@ namespace TestServer
             msgOut = server.CreateMessage();
             if (command == "Remove")
             {
-                while (server.Connections.Count == players.Count)
+                foreach (Player player in players)
+                {
+                    if (player.connectionID == con)
+                    {
+                        players.Remove(player);
+                        break;
+                    }
+                }
+                while (server.Connections.Count != players.Count)
                 {
                     Thread.Sleep(50);
                 }
@@ -44,7 +52,11 @@ namespace TestServer
                     msgOut.Write((byte)PacketType.RemovePlayer);
                     msgOut.Write(con.ToString());
                     msgOut.Write(i);
+                    if (server.Connections[i] != null)
+                    {
+                    }
                     server.SendMessage(msgOut, server.Connections[i], NetDeliveryMethod.ReliableOrdered, 0);
+
                     test++;
                 }
                 playerIndex--;
@@ -58,12 +70,25 @@ namespace TestServer
                 msgOut.Write((byte)PacketType.UpdatePlayerIndex);
                 msgOut.Write(con.ToString());
                 msgOut.Write(index);
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+                if (connectionList.Count > 0)
+                {
+                }
+                server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.Unreliable, 0);
             }
-
-
         }
 
+        private static void Critter(string id, string tag, float posX, float posY, string command)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Critter);
+            msgOut.Write(id);
+            msgOut.Write(tag);
+            msgOut.Write(posX);
+            msgOut.Write(posY);
+            msgOut.Write(command);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+        }
 
         static void Main(string[] args)
         {
@@ -101,6 +126,7 @@ namespace TestServer
                             if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnected)
                             {
                                 Console.WriteLine("Player Disconnected!");
+                                UpdateConnectionList(msgIn.SenderConnection);
                                 CorrectPlayerIndex(msgIn.SenderConnection, "Remove", 0);
                             }
                             break;
@@ -164,6 +190,12 @@ namespace TestServer
                                 float y = msgIn.ReadFloat();
 
                             }
+                            if (type == (byte)PacketType.Critter)
+                            {
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                Critter(msgIn.ReadString(), msgIn.ReadString(), msgIn.ReadFloat(), msgIn.ReadFloat(), msgIn.ReadString());
+                            }
+
                             if (type == (byte)PacketType.UpdatePlayerIndex)
                             {
                                 int index = msgIn.ReadInt32();

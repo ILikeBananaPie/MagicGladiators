@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter }
 
 
     public class TestClient
@@ -66,7 +66,7 @@ namespace MagicGladiators
             }
             catch (Exception)
             {
-               // client.Shutdown("Meh");
+                // client.Shutdown("Meh");
             }
         }
 
@@ -74,6 +74,19 @@ namespace MagicGladiators
         {
             client.Disconnect(string.Empty);
             client.Shutdown(string.Empty);
+        }
+
+        public void SendCritters(string id, string tag, Vector2 position, string command)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.Critter);
+            msgOut.Write(id);
+            msgOut.Write(tag);
+            msgOut.Write(position.X);
+            msgOut.Write(position.Y);
+            msgOut.Write(command);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void SendClone(string id, Vector2 position)
@@ -294,6 +307,38 @@ namespace MagicGladiators
                         break;
                     case NetIncomingMessageType.Data:
                         byte type = msgIn.ReadByte();
+                        if (type == (byte)PacketType.Critter)
+                        {
+                            string id = msgIn.ReadString();
+                            string tag = msgIn.ReadString();
+                            Vector2 vector = new Vector2(msgIn.ReadFloat(), msgIn.ReadFloat());
+                            string command = msgIn.ReadString();
+                            if (command == "Create")
+                            {
+                                GameObject critter = new GameObject();
+                                critter.AddComponent(new SpriteRenderer(critter, "Critter", 1));
+                                critter.AddComponent(new Animator(critter));
+                                critter.AddComponent(new Critter(critter));
+                                critter.AddComponent(new Physics(critter));
+                                critter.AddComponent(new Collider(critter, true, true));
+                                critter.Tag = tag;
+                                critter.CurrentHealth = 100;
+                                critter.MaxHealth = 100;
+                                critter.Id = id;
+                                critter.transform.position = vector;
+                                GameWorld.newObjects.Add(critter);
+                            }
+                            else
+                            {
+                                foreach (GameObject go in GameWorld.gameObjects)
+                                {
+                                    if (go.Tag == tag && go.Id == id)
+                                    {
+                                        go.transform.position = vector;
+                                    }
+                                }
+                            }
+                        }
                         #region EnemyPos
                         if (type == (byte)PacketType.EnemyPos)
                         {
