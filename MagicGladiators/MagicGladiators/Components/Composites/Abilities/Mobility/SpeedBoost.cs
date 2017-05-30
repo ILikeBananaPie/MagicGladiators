@@ -50,9 +50,12 @@ namespace MagicGladiators
                 oldSpeed = Player.speed;
                 canUse = false;
                 activated = true;
-                Color color = new Color();
-                color.A = 20;
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.DarkSlateGray;
+                Color color = Color.DarkSlateGray;
+                if (GameWorld.Instance.client != null)
+                {
+                    GameWorld.Instance.client.SendColor(gameObject.Id, "Enemy", color.R, color.G, color.B, color.A);
+                }
             }
             if (activated)
             {
@@ -66,10 +69,15 @@ namespace MagicGladiators
                 if (activationTimer > activationTime)
                 {
                     //Player.speed = oldSpeed;
-                    gameObject.Speed -= speedFactor;
+                    gameObject.Speed = gameObject.Speed - speedFactor;
                     activated = false;
                     activationTimer = 0;
                     (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+                    Color color = Color.White;
+                    if (GameWorld.Instance.client != null)
+                    {
+                        GameWorld.Instance.client.SendColor(gameObject.Id, "Enemy", color.R, color.G, color.B, color.A);
+                    }
                 }
             }
         }

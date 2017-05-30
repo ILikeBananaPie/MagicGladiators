@@ -24,7 +24,7 @@ namespace MagicGladiators
         private string[] list = new string[2] { "Stat", "Value" };
 
         public string Name { get; set; }
-        public int Health { get; set; }
+        public float Health { get; set; }
         public float Speed { get; set; }
         public float DamageResistance { get; set; }
         public float LavaResistance { get; set; }
@@ -42,7 +42,7 @@ namespace MagicGladiators
         public Item(GameObject gameObject, string[] stats) : base(gameObject)
         {
             this.Name = stats[0];
-            this.Health = int.Parse(stats[1]);
+            this.Health = float.Parse(stats[1]);
             this.Speed = float.Parse(stats[2]);
             this.DamageResistance = float.Parse(stats[3]);
             this.LavaResistance = float.Parse(stats[4]);
@@ -81,18 +81,43 @@ namespace MagicGladiators
 
         public void Upgrade()
         {
-            Health += (int)(Health * 0.25F);
-            Speed += Speed * 0.25F;
-            DamageResistance += DamageResistance * 0.25F;
-            LavaResistance += LavaResistance * 0.25F;
-            Value += (int)(Value * 0.2F);
-            KnockBackResistance += KnockBackResistance * 0.25F;
-            ProjectileSpeed += ProjectileSpeed * 0.25F;
-            LifeSteal += LifeSteal * 0.25F;
-            CDR += CDR * 0.25F;
-            AOEBonus += AOEBonus * 0.25F;
-            UpgradeValue += (int)(UpgradeValue * 0.2F);
-            GoldBonusPercent += (GoldBonusPercent * 0.25f);
+            if (Health != 0)
+            {
+                Health += 5;
+            }
+            if (Speed != 0)
+            {
+                Speed += 0.05F;
+            }
+            if (DamageResistance != 0)
+            {
+                DamageResistance -= 0.02F;
+            }
+            if (LavaResistance != 0)
+            {
+                LavaResistance -= 0.02F;
+            }
+            if (KnockBackResistance != 0)
+            {
+                KnockBackResistance += 0.01F;
+            }
+            if (ProjectileSpeed != 0)
+            {
+                ProjectileSpeed += 0.05F;
+            }
+            if (LifeSteal != 0)
+            {
+                LifeSteal += 0.02F;
+            }
+            if (CDR != 0)
+            {
+                CDR += 0.01F;
+            }
+            if (AOEBonus != 0)
+            {
+                AOEBonus += 0.05F;
+            }
+            Value += UpgradeValue / 2;
             upgradeLevel++;
         }
 

@@ -47,7 +47,7 @@ namespace MagicGladiators
             throw new NotImplementedException();
         }
 
-        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability, GameObject shooter)
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability, GameObject shooter, string id)
         {
             gameObject = new GameObject();
             if (ability.Contains("Firewave"))
@@ -57,6 +57,7 @@ namespace MagicGladiators
             else gameObject.AddComponent(new SpriteRenderer(gameObject, "ProjectileSheet", 1));
             gameObject.AddComponent(new Animator(gameObject));
             gameObject.Tag = ability;
+            gameObject.Id = id;
             gameObject.AddComponent(new Physics(gameObject));
             gameObject.AddComponent(new Collider(gameObject, true, true));
             gameObject.AddComponent(new Projectile(gameObject, position, targetVector, shooter));

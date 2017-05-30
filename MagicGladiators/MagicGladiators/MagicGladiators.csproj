@@ -45,12 +45,14 @@
     <Compile Include="Builder\DummyBuilder.cs" />
     <Compile Include="Builder\ItemBuilder.cs" />
     <Compile Include="Builder\MapBuilder.cs" />
+    <Compile Include="Components\Composites\Abilities\DeathAbilities\Critters.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\DeathMine.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\Firewave.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\RollingMeteor.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\ShrinkMap.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\SlowField.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\DefensiveAbility.cs" />
+    <Compile Include="Components\Composites\Abilities\Defensive\Invisibility.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\Spellshield.cs" />
     <Compile Include="Components\Composites\Abilities\Defensive\StoneArmour.cs" />
     <Compile Include="Components\Composites\Abilities\Mobility\Blink.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="Components\Composites\Abilities\Offensive\Drain.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\Fireball.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\GravityWell.cs" />
+    <Compile Include="Components\Composites\Abilities\Defensive\MirrorImage.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\Nova.cs" />
     <Compile Include="Components\Composites\Abilities\Offensive\OffensiveAbility.cs" />
     <Compile Include="Builder\HomingMissileBuilder.cs" />
@@ -73,13 +76,17 @@
     <Compile Include="Components\Composites\Client.cs" />
     <Compile Include="Builder\ProjectileBuilder.cs" />
     <Compile Include="Circle.cs" />
+    <Compile Include="Components\Composites\Clone.cs" />
     <Compile Include="Components\Composites\Dummy.cs" />
     <Compile Include="Components\Composites\Enemy.cs" />
     <Compile Include="Components\Composites\InputReciever.cs" />
+    <Compile Include="Components\Composites\IPInput.cs" />
+    <Compile Include="Components\Composites\LobbyMenuButton.cs" />
     <Compile Include="Components\Composites\Map.cs" />
     <Compile Include="Components\Composites\OnClick.cs" />
     <Compile Include="Components\Composites\Projectile.cs" />
     <Compile Include="Components\Composites\Server.cs" />
+    <Compile Include="Components\Composites\Critter.cs" />
     <Compile Include="Components\Interfaces\IAbility.cs" />
     <Compile Include="Components\Interfaces\ILoadable.cs" />
     <Compile Include="Components\Interfaces\IUpdateable.cs" />
@@ -109,6 +116,7 @@
     <Compile Include="Components\Leafs\SpriteRenderer.cs" />
     <Compile Include="Components\Leafs\Transform.cs" />
     <Compile Include="StringExt.cs" />
+    <Compile Include="TestClient.cs" />
     <Compile Include="UpdatePackage.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +150,9 @@
     <Content Include="Content\CollisionTexture.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Critter.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Deflect.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -149,6 +160,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Firewave.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Frog.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\ItemSheet.png">
@@ -167,6 +181,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Player.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\PlayerSheet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\ProjectileSheet.png">
@@ -227,7 +244,12 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TestServer\TestServer.csproj">
+      <Project>{ddb68fe1-f3d4-4c50-9384-bc3cff512fc9}</Project>
+      <Name>TestServer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

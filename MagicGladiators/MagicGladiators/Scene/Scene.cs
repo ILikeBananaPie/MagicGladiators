@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace MagicGladiators
 {
-    public class Scene:ILoadable, IUpdateable, IDrawable
+    public class Scene : ILoadable, IUpdateable, IDrawable
     {
         List<GameObject> gameObjects;
         public string scenetype;
@@ -116,24 +117,135 @@ namespace MagicGladiators
         }
         public static Scene Join()
         {
-            GameObject[] included = new GameObject[1];
+
+            GameObject[] included = new GameObject[3];
             included[0] = new GameObject();
-            included[0].AddComponent(new Client(included[0]));
+            included[0].AddComponent(new SpriteRenderer(included[0], "AlphaTryJoinIP", 0));
+            included[0].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
+            included[0].AddComponent(new OnClick(included[0], "Joining"));
+
+
+            included[1] = new GameObject();
+            included[1].AddComponent(new SpriteRenderer(included[1], "AlphaBack", 0));
+            included[1].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+            included[1].AddComponent(new OnClick(included[1], "NewGame"));
+
+            included[2] = new GameObject();
+            included[2].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
+            included[2].AddComponent(new IPInput(included[2]));
+            (included[0].GetComponent("OnClick") as OnClick).AddIPRelation((included[2].GetComponent("IPInput") as IPInput));
+
+
+            //included[0].AddComponent(new TestClient());
             Scene send = new Scene(included);
             send.scenetype = "Join";
             return send;
         }
-        public static Scene Host()
+        public static Scene Joined(string ip)
         {
-            GameObject[] included = new GameObject[0];
+            GameWorld.Instance.client = new TestClient(ip);
+            GameWorld.Instance.canClient = false;
+            GameWorld.Instance.showServer = true;
+
+            GameObject[] included = new GameObject[2];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "NewGame"));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaReady", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "Ready"));
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "Joined";
+            return send;
+        }
+        public static Scene Host(string ip)
+        {
+            //server start
+            GameWorld.Instance.server = new Process();
+            GameWorld.Instance.server.StartInfo.FileName = "TestServer.exe";
+            GameWorld.Instance.server.EnableRaisingEvents = true;
+            GameWorld.Instance.server.Start();
+            GameWorld.Instance.client = new TestClient(ip);
+            GameWorld.Instance.canClient = false;
+            GameWorld.Instance.showServer = true;
+
+            GameObject[] included = new GameObject[9];
             included[0] = new GameObject();
-            included[0].AddComponent(new Server(included[0]));
+            included[0].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
+            included[0].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+            included[0].AddComponent(new OnClick(included[0], "NewGame"));
+
+
+
+            included[1] = new GameObject();
+            included[1].AddComponent(new SpriteRenderer(included[1], "AlphaStart", 0));
+            included[1].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+            included[1].AddComponent(new OnClick(included[1], "MainMenu"));
+
+
+
+            included[2] = new GameObject();
+            included[2].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 2, 64 * 2);
+            included[2].AddComponent(new SpriteRenderer(included[2], "LobbyMenuSheet", 0));
+            included[2].AddComponent(new Animator(included[2]));
+            included[2].AddComponent(new LobbyMenuButton(included[2], "PillarHole"));
+
+            included[3] = new GameObject();
+            included[3].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 3, 64 * 2);
+            included[3].AddComponent(new SpriteRenderer(included[3], "LobbyMenuSheet", 0));
+            included[3].AddComponent(new Animator(included[3]));
+            included[3].AddComponent(new LobbyMenuButton(included[3], "Hole"));
+
+            included[4] = new GameObject();
+            included[4].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 4, 64 * 2);
+            included[4].AddComponent(new SpriteRenderer(included[4], "LobbyMenuSheet", 0));
+            included[4].AddComponent(new Animator(included[4]));
+            included[4].AddComponent(new LobbyMenuButton(included[4], "Pillar"));
+
+            included[5] = new GameObject();
+            included[5].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 5, 64 * 2);
+            included[5].AddComponent(new SpriteRenderer(included[5], "LobbyMenuSheet", 0));
+            included[5].AddComponent(new Animator(included[5]));
+            included[5].AddComponent(new LobbyMenuButton(included[5], "Standard"));
+
+            included[6] = new GameObject();
+            included[6].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 3 + 32, 64 * 3);
+            included[6].AddComponent(new SpriteRenderer(included[6], "LobbyMenuSheet", 0));
+            included[6].AddComponent(new Animator(included[6]));
+            included[6].AddComponent(new LobbyMenuButton(included[6], "7"));
+
+            included[7] = new GameObject();
+            included[7].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 4 + 32, 64 * 3);
+            included[7].AddComponent(new SpriteRenderer(included[7], "LobbyMenuSheet", 0));
+            included[7].AddComponent(new Animator(included[7]));
+            included[7].AddComponent(new LobbyMenuButton(included[7], "5"));
+
+            included[8] = new GameObject();
+            included[8].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width - 64 * 5 + 32, 64 * 3);
+            included[8].AddComponent(new SpriteRenderer(included[8], "LobbyMenuSheet", 0));
+            included[8].AddComponent(new Animator(included[8]));
+            included[8].AddComponent(new LobbyMenuButton(included[8], "3"));
+
+
             Scene send = new Scene(included);
             send.scenetype = "Host";
             return send;
+
         }
         public static Scene Practice()
         {
+            GameWorld.gameState = GameState.ingame;
             GameObject[] included = new GameObject[0];
             Scene send = new Scene(included);
             send.scenetype = "Practice";

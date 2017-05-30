@@ -136,7 +136,11 @@ namespace MagicGladiators
                     target = target - position;
                     target.Normalize();
                     Director director = new Director(new ProjectileBuilder());
-                    GameWorld.newObjects.Add(director.ConstructProjectile(position, target, side, new GameObject()));
+                    GameWorld.newObjects.Add(director.ConstructProjectile(position, target, side, new GameObject(), gameObject.Id));
+                    if (GameWorld.Instance.client != null)
+                    {
+                        GameWorld.Instance.client.SendProjectile(side + ",Create", position, target);
+                    }
 
                     activated = false;
                     canShoot = true;

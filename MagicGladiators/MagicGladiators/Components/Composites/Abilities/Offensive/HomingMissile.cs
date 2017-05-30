@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 
 namespace MagicGladiators
@@ -28,11 +25,11 @@ namespace MagicGladiators
         private GameObject player;
         private float timer;
 
-        
+
 
         public HomingMissile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
-            canShoot = true;   
+            canShoot = true;
             go = gameObject;
             originalPos = position;
             this.target = target;
@@ -41,7 +38,7 @@ namespace MagicGladiators
             testVector.Normalize();
             this.transform = gameObject.transform;
             cooldown = 5;
-            
+
         }
 
         public override void Update()
@@ -51,15 +48,18 @@ namespace MagicGladiators
 
             if (keyState.IsKeyDown(Keys.Q) && canShoot)
             {
-                
+
                 canShoot = false;
                 Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "HomingMissile", new GameObject());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "HomingMissile", new GameObject(), gameObject.Id);
+                if (GameWorld.Instance.client != null)
+                {
+                    GameWorld.Instance.client.SendProjectile("HomingMissile,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                }
             }
-          
         }
 
-       
+
 
         public override void LoadContent(ContentManager content)
         {
