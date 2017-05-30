@@ -78,17 +78,43 @@ namespace MagicGladiators
 
         public void Upgrade()
         {
-            Health += 5;
-            Speed += 0.05F;
-            DamageResistance -= 0.02F;
-            LavaResistance -= 0.02F;
-            KnockBackResistance += 0.01F;
-            ProjectileSpeed += 0.05F;
-            LifeSteal += 0.02F;
-            CDR += 0.01F;
-            AOEBonus += 0.05F;
+            if (Health != 0)
+            {
+                Health += 5;
+            }
+            if (Speed != 0)
+            {
+                Speed += 0.05F;
+            }
+            if (DamageResistance != 0)
+            {
+                DamageResistance -= 0.02F;
+            }
+            if (LavaResistance != 0)
+            {
+                LavaResistance -= 0.02F;
+            }
+            if (KnockBackResistance != 0)
+            {
+                KnockBackResistance += 0.01F;
+            }
+            if (ProjectileSpeed != 0)
+            {
+                ProjectileSpeed += 0.05F;
+            }
+            if (LifeSteal != 0)
+            {
+                LifeSteal += 0.02F;
+            }
+            if (CDR != 0)
+            {
+                CDR += 0.01F;
+            }
+            if (AOEBonus != 0)
+            {
+                AOEBonus += 0.05F;
+            }
             Value += UpgradeValue / 2;
-            //UpgradeValue += (int)(UpgradeValue * 0.2F);
             upgradeLevel++;
         }
 
