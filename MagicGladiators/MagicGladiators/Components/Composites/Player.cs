@@ -277,10 +277,11 @@ namespace MagicGladiators
             {
                 GameWorld.Instance.client.UpdateStats(gameObject.Id, gameObject.DamageResistance);
             }
-                    public void GoldReward(int amount)
+
+        }
+        public void GoldReward(int amount)
         {
             gold += (int)(amount * (1 + gameObject.GoldBonusPercent));
         }
-    }
     }
 }

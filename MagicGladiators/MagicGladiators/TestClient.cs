@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration }
 
 
     public class TestClient
@@ -47,6 +47,17 @@ namespace MagicGladiators
             }
             hostip = ip;
             //client.DiscoverLocalPeers(24049);
+        }
+
+        public void SendEnemyAcceleration(string id, Vector2 vector)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.EnemyAcceleration);
+            msgOut.Write(id);
+            msgOut.Write(vector.X);
+            msgOut.Write(vector.Y);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void CorrectPlayerIndex(int index)
@@ -307,6 +318,20 @@ namespace MagicGladiators
                         break;
                     case NetIncomingMessageType.Data:
                         byte type = msgIn.ReadByte();
+                        #region EnemyAcceleration
+                        if (type == (byte)PacketType.EnemyAcceleration)
+                        {
+                            Vector2 vector = new Vector2(msgIn.ReadFloat(), msgIn.ReadFloat());
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Player")
+                                {
+                                    (go.GetComponent("Physics") as Physics).Acceleration += vector;
+                                }
+                            }
+                        }
+                        #endregion
+                        #region Critter
                         if (type == (byte)PacketType.Critter)
                         {
                             string id = msgIn.ReadString();
@@ -339,6 +364,7 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
                         #region EnemyPos
                         if (type == (byte)PacketType.EnemyPos)
                         {

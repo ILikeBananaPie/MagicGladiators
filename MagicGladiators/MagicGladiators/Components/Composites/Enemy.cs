@@ -13,7 +13,7 @@ namespace MagicGladiators
         private Transform trnsfrm;
         public Vector2 velocity { get; set; }
         private Animator animator;
-        private Vector2 velocity;
+        //private Vector2 velocity;
         private GameObject lastHit;
 
         //public static Vector2 accelerationTest;

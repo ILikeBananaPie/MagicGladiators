@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration }
 
     public class Program
     {
@@ -90,6 +90,25 @@ namespace TestServer
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
+        private static void SendEnemyAcceleration(string id, float x, float y)
+        {
+            connectionList.Clear();
+            foreach (NetConnection con in server.Connections)
+            {
+                if (con.ToString() == id)
+                {
+                    connectionList.Add(con);
+                }
+            }
+
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.EnemyAcceleration);
+            msgOut.Write(x);
+            msgOut.Write(y);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+        }
+
         static void Main(string[] args)
         {
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
@@ -168,6 +187,15 @@ namespace TestServer
                         case NetIncomingMessageType.Data:
                             //TestClient.text = msgIn.ReadString();
                             byte type = msgIn.ReadByte();
+                            #region EnemyAcceleration
+                            if (type == (byte)PacketType.EnemyAcceleration)
+                            {
+                                string id = msgIn.ReadString();
+                                float x = msgIn.ReadFloat();
+                                float y = msgIn.ReadFloat();
+                                SendEnemyAcceleration(id, x, y);
+                            }
+                            #endregion
                             #region PlayerPos
                             if (type == (byte)PacketType.PlayerPos)
                             {

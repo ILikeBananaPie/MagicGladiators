@@ -53,13 +53,13 @@ namespace MagicGladiators
         private float abilityTimer = 0;
 
         private GameObject shooter;
-        
 
-        private float Aoe = 50;
 
-        private float abilityTimer = 0;
+        //private float Aoe = 50;
 
-        private GameObject shooter;
+        //private float abilityTimer = 0;
+
+        //private GameObject shooter;
         private Vector2 target;
 
         public static List<string> testName { get; set; } = new List<string>();
@@ -79,7 +79,7 @@ namespace MagicGladiators
 
             set
             {
-                testVector = value; 
+                testVector = value;
             }
         }
 
@@ -258,7 +258,7 @@ namespace MagicGladiators
                     GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
                 }
             }
-            if ((other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" || other.gameObject.Tag == "Pillar" || other.gameObject.Tag.Contains("Clone") ||other.gameObject.Tag.Contains("Critter")) && gameObject.Tag != "DeathMine")
+            if ((other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" || other.gameObject.Tag == "Pillar" || other.gameObject.Tag.Contains("Clone") || other.gameObject.Tag.Contains("Critter")) && gameObject.Tag != "DeathMine")
             {
                 if (gameObject.Tag == "Drain")
                 {
@@ -340,7 +340,8 @@ namespace MagicGladiators
                     else if (go.gameObject.Tag == "Dummy" && (!gameObject.Tag.Contains("Chain") && gameObject.Tag != "Pillar"))
                     {
                         (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween, shooter);
-                    } else if (go.gameObject.Tag == "Enemy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
+                    }
+                    else if (go.gameObject.Tag == "Enemy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
                     {
                         (go.gameObject.GetComponent("Enemy") as Enemy).Hit(shooter);
                     }
@@ -528,44 +529,40 @@ namespace MagicGladiators
 
 
 
-            if (gameObject.Tag == "DeathMine")
-            {
-                mineTimer += GameWorld.Instance.deltaTime;
-                if (mineTimer > mineActivationTime)
+                if (gameObject.Tag == "DeathMine")
                 {
-                    deathMineActivated = true;
-                    (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
-                }
-                //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
-
-            }
-
-            if (gameObject.Tag == "GravityWell")
-            {
-                (gameObject.GetComponent("Physics") as Physics).Acceleration += (TestVector / 4) * projectileSpeed;
-
-
-
-                foreach (GameObject go in GameWorld.gameObjects)
-                {
-
-                    Vector2 pull = (gameObject.GetComponent("Physics") as Physics).GetVector(gameObject.transform.position, go.transform.position);
-                    pull.Normalize();
-                   
-                    if (go.Tag == "Dummy" || go.Tag == "Enemy")
+                    mineTimer += GameWorld.Instance.deltaTime;
+                    if (mineTimer > mineActivationTime)
                     {
+                        deathMineActivated = true;
+                        (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
+                    }
+                    //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
 
-                        if (Vector2.Distance(gameObject.transform.position, go.transform.position) < 300)
+                }
+
+                if (gameObject.Tag == "GravityWell")
+                {
+                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (TestVector / 4) * projectileSpeed;
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        Vector2 pull = (gameObject.GetComponent("Physics") as Physics).GetVector(gameObject.transform.position, go.transform.position);
+                        pull.Normalize();
+
+                        if (go.Tag == "Dummy" || go.Tag == "Enemy")
                         {
-
-                            (go.GetComponent("Physics") as Physics).Acceleration += pull / 10;
-                      
-
+                            if (Vector2.Distance(gameObject.transform.position, go.transform.position) < 300)
+                            {
+                                (go.GetComponent("Physics") as Physics).Acceleration += pull / 10;
+                                if (GameWorld.Instance.client != null && go.Tag == "Enemy")
+                                {
+                                    GameWorld.Instance.client.SendEnemyAcceleration(go.Id, pull / 10);
+                                }
+                            }
                         }
                     }
                 }
 
-            }
                 if (gameObject.Tag == "DeathMine")
                 {
                     mineTimer += GameWorld.Instance.deltaTime;
@@ -638,7 +635,7 @@ namespace MagicGladiators
 
                 if (gameObject.Tag == "HomingMissile")
                 {
-                    if (homingTimer > 1)
+                    if (homingTimer > 0.5F)
                     {
                         foreach (GameObject go in GameWorld.gameObjects)
                         {
