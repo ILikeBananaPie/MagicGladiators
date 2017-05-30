@@ -17,7 +17,7 @@ namespace MagicGladiators
 
     public enum ObjectType { }
 
-    public enum GameState { offgame, ingame}
+    public enum GameState { offgame, ingame }
 
 
 
@@ -280,19 +280,19 @@ namespace MagicGladiators
         {
             // name, hp, speed, dmgRes, lavaRes, value, knockRes, projectileSpeed, LifeSteal
             Director director = new Director(new ItemBuilder());
-            string[] testItem = new string[] { "Speed", "0", "1", "0", "0", "100", "0", "0", "0", "0", "0" };
+            string[] testItem = new string[] { "Speed", "0", "0.05", "0", "0", "100", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Hp", "10", "0", "0", "0", "100", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "Hp", "5", "0", "0", "0", "100", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LavaRes", "0", "0", "0", "-0.01", "100", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "LavaRes", "0", "0", "0", "-0.02", "100", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "DmgRes", "0", "0", "-0.01", "0", "100", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "DmgRes", "0", "0", "-0.02", "0", "100", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
             testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "0.01", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "0.01", "0", "0", "0" };
+            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "0.05", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "0.01", "0", "0" };
+            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "0.02", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
             testItem = new string[] { "CDR", "0", "0", "0", "0", "100", "0", "0", "0", "0.05", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
@@ -453,7 +453,7 @@ namespace MagicGladiators
 
                 UpdateAbilityUpgrade(mouse, mouseCircle);
 
-                UpdateItemUpgrade(mouse, mouseCircle);
+                //UpdateItemUpgrade(mouse, mouseCircle);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.F2) && canServer)
@@ -633,13 +633,39 @@ namespace MagicGladiators
                         if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.items.Count <= 5)
                         {
                             canBuy = false;
-                            if (Player.gold >= item.Value)
+                            if (Player.items.Count > 0)
                             {
-                                Director director = new Director(new ItemBuilder());
-                                Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString(), item.CDR.ToString(), item.AOEBonus.ToString() }));
-                                Player.gold -= item.Value;
-                                (player.GetComponent("Player") as Player).UpdateStats();
-                                break;
+                                foreach (GameObject go2 in Player.items)
+                                {
+                                    if (Player.gold >= item.Value)
+                                    {
+                                        Item inventoryItem = (go.GetComponent("Item") as Item);
+                                        if (inventoryItem.Name == item.Name)
+                                        {
+                                            inventoryItem.Upgrade();
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            Director director = new Director(new ItemBuilder());
+                                            Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString(), item.CDR.ToString(), item.AOEBonus.ToString() }));
+                                            Player.gold -= item.Value;
+                                            (player.GetComponent("Player") as Player).UpdateStats();
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (Player.gold >= item.Value)
+                                {
+                                    Director director = new Director(new ItemBuilder());
+                                    Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString(), item.CDR.ToString(), item.AOEBonus.ToString() }));
+                                    Player.gold -= item.Value;
+                                    (player.GetComponent("Player") as Player).UpdateStats();
+                                    break;
+                                }
                             }
                         }
                     }
@@ -696,45 +722,45 @@ namespace MagicGladiators
             }
         }
 
-        public void UpdateItemUpgrade(MouseState mouse, Circle mouseCircle)
-        {
-            //only in buy phase
-            foreach (GameObject go in Player.items)
-            {
-                if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
-                {
-                    MouseOnIcon = true;
-                    if (canUpgrade && mouse.LeftButton == ButtonState.Pressed)
-                    {
-                        //upgrade item
-                        canUpgrade = false;
-                        Item item = (go.GetComponent("Item") as Item);
-                        if (item.upgradeLevel != 3 && Player.gold >= item.UpgradeValue)
-                        {
-                            Player.gold -= item.UpgradeValue;
-                            item.Upgrade();
-                            (player.GetComponent("Player") as Player).UpdateStats();
-                        }
-                        else
-                        {
-                            //error message (not enough gold)
-                        }
-                    }
-                    if (canBuy && mouse.RightButton == ButtonState.Pressed)
-                    {
-                        canBuy = false;
-                        Player.gold += (go.GetComponent("Item") as Item).Value;
-                        Player.items.Remove(go);
-                        (player.GetComponent("Player") as Player).UpdateStats();
-                        break;
-                    }
-                }
-                else
-                {
-                    MouseOnIcon = false;
-                }
-            }
-        }
+        //public void UpdateItemUpgrade(MouseState mouse, Circle mouseCircle)
+        //{
+        //    //only in buy phase
+        //    foreach (GameObject go in Player.items)
+        //    {
+        //        if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+        //        {
+        //            MouseOnIcon = true;
+        //            if (canUpgrade && mouse.LeftButton == ButtonState.Pressed)
+        //            {
+        //                //upgrade item
+        //                canUpgrade = false;
+        //                Item item = (go.GetComponent("Item") as Item);
+        //                if (item.upgradeLevel != 3 && Player.gold >= item.UpgradeValue)
+        //                {
+        //                    Player.gold -= item.UpgradeValue;
+        //                    item.Upgrade();
+        //                    (player.GetComponent("Player") as Player).UpdateStats();
+        //                }
+        //                else
+        //                {
+        //                    //error message (not enough gold)
+        //                }
+        //            }
+        //            if (canBuy && mouse.RightButton == ButtonState.Pressed)
+        //            {
+        //                canBuy = false;
+        //                Player.gold += (go.GetComponent("Item") as Item).Value;
+        //                Player.items.Remove(go);
+        //                (player.GetComponent("Player") as Player).UpdateStats();
+        //                break;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            MouseOnIcon = false;
+        //        }
+        //    }
+        //}
 
         public void UpdateMouseOnIcon(Circle mouseCircle)
         {

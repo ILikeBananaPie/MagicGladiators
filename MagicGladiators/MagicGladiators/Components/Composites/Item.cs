@@ -24,7 +24,7 @@ namespace MagicGladiators
         private string[] list = new string[2] { "Stat", "Value" };
 
         public string Name { get; set; }
-        public int Health { get; set; }
+        public float Health { get; set; }
         public float Speed { get; set; }
         public float DamageResistance { get; set; }
         public float LavaResistance { get; set; }
@@ -41,7 +41,7 @@ namespace MagicGladiators
         public Item(GameObject gameObject, string[] stats) : base(gameObject)
         {
             this.Name = stats[0];
-            this.Health = int.Parse(stats[1]);
+            this.Health = float.Parse(stats[1]);
             this.Speed = float.Parse(stats[2]);
             this.DamageResistance = float.Parse(stats[3]);
             this.LavaResistance = float.Parse(stats[4]);
@@ -51,7 +51,7 @@ namespace MagicGladiators
             this.LifeSteal = float.Parse(stats[8]);
             this.CDR = float.Parse(stats[9]);
             this.AOEBonus = float.Parse(stats[10]);
-            this.UpgradeValue = (int)(Value + Value * 0.2F);
+            this.UpgradeValue = Value;
         }
 
         public void LoadContent(ContentManager content)
@@ -78,17 +78,17 @@ namespace MagicGladiators
 
         public void Upgrade()
         {
-            Health += (int)(Health * 0.25F);
-            Speed += Speed * 0.25F;
-            DamageResistance += DamageResistance * 0.25F;
-            LavaResistance += LavaResistance * 0.25F;
-            Value += (int)(Value * 0.2F);
-            KnockBackResistance += KnockBackResistance * 0.25F;
-            ProjectileSpeed += ProjectileSpeed * 0.25F;
-            LifeSteal += LifeSteal * 0.25F;
-            CDR += CDR * 0.25F;
-            AOEBonus += AOEBonus * 0.25F;
-            UpgradeValue += (int)(UpgradeValue * 0.2F);
+            Health += 5;
+            Speed += 0.05F;
+            DamageResistance -= 0.02F;
+            LavaResistance -= 0.02F;
+            KnockBackResistance += 0.01F;
+            ProjectileSpeed += 0.05F;
+            LifeSteal += 0.02F;
+            CDR += 0.01F;
+            AOEBonus += 0.05F;
+            Value += UpgradeValue / 2;
+            //UpgradeValue += (int)(UpgradeValue * 0.2F);
             upgradeLevel++;
         }
 
