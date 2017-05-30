@@ -45,6 +45,7 @@
     <Compile Include="Builder\DummyBuilder.cs" />
     <Compile Include="Builder\ItemBuilder.cs" />
     <Compile Include="Builder\MapBuilder.cs" />
+    <Compile Include="Components\Composites\Abilities\DeathAbilities\Critters.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\DeathMine.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\Firewave.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\RollingMeteor.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Components\Composites\OnClick.cs" />
     <Compile Include="Components\Composites\Projectile.cs" />
     <Compile Include="Components\Composites\Server.cs" />
+    <Compile Include="Components\Composites\Critter.cs" />
     <Compile Include="Components\Interfaces\IAbility.cs" />
     <Compile Include="Components\Interfaces\ILoadable.cs" />
     <Compile Include="Components\Interfaces\IUpdateable.cs" />
@@ -144,6 +146,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\CollisionTexture.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Critter.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Deflect.png">

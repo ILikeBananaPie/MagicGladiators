@@ -24,6 +24,7 @@ namespace MagicGladiators
 
         public override void Update()
         {
+            if (GameWorld.gameState == GameState.offgame) { return; }
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
             if (mouse.Position.X > 0 && mouse.Position.X < GameWorld.Instance.Window.ClientBounds.Width && mouse.Y > 0 && mouse.Y < GameWorld.Instance.Window.ClientBounds.Height)

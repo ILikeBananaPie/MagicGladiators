@@ -141,24 +141,56 @@ namespace MagicGladiators
             send.scenetype = "Join";
             return send;
         }
-        public static Scene Host()
+        public static Scene Joined(string ip)
+        {
+            GameWorld.Instance.client = new TestClient(ip);
+            GameWorld.Instance.canClient = false;
+            GameWorld.Instance.showServer = true;
+
+            GameObject[] included = new GameObject[2];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "NewGame"));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaReady", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "Ready"));
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "Joined";
+            return send;
+        }
+        public static Scene Host(string ip)
         {
             //server start
             GameWorld.Instance.server = new Process();
             GameWorld.Instance.server.StartInfo.FileName = "TestServer.exe";
             GameWorld.Instance.server.EnableRaisingEvents = true;
             GameWorld.Instance.server.Start();
-            GameWorld.Instance.client = new TestClient("localhost");
+            GameWorld.Instance.client = new TestClient(ip);
+            GameWorld.Instance.canClient = false;
+            GameWorld.Instance.showServer = true;
 
             GameObject[] included = new GameObject[2];
             included[0] = new GameObject();
             included[0].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
-            included[0].AddComponent(new OnClick(included[0], "MainMenu"));
+            included[0].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+            included[0].AddComponent(new OnClick(included[0], "NewGame"));
 
 
 
             included[1] = new GameObject();
-            included[1].AddComponent(new SpriteRenderer(included[0], "AlphaBack", 0));
+            included[1].AddComponent(new SpriteRenderer(included[1], "AlphaStart", 0));
+            included[1].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
             included[1].AddComponent(new OnClick(included[0], "MainMenu"));
 
 
@@ -171,6 +203,7 @@ namespace MagicGladiators
         }
         public static Scene Practice()
         {
+            GameWorld.gameState = GameState.ingame;
             GameObject[] included = new GameObject[0];
             Scene send = new Scene(included);
             send.scenetype = "Practice";

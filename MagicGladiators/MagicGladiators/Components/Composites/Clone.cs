@@ -13,7 +13,6 @@ namespace MagicGladiators
         private Animator animator;
         private List<string> abilities = new List<string>() { "Fireball", "Chain", "Drain", "HomingMissile", "RollingMeteor", "DeathMeteor" };
 
-
         public Clone(GameObject gameObject) : base(gameObject)
         {
 
@@ -45,6 +44,7 @@ namespace MagicGladiators
 
         public void Update()
         {
+
             foreach (GameObject go in GameWorld.gameObjects)
             {
                 if ((go.Tag == "Enemy" || go.Tag == "Player") && go.Id == gameObject.Id)

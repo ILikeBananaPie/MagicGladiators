@@ -255,7 +255,7 @@ namespace MagicGladiators
                     }
 
                 }
-                if (gameObject.Tag == "Chain" && other.gameObject.Tag != "Pillar" && gameObject.Id == GameWorld.Instance.player.Id)
+                if (gameObject.Tag == "Chain" && other.gameObject.Tag != "Pillar" && gameObject.Id == GameWorld.Instance.player.Id && !chainActivated)
                 {
                     chainTarget = other.gameObject;
                     (chainTarget.GetComponent("Physics") as Physics).chainActivated = true;

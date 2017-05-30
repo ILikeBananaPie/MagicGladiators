@@ -40,6 +40,8 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Invisibility(gameObject));
 
+            gameObject.AddComponent(new Critters(gameObject));
+
             //gameObject.AddComponent(new StoneArmour(gameObject));
 
             //gameObject.AddComponent(new Spellshield(gameObject));

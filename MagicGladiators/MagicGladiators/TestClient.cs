@@ -9,11 +9,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using MagicGladiators;
 using System.Net;
-using TestServer;
+//using TestServer;
 
 namespace MagicGladiators
 {
-    //public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter }
 
 
     public class TestClient
@@ -29,6 +29,7 @@ namespace MagicGladiators
         public string TestName { get; set; } = "";
         public string TestID { get; set; } = "";
         private string[] directions = new string[4] { "Up", "Down", "Left", "Right" };
+        private string hostip;
 
         //private float TestTimer;
 
@@ -36,7 +37,6 @@ namespace MagicGladiators
         {
             if (GameWorld.Instance.canClient)
             {
-                string hostip = ip;
                 spriteBatch = new SpriteBatch(GameWorld.Instance.GraphicsDevice);
                 font = GameWorld.Instance.Content.Load<SpriteFont>("fontText");
                 NetPeerConfiguration config = new NetPeerConfiguration("Server");
@@ -44,20 +44,49 @@ namespace MagicGladiators
                 config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
                 client = new NetClient(config);
                 client.Start();
-
-                try
-                {
-                    client.Connect(hostip, 51234);
-                }
-                catch (Exception)
-                {
-                    client.Shutdown("Meh");
-                }
             }
-
-
-
+            hostip = ip;
             //client.DiscoverLocalPeers(24049);
+        }
+
+        public void CorrectPlayerIndex(int index)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.UpdatePlayerIndex);
+            msgOut.Write(index);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
+        }
+
+        public void ConnectToServer()
+        {
+            try
+            {
+                client.Connect(hostip, 51234);
+            }
+            catch (Exception)
+            {
+                // client.Shutdown("Meh");
+            }
+        }
+
+        public void Disconnect()
+        {
+            client.Disconnect(string.Empty);
+            client.Shutdown(string.Empty);
+        }
+
+        public void SendCritters(string id, string tag, Vector2 position, string command)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.Critter);
+            msgOut.Write(id);
+            msgOut.Write(tag);
+            msgOut.Write(position.X);
+            msgOut.Write(position.Y);
+            msgOut.Write(command);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
         public void SendClone(string id, Vector2 position)
@@ -277,8 +306,40 @@ namespace MagicGladiators
                     case NetIncomingMessageType.ConnectionApproval:
                         break;
                     case NetIncomingMessageType.Data:
-                        //text = msgIn.ReadString();
                         byte type = msgIn.ReadByte();
+                        if (type == (byte)PacketType.Critter)
+                        {
+                            string id = msgIn.ReadString();
+                            string tag = msgIn.ReadString();
+                            Vector2 vector = new Vector2(msgIn.ReadFloat(), msgIn.ReadFloat());
+                            string command = msgIn.ReadString();
+                            if (command == "Create")
+                            {
+                                GameObject critter = new GameObject();
+                                critter.AddComponent(new SpriteRenderer(critter, "Critter", 1));
+                                critter.AddComponent(new Animator(critter));
+                                critter.AddComponent(new Critter(critter));
+                                critter.AddComponent(new Physics(critter));
+                                critter.AddComponent(new Collider(critter, true, true));
+                                critter.Tag = tag;
+                                critter.CurrentHealth = 100;
+                                critter.MaxHealth = 100;
+                                critter.Id = id;
+                                critter.transform.position = vector;
+                                GameWorld.newObjects.Add(critter);
+                            }
+                            else
+                            {
+                                foreach (GameObject go in GameWorld.gameObjects)
+                                {
+                                    if (go.Tag == tag && go.Id == id)
+                                    {
+                                        go.transform.position = vector;
+                                    }
+                                }
+                            }
+                        }
+                        #region EnemyPos
                         if (type == (byte)PacketType.EnemyPos)
                         {
                             string id = msgIn.ReadString();
@@ -296,6 +357,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
+                        #region EnemyVel
                         if (type == (byte)PacketType.EnemyVel)
                         {
                             string id = msgIn.ReadString();
@@ -312,10 +375,27 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
+                        #region UpdateIndex
+                        if (type == (byte)PacketType.UpdatePlayerIndex)
+                        {
+                            string id = msgIn.ReadString();
+                            int index = msgIn.ReadInt32();
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Id == id)
+                                {
+                                    go.ConnectionNumber = index;
+                                }
+                            }
+                        }
+                        #endregion
+                        #region CreatePlayer
                         if (type == (byte)PacketType.CreatePlayer)
                         {
                             string id = msgIn.ReadString();
                             string color = msgIn.ReadString();
+                            int index = msgIn.ReadInt32();
                             GameObject go = new GameObject();
                             go.AddComponent(new SpriteRenderer(go, "PlayerSheet", 1));
                             go.AddComponent(new Animator(go));
@@ -324,6 +404,7 @@ namespace MagicGladiators
                             go.AddComponent(new Physics(go));
                             go.Tag = "Enemy";
                             go.Id = id;
+                            go.ConnectionNumber = index;
                             (go.GetComponent("Animator") as Animator).PlayAnimation(color);
                             GameWorld.newObjects.Add(go);
                             foreach (GameObject dummy in GameWorld.gameObjects)
@@ -336,6 +417,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
+                        #region UpdateProjectile
                         if (type == (byte)PacketType.UpdateProjectile)
                         {
                             string id = msgIn.ReadString();
@@ -364,6 +447,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
+                        #region CreateProjectile
                         if (type == (byte)PacketType.CreateProjectile)
                         {
                             string id = msgIn.ReadString();
@@ -402,6 +487,8 @@ namespace MagicGladiators
                             }
 
                         }
+                        #endregion
+                        #region RemoveProjectile
                         if (type == (byte)PacketType.RemoveProjectile)
                         {
                             string id = msgIn.ReadString();
@@ -436,13 +523,16 @@ namespace MagicGladiators
                             }
 
                         }
-
+                        #endregion
+                        #region Push
                         if (type == (byte)PacketType.Push)
                         {
                             float x = msgIn.ReadFloat();
                             float y = msgIn.ReadFloat();
                             (GameWorld.Instance.player.GetComponent("Player") as Player).isPushed(new Vector2(x, y));
                         }
+                        #endregion
+                        #region Deflect
                         if (type == (byte)PacketType.Deflect)
                         {
                             string id = msgIn.ReadString();
@@ -465,7 +555,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
-
+                        #endregion
+                        #region ColorChange
                         if (type == (byte)PacketType.ColorChange)
                         {
                             string id = msgIn.ReadString();
@@ -496,21 +587,48 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
+                        #region AssignID
                         if (type == (byte)PacketType.AssignID)
                         {
                             GameWorld.Instance.canClient = false;
                             string id = msgIn.ReadString();
                             string color = msgIn.ReadString();
+                            int connectionNumber = msgIn.ReadInt32();
+                            //connectionNumber++;
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (go.Tag == "Player")
                                 {
                                     go.Id = id;
-                                    (go.GetComponent("Animator") as Animator).PlayAnimation(color);
+                                    go.ConnectionNumber = connectionNumber;
+                                    go.transform.position = new Vector2(50, 50 * connectionNumber);
+                                    //(go.GetComponent("Animator") as Animator).PlayAnimation(color);
                                 }
                             }
                             //GameWorld.Instance.player.Id = id;
                         }
+                        #endregion
+                        #region RemovePlayer
+                        if (type == (byte)PacketType.RemovePlayer)
+                        {
+                            string id = msgIn.ReadString();
+                            int number = msgIn.ReadInt32();
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Id == id)
+                                {
+                                    GameWorld.objectsToRemove.Add(go);
+                                }
+                                if (go.Tag == "Player")
+                                {
+                                    go.ConnectionNumber = number;
+                                }
+                            }
+                            CorrectPlayerIndex(number);
+                        }
+                        #endregion
+                        #region UpdateStats
                         if (type == (byte)PacketType.UpdateStats)
                         {
                             string id = msgIn.ReadString();
@@ -530,7 +648,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
-
+                        #endregion
+                        #region ShrinkMap
                         if (type == (byte)PacketType.ShrinkMap)
                         {
                             foreach (GameObject go in GameWorld.gameObjects)
@@ -544,7 +663,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
-
+                        #endregion
+                        #region Chain
                         if (type == (byte)PacketType.Chain)
                         {
                             string id = msgIn.ReadString();
@@ -559,7 +679,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
-
+                        #endregion
+                        #region Invisibility
                         if (type == (byte)PacketType.Invisibility)
                         {
                             string id = msgIn.ReadString();
@@ -572,6 +693,8 @@ namespace MagicGladiators
                                 }
                             }
                         }
+                        #endregion
+                        #region Clone
                         if (type == (byte)PacketType.Clone)
                         {
                             string id = msgIn.ReadString();
@@ -602,7 +725,7 @@ namespace MagicGladiators
                                 }
                             }
                         }
-
+                        #endregion
                         break;
                     case NetIncomingMessageType.Receipt:
 

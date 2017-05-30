@@ -17,7 +17,7 @@ namespace MagicGladiators
 
     public enum ObjectType { }
 
-
+    public enum GameState { offgame, ingame}
 
 
 
@@ -86,7 +86,7 @@ namespace MagicGladiators
         public static List<GameObject> characters = new List<GameObject>();
         public static List<Collider> characterColliders = new List<Collider>();
 
-        private bool showServer = false;
+        public bool showServer { get; set; } = false;
         private bool canServer = true;
         public bool canClient { get; set; } = true;
         public TestClient client;
@@ -95,6 +95,8 @@ namespace MagicGladiators
         private List<Thread> threads = new List<Thread>();
         private float clientTimer = 0;
         private bool sendPos = false;
+
+        public static GameState gameState = GameState.offgame;
 
         private static GameWorld instance;
         public static GameWorld Instance
@@ -390,16 +392,11 @@ namespace MagicGladiators
             {
                 if (!pressed)
                 {
-                    if (CurrentScene.scenetype == "Practice")
+                    if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "NewGame")
                     {
                         NextScene = Scene.MainMenu();
                     }
-                    else
-                    if (CurrentScene.scenetype == "NewGame")
-                    {
-                        NextScene = Scene.MainMenu();
-                    }
-                    else if (CurrentScene.scenetype == "PracticeChooseRound")
+                    else if (CurrentScene.scenetype == "PracticeChooseRound" || CurrentScene.scenetype == "Host")
                     {
                         NextScene = Scene.NewGame();
                     }
@@ -489,6 +486,7 @@ namespace MagicGladiators
                 client = new TestClient("25.28.211.248");
                 canClient = false;
                 showServer = true;
+                client.ConnectToServer();
 
                 //Thread update = new Thread(ClientUpdate);
                 //update.IsBackground = true;
@@ -506,8 +504,10 @@ namespace MagicGladiators
                 {
                     client.SendMessage("Client sending text!");
                 }
-
-                client.Update();
+                if (client != null)
+                {
+                    client.Update();
+                }
                 //client.Draw();
             }
 
@@ -548,6 +548,16 @@ namespace MagicGladiators
                     {
                         go.LoadContent(Content);
                     }
+                }
+                if (NextScene.scenetype == "Host" || NextScene.scenetype == "Joined")
+                {
+                    Director director = new Director(new PlayerBuilder());
+                    player = director.Construct(new Vector2(50));
+                    newObjects.Add(player);
+
+                    UpdateLevel();
+
+                    client.ConnectToServer();
                 }
 
                 NextScene = null;
