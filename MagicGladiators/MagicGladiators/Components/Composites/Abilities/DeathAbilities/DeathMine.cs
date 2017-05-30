@@ -74,7 +74,7 @@ namespace MagicGladiators
             if (keyState.IsKeyDown(Keys.R) && !activated)
             {
                 Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(new Vector2(mouse.Position.X, mouse.Position.Y), Vector2.Zero, "DeathMine");
+                director.ConstructProjectile(new Vector2(mouse.Position.X, mouse.Position.Y), Vector2.Zero, "DeathMine", new GameObject());
                 activated = false;
 
                 activated = true;

@@ -46,7 +46,7 @@ namespace MagicGladiators
             {
                 canShoot = false;
                 Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(gameObject.transform.position, Vector2.Zero, "Mine");
+                director.ConstructProjectile(gameObject.transform.position, Vector2.Zero, "Mine", new GameObject());
             }
             
         }
