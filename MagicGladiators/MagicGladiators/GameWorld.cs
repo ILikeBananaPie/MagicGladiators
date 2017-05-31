@@ -473,7 +473,8 @@ namespace MagicGladiators
                             try
                             {
                                 server.Kill();
-                            } catch (Exception) { }
+                            }
+                            catch (Exception) { }
                         }
                         Exit();
                     }
@@ -646,11 +647,11 @@ namespace MagicGladiators
                     ResetCharacters();
                     Director ability = new Director(new AbilityIconBuilder());
                     Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68, Window.ClientBounds.Height - 42), "Fireball", 0, ""));
-                    
+
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
                     newObjects.Add(player);
-                    
+
                     CreateDummies();
 
                     CreateVendorItems();
@@ -1034,17 +1035,22 @@ namespace MagicGladiators
                     if (buyPhase)
                     {
                         bool startRound = false;
+
                         foreach (GameObject go in gameObjects)
                         {
-                            if ((go.Tag == "Enemy" || go.Tag == "Player") && go.isReady)
+                            if (gameObjects.Exists(x => x.Tag == "Player") || gameObjects.Exists(x => x.Tag == "Enemy"))
                             {
-                                //don't start the round
-                                startRound = true;
-                                break;
+                                if ((go.Tag == "Enemy" || go.Tag == "Player") && !go.isReady)
+                                {
+                                    //don't start the round
+                                    startRound = false;
+                                    break;
+                                }
+                                else startRound = true;
                             }
-                            else startRound = false;
 
                         }
+
                         if (startRound)
                         {
                             client.SendSwitchPhase();
@@ -1059,6 +1065,7 @@ namespace MagicGladiators
                             currentRound++;
                             //ResetCharacters();
                             buyPhase = false;
+                            startRound = false;
                         }
                     }
                     else
