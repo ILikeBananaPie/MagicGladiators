@@ -19,8 +19,8 @@ namespace MagicGladiators
 
             gameObject.Tag = "Player";
 
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
-
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "PlayerSheet", 1));
+                     
             gameObject.AddComponent(new Animator(gameObject));
 
             gameObject.AddComponent(new Player(gameObject, gameObject.transform));
@@ -34,7 +34,13 @@ namespace MagicGladiators
             gameObject.AddComponent(new ShrinkMap(gameObject));
             gameObject.AddComponent(new SlowField(gameObject));
 
+            gameObject.AddComponent(new MirrorImage(gameObject));
+
             gameObject.AddComponent(new Firewave(gameObject));
+
+            gameObject.AddComponent(new Invisibility(gameObject));
+
+            gameObject.AddComponent(new Critters(gameObject));
 
             //gameObject.AddComponent(new StoneArmour(gameObject));
 
@@ -109,7 +115,7 @@ namespace MagicGladiators
             throw new NotImplementedException();
         }
 
-        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability, GameObject shooter)
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability, GameObject shooter, string id)
         {
             throw new NotImplementedException();
         }

@@ -14,7 +14,9 @@ namespace MagicGladiators
     {
         public Transform transform { get; set; }
         public ContentManager content { get; private set; }
-        public NetConnection Connection { get; set; }
+        public string Id { get; set; }
+        public int ConnectionNumber { get; set; }
+        public bool isReady = false;
 
         public float MaxHealth { get; set; }
         public float CurrentHealth { get; set; }
@@ -26,9 +28,13 @@ namespace MagicGladiators
         public float ProjectileSpeed { get; set; } = 1;
         public float LifeSteal { get; set; } = 0;
         public float CooldownReduction { get; set; } = 1;
+        public bool IsInvisible { get; set; } = false;
+
+
         public float AoeBonus { get; set; } = 1;
         public float GoldBonusPercent { get; set; } = 0;
         public List<Component> components = new List<Component>();
+        private List<Component> componentsToRemove = new List<Component>();
 
         public string Tag { get; set; } = "Untagged";
         public ObjectType objectType { get; set; }
@@ -81,8 +87,20 @@ namespace MagicGladiators
                     (component as IAbility).Cooldown();
                 }
             }
+            UpdateComponents();
         }
 
+        public void UpdateComponents()
+        {
+            if (componentsToRemove.Count > 0)
+            {
+                foreach (Component comp in componentsToRemove)
+                {
+                    components.Remove(comp);
+                }
+                componentsToRemove.Clear();
+            }
+        }
 
         /// <summary>
         /// Draws the GameObject
@@ -110,7 +128,7 @@ namespace MagicGladiators
 
         public void RemoveComponent(Component component)
         {
-            components.Remove(component);
+            componentsToRemove.Add(component);
         }
 
         /// <summary>

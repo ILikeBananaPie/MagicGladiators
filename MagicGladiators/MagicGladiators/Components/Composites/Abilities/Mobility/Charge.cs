@@ -23,7 +23,7 @@ namespace MagicGladiators
         private Vector2 testVector;
         private Vector2 test;
 
-        
+
 
         private Physics physics;
         public Charge(GameObject go, Transform transform, Animator animator) : base(go)
@@ -38,7 +38,7 @@ namespace MagicGladiators
 
         public override void LoadContent(ContentManager content)
         {
-            
+
         }
 
         public override void Update()
@@ -50,37 +50,42 @@ namespace MagicGladiators
             Vector2 translation = Vector2.Zero;
 
             //activate aim and move in a charge
-            if (keyState.IsKeyDown(Keys.C) && !on && !activated && canShoot)
-            {
 
-
-                activated = true;
-            }
-            if (activated && keyState.IsKeyUp(Keys.C))
+            if (!(gameObject.GetComponent("Physics") as Physics).chainActivated && !(gameObject.GetComponent("Physics") as Physics).chainDeactivated)
             {
-                target = new Vector2(mouse.Position.X, mouse.Position.Y);
-                test = physics.GetVector(target, go.transform.position);
-                test.Normalize();
-                on = true;
-                canShoot = false;
-            }
-            if (on)
-            {
-                if (chargeTimer < 0.25)
+                if (keyState.IsKeyDown(key) && !on && !activated && canShoot)
                 {
-                    physics.Acceleration += test;
-                    chargeTimer += (float)GameWorld.Instance.deltaTime;
 
+
+                    activated = true;
                 }
-                timer += (float)GameWorld.Instance.deltaTime;
-                if (timer > 2)
+                if (activated && keyState.IsKeyUp(key))
                 {
-                    timer = 0;
-                    chargeTimer = 0;
-                    on = false;
-                    activated = false;
+                    target = new Vector2(mouse.Position.X, mouse.Position.Y);
+                    test = physics.GetVector(target, go.transform.position);
+                    test.Normalize();
+                    on = true;
+                    canShoot = false;
+                }
+                if (on)
+                {
+                    if (chargeTimer < 0.25)
+                    {
+                        physics.Acceleration += test;
+                        chargeTimer += (float)GameWorld.Instance.deltaTime;
+
+                    }
+                    timer += (float)GameWorld.Instance.deltaTime;
+                    if (timer > 2)
+                    {
+                        timer = 0;
+                        chargeTimer = 0;
+                        on = false;
+                        activated = false;
+                    }
                 }
             }
+
 
 
         }
@@ -99,22 +104,17 @@ namespace MagicGladiators
                         //plz don't delete me
                         Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
                         vectorBetween.Normalize();
-                        if (go.gameObject.Tag == "Dummy" )
+                        if (go.gameObject.Tag == "Dummy")
                         {
-
-                            
-                            (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween, this.go);
-                            
+                            //(go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+                        }
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.SendPush(other.gameObject.Id, vectorBetween);
                         }
                     }
                 }
-                
             }
-
-
-
-
         }
-
     }
 }

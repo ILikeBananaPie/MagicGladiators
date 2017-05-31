@@ -34,11 +34,15 @@ namespace MagicGladiators
 
             }
             float distanceTest = Vector2.Distance(velocity, Vector2.Zero);
-            if (!(Vector2.Distance(velocity, Vector2.Zero) < 0.005F && Vector2.Distance(velocity, Vector2.Zero) > -0.005F))
+            if (!(Vector2.Distance(velocity, Vector2.Zero) < 0.005F && Vector2.Distance(velocity, Vector2.Zero) > -0.005F) && gameObject.Id == GameWorld.Instance.player.Id)
             {
+                if (gameObject.Tag != "Player" && gameObject.Tag != "Enemy")
+                {
+
+                }
                 if (gameObject.Tag == "HomingMissile" || gameObject.Tag == "Boomerang")
                 {
-                    if(gameObject.Tag == "Boomerang")
+                    if (gameObject.Tag == "Boomerang")
                     {
                         Acceleration = 0.001F * -velocity;
                         //Acceleration = new Vector2(Acceleration.X + Acceleration.X * 10F, Acceleration.Y);
@@ -53,7 +57,7 @@ namespace MagicGladiators
                 else if (chainDeactivated)
                 {
                     timer += GameWorld.Instance.deltaTime;
-                    if (timer > 1)
+                    if (timer > 0.5F)
                     {
                         chainDeactivated = false;
                         timer = 0;
@@ -70,8 +74,12 @@ namespace MagicGladiators
             }
             else
             {
-                Acceleration = Vector2.Zero;
-                Velocity = Vector2.Zero;
+                if (gameObject.Id == GameWorld.Instance.player.Id)
+                {
+                    Acceleration = Vector2.Zero;
+                    Velocity = Vector2.Zero;
+                }
+
             }
             Velocity = UpdateVelocity(Acceleration, Velocity);
             return Acceleration;
@@ -84,8 +92,11 @@ namespace MagicGladiators
 
         public void Update()
         {
+
             Velocity = UpdateVelocity(Acceleration, Velocity);
             Acceleration = physicsBreak(breakFactor, Velocity);
+
+
         }
     }
 }

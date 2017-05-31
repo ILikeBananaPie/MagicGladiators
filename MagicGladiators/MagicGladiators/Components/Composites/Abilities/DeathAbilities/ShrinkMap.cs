@@ -10,12 +10,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class ShrinkMap : Component
+    class ShrinkMap : Component, IDeathAbility
     {
         private bool used = false;
 
         public ShrinkMap(GameObject gameObject) : base(gameObject)
         {
+            Name = "ShrinkMap";
         }
 
         public void Update()
@@ -23,7 +24,7 @@ namespace MagicGladiators
 
             KeyboardState keyState = Keyboard.GetState();
 
-            if (keyState.IsKeyDown(Keys.Z) && !used)
+            if (keyState.IsKeyDown(key) && !used)
             {
                 used = true;
                 foreach (GameObject go in GameWorld.gameObjects)
@@ -34,6 +35,11 @@ namespace MagicGladiators
                         (go.GetComponent("Collider") as Collider).Scale -= 0.1F;
                         SpriteRenderer sprite = (go.GetComponent("SpriteRenderer") as SpriteRenderer);
                         go.transform.position = new Vector2(640 - (sprite.Sprite.Width * sprite.Scale) / 2, 360 - (sprite.Sprite.Height * sprite.Scale) / 2);
+
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.ShrinkMap();
+                        }
                     }
                 }
             }

@@ -11,7 +11,9 @@ namespace MagicGladiators
     class Enemy:Component, ILoadable, IUpdateable
     {
         private Transform trnsfrm;
-        private Vector2 velocity;
+        public Vector2 velocity { get; set; }
+        private Animator animator;
+        //private Vector2 velocity;
         private GameObject lastHit;
 
         //public static Vector2 accelerationTest;
@@ -29,6 +31,26 @@ namespace MagicGladiators
         public Enemy/*Number 1*/(GameObject gameObject) : base(gameObject)
         {
             updatePackage = new UpdatePackage(Vector2.Zero);
+            animator = (Animator)gameObject.GetComponent("Animator");
+            CreateAnimations();
+        }
+
+        private void CreateAnimations()
+        {
+            SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
+
+            animator.CreateAnimation("LightGreen", new Animation(1, 64, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Green", new Animation(1, 96, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Blue", new Animation(1, 96, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Red", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Orange", new Animation(1, 32, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Brown", new Animation(1, 0, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Yellow", new Animation(1, 64, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("Purple", new Animation(1, 32, 1, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
+
+
+            //animator.PlayAnimation("LightGreen");
+
         }
 
         public void LoadContent(ContentManager content)
@@ -58,7 +80,7 @@ namespace MagicGladiators
             }
             */
             trnsfrm.position += velocity;
-            updatePackage.InfoUpdate(trnsfrm.position, velocity);
+            //updatePackage.InfoUpdate(trnsfrm.position, velocity);
         }
 
         public void UpdateEnemyInfo(UpdatePackage package)

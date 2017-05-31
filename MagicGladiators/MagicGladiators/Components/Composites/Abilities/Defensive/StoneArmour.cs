@@ -40,14 +40,18 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
            
 
-            if (keyState.IsKeyDown(Keys.B) && canShoot)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
                 activatedAbility = true;
                 canShoot = false;
                 gameObject.Speed -= slowSpeed;
                 gameObject.KnockBackResistance -= resist;
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.DarkSlateGray;
-               
+                Color color = Color.DarkSlateGray;
+                if (GameWorld.Instance.client != null)
+                {
+                    GameWorld.Instance.client.SendColor(gameObject.Id, "Enemy", color.R, color.G, color.B, color.A);
+                }
             }
             if(activatedAbility)
             {
@@ -62,6 +66,11 @@ namespace MagicGladiators
                 activatedAbility = false;
                 activated = 0;
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+                Color color = Color.White;
+                if (GameWorld.Instance.client != null)
+                {
+                    GameWorld.Instance.client.SendColor(gameObject.Id, "Enemy", color.R, color.G, color.B, color.A);
+                }
             }
             if (cooldownbool)
             {

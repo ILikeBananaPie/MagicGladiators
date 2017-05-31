@@ -45,7 +45,7 @@ namespace MagicGladiators
             Vector2 translation = Vector2.Zero;
 
           
-            if (keyState.IsKeyDown(Keys.Space) && !activated && canShoot)
+            if (keyState.IsKeyDown(key) && !activated && canShoot)
             {
 
                 

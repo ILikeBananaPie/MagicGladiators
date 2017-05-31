@@ -31,11 +31,15 @@ namespace MagicGladiators
 
            
 
-            if (keyState.IsKeyDown(Keys.T) && canShoot)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
                 canShoot = false;
                 Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Chain",new GameObject());
+                director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Chain", new GameObject(), gameObject.Id);
+                if (GameWorld.Instance.client != null)
+                {
+                    GameWorld.Instance.client.SendProjectile("Chain,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                }
             }
         }
 

@@ -42,11 +42,15 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (keyState.IsKeyDown(Keys.R) && canShoot && gameObject.CurrentHealth >= 0)
+            if (keyState.IsKeyDown(key) && canShoot && gameObject.CurrentHealth >= 0)
             {
                 canShoot = false;
                 Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(gameObject.transform.position, Vector2.Zero, "Mine", new GameObject());
+                director.ConstructProjectile(gameObject.transform.position, Vector2.Zero, "Mine", new GameObject(), gameObject.Id);
+                if (GameWorld.Instance.client != null)
+                {
+                    GameWorld.Instance.client.SendProjectile("Mine,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                }
             }
             
         }
