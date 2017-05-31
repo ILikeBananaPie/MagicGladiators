@@ -716,7 +716,7 @@ namespace MagicGladiators
             buyPhase = true;
             currentRound = 1;
             itemList.Clear();
-            numberOfRounds = 0;
+            numberOfRounds = 3;
             playersAlive.Clear();
             readyList.Clear();
             buySpellX = Window.ClientBounds.Width - 144;
