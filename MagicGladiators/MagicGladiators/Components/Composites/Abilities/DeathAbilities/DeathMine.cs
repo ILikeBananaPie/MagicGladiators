@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class DeathMine : Component, ILoadable
+    class DeathMine : Component, ILoadable, IDeathAbility
     {
         
         private Vector2 originalPos;
@@ -29,7 +29,7 @@ namespace MagicGladiators
            
             this.transform = transform;
             this.animator = animator;
-           
+            Name = "DeathMine";
 
         }
 
@@ -71,7 +71,7 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (keyState.IsKeyDown(Keys.R) && !activated)
+            if (keyState.IsKeyDown(key) && !activated)
             {
                 Director director = new Director(new ProjectileBuilder());
                 director.ConstructProjectile(new Vector2(mouse.Position.X, mouse.Position.Y), Vector2.Zero, "DeathMine", new GameObject(), gameObject.Id);
