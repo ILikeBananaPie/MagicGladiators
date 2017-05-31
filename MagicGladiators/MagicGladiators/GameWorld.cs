@@ -466,7 +466,10 @@ namespace MagicGladiators
                     {
                         if (server != null)
                         {
-                            server.Kill();
+                            try
+                            {
+                                server.Kill();
+                            } catch (Exception) { }
                         }
                         Exit();
                     }
@@ -585,6 +588,11 @@ namespace MagicGladiators
                     client.Update();
                 }
                 //client.Draw();
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.F9) && CurrentScene.scenetype == "Practice")
+            {
+                ResetItemsAndAbilities();
+                NextScene = Scene.Practice();
             }
 
             UpdateMouseRelease(mouse);
