@@ -1245,16 +1245,22 @@ namespace MagicGladiators
             {
                 go.Draw(spriteBatch);
                 string name = (go.GetComponent("AbilityIcon") as AbilityIcon).Name;
-
                 foreach (Component component in player.components)
                 {
                     if (component is Ability && name == component.Name)
                     {
+                        int x = 0;
                         string text = component.key.ToString();
                         text = text.Split('.').Last();
+                        if (name == "Fireball")
+                        {
+                            text = "LMB";
+                            x = -10;
+                        }
                         if (text == "Space")
                         {
                             text = "Spc";
+                            x = -10;
                         }
                         if (text == "D")
                         {
@@ -1264,7 +1270,7 @@ namespace MagicGladiators
                         {
                             text = text.Split('D').Last();
                         }
-                        spriteBatch.DrawString(keyFont, text, new Vector2(go.transform.position.X + 10, go.transform.position.Y + 16), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+                        spriteBatch.DrawString(keyFont, text, new Vector2(go.transform.position.X + 10 + x, go.transform.position.Y + 16), Color.White, 0, Vector2.Zero, 1.2F, SpriteEffects.None, 1);
                     }
                 }
             }
@@ -1281,17 +1287,19 @@ namespace MagicGladiators
                 {
                     if (component is IDeathAbility && component.Name == name)
                     {
+                        int x = 0;
                         string text = component.key.ToString();
                         text = text.Split('.').Last();
                         if (text == "Space")
                         {
                             text = "Spc";
+                            x = -10;
                         }
                         if (text.Contains("D"))
                         {
                             text = text.Split('D').Last();
                         }
-                        spriteBatch.DrawString(keyFont, text, new Vector2(go.transform.position.X + 10, go.transform.position.Y + 16), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+                        spriteBatch.DrawString(keyFont, text, new Vector2(go.transform.position.X + 10 + x, go.transform.position.Y + 16), Color.White, 0, Vector2.Zero, 1.5F, SpriteEffects.None, 1);
                     }
                 }
             }
