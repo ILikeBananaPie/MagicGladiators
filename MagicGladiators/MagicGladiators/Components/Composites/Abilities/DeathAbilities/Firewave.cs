@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace MagicGladiators
 {
-    class Firewave : Ability
+    class Firewave : Ability, IDeathAbility
     {
         public bool activated { get; set; } = false;
         private string side;
@@ -18,6 +18,7 @@ namespace MagicGladiators
         public Firewave(GameObject gameObject) : base(gameObject)
         {
             cooldown = 1;
+            Name = "Firewave";
         }
 
         public override void LoadContent(ContentManager content)
@@ -29,7 +30,7 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (keyState.IsKeyDown(Keys.H) && canShoot)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
                 canShoot = false;
                 activated = true;

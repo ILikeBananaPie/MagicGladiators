@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MagicGladiators
 {     
-    class SlowField : Component
+    class SlowField : Component, IDeathAbility
     {
         private bool canUse = true;
         private bool activated = false;
@@ -26,7 +26,7 @@ namespace MagicGladiators
 
         public SlowField(GameObject go)
         {
-            
+            Name = "SlowField";
         }
 
         
@@ -43,7 +43,7 @@ namespace MagicGladiators
                 use = false;
             }
 
-            if (keyState.IsKeyDown(Keys.O) && !activated )
+            if (keyState.IsKeyDown(key) && !activated )
             {
                 foreach (var go in GameWorld.gameObjects)
                 {
