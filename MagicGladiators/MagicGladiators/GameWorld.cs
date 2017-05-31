@@ -58,6 +58,7 @@ namespace MagicGladiators
 
         private bool canBuy = true;
         private bool canUpgrade = true;
+        private bool canReady = true;
 
         public bool MouseOnIcon { get; set; } = false;
 
@@ -522,7 +523,7 @@ namespace MagicGladiators
                 }
             }
 
-            UpdateDeathAbilities();
+            //UpdateDeathAbilities();
 
             if (buyPhase)
             {
@@ -701,7 +702,7 @@ namespace MagicGladiators
 
         public void UpdateDeathAbilities()
         {
-            if (CurrentScene.scenetype == "Practice")
+            if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "Play")
             {
                 if (player != null)
                 {
@@ -716,7 +717,6 @@ namespace MagicGladiators
                         }
                     }
                 }
-
             }
         }
 
@@ -1001,8 +1001,9 @@ namespace MagicGladiators
 
         public void PhaseCheck()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.F6) && buyPhase && canBuy)
+            if (Keyboard.GetState().IsKeyDown(Keys.F6) && buyPhase && canReady)
             {
+                canReady = false;
                 if (client != null)
                 {
                     if (player.isReady)
@@ -1016,6 +1017,10 @@ namespace MagicGladiators
                         player.isReady = true;
                     }
                 }
+            }
+            if (Keyboard.GetState().IsKeyUp(Keys.F6) && buyPhase)
+            {
+                canReady = true;
             }
 
             if (client != null)
@@ -1158,6 +1163,9 @@ namespace MagicGladiators
                 DrawTooltipVenderAbility(mouse, mouseCircle);
 
                 DrawTooltipPlayerItem(mouse, mouseCircle);
+
+                DrawTooltipPlayerAbility(mouse, mouseCircle);
+
             }
             if (CurrentScene.scenetype == "Practice")
             {
@@ -1165,23 +1173,16 @@ namespace MagicGladiators
                 {
                     if (player.CurrentHealth < 0)
                     {
+                        UpdateDeathAbilities();
                         DrawPlayerDeathAbilities();
                         DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
                         UpdateAbilityRebind(mouse, mouseCircle);
                     }
-                    else
-                    {
-                        DrawTooltipPlayerAbility(mouse, mouseCircle);
-                    }
                 }
             }
-            if (CurrentScene.scenetype == "Play" && buyPhase)
+            if (CurrentScene.scenetype == "Play" && player.CurrentHealth < 0)
             {
-                //DrawPlayerDeathAbilities();
-                //DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
-            }
-            else if (CurrentScene.scenetype == "Play" && !buyPhase && player.CurrentHealth < 0)
-            {
+                UpdateDeathAbilities();
                 DrawPlayerDeathAbilities();
                 DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
                 UpdateAbilityRebind(mouse, mouseCircle);

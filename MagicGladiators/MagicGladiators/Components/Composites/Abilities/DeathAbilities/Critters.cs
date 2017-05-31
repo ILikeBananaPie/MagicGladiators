@@ -11,10 +11,8 @@ namespace MagicGladiators
 {
     class Critters : Ability, IDeathAbility
     {
-        private bool canUse = true;
         public static Random rnd = new Random();
         private int critterNumber;
-        private float timer;
         GameObject critter;
 
         public Critters(GameObject gameObject) : base(gameObject)
@@ -25,7 +23,7 @@ namespace MagicGladiators
 
         public override void LoadContent(ContentManager content)
         {
-          //  throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void Update()
@@ -33,9 +31,9 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (keyState.IsKeyDown(key) && canUse && GameWorld.Instance.player.CurrentHealth <= 0)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
-                canUse = false;
+                canShoot = false;
                 for (int i = 0; i < 4; i++)
                 {
                     critter = new GameObject();
@@ -59,16 +57,6 @@ namespace MagicGladiators
                     }
                 }
             }
-            if (!canUse)
-            {
-                timer += GameWorld.Instance.deltaTime;
-                if (timer > 2)
-                {
-                    canUse = true;
-                    timer = 0;
-                }
-            }
-
         }
     }
 }
