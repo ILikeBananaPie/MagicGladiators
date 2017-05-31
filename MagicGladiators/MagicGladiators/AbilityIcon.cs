@@ -28,7 +28,8 @@ namespace MagicGladiators
         public void LoadContent(ContentManager content)
         {
             animator = (Animator)gameObject.GetComponent("Animator");
-            Texture2D sprite = content.Load<Texture2D>("SpellSheet2");
+            Texture2D sprite = content.Load<Texture2D>("SpellSheet3");
+
 
             animator.CreateAnimation("HomingMissile", new Animation(1, 64, 0, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Charge", new Animation(1, 32, 0, 32, 32, 10, Vector2.Zero, sprite));
@@ -44,6 +45,20 @@ namespace MagicGladiators
             animator.CreateAnimation("Spellshield", new Animation(1, 64, 2, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("StoneArmour", new Animation(1, 64, 3, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Boomerang", new Animation(1, 96, 0, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Recall", new Animation(1, 96, 1, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("GravityWell", new Animation(1, 96, 2, 32, 32, 10, Vector2.Zero, sprite));
+
+            animator.CreateAnimation("MirrorImage", new Animation(1, 160, 3, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Invisibility", new Animation(1, 96, 3, 32, 32, 10, Vector2.Zero, sprite));
+
+            animator.CreateAnimation("RollingMeteor", new Animation(1, 128, 0, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("DeathMine", new Animation(1, 128, 1, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Firewave", new Animation(1, 128, 2, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Critters", new Animation(1, 128, 3, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("ShrinkMap", new Animation(1, 160, 0, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("SlowField", new Animation(1, 160, 1, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("IceField", new Animation(1, 160, 2, 32, 32, 10, Vector2.Zero, sprite));
+
 
 
             animator.PlayAnimation(Name);

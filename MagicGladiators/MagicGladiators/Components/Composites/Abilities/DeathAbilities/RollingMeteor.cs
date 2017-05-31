@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class RollingMeteor : Component, ILoadable
+    class RollingMeteor : Ability, ILoadable, IDeathAbility
     {
         private float movementSpeed = 200;
 
@@ -43,6 +43,8 @@ namespace MagicGladiators
             this.transform = transform;
             this.animator = animator;
             this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
+            Name = "RollingMeteor";
+            cooldown = 15;
         }
 
 
@@ -68,7 +70,7 @@ namespace MagicGladiators
         }
 
         
-        public void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content)
         {
             animator = (Animator)gameObject.GetComponent("Animator");
 
@@ -76,15 +78,18 @@ namespace MagicGladiators
 
         }
 
-        public void Update()
+        public override void Update()
         {
+            if (GameWorld.Instance.player.CurrentHealth > 0) { return; }
+
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
             Vector2 translation = Vector2.Zero;
 
-            if (keyState.IsKeyDown(Keys.Q) && !qPressed)
+            if (keyState.IsKeyDown(key) && !qPressed && canShoot)
             {
+                canShoot = false;
                 qPressed = true;
                 if (activated == true)
                 {
@@ -114,7 +119,29 @@ namespace MagicGladiators
                 CorrectStartPoint();
                 
                 Director director = new Director(new ProjectileBuilder());
-                director.ConstructProjectile(pointA, pointB, "DeathMeteor");
+                director.ConstructProjectile(pointA, pointB, "DeathMeteor", new GameObject(), gameObject.Id);
+                if (GameWorld.Instance.client != null)
+                {
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        if (go.Id == gameObject.Id && go.Tag == "DeathMeteor")
+                        {
+                            GameWorld.objectsToRemove.Add(go);
+                            GameWorld.Instance.client.SendRemoval("DeathMeteor", gameObject.Id);
+                        }
+                    }
+                    GameWorld.Instance.client.SendProjectile("DeathMeteor,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                }
+                else
+                {
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        if (go.Tag == "DeathMeteor")
+                        {
+                            GameWorld.objectsToRemove.Add(go);
+                        }
+                    }
+                }
                 mousePressedBool = false;
                 mouseReleasedBool = true;
                 activated = false;

@@ -19,19 +19,29 @@ namespace MagicGladiators
 
             gameObject.Tag = "Player";
 
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "Player", 1));
-
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "PlayerSheet", 1));
+                     
             gameObject.AddComponent(new Animator(gameObject));
 
             gameObject.AddComponent(new Player(gameObject, gameObject.transform));
 
-            gameObject.AddComponent(new Collider(gameObject, false));
+            gameObject.AddComponent(new Collider(gameObject, false, true));
 
             gameObject.AddComponent(new Physics(gameObject));
 
             gameObject.AddComponent(new RollingMeteor(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
             gameObject.AddComponent(new ShrinkMap(gameObject));
+            //gameObject.AddComponent(new SlowField(gameObject));
+
+            //gameObject.AddComponent(new MirrorImage(gameObject));
+
+            gameObject.AddComponent(new Firewave(gameObject));
+            gameObject.AddComponent(new Critters(gameObject));
+
+            //gameObject.AddComponent(new Invisibility(gameObject));
+
+
 
             //gameObject.AddComponent(new StoneArmour(gameObject));
 
@@ -52,7 +62,14 @@ namespace MagicGladiators
             //gameObject.LoadContent(GameWorld.Instance.Content);
 
             //gameObject.AddComponent(new Boomerang(gameObject));
+
+            //gameObject.AddComponent(new GravityWell(gameObject));
+
             gameObject.AddComponent(new Fireball(gameObject));
+
+            //gameObject.AddComponent(new Recall(gameObject));
+
+
 
 
             MouseState mouse = Mouse.GetState();
@@ -94,12 +111,12 @@ namespace MagicGladiators
             throw new NotImplementedException();
         }
 
-        public void FireProjectile(Vector2 position, Vector2 targetVector)
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
         {
             throw new NotImplementedException();
         }
 
-        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability, GameObject shooter, string id)
         {
             throw new NotImplementedException();
         }

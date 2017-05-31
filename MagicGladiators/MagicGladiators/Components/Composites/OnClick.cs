@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System.Threading;
+using System.Diagnostics;
 
 namespace MagicGladiators
 {
-    class OnClick:Component, IUpdateable, ILoadable
+    class OnClick : Component, IUpdateable, ILoadable
     {
         private string destination;
         private Rectangle rectangle;
+
+        private IPInput IPRel;
 
         public OnClick(GameObject go, string destination) : base(go)
         {
@@ -48,22 +52,54 @@ namespace MagicGladiators
                         switch (destination)
                         {
                             case "NewGame":
+                                if (GameWorld.Instance.server != null)
+                                {
+                                    GameWorld.Instance.server.Kill();
+                                    GameWorld.Instance.server = null;
+                                }
+                                if (GameWorld.Instance.client != null)
+                                {
+                                    GameWorld.Instance.client.Disconnect();
+                                    GameWorld.Instance.client = null;
+                                }
                                 GameWorld.Instance.NextScene = Scene.NewGame();
                                 break;
                             case "MainMenu":
+                                if (GameWorld.Instance.server != null)
+                                {
+                                    GameWorld.Instance.server.Kill();
+                                    GameWorld.Instance.server = null;
+                                }
+                                if (GameWorld.Instance.client != null)
+                                {
+                                    GameWorld.Instance.client.Disconnect();
+                                    GameWorld.Instance.client = null;
+                                }
                                 GameWorld.Instance.NextScene = Scene.MainMenu();
                                 break;
-                            //case "Join":
-                            //    GameWorld.Instance.NextScene = Scene.Join();
-                            //    break;
-                            //case "Host":
-                            //    GameWorld.Instance.NextScene = Scene.Host();
-                            //    break;
+                            case "Join":
+                                GameWorld.Instance.NextScene = Scene.Join();
+                                break;
+                            case "Host":
+                                GameWorld.Instance.NextScene = Scene.Host("localhost");
+                                break;
+                            case "Lobby":
+                                break;
                             case "Practice":
                                 GameWorld.Instance.NextScene = Scene.Practice();
                                 break;
                             case "ExitGame":
+                                if (GameWorld.Instance.server != null)
+                                {
+                                    GameWorld.Instance.server.Kill();
+                                }
                                 GameWorld.Instance.Exit();
+                                break;
+                            case "Joining":
+                                if (GameWorld.Instance.canClient)
+                                {
+                                    GameWorld.Instance.NextScene = Scene.Joined(IPRel.GetIPString());
+                                }
                                 break;
                             case "PracticeChooseRound":
                                 GameWorld.Instance.NextScene = Scene.PracticeChooseRound();
@@ -96,11 +132,29 @@ namespace MagicGladiators
                                 GameWorld.Instance.NextScene = Scene.Practice();
                                 GameWorld.selectedMap = "PillarHoleMap";
                                 break;
+                            case "Play":
+                                GameWorld.Instance.NextScene = Scene.Play();
+
+                                if (GameWorld.gameObjects.Exists(x => x.Tag == "Enemy"))
+                                {
+                                    if (GameWorld.Instance.client != null)
+                                    {
+                                        GameWorld.Instance.client.SendMapSettings(GameWorld.selectedMap, GameWorld.numberOfRounds);
+                                        GameWorld.Instance.client.SendStartgame();
+
+                                    }
+                                }
+                                break;
                         }
                     }
                 }
             }
             lastStates = m;
+        }
+
+        public void AddIPRelation(IPInput IPRel)
+        {
+            this.IPRel = IPRel;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace MagicGladiators
         {
             gameObject = new GameObject();
 
-            gameObject.AddComponent(new SpriteRenderer(gameObject, "SpellSheet2", 1));
+            gameObject.AddComponent(new SpriteRenderer(gameObject, "SpellSheet3", 1));
 
             gameObject.AddComponent(new Animator(gameObject));
 
@@ -30,7 +30,7 @@ namespace MagicGladiators
             
             gameObject.transform.position = position;
 
-            gameObject.AddComponent(new Collider(gameObject, false));
+            gameObject.AddComponent(new Collider(gameObject, false, true));
 
             gameObject.Tag = "AbilityIcon";
 
@@ -52,6 +52,11 @@ namespace MagicGladiators
         }
 
         public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability, GameObject shooter, string id)
         {
             throw new NotImplementedException();
         }

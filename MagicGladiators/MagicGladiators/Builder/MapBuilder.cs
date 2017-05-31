@@ -59,7 +59,7 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Map(gameObject));
 
-            gameObject.AddComponent(new Collider(gameObject, false));
+            gameObject.AddComponent(new Collider(gameObject, false, true));
 
             //gameObject.LoadContent(GameWorld.Instance.Content);
 
@@ -68,6 +68,11 @@ namespace MagicGladiators
         }
 
         public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability, GameObject shooter, string id)
         {
             throw new NotImplementedException();
         }

@@ -14,9 +14,6 @@ namespace MagicGladiators
         private bool canUse = true;
         private bool activated = false;
         private bool use = false;
-        private float cooldownTimer;
-        private float cooldown = 5;
-
         private float speedFactor = 1;
 
         private float activationTime = 2;
@@ -26,6 +23,8 @@ namespace MagicGladiators
 
         public SpeedBoost(GameObject go) : base(go)
         {
+            cooldown = 5;
+            canShoot = true;
         }
 
         public override void LoadContent(ContentManager content)
@@ -36,23 +35,19 @@ namespace MagicGladiators
         public override void Update()
         {
             KeyboardState keyState = Keyboard.GetState();
-            cooldownTimer += GameWorld.Instance.deltaTime;
 
-            if (cooldownTimer > cooldown)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
-                canUse = true;
-                cooldownTimer = 0;
-                use = false;
-            }
-
-            if (keyState.IsKeyDown(Keys.X) && canShoot)
-            {
-                oldSpeed = Player.speed;
-                canUse = false;
+                //oldSpeed = Player.speed;
+                canShoot = false;
+                //canUse = false;
                 activated = true;
-                Color color = new Color();
-                color.A = 20;
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.DarkSlateGray;
+                Color color = Color.DarkSlateGray;
+                if (GameWorld.Instance.client != null)
+                {
+                    GameWorld.Instance.client.SendColor(gameObject.Id, "Enemy", color.R, color.G, color.B, color.A);
+                }
             }
             if (activated)
             {
@@ -66,10 +61,16 @@ namespace MagicGladiators
                 if (activationTimer > activationTime)
                 {
                     //Player.speed = oldSpeed;
-                    gameObject.Speed -= speedFactor;
+                    gameObject.Speed = gameObject.Speed - speedFactor;
+                    use = false;
                     activated = false;
                     activationTimer = 0;
                     (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+                    Color color = Color.White;
+                    if (GameWorld.Instance.client != null)
+                    {
+                        GameWorld.Instance.client.SendColor(gameObject.Id, "Enemy", color.R, color.G, color.B, color.A);
+                    }
                 }
             }
         }

@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Content;
 
 namespace MagicGladiators
 {
+    public enum actions { Fireball, HomingMissile, Drain, Chain }
+
     public abstract class Ability : Component, ILoadable, IUpdateable, IAbility
     {
         protected float cooldown;
@@ -29,23 +31,16 @@ namespace MagicGladiators
 
         public void Cooldown()
         {
-            if (GameWorld.buyPhase)
-            {
-                canUse = false;
-            }
-            else canUse = true;
-            if (canUse)
-            {
-                if (!canShoot)
-                {
-                    cooldownTimer += GameWorld.Instance.deltaTime;
-                }
 
-                if (cooldownTimer > cooldown * gameObject.CooldownReduction)
-                {
-                    cooldownTimer = 0;
-                    canShoot = true;
-                }
+            if (!canShoot)
+            {
+                cooldownTimer += GameWorld.Instance.deltaTime;
+            }
+
+            if (cooldownTimer > cooldown * gameObject.CooldownReduction)
+            {
+                cooldownTimer = 0;
+                canShoot = true;
             }
         }
     }

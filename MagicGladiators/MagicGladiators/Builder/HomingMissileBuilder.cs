@@ -38,7 +38,7 @@ namespace MagicGladiators
             gameObject.AddComponent(new Animator(gameObject));
             gameObject.AddComponent(new HomingMissile(gameObject, position, targetVector));
             gameObject.Tag = "Ability";
-            gameObject.AddComponent(new Collider(gameObject, true));
+            gameObject.AddComponent(new Collider(gameObject, true, true));
             gameObject.transform.position = position;
             gameObject.LoadContent(GameWorld.Instance.Content);
             //GameWorld.newObjects.Add(gameObject);
@@ -47,6 +47,11 @@ namespace MagicGladiators
         }
 
         public void FireProjectile(Vector2 position, Vector2 targetVector, string ability)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FireProjectile(Vector2 position, Vector2 targetVector, string ability, GameObject shooter, string id)
         {
             throw new NotImplementedException();
         }
