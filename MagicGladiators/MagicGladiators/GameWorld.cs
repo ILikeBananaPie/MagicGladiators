@@ -581,7 +581,7 @@ namespace MagicGladiators
             {
                 NextScene.LoadContent(Content);
                 CurrentScene = NextScene;
-                if (NextScene.scenetype == "Practice" || NextScene.scenetype == "Play")
+                if (NextScene.scenetype == "Play")
                 {
                     CreateMap(selectedMap);
                     ResetCharacters();
@@ -595,6 +595,28 @@ namespace MagicGladiators
                     newObjects.Add(player);
                     */
                     //CreateDummies();
+
+                    CreateVendorItems();
+
+                    CreateVendorAbilities();
+
+                    foreach (GameObject go in gameObjects)
+                    {
+                        go.LoadContent(Content);
+                    }
+                }
+                if (NextScene.scenetype == "Practice")
+                {
+                    CreateMap(selectedMap);
+                    ResetCharacters();
+                    Director ability = new Director(new AbilityIconBuilder());
+                    Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68, Window.ClientBounds.Height - 42), "Fireball", 0, ""));
+                    
+                    Director director = new Director(new PlayerBuilder());
+                    player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
+                    newObjects.Add(player);
+                    
+                    CreateDummies();
 
                     CreateVendorItems();
 
