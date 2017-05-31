@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, Speed }
 
 
     public class TestClient
@@ -302,6 +302,16 @@ namespace MagicGladiators
             client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
+        public void SendSpeedChange(string id, float factor)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.Speed);
+            msgOut.Write(id);
+            msgOut.Write(factor);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+        }
+
         public void Draw()
         {
             lock (locker)
@@ -355,6 +365,19 @@ namespace MagicGladiators
                         break;
                     case NetIncomingMessageType.Data:
                         byte type = msgIn.ReadByte();
+                        #region Speed
+                        if (type == (byte)PacketType.Speed)
+                        {
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Player")
+                                {
+                                    go.Speed = msgIn.ReadFloat();
+                                    break;
+                                }
+                            }
+                        }
+                        #endregion
                         #region SwitchPhase
                         if (type == (byte)PacketType.SwitchPhase)
                         {
@@ -687,6 +710,10 @@ namespace MagicGladiators
 
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
+                                if (name == "Map" && go.Tag == "Map")
+                                {
+                                    (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = color;
+                                }
                                 string test2 = go.Id;
                                 if (test2 != null && go.Tag == name)
                                 {
@@ -694,7 +721,7 @@ namespace MagicGladiators
                                     //test2 = test2.Remove(test2.Length - 1);
                                 }
 
-                                if (go.Id == id)
+                                if (go.Id == id && name != "Map")
                                 {
                                     (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = color;
                                 }

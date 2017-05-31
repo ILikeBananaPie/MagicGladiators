@@ -8,91 +8,90 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MagicGladiators
-{     
-    class SlowField : Component, IDeathAbility
+{
+    class SlowField : Ability, IDeathAbility
     {
-        private bool canUse = true;
         private bool activated = false;
         private bool use = false;
-        private float cooldownTimer;
-        private float cooldown = 5;
 
         private float speedFactor = 0.5f;
 
-        private float activationTime = 2;
+        private float activationTime = 5;
         private float activationTimer;
+        string previous = "";
 
-        private float oldSpeed;
-
-        public SlowField(GameObject go)
+        public SlowField(GameObject gameObject) : base(gameObject)
         {
             Name = "SlowField";
+            cooldown = 10;
         }
 
-        
-
-        public void Update()
+        public override void Update()
         {
             KeyboardState keyState = Keyboard.GetState();
-            cooldownTimer += GameWorld.Instance.deltaTime;
 
-            if (cooldownTimer > cooldown)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
-                canUse = true;
-                cooldownTimer = 0;
-                use = false;
-            }
-
-            if (keyState.IsKeyDown(key) && !activated )
-            {
+                canShoot = false;
+                activated = true;
+                Color color = Color.DarkGreen;
                 foreach (var go in GameWorld.gameObjects)
                 {
-                    if (go.Tag != "Ability")
+                    if (go.Tag == "Map")
                     {
-                        oldSpeed = go.Speed;
+                        (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.DarkGreen;
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.SendColor("", "Map", color.R, color.G, color.B, color.A);
+                        }
                     }
+                    if (go.Tag == "Enemy")
+                    {
 
+                        if (GameWorld.Instance.client != null)
+                        {
+                            //GameWorld.Instance.client.SendColor(go.Id, "Player", color.R, color.G, color.B, color.A);
+                            GameWorld.Instance.client.SendSpeedChange(go.Id, -speedFactor);
+                        }
+                    }
                 }
-                
-                canUse = false;
-                activated = true;
-                Color color = new Color();
-                color.A = 20;
-                
             }
             if (activated)
             {
-                if (!use)
-                {
-                    use = true;
-                    foreach (var go in GameWorld.gameObjects)
-                    {
-                        if(go.Tag != "Ability")
-                        {
-                            go.Speed = go.Speed - speedFactor;
-                        }
-                        
-                    }
-                    
-                   
-                }
                 activationTimer += GameWorld.Instance.deltaTime;
                 if (activationTimer > activationTime)
                 {
+                    Color color = Color.White;
                     foreach (var go in GameWorld.gameObjects)
                     {
-                        if (go.Tag != "Ability")
+                        if (go.Tag == "Map")
                         {
-                            go.Speed += speedFactor;
+                            (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+                            if (GameWorld.Instance.client != null)
+                            {
+                                GameWorld.Instance.client.SendColor("", "Map", color.R, color.G, color.B, color.A);
+                            }
+                        }
+                        if (go.Tag == "Enemy")
+                        {
+
+                            if (GameWorld.Instance.client != null)
+                            {
+                                //GameWorld.Instance.client.SendColor(go.Id, "Player", color.R, color.G, color.B, color.A);
+                                GameWorld.Instance.client.SendSpeedChange(go.Id, -speedFactor);
+                            }
                         }
 
                     }
-                    
                     activated = false;
                     activationTimer = 0;
-                    
                 }
             }
+        }
+
+        public override void LoadContent(ContentManager content)
+        {
+            //throw new NotImplementedException();
         }
     }
 }
