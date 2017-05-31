@@ -63,6 +63,8 @@ namespace MagicGladiators
                                     GameWorld.Instance.client = null;
                                     GameWorld.Instance.canClient = true;
                                 }
+                                GameWorld.gameState = GameState.offgame;
+                                GameWorld.buyPhase = true;
                                 GameWorld.Instance.NextScene = Scene.NewGame();
                                 break;
                             case "MainMenu":
@@ -77,6 +79,8 @@ namespace MagicGladiators
                                     GameWorld.Instance.client = null;
                                     GameWorld.Instance.canClient = true;
                                 }
+                                GameWorld.gameState = GameState.offgame;
+                                GameWorld.buyPhase = true;
                                 GameWorld.Instance.NextScene = Scene.MainMenu();
                                 break;
                             case "Join":
@@ -135,15 +139,18 @@ namespace MagicGladiators
                                 GameWorld.selectedMap = "PillarHoleMap";
                                 break;
                             case "Play":
-                                GameWorld.Instance.NextScene = Scene.Play();
-
-                                if (GameWorld.gameObjects.Exists(x => x.Tag == "Enemy"))
+                                if (GameWorld.gameObjects.Exists(x => x.Tag == "Player") && GameWorld.gameObjects.Exists(x => x.Id != ""))
                                 {
-                                    if (GameWorld.Instance.client != null)
-                                    {
-                                        GameWorld.Instance.client.SendMapSettings(GameWorld.selectedMap, GameWorld.numberOfRounds);
-                                        GameWorld.Instance.client.SendStartgame();
+                                    GameWorld.Instance.NextScene = Scene.Play();
 
+                                    if (GameWorld.gameObjects.Exists(x => x.Tag == "Enemy"))
+                                    {
+                                        if (GameWorld.Instance.client != null)
+                                        {
+                                            GameWorld.Instance.client.SendMapSettings(GameWorld.selectedMap, GameWorld.numberOfRounds);
+                                            GameWorld.Instance.client.SendStartgame();
+
+                                        }
                                     }
                                 }
                                 break;
