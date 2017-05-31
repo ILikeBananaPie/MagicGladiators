@@ -139,6 +139,7 @@ namespace TestServer
         {
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Ready);
             msgOut.Write(id);
             msgOut.Write(isReady);
             server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.Unreliable, 0);

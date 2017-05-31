@@ -11,6 +11,7 @@ namespace TestServer
     {
         public int playerIndex { get; set; }
         public NetConnection connectionID { get; set; }
+        public bool isReady { get; set; }
 
         public Player(int index, NetConnection con)
         {
