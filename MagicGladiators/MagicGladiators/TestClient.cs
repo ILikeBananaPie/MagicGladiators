@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, Speed }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown }
 
 
     public class TestClient
@@ -302,11 +302,20 @@ namespace MagicGladiators
             client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
-        public void SendSpeedChange(string id, float factor)
+        public void SendSpeedUp(string id, float factor)
         {
             NetOutgoingMessage msgOut;
             msgOut = client.CreateMessage();
-            msgOut.Write((byte)PacketType.Speed);
+            msgOut.Write((byte)PacketType.SpeedUp);
+            msgOut.Write(id);
+            msgOut.Write(factor);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
+        }
+        public void SendSpeedDown(string id, float factor)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.SpeedDown);
             msgOut.Write(id);
             msgOut.Write(factor);
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
@@ -365,14 +374,29 @@ namespace MagicGladiators
                         break;
                     case NetIncomingMessageType.Data:
                         byte type = msgIn.ReadByte();
-                        #region Speed
-                        if (type == (byte)PacketType.Speed)
+                        #region SpeedUp
+                        if (type == (byte)PacketType.SpeedUp)
                         {
+                            float speed = msgIn.ReadFloat();
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (go.Tag == "Player")
                                 {
-                                    go.Speed = msgIn.ReadFloat();
+                                    go.Speed += speed;
+                                    break;
+                                }
+                            }
+                        }
+                        #endregion
+                        #region SpeedDown
+                        if (type == (byte)PacketType.SpeedDown)
+                        {
+                            float speed = msgIn.ReadFloat();
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Player")
+                                {
+                                    go.Speed -= speed;
                                     break;
                                 }
                             }

@@ -47,11 +47,10 @@ namespace MagicGladiators
                     }
                     if (go.Tag == "Enemy")
                     {
-
                         if (GameWorld.Instance.client != null)
                         {
                             //GameWorld.Instance.client.SendColor(go.Id, "Player", color.R, color.G, color.B, color.A);
-                            GameWorld.Instance.client.SendSpeedChange(go.Id, -speedFactor);
+                            GameWorld.Instance.client.SendSpeedDown(go.Id, -speedFactor);
                         }
                     }
                 }
@@ -74,11 +73,10 @@ namespace MagicGladiators
                         }
                         if (go.Tag == "Enemy")
                         {
-
                             if (GameWorld.Instance.client != null)
                             {
                                 //GameWorld.Instance.client.SendColor(go.Id, "Player", color.R, color.G, color.B, color.A);
-                                GameWorld.Instance.client.SendSpeedChange(go.Id, -speedFactor);
+                                GameWorld.Instance.client.SendSpeedUp(go.Id, speedFactor);
                             }
                         }
 

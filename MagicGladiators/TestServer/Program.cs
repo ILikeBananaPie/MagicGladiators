@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, Speed }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown }
 
     public class Program
     {
@@ -222,10 +222,16 @@ namespace TestServer
                         case NetIncomingMessageType.Data:
                             //TestClient.text = msgIn.ReadString();
                             byte type = msgIn.ReadByte();
-                            #region Speed
-                            if (type == (byte)PacketType.Speed)
+                            #region SpeedUp
+                            if (type == (byte)PacketType.SpeedUp)
                             {
-                                SendSpeedChange(msgIn.ReadString(), msgIn.ReadFloat());
+                                SendSpeedUp(msgIn.ReadString(), msgIn.ReadFloat());
+                            }
+                            #endregion
+                            #region SpeedDown
+                            if (type == (byte)PacketType.SpeedDown)
+                            {
+                                SendSpeedDown(msgIn.ReadString(), msgIn.ReadFloat());
                             }
                             #endregion
                             #region SwitchPhase
@@ -723,7 +729,7 @@ namespace TestServer
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
-        public static void SendSpeedChange(string id, float factor)
+        public static void SendSpeedUp(string id, float factor)
         {
             connectionList.Clear();
             foreach (NetConnection con in server.Connections)
@@ -736,7 +742,26 @@ namespace TestServer
             }
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.Speed);
+            msgOut.Write((byte)PacketType.SpeedUp);
+            msgOut.Write(id);
+            msgOut.Write(factor);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
+        public static void SendSpeedDown(string id, float factor)
+        {
+            connectionList.Clear();
+            foreach (NetConnection con in server.Connections)
+            {
+                if (con.ToString() == id)
+                {
+                    connectionList.Add(con);
+                    break;
+                }
+            }
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.SpeedDown);
             msgOut.Write(id);
             msgOut.Write(factor);
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
