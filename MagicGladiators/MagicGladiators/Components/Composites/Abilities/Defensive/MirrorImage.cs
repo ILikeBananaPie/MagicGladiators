@@ -32,7 +32,7 @@ namespace MagicGladiators
         {
             KeyboardState keyState = Keyboard.GetState();
 
-            if (keyState.IsKeyDown(Keys.U) && canShoot)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
                 canShoot = false;
                 activated = true;

@@ -140,6 +140,22 @@ namespace MagicGladiators
                 component.Name = name;
                 abilityIndex++;
             }
+            if (name == "MirrorImage")
+            {
+                component = new MirrorImage(gameObject);
+                component.abilityIndex = abilityIndex;
+                component.key = keys[abilityIndex];
+                component.Name = name;
+                abilityIndex++;
+            }
+            if (name == "Invisibility")
+            {
+                component = new Invisibility(gameObject);
+                component.abilityIndex = abilityIndex;
+                component.key = keys[abilityIndex];
+                component.Name = name;
+                abilityIndex++;
+            }
             return component;
         }
 

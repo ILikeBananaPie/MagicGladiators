@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework.Content;
 
 namespace MagicGladiators
 {
-    public enum actions { Fireball, HomingMissile, Drain, Chain }
+    //public enum actions { Fireball, HomingMissile, Drain, Chain }
 
-    public abstract class Ability : Component, ILoadable, IUpdateable, IAbility
+    public abstract class DeathAbility : Component, ILoadable, IUpdateable, IAbility
     {
         protected float cooldown;
         protected bool canShoot = true;
@@ -17,15 +17,12 @@ namespace MagicGladiators
         private bool canUse;
 
 
-        public Ability(GameObject gameObject) : base(gameObject)
+        public DeathAbility(GameObject gameObject) : base(gameObject)
         {
 
         }
 
         public abstract void LoadContent(ContentManager content);
-
-
-
 
         public abstract void Update();
 
