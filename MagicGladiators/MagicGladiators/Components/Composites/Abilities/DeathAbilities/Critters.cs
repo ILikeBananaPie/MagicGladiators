@@ -25,7 +25,7 @@ namespace MagicGladiators
 
         public override void LoadContent(ContentManager content)
         {
-            throw new NotImplementedException();
+          //  throw new NotImplementedException();
         }
 
         public override void Update()
@@ -33,7 +33,7 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (keyState.IsKeyDown(key) && canUse)
+            if (keyState.IsKeyDown(key) && canUse && GameWorld.Instance.player.CurrentHealth <= 0)
             {
                 canUse = false;
                 for (int i = 0; i < 4; i++)
