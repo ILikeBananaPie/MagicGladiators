@@ -61,6 +61,7 @@ namespace MagicGladiators
                                 {
                                     GameWorld.Instance.client.Disconnect();
                                     GameWorld.Instance.client = null;
+                                    GameWorld.Instance.canClient = true;
                                 }
                                 GameWorld.Instance.NextScene = Scene.NewGame();
                                 break;
@@ -74,6 +75,7 @@ namespace MagicGladiators
                                 {
                                     GameWorld.Instance.client.Disconnect();
                                     GameWorld.Instance.client = null;
+                                    GameWorld.Instance.canClient = true;
                                 }
                                 GameWorld.Instance.NextScene = Scene.MainMenu();
                                 break;

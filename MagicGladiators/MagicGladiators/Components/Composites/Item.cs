@@ -53,7 +53,7 @@ namespace MagicGladiators
             this.AOEBonus = float.Parse(stats[10]);
             this.GoldBonusPercent = float.Parse(stats[11]);
             this.Value = int.Parse(stats[5]);
-            this.UpgradeValue = (int)(Value + Value * 0.2F);
+            this.UpgradeValue = Value * 2;
         }
 
         public void LoadContent(ContentManager content)

@@ -31,6 +31,7 @@ namespace MagicGladiators
         private string[] directions = new string[4] { "Up", "Down", "Left", "Right" };
         private string hostip;
         public bool isHost { get; set; } = false;
+        private Color previousColor;
 
         //private float TestTimer;
 
@@ -362,10 +363,12 @@ namespace MagicGladiators
                         if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnecting)
                         {
                             Console.WriteLine("Player Disconnecting!");
+                            //GameWorld.Instance.canClient = true;
                         }
                         if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnected)
                         {
                             Console.WriteLine("Player Disconnected!");
+                            //GameWorld.Instance.canClient = true;
                         }
                         break;
                     case NetIncomingMessageType.UnconnectedData:
@@ -737,6 +740,21 @@ namespace MagicGladiators
                                 if (name == "Map" && go.Tag == "Map")
                                 {
                                     (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = color;
+                                    foreach (GameObject go2 in GameWorld.gameObjects)
+                                    {
+                                        if (go2.Tag == "Player")
+                                        {
+                                            if (color == Color.White && previousColor == Color.DarkGreen)
+                                            {
+                                                go2.Speed += 0.5F;
+                                            }
+                                            if (color == Color.DarkGreen)
+                                            {
+                                                go2.Speed -= 0.5F;
+                                                previousColor = color;
+                                            }
+                                        }
+                                    }
                                 }
                                 string test2 = go.Id;
                                 if (test2 != null && go.Tag == name)
@@ -748,20 +766,6 @@ namespace MagicGladiators
                                 if (go.Id == id && name != "Map")
                                 {
                                     (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = color;
-                                    foreach (GameObject go2 in GameWorld.gameObjects)
-                                    {
-                                        if (go2.Tag == "Player")
-                                        {
-                                            if (color == Color.White)
-                                            {
-                                                GameWorld.Instance.player.Speed += 0.5F;
-                                            }
-                                            if (color == Color.DarkGreen)
-                                            {
-                                                GameWorld.Instance.player.Speed -= 0.5F;
-                                            }
-                                        }
-                                    }
                                 }
                             }
                         }
