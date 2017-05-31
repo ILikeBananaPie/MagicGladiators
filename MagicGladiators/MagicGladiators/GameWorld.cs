@@ -336,7 +336,7 @@ namespace MagicGladiators
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
             testItem = new string[] { "AOE", "0", "0", "0", "0", "100", "0", "0", "0", "0", "0.1", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Gold", "0", "0", "0", "0", "100", "0", "0", "0", "0", "0", "0.2" };
+            testItem = new string[] { "Gold", "0", "0", "0", "0", "100", "0", "0", "0", "0", "0", "0.03" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
         }
 

@@ -117,6 +117,10 @@ namespace MagicGladiators
             {
                 AOEBonus += 0.05F;
             }
+            if (GoldBonusPercent != 0)
+            {
+                GoldBonusPercent += 0.03F;
+            }
             Value += UpgradeValue / 2;
             upgradeLevel++;
         }

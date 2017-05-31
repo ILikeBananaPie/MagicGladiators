@@ -14,9 +14,6 @@ namespace MagicGladiators
         private bool canUse = true;
         private bool activated = false;
         private bool use = false;
-        private float cooldownTimer;
-        private float cooldown = 5;
-
         private float speedFactor = 1;
 
         private float activationTime = 2;
@@ -26,6 +23,8 @@ namespace MagicGladiators
 
         public SpeedBoost(GameObject go) : base(go)
         {
+            cooldown = 5;
+            canShoot = true;
         }
 
         public override void LoadContent(ContentManager content)
@@ -36,19 +35,12 @@ namespace MagicGladiators
         public override void Update()
         {
             KeyboardState keyState = Keyboard.GetState();
-            cooldownTimer += GameWorld.Instance.deltaTime;
-
-            if (cooldownTimer > cooldown)
-            {
-                canUse = true;
-                cooldownTimer = 0;
-                use = false;
-            }
 
             if (keyState.IsKeyDown(key) && canShoot)
             {
-                oldSpeed = Player.speed;
-                canUse = false;
+                //oldSpeed = Player.speed;
+                canShoot = false;
+                //canUse = false;
                 activated = true;
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.DarkSlateGray;
                 Color color = Color.DarkSlateGray;
@@ -70,6 +62,7 @@ namespace MagicGladiators
                 {
                     //Player.speed = oldSpeed;
                     gameObject.Speed = gameObject.Speed - speedFactor;
+                    use = false;
                     activated = false;
                     activationTimer = 0;
                     (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
