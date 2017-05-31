@@ -885,7 +885,7 @@ namespace MagicGladiators
 
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
-                                if (go.Id == id)
+                                if (go.Id == id && go.Tag == "Enemy")
                                 {
                                     for (int i = 0; i < 4; i++)
                                     {
