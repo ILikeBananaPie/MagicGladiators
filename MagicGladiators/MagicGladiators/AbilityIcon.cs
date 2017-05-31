@@ -48,6 +48,9 @@ namespace MagicGladiators
             animator.CreateAnimation("Recall", new Animation(1, 96, 1, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("GravityWell", new Animation(1, 96, 2, 32, 32, 10, Vector2.Zero, sprite));
 
+            animator.CreateAnimation("MirrorImage", new Animation(1, 160, 3, 32, 32, 10, Vector2.Zero, sprite));
+            animator.CreateAnimation("Invisibility", new Animation(1, 96, 3, 32, 32, 10, Vector2.Zero, sprite));
+
             animator.CreateAnimation("RollingMeteor", new Animation(1, 128, 0, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("DeathMine", new Animation(1, 128, 1, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Firewave", new Animation(1, 128, 2, 32, 32, 10, Vector2.Zero, sprite));
