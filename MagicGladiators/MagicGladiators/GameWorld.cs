@@ -453,7 +453,10 @@ namespace MagicGladiators
                     {
                         if (server != null)
                         {
-                            server.Kill();
+                            try
+                            {
+                                server.Kill();
+                            } catch (Exception) { }
                         }
                         Exit();
                     }
