@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Content;
 
 namespace MagicGladiators
 {
-    class Critters : Component, IUpdateable, IDeathAbility
+    class Critters : Ability, IDeathAbility
     {
         private bool canUse = true;
         public static Random rnd = new Random();
@@ -19,9 +20,15 @@ namespace MagicGladiators
         public Critters(GameObject gameObject) : base(gameObject)
         {
             Name = "Critters";
+            cooldown = 10;
         }
 
-        public void Update()
+        public override void LoadContent(ContentManager content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Update()
         {
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
