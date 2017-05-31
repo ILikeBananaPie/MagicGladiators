@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class DeathMine : Component, ILoadable, IDeathAbility
+    class DeathMine : Ability, ILoadable, IDeathAbility
     {
         
         private Vector2 originalPos;
@@ -30,7 +30,7 @@ namespace MagicGladiators
             this.transform = transform;
             this.animator = animator;
             Name = "DeathMine";
-
+            cooldown = 10;
         }
 
 
@@ -61,18 +61,21 @@ namespace MagicGladiators
             strategy = new Idle(animator);
         }
 
-        public void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content)
         {
 
         }
 
-        public void Update()
+        public override void Update()
         {
+            if (GameWorld.Instance.player.CurrentHealth > 0) { return; }
+
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (keyState.IsKeyDown(key) && !activated)
+            if (keyState.IsKeyDown(key) && canShoot)
             {
+                canShoot = false;
                 Director director = new Director(new ProjectileBuilder());
                 director.ConstructProjectile(new Vector2(mouse.Position.X, mouse.Position.Y), Vector2.Zero, "DeathMine", new GameObject(), gameObject.Id);
                 if (GameWorld.Instance.client != null)
@@ -97,22 +100,7 @@ namespace MagicGladiators
                         }
                     }
                 }
-                activated = false;
-
-                activated = true;
-                
-                    
-                
             }
-            if (keyState.IsKeyUp(Keys.R))
-            {
-                activated = false;
-            }
-            /*if (timer > 5)
-            {
-                timer = 0;
-                canShoot = true;
-            }*/
         }
     }
 }

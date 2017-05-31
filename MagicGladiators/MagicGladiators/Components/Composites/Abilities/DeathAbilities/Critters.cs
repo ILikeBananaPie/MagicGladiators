@@ -28,6 +28,8 @@ namespace MagicGladiators
 
         public override void Update()
         {
+            if (GameWorld.Instance.player.CurrentHealth > 0) { return; }
+
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 

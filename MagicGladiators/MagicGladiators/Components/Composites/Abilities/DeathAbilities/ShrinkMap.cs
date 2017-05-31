@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class ShrinkMap : Component, IDeathAbility
+    class ShrinkMap : Ability, IDeathAbility
     {
         private bool used = false;
 
@@ -19,8 +19,14 @@ namespace MagicGladiators
             Name = "ShrinkMap";
         }
 
-        public void Update()
+        public override void LoadContent(ContentManager content)
         {
+            //throw new NotImplementedException();
+        }
+
+        public override void Update()
+        {
+            if (GameWorld.Instance.player.CurrentHealth > 0) { return; }
 
             KeyboardState keyState = Keyboard.GetState();
 

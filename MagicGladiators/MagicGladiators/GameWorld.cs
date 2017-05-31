@@ -287,6 +287,10 @@ namespace MagicGladiators
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Recall", 100, "teleport you to the position, you \n had when casting the spell"));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "GravityWell", 100, "shoot a projektile that pulls \n people in"));
+            buySpellPosition();
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "MirrorImage", 100, "Creates 3 clones of yourself \n who mimics your fireball"));
+            buySpellPosition();
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Invisibility", 100, "Makes you invisible to other players"));
 
             int x = Player.deathAbilities.Count * 34;
             Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "RollingMeteor", 0, "Does something"));
@@ -298,10 +302,10 @@ namespace MagicGladiators
             Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "Critters", 0, "Does something"));
             x = Player.deathAbilities.Count * 34;
             Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "ShrinkMap", 0, "Does something"));
-            x = Player.deathAbilities.Count * 34;
-            Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "SlowField", 0, "Does something"));
-            x = Player.deathAbilities.Count * 34;
-            Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "IceField", 0, "Does something"));
+            //x = Player.deathAbilities.Count * 34;
+            //Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "SlowField", 0, "Does something"));
+            //x = Player.deathAbilities.Count * 34;
+            //Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "IceField", 0, "Does something"));
 
             int index = 0;
             foreach (Component component in player.components)
@@ -312,7 +316,6 @@ namespace MagicGladiators
                     index++;
                 }
             }
-
         }
 
         public void CreateVendorItems()
@@ -523,7 +526,7 @@ namespace MagicGladiators
                 }
             }
 
-            //UpdateDeathAbilities();
+            UpdateDeathAbilities();
 
             if (buyPhase)
             {
@@ -712,6 +715,7 @@ namespace MagicGladiators
                         {
                             if (component is IDeathAbility)
                             {
+                                (component as Ability).Cooldown();
                                 (component as IDeathAbility).Update();
                             }
                         }
@@ -1165,6 +1169,7 @@ namespace MagicGladiators
                 DrawTooltipPlayerItem(mouse, mouseCircle);
 
                 DrawTooltipPlayerAbility(mouse, mouseCircle);
+
 
             }
             if (CurrentScene.scenetype == "Practice")

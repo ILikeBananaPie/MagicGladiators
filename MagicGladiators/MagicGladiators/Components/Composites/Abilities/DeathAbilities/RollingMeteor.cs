@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class RollingMeteor : Component, ILoadable, IDeathAbility
+    class RollingMeteor : Ability, ILoadable, IDeathAbility
     {
         private float movementSpeed = 200;
 
@@ -44,6 +44,7 @@ namespace MagicGladiators
             this.animator = animator;
             this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
             Name = "RollingMeteor";
+            cooldown = 15;
         }
 
 
@@ -69,7 +70,7 @@ namespace MagicGladiators
         }
 
         
-        public void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content)
         {
             animator = (Animator)gameObject.GetComponent("Animator");
 
@@ -77,15 +78,18 @@ namespace MagicGladiators
 
         }
 
-        public void Update()
+        public override void Update()
         {
+            if (GameWorld.Instance.player.CurrentHealth > 0) { return; }
+
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
             Vector2 translation = Vector2.Zero;
 
-            if (keyState.IsKeyDown(key) && !qPressed)
+            if (keyState.IsKeyDown(key) && !qPressed && canShoot)
             {
+                canShoot = false;
                 qPressed = true;
                 if (activated == true)
                 {
