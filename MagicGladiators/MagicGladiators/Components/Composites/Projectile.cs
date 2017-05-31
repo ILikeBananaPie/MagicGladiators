@@ -286,7 +286,7 @@ namespace MagicGladiators
                         }
                     }
 
-                    if (gameObject.Id != other.gameObject.Id)
+                    if (gameObject.Id != other.gameObject.Id || other.gameObject.Tag == "Dummy")
                     {
                         Push();
                     }
@@ -571,7 +571,10 @@ namespace MagicGladiators
                         deathMineActivated = true;
                         (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
                         Color color = Color.Red;
-                        GameWorld.Instance.client.SendColor(gameObject.Id, gameObject.Tag, color.R, color.G, color.B, color.A);
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.SendColor(gameObject.Id, gameObject.Tag, color.R, color.G, color.B, color.A);
+                        }
                     }
                     //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
                 }

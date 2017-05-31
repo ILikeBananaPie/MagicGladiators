@@ -65,6 +65,7 @@ namespace MagicGladiators
         private int buySpellY;
 
         private SpriteFont fontText;
+        private SpriteFont keyFont;
         private SpriteFont describtionFont;
 
         GameObject TooltipBox = new GameObject();
@@ -414,6 +415,7 @@ namespace MagicGladiators
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             fontText = Content.Load<SpriteFont>("fontText");
+            keyFont = Content.Load<SpriteFont>("lunchtime");
             describtionFont = Content.Load<SpriteFont>("lunchtime");
             Content.Load<Texture2D>("ToolTipBox");
             TooltipBox.LoadContent(Content);
@@ -525,7 +527,7 @@ namespace MagicGladiators
 
                 UpdateBuyAbility(mouse, mouseCircle);
 
-                UpdateAbilityUpgrade(mouse, mouseCircle);
+                UpdateAbilityRebind(mouse, mouseCircle);
 
                 UpdateItemUpgrade(mouse, mouseCircle);
             }
@@ -737,7 +739,7 @@ namespace MagicGladiators
                     Item item = (go.GetComponent("Item") as Item);
                     if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                     {
-                        if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.items.Count <= 5)
+                        if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.items.Count <= 6)
                         {
                             canBuy = false;
                             if (Player.gold >= item.Value)
@@ -753,7 +755,7 @@ namespace MagicGladiators
                                     }
                                 }
                             }
-                            if (isBuying)
+                            if (isBuying && Player.items.Count < 6)
                             {
                                 Director director = new Director(new ItemBuilder());
                                 Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString(), item.CDR.ToString(), item.AOEBonus.ToString(), item.GoldBonusPercent.ToString() }));
@@ -798,7 +800,7 @@ namespace MagicGladiators
             }
         }
 
-        public void UpdateAbilityUpgrade(MouseState mouse, Circle mouseCircle)
+        public void UpdateAbilityRebind(MouseState mouse, Circle mouseCircle)
         {
             if (aliveCanBind)
             {
@@ -1157,7 +1159,7 @@ namespace MagicGladiators
                     {
                         DrawPlayerDeathAbilities();
                         DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
-                        UpdateAbilityUpgrade(mouse, mouseCircle);
+                        UpdateAbilityRebind(mouse, mouseCircle);
                     }
                     else
                     {
@@ -1174,7 +1176,7 @@ namespace MagicGladiators
             {
                 DrawPlayerDeathAbilities();
                 DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
-                UpdateAbilityUpgrade(mouse, mouseCircle);
+                UpdateAbilityRebind(mouse, mouseCircle);
             }
 
             spriteBatch.End();
@@ -1246,11 +1248,15 @@ namespace MagicGladiators
                         {
                             text = "Spc";
                         }
-                        if (text.Contains("D"))
+                        if (text == "D")
+                        {
+                            //do nothing
+                        }
+                        else if (text.Contains("D"))
                         {
                             text = text.Split('D').Last();
                         }
-                        spriteBatch.DrawString(fontText, text, new Vector2(go.transform.position.X + 10, go.transform.position.Y + 16), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+                        spriteBatch.DrawString(keyFont, text, new Vector2(go.transform.position.X + 10, go.transform.position.Y + 16), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     }
                 }
             }
@@ -1277,7 +1283,7 @@ namespace MagicGladiators
                         {
                             text = text.Split('D').Last();
                         }
-                        spriteBatch.DrawString(fontText, text, new Vector2(go.transform.position.X + 10, go.transform.position.Y + 16), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+                        spriteBatch.DrawString(keyFont, text, new Vector2(go.transform.position.X + 10, go.transform.position.Y + 16), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     }
                 }
             }
