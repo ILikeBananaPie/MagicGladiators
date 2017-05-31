@@ -46,13 +46,13 @@ namespace MagicGladiators
             this.Speed = float.Parse(stats[2]);
             this.DamageResistance = float.Parse(stats[3]);
             this.LavaResistance = float.Parse(stats[4]);
-            this.Value = int.Parse(stats[5]);
             this.KnockBackResistance = float.Parse(stats[6]);
             this.ProjectileSpeed = float.Parse(stats[7]);
             this.LifeSteal = float.Parse(stats[8]);
             this.CDR = float.Parse(stats[9]);
             this.AOEBonus = float.Parse(stats[10]);
             this.GoldBonusPercent = float.Parse(stats[11]);
+            this.Value = int.Parse(stats[5]);
             this.UpgradeValue = (int)(Value + Value * 0.2F);
         }
 
@@ -117,6 +117,10 @@ namespace MagicGladiators
             {
                 AOEBonus += 0.05F;
             }
+            if (GoldBonusPercent != 0)
+            {
+                GoldBonusPercent += 0.03F;
+            }
             Value += UpgradeValue / 2;
             upgradeLevel++;
         }
@@ -129,13 +133,13 @@ namespace MagicGladiators
             spriteBatch.DrawString(fontText, Name, new Vector2(x + 50, y - 50), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
             plus += 20;
             var fieldValues2 = this.GetType().GetProperties().Select(field => field.GetValue(this)).ToList();
-            for (int i = 1; i < fieldValues2.Count - 3; i++)
+            for (int i = 1; i < fieldValues2.Count - 5; i++)
             {
                 object obj = fieldValues2[i];
                 float testInt = float.Parse(obj.ToString());
                 if (testInt != 0)
                 {
-                    if (testInt < 10)
+                    if (testInt < 5)
                     {
                         spriteBatch.DrawString(fontText, list[index] + ": " + (testInt * 100).ToString(".") + "%", new Vector2(x + 50, y - 50 + plus), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
                         plus += 20;

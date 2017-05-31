@@ -31,7 +31,8 @@ namespace MagicGladiators
 
         private int abilityIndex = 0;
         private List<IAbility> abilityListTest = new List<IAbility>();
-        private bool canBind = true;
+        private bool aliveCanBind = true;
+        private bool deathCanBind = true;
         private Keys[] keys;
         private string bindName;
 
@@ -64,6 +65,7 @@ namespace MagicGladiators
         private int buySpellY;
 
         private SpriteFont fontText;
+        private SpriteFont keyFont;
         private SpriteFont describtionFont;
 
         GameObject TooltipBox = new GameObject();
@@ -300,6 +302,16 @@ namespace MagicGladiators
             x = Player.deathAbilities.Count * 34;
             Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "IceField", 0, "Does something"));
 
+            int index = 0;
+            foreach (Component component in player.components)
+            {
+                if (component is IDeathAbility)
+                {
+                    component.key = CreateAbility.keys[index];
+                    index++;
+                }
+            }
+
         }
 
         public void CreateVendorItems()
@@ -324,7 +336,7 @@ namespace MagicGladiators
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
             testItem = new string[] { "AOE", "0", "0", "0", "0", "100", "0", "0", "0", "0", "0.1", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Gold", "0", "0", "0", "0", "100", "0", "0", "0", "0", "0", "0.2" };
+            testItem = new string[] { "Gold", "0", "0", "0", "0", "100", "0", "0", "0", "0", "0", "0.03" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
         }
 
@@ -403,6 +415,7 @@ namespace MagicGladiators
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             fontText = Content.Load<SpriteFont>("fontText");
+            keyFont = Content.Load<SpriteFont>("lunchtime");
             describtionFont = Content.Load<SpriteFont>("lunchtime");
             Content.Load<Texture2D>("ToolTipBox");
             TooltipBox.LoadContent(Content);
@@ -453,7 +466,10 @@ namespace MagicGladiators
                     {
                         if (server != null)
                         {
-                            server.Kill();
+                            try
+                            {
+                                server.Kill();
+                            } catch (Exception) { }
                         }
                         Exit();
                     }
@@ -495,6 +511,16 @@ namespace MagicGladiators
                     }
                 }
             }
+            if (CurrentScene.scenetype == "Practice")
+            {
+                foreach (GameObject go in gameObjects)
+                {
+                    if (go.CurrentHealth < 0)
+                    {
+                        objectsToRemove.Add(go);
+                    }
+                }
+            }
 
             UpdateDeathAbilities();
 
@@ -504,7 +530,7 @@ namespace MagicGladiators
 
                 UpdateBuyAbility(mouse, mouseCircle);
 
-                UpdateAbilityUpgrade(mouse, mouseCircle);
+                UpdateAbilityRebind(mouse, mouseCircle);
 
                 UpdateItemUpgrade(mouse, mouseCircle);
             }
@@ -562,6 +588,11 @@ namespace MagicGladiators
                     client.Update();
                 }
                 //client.Draw();
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.F9) && CurrentScene.scenetype == "Practice")
+            {
+                ResetItemsAndAbilities();
+                NextScene = Scene.Practice();
             }
 
             UpdateMouseRelease(mouse);
@@ -676,10 +707,13 @@ namespace MagicGladiators
                 {
                     if (player.CurrentHealth <= 0)
                     {
-                        (player.GetComponent("DeathMine") as DeathMine).Update();
-                        (player.GetComponent("RollingMeteor") as RollingMeteor).Update();
-                        (player.GetComponent("ShrinkMap") as ShrinkMap).Update();
-                        (player.GetComponent("SlowField") as SlowField).Update();
+                        foreach (Component component in player.components)
+                        {
+                            if (component is IDeathAbility)
+                            {
+                                (component as IDeathAbility).Update();
+                            }
+                        }
                     }
                 }
 
@@ -692,7 +726,7 @@ namespace MagicGladiators
             buyPhase = true;
             currentRound = 1;
             itemList.Clear();
-            numberOfRounds = 0;
+            numberOfRounds = 3;
             playersAlive.Clear();
             readyList.Clear();
             buySpellX = Window.ClientBounds.Width - 144;
@@ -713,7 +747,7 @@ namespace MagicGladiators
                     Item item = (go.GetComponent("Item") as Item);
                     if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                     {
-                        if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.items.Count <= 5)
+                        if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.items.Count <= 6)
                         {
                             canBuy = false;
                             if (Player.gold >= item.Value)
@@ -729,7 +763,7 @@ namespace MagicGladiators
                                     }
                                 }
                             }
-                            if (isBuying)
+                            if (isBuying && Player.items.Count < 6)
                             {
                                 Director director = new Director(new ItemBuilder());
                                 Player.items.Add(director.ConstructItem(new Vector2(0, 200), new string[] { item.Name, item.Health.ToString(), item.Speed.ToString(), item.DamageResistance.ToString(), item.LavaResistance.ToString(), (item.Value / 2).ToString(), item.KnockBackResistance.ToString(), item.ProjectileSpeed.ToString(), item.LifeSteal.ToString(), item.CDR.ToString(), item.AOEBonus.ToString(), item.GoldBonusPercent.ToString() }));
@@ -774,35 +808,50 @@ namespace MagicGladiators
             }
         }
 
-        public void UpdateAbilityUpgrade(MouseState mouse, Circle mouseCircle)
+        public void UpdateAbilityRebind(MouseState mouse, Circle mouseCircle)
         {
-            if (canBind)
+            if (aliveCanBind)
             {
                 foreach (GameObject go in Player.abilities)
                 {
                     if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                     {
-                        if (canBuy && mouse.LeftButton == ButtonState.Pressed)
+                        if (canBuy && mouse.LeftButton == ButtonState.Pressed && player.CurrentHealth > 0)
                         {
                             //rebind ability
                             KeyboardState keyState = Keyboard.GetState();
                             keys = keyState.GetPressedKeys();
                             if (keys.Length > 0)
                             {
-                                canBind = false;
+                                aliveCanBind = false;
                                 bindName = (go.GetComponent("AbilityIcon") as AbilityIcon).Name;
                             }
-
-                        }
-                        if (canBuy && mouse.RightButton == ButtonState.Pressed)
-                        {
-                            //upgrade ability
-                            //giving ability icons ability components. Give each ability component an isBought bool and only allow Update to run if isBought is true. Set isBought to true when buying the ability.
                         }
                     }
                 }
             }
-            if (!canBind)
+            if (deathCanBind)
+            {
+                foreach (GameObject go in Player.deathAbilities)
+                {
+                    if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+                    {
+                        if (canBuy && mouse.LeftButton == ButtonState.Pressed && player.CurrentHealth < 0)
+                        {
+                            //rebind ability
+                            KeyboardState keyState = Keyboard.GetState();
+                            keys = keyState.GetPressedKeys();
+                            if (keys.Length > 0)
+                            {
+                                deathCanBind = false;
+                                bindName = (go.GetComponent("AbilityIcon") as AbilityIcon).Name;
+                            }
+
+                        }
+                    }
+                }
+            }
+            if (!aliveCanBind)
             {
                 foreach (Component component in player.components)
                 {
@@ -818,7 +867,28 @@ namespace MagicGladiators
                         component.key = keys.Last();
                         Array.Clear(keys, 0, keys.Length);
                         bindName = "NoName";
-                        canBind = true;
+                        aliveCanBind = true;
+                        break;
+                    }
+                }
+            }
+            if (!deathCanBind)
+            {
+                foreach (Component component in player.components)
+                {
+                    if (component is IDeathAbility && component.Name == bindName)
+                    {
+                        foreach (Component comp in player.components)
+                        {
+                            if (comp.key == keys.Last())
+                            {
+                                comp.key = component.key;
+                            }
+                        }
+                        component.key = keys.Last();
+                        Array.Clear(keys, 0, keys.Length);
+                        bindName = "NoName";
+                        deathCanBind = true;
                         break;
                     }
                 }
@@ -1096,13 +1166,25 @@ namespace MagicGladiators
                     if (player.CurrentHealth < 0)
                     {
                         DrawPlayerDeathAbilities();
+                        DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
+                        UpdateAbilityRebind(mouse, mouseCircle);
                     }
                     else
                     {
                         DrawTooltipPlayerAbility(mouse, mouseCircle);
                     }
                 }
-
+            }
+            if (CurrentScene.scenetype == "Play" && buyPhase)
+            {
+                //DrawPlayerDeathAbilities();
+                //DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
+            }
+            else if (CurrentScene.scenetype == "Play" && !buyPhase && player.CurrentHealth < 0)
+            {
+                DrawPlayerDeathAbilities();
+                DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
+                UpdateAbilityRebind(mouse, mouseCircle);
             }
 
             spriteBatch.End();
@@ -1163,10 +1245,41 @@ namespace MagicGladiators
             {
                 go.Draw(spriteBatch);
                 string name = (go.GetComponent("AbilityIcon") as AbilityIcon).Name;
-                
+
                 foreach (Component component in player.components)
                 {
                     if (component is Ability && name == component.Name)
+                    {
+                        string text = component.key.ToString();
+                        text = text.Split('.').Last();
+                        if (text == "Space")
+                        {
+                            text = "Spc";
+                        }
+                        if (text == "D")
+                        {
+                            //do nothing
+                        }
+                        else if (text.Contains("D"))
+                        {
+                            text = text.Split('D').Last();
+                        }
+                        spriteBatch.DrawString(keyFont, text, new Vector2(go.transform.position.X + 10, go.transform.position.Y + 16), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+                    }
+                }
+            }
+
+        }
+
+        public void DrawPlayerDeathAbilities()
+        {
+            foreach (GameObject go in Player.deathAbilities)
+            {
+                go.Draw(spriteBatch);
+                string name = (go.GetComponent("AbilityIcon") as AbilityIcon).Name;
+                foreach (Component component in player.components)
+                {
+                    if (component is IDeathAbility && component.Name == name)
                     {
                         string text = component.key.ToString();
                         text = text.Split('.').Last();
@@ -1178,19 +1291,9 @@ namespace MagicGladiators
                         {
                             text = text.Split('D').Last();
                         }
-                        spriteBatch.DrawString(fontText, text, new Vector2(go.transform.position.X + 10, go.transform.position.Y + 16), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+                        spriteBatch.DrawString(keyFont, text, new Vector2(go.transform.position.X + 10, go.transform.position.Y + 16), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     }
                 }
-                
-            }
-
-        }
-
-        public void DrawPlayerDeathAbilities()
-        {
-            foreach (GameObject go in Player.deathAbilities)
-            {
-                go.Draw(spriteBatch);
             }
         }
 
@@ -1247,6 +1350,25 @@ namespace MagicGladiators
             }
         }
 
+        public void DrawTooltipPlayerDeathAbility(MouseState mouse, Circle mouseCircle)
+        {
+
+            foreach (GameObject go in Player.deathAbilities)
+            {
+                AbilityIcon icon = (go.GetComponent("AbilityIcon") as AbilityIcon);
+                if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
+                {
+                    int width = (TooltipBox.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Width;
+                    int height = (TooltipBox.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height;
+                    TooltipBox.transform.position = new Vector2(mouse.Position.X - width, mouse.Position.Y - height);
+                    TooltipBox.Draw(spriteBatch);
+                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    //spriteBatch.DrawString(fontText, "Value: " + icon.Value.ToString(), new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
+                }
+            }
+        }
+
         public void DrawTooltipPlayerItem(MouseState mouse, Circle mouseCircle)
         {
             foreach (GameObject go in Player.items)
@@ -1261,7 +1383,6 @@ namespace MagicGladiators
                 }
             }
         }
-
 
         public GameObject FindGameObjectWithTag(string tag)
         {

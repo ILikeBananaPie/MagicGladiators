@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MagicGladiators
 {
-    class Critters : Component, IUpdateable
+    class Critters : Component, IUpdateable, IDeathAbility
     {
         private bool canUse = true;
         public static Random rnd = new Random();
@@ -18,7 +18,7 @@ namespace MagicGladiators
 
         public Critters(GameObject gameObject) : base(gameObject)
         {
-
+            Name = "Critters";
         }
 
         public void Update()
@@ -26,7 +26,7 @@ namespace MagicGladiators
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (keyState.IsKeyDown(Keys.T) && canUse)
+            if (keyState.IsKeyDown(key) && canUse)
             {
                 canUse = false;
                 for (int i = 0; i < 4; i++)

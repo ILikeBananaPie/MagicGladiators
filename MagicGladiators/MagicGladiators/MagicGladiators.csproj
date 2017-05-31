@@ -88,6 +88,7 @@
     <Compile Include="Components\Composites\Server.cs" />
     <Compile Include="Components\Composites\Critter.cs" />
     <Compile Include="Components\Interfaces\IAbility.cs" />
+    <Compile Include="Components\Interfaces\IDeathAbility.cs" />
     <Compile Include="Components\Interfaces\ILoadable.cs" />
     <Compile Include="Components\Interfaces\IUpdateable.cs" />
     <Compile Include="Components\Leafs\Animator.cs" />
