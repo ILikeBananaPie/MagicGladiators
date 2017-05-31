@@ -748,6 +748,20 @@ namespace MagicGladiators
                                 if (go.Id == id && name != "Map")
                                 {
                                     (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = color;
+                                    foreach (GameObject go2 in GameWorld.gameObjects)
+                                    {
+                                        if (go2.Tag == "Player")
+                                        {
+                                            if (color == Color.White)
+                                            {
+                                                GameWorld.Instance.player.Speed += 0.5F;
+                                            }
+                                            if (color == Color.DarkGreen)
+                                            {
+                                                GameWorld.Instance.player.Speed -= 0.5F;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

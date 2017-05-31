@@ -139,7 +139,6 @@ namespace MagicGladiators
                 }
             }
 
-
             if (gameObject.IsInvisible)
             {
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = new Color(color, 0.001F);

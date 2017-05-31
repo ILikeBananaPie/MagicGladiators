@@ -51,8 +51,7 @@ namespace MagicGladiators
                     {
                         if (GameWorld.Instance.client != null)
                         {
-                            //GameWorld.Instance.client.SendColor(go.Id, "Player", color.R, color.G, color.B, color.A);
-                            GameWorld.Instance.client.SendSpeedDown(go.Id, -speedFactor);
+                            //GameWorld.Instance.client.SendSpeedDown(go.Id, -speedFactor);
                         }
                     }
                 }
@@ -77,8 +76,7 @@ namespace MagicGladiators
                         {
                             if (GameWorld.Instance.client != null)
                             {
-                                //GameWorld.Instance.client.SendColor(go.Id, "Player", color.R, color.G, color.B, color.A);
-                                GameWorld.Instance.client.SendSpeedUp(go.Id, speedFactor);
+                                //GameWorld.Instance.client.SendSpeedUp(go.Id, speedFactor);
                             }
                         }
 

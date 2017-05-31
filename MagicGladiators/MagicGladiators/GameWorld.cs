@@ -302,10 +302,10 @@ namespace MagicGladiators
             Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "Critters", 0, "Does something"));
             x = Player.deathAbilities.Count * 34;
             Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "ShrinkMap", 0, "Does something"));
-            //x = Player.deathAbilities.Count * 34;
-            //Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "SlowField", 0, "Does something"));
-            //x = Player.deathAbilities.Count * 34;
-            //Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "IceField", 0, "Does something"));
+            x = Player.deathAbilities.Count * 34;
+            Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "SlowField", 0, "Does something"));
+            x = Player.deathAbilities.Count * 34;
+            Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "IceField", 0, "Does something"));
 
             int index = 0;
             foreach (Component component in player.components)
