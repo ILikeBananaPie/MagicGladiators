@@ -28,7 +28,8 @@ namespace MagicGladiators
         public void LoadContent(ContentManager content)
         {
             animator = (Animator)gameObject.GetComponent("Animator");
-            Texture2D sprite = content.Load<Texture2D>("SpellSheet2");
+            Texture2D sprite = content.Load<Texture2D>("SpellSheet3");
+
 
             animator.CreateAnimation("HomingMissile", new Animation(1, 64, 0, 32, 32, 10, Vector2.Zero, sprite));
             animator.CreateAnimation("Charge", new Animation(1, 32, 0, 32, 32, 10, Vector2.Zero, sprite));

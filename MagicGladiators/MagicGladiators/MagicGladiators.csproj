@@ -195,6 +195,9 @@
     <Content Include="Content\SpellSheet2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\SpellSheet3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Spellshield.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
