@@ -49,12 +49,28 @@ namespace MagicGladiators
                 director.ConstructProjectile(gameObject.transform.position, Vector2.Zero, "Mine", new GameObject(), gameObject.Id);
                 if (GameWorld.Instance.client != null)
                 {
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        if (go.Id == gameObject.Id && go.Tag == "Mine")
+                        {
+                            GameWorld.objectsToRemove.Add(go);
+                            GameWorld.Instance.client.SendRemoval("Mine", gameObject.Id);
+                        }
+                    }
                     GameWorld.Instance.client.SendProjectile("Mine,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                }
+                else
+                {
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        if (go.Tag == "DeathMine")
+                        {
+                            GameWorld.objectsToRemove.Add(go);
+                        }
+                    }
                 }
             }
             
         }
-
-     
     }
 }
