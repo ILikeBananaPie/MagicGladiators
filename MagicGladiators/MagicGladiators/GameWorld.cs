@@ -587,6 +587,11 @@ namespace MagicGladiators
                 }
                 //client.Draw();
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.F9) && CurrentScene.scenetype == "Practice")
+            {
+                ResetItemsAndAbilities();
+                NextScene = Scene.Practice();
+            }
 
             UpdateMouseRelease(mouse);
 
