@@ -32,15 +32,16 @@ namespace MagicGladiators
             gameObject.AddComponent(new RollingMeteor(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
 
             gameObject.AddComponent(new ShrinkMap(gameObject));
-            gameObject.AddComponent(new SlowField(gameObject));
+            //gameObject.AddComponent(new SlowField(gameObject));
 
             //gameObject.AddComponent(new MirrorImage(gameObject));
 
             gameObject.AddComponent(new Firewave(gameObject));
+            gameObject.AddComponent(new Critters(gameObject));
 
             //gameObject.AddComponent(new Invisibility(gameObject));
 
-            gameObject.AddComponent(new Critters(gameObject));
+
 
             //gameObject.AddComponent(new StoneArmour(gameObject));
 
