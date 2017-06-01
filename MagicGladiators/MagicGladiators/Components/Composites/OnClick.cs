@@ -57,6 +57,9 @@ namespace MagicGladiators
                                     try
                                     {
                                         GameWorld.Instance.server.Kill();
+                                    } catch (Exception) { }
+                                    try
+                                    {
                                         GameWorld.Instance.server = null;
                                     } catch (Exception) { }
                                 }
@@ -76,6 +79,9 @@ namespace MagicGladiators
                                     try
                                     {
                                         GameWorld.Instance.server.Kill();
+                                    } catch (Exception) { }
+                                    try
+                                    {
                                         GameWorld.Instance.server = null;
                                     } catch (Exception) { }
                                 }
