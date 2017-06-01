@@ -52,6 +52,7 @@ namespace MagicGladiators
                         switch (destination)
                         {
                             case "NewGame":
+                                CreateAbility.abilityIndex = 0;
                                 if (GameWorld.Instance.server != null)
                                 {
                                     try
@@ -74,6 +75,7 @@ namespace MagicGladiators
                                 GameWorld.Instance.NextScene = Scene.NewGame();
                                 break;
                             case "MainMenu":
+                                CreateAbility.abilityIndex = 0;
                                 if (GameWorld.Instance.server != null)
                                 {
                                     try

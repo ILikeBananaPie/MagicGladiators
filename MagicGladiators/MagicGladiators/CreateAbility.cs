@@ -13,7 +13,7 @@ namespace MagicGladiators
         private string name;
         private Component component;
 
-        private static int abilityIndex = 0;
+        public static int abilityIndex = 0;
         public static Keys[] keys = new Keys[7] { Keys.Q, Keys.E, Keys.R, Keys.F, Keys.Space, Keys.C, Keys.X };
 
         public CreateAbility(string name)

@@ -784,7 +784,7 @@ namespace MagicGladiators
             buyPhase = true;
             currentRound = 1;
             itemList.Clear();
-            numberOfRounds = 3;
+            //numberOfRounds = 3;
             playersAlive.Clear();
             readyList.Clear();
             buySpellX = Window.ClientBounds.Width - 144;
@@ -793,6 +793,7 @@ namespace MagicGladiators
             Player.abilities.Clear();
             Player.gold = 10000;
             Player.deathAbilities.Clear();
+            CreateAbility.abilityIndex = 0;
         }
 
         public void UpdateBuyItem(MouseState mouse, Circle mouseCircle)

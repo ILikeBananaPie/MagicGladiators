@@ -806,8 +806,9 @@ namespace MagicGladiators
                                             if (color == Color.White && previousColor == Color.DarkGreen)
                                             {
                                                 go2.Speed += 0.5F;
+                                                previousColor = color;
                                             }
-                                            if (color == Color.DarkGreen)
+                                            if (color == Color.DarkGreen && previousColor == Color.White)
                                             {
                                                 go2.Speed -= 0.5F;
                                                 previousColor = color;
