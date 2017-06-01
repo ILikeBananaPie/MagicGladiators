@@ -150,7 +150,7 @@ namespace TestServer
             connectionList.Clear();
             foreach (NetConnection con in connectionList)
             {
-                if (con.ToString() == id)
+                if (con.RemoteEndPoint.ToString() == id)
                 {
                     connectionList.Add(con);
                 }
