@@ -193,6 +193,7 @@ namespace MagicGladiators
         {
             CreateMap(selectedMap);
             ResetCharacters();
+            //NextScene = Scene.Play();
 
         }
 
@@ -347,6 +348,13 @@ namespace MagicGladiators
 
         public void CreateMap(string map)
         {
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.Tag == "Map" || go.Tag == "Pillar" || go.Tag == "LavaSpot")
+                {
+                    objectsToRemove.Add(go);
+                }
+            }
             Director director = new Director(new MapBuilder());
             Texture2D sprite = Content.Load<Texture2D>("StandardMap");
             newObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2), "Map"));
@@ -1129,6 +1137,7 @@ namespace MagicGladiators
                 {
                     if (go.Tag == "Player" || go.Tag == "Enemy")
                     {
+                        go.transform.position = new Vector2(0, 0);
                         characters.Add(go);
                         characterColliders.Add((go.GetComponent("Collider") as Collider));
                     }

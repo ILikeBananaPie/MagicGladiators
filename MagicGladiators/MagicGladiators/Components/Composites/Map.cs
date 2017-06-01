@@ -81,6 +81,10 @@ namespace MagicGladiators
             {
                 newObjects.Add(other.gameObject);
             }
+            if (gameObject.Tag == "LavaSpot")
+            {
+                objectsToRemove.Add(other.gameObject);
+            }
         }
 
         public void OnCollisionEnter(Collider other)
