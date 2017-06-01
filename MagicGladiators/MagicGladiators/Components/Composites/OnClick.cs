@@ -54,8 +54,11 @@ namespace MagicGladiators
                             case "NewGame":
                                 if (GameWorld.Instance.server != null)
                                 {
-                                    GameWorld.Instance.server.Kill();
-                                    GameWorld.Instance.server = null;
+                                    try
+                                    {
+                                        GameWorld.Instance.server.Kill();
+                                        GameWorld.Instance.server = null;
+                                    } catch (Exception) { }
                                 }
                                 if (GameWorld.Instance.client != null)
                                 {
