@@ -471,11 +471,13 @@ namespace MagicGladiators
                             try
                             {
                                 GameWorld.Instance.server.Kill();
-                            } catch (Exception) { }
+                            }
+                            catch (Exception) { }
                             try
                             {
                                 GameWorld.Instance.server = null;
-                            } catch (Exception) { }
+                            }
+                            catch (Exception) { }
                         }
                         if (GameWorld.Instance.client != null)
                         {
@@ -494,11 +496,13 @@ namespace MagicGladiators
                             try
                             {
                                 GameWorld.Instance.server.Kill();
-                            } catch (Exception) { }
+                            }
+                            catch (Exception) { }
                             try
                             {
                                 GameWorld.Instance.server = null;
-                            } catch (Exception) { }
+                            }
+                            catch (Exception) { }
                         }
                         if (GameWorld.Instance.client != null)
                         {
@@ -517,11 +521,13 @@ namespace MagicGladiators
                             try
                             {
                                 server.Kill();
-                            } catch (Exception) { }
+                            }
+                            catch (Exception) { }
                             try
                             {
                                 server = null;
-                            } catch (Exception) { }
+                            }
+                            catch (Exception) { }
                         }
                         Exit();
                     }
@@ -1064,6 +1070,7 @@ namespace MagicGladiators
                     {
                         client.SendReady(player.Id, false);
                         player.isReady = false;
+
                     }
                     else
                     {
@@ -1077,74 +1084,35 @@ namespace MagicGladiators
                 canReady = true;
             }
 
-            if (client != null)
+            if (client != null && gameState == GameState.ingame && !buyPhase)
             {
                 if (client.isHost)
                 {
-                    if (buyPhase)
+                    playersAlive.Clear();
+                    foreach (GameObject go in gameObjects)
                     {
-                        bool startRound = false;
-
-                        foreach (GameObject go in gameObjects)
+                        if (go.Tag == "Player" || go.Tag == "Enemy")
                         {
-                            if (gameObjects.Exists(x => x.Tag == "Player") || gameObjects.Exists(x => x.Tag == "Enemy"))
-                            {
-                                if ((go.Tag == "Enemy" || go.Tag == "Player") && !go.isReady)
-                                {
-                                    //don't start the round
-                                    startRound = false;
-                                    break;
-                                }
-                                else startRound = true;
-                            }
-
-                        }
-
-                        if (startRound)
-                        {
-                            client.SendSwitchPhase();
-                            foreach (GameObject go in gameObjects)
-                            {
-                                if (go.Tag == "Enemy" || go.Tag == "Player")
-                                {
-                                    go.isReady = false;
-                                }
-                            }
-                            StartRound();
-                            currentRound++;
-                            //ResetCharacters();
-                            buyPhase = false;
-                            startRound = false;
+                            playersAlive.Add(go);
                         }
                     }
-                    else
+                    if (playersAlive.Count < 2)
                     {
-                        playersAlive.Clear();
-                        foreach (GameObject go in gameObjects)
+                        if (currentRound < numberOfRounds)
                         {
-                            if (go.Tag == "Player" || go.Tag == "Enemy")
-                            {
-                                playersAlive.Add(go);
-                            }
+                            //revive all players & reset all stats
+                            //CreateDummies();
+                            client.SendSwitchPhase();
+                            StartRound();
+                            //CreateMap(selectedMap);
+                            //ResetCharacters();
+                            buyPhase = true;
+                            //currentRound++;
                         }
-                        if (playersAlive.Count < 2)
+                        else
                         {
-                            if (currentRound < numberOfRounds)
-                            {
-                                //revive all players & reset all stats
-                                //CreateDummies();
-                                client.SendSwitchPhase();
-                                StartRound();
-                                //CreateMap(selectedMap);
-                                //ResetCharacters();
-                                buyPhase = true;
-                                //currentRound++;
-                            }
-                            else
-                            {
-                                //show end screen
-                                currentRound = 1;
-                            }
+                            //show end screen
+                            currentRound = 1;
                         }
                     }
                 }
@@ -1189,6 +1157,10 @@ namespace MagicGladiators
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
+            if (client != null)
+            {
+                client.Draw();
+            }
 
             spriteBatch.DrawString(fontText, TestClient.text, new Vector2(0, Window.ClientBounds.Height / 2), Color.Black);
 

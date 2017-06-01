@@ -165,7 +165,6 @@ namespace TestServer
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
-
         static void Main(string[] args)
         {
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
@@ -548,9 +547,14 @@ namespace TestServer
             msgOut.Write(colors[colorIndex]);
             msgOut.Write(playerIndex);
             server.SendMessage(msgOut, con, NetDeliveryMethod.Unreliable, 0);
-
+            HostInfo();
             colorIndex++;
             playerIndex++;
+        }
+
+        public static void HostInfo()
+        {
+
         }
 
         public static void UpdateConnectionList(NetConnection con)

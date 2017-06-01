@@ -32,6 +32,7 @@ namespace MagicGladiators
         private string hostip;
         public bool isHost { get; set; } = false;
         private Color previousColor;
+        public List<GameObject> readyList { get; set; } = new List<GameObject>();
 
         //private float TestTimer;
 
@@ -333,13 +334,23 @@ namespace MagicGladiators
 
         public void Draw()
         {
-            lock (locker)
+            spriteBatch.Begin();
+            if (GameWorld.buyPhase)
             {
-                spriteBatch.Begin();
-                spriteBatch.DrawString(font, "You Dick!", new Vector2(0, GameWorld.Instance.Window.ClientBounds.Height / 2), Color.Black);
-                spriteBatch.End();
+                int y = 0;
+                foreach (GameObject go in readyList)
+                {
+                    string text;
+                    if (go.isReady)
+                    {
+                        text = "Ready";
+                    }
+                    else text = "Not Ready";
+                    spriteBatch.DrawString(font, go.Id + " is " + text, new Vector2(GameWorld.Instance.Window.ClientBounds.Width / 2, 0 + y), Color.Black);
+                    y += 20;
+                }
             }
-            Thread.CurrentThread.Abort();
+            spriteBatch.End();
         }
 
         public void Update()
@@ -436,12 +447,18 @@ namespace MagicGladiators
                                 GameWorld.Instance.player.isReady = false;
                                 GameWorld.currentRound++;
                                 GameWorld.Instance.StartRound();
+                                foreach (GameObject go in readyList)
+                                {
+                                    go.isReady = false;
+                                }
+
                                 //GameWorld.Instance.ResetCharacters();
                             }
                             else
                             {
                                 GameWorld.buyPhase = true;
                                 GameWorld.Instance.StartRound();
+
                                 //GameWorld.CreateMap(GameWorld.selectedMap);
                                 //GameWorld.Instance.ResetCharacters();
                             }
@@ -452,14 +469,41 @@ namespace MagicGladiators
                         {
                             string id = msgIn.ReadString();
                             bool isReady = msgIn.ReadBoolean();
-                            if (isHost)
+                            if (GameWorld.buyPhase)
                             {
-                                foreach (GameObject go in GameWorld.gameObjects)
+                                if (!readyList.Exists(x => x.Id == id))
                                 {
-                                    if (go.Tag == "Enemy" && go.Id == id)
+                                    GameObject player = new GameObject();
+                                    player.Id = id;
+                                    player.isReady = isReady;
+                                }
+                                else
+                                {
+                                    foreach (GameObject go in readyList)
                                     {
-                                        go.isReady = isReady;
+                                        if (go.Id == id)
+                                        {
+                                            go.isReady = isReady;
+                                        }
                                     }
+                                }
+                                if (isHost && !readyList.Exists(x => x.isReady != true) && GameWorld.gameState == GameState.ingame)
+                                {
+                                    foreach (GameObject go in readyList)
+                                    {
+                                        go.isReady = false;
+                                    }
+                                    //SendStartgame();
+                                    SendSwitchPhase();
+                                    GameWorld.Instance.StartRound();
+                                    GameWorld.currentRound++;
+                                    //ResetCharacters();
+                                    GameWorld.buyPhase = false;
+                                    //startRound = false;
+                                    //foreach (GameObject go in readyList)
+                                    //{
+                                    //    go.isReady = false;
+                                    //}
                                 }
                             }
                         }
@@ -468,6 +512,10 @@ namespace MagicGladiators
                         if (type == (byte)PacketType.StartGame)
                         {
                             GameWorld.Instance.NextScene = Scene.Play();
+                            foreach (GameObject go in GameWorld.Instance.client.readyList)
+                            {
+                                go.isReady = false;
+                            }
                         }
                         #endregion
                         #region MapSettings
@@ -592,6 +640,13 @@ namespace MagicGladiators
                             go.ConnectionNumber = index;
                             (go.GetComponent("Animator") as Animator).PlayAnimation(color);
                             GameWorld.newObjects.Add(go);
+                            if (!readyList.Exists(x => x.Id == id))
+                            {
+                                GameObject player = new GameObject();
+                                player.Id = id;
+                                player.isReady = false;
+                                readyList.Add(player);
+                            }
                             foreach (GameObject dummy in GameWorld.gameObjects)
                             {
                                 if (dummy.Tag == "Dummy")
@@ -782,6 +837,13 @@ namespace MagicGladiators
                             string color = msgIn.ReadString();
                             int connectionNumber = msgIn.ReadInt32();
                             //connectionNumber++;
+                            if (!readyList.Exists(x => x.Id == id))
+                            {
+                                GameObject player = new GameObject();
+                                player.Id = id;
+                                player.isReady = false;
+                                readyList.Add(player);
+                            }
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (go.Tag == "Player")

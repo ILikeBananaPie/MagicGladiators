@@ -162,7 +162,10 @@ namespace MagicGladiators
                                             GameWorld.Instance.NextScene = Scene.Play();
                                             GameWorld.Instance.client.SendMapSettings(GameWorld.selectedMap, GameWorld.numberOfRounds);
                                             GameWorld.Instance.client.SendStartgame();
-
+                                            foreach (GameObject go in GameWorld.Instance.client.readyList)
+                                            {
+                                                go.isReady = false;
+                                            }
                                         }
                                     }
                                 }
