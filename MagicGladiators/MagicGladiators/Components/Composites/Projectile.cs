@@ -219,7 +219,7 @@ namespace MagicGladiators
             if (gameObject.Tag == "Boomerang")
             {
                 animator.PlayAnimation("Boomerang");
-                travelDistance = 1000;
+                travelDistance = 4000;
             }
             if (gameObject.Tag.Contains("Firewave"))
             {
