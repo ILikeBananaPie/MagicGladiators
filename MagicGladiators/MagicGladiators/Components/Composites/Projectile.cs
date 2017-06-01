@@ -24,13 +24,13 @@ namespace MagicGladiators
         private Vector2 originalPos;
         private Vector2 testVector;
 
-        public static bool chainActivated;
+        public bool chainActivated { get; set; }
 
         private float homingTimer;
         private float distance;
         private Vector2 bestTarget;
 
-        public static GameObject chainTarget;
+        public GameObject chainTarget { get; set; }
         private float chainTimer;
 
         private bool boomerangReturn = false;

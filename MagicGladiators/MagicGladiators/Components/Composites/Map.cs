@@ -89,17 +89,17 @@ namespace MagicGladiators
             {
                 objectsToRemove.Add(other.gameObject);
             }
-            if (other.gameObject.Tag == "Chain" && !Projectile.chainActivated && gameObject.Tag == "Pillar")
+
+            foreach (GameObject go in GameWorld.gameObjects)
             {
-                foreach (GameObject go in GameWorld.gameObjects)
+                if (other.gameObject.Tag == "Chain" && go.Tag == "Chain" && other.gameObject.Id == GameWorld.Instance.player.Id && go.Id == GameWorld.Instance.player.Id && gameObject.Tag == "Pillar")
                 {
-                    if (go.Tag == "Chain" && go.Id == other.gameObject.Id)
-                    {
-                        Projectile.chainActivated = true;
-                        Projectile.chainTarget = gameObject;
-                    }
+                    (go.GetComponent("Projectile") as Projectile).chainTarget = gameObject;
+                    (go.GetComponent("Projectile") as Projectile).chainActivated = true;
+                    break;
                 }
             }
+
             if (gameObject.Tag == "Pillar")
             {
                 foreach (GameObject go in GameWorld.gameObjects)
