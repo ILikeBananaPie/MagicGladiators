@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove }
 
     public class Program
     {
@@ -145,6 +145,24 @@ namespace TestServer
             server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.Unreliable, 0);
         }
 
+        public static void ChainRemove(string id)
+        {
+            connectionList.Clear();
+            foreach (NetConnection con in connectionList)
+            {
+                if (con.ToString() == id)
+                {
+                    connectionList.Add(con);
+                }
+            }
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.ChainRemove);
+            //msgOut.Write(id);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+        }
+
+
         static void Main(string[] args)
         {
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
@@ -223,6 +241,12 @@ namespace TestServer
                         case NetIncomingMessageType.Data:
                             //TestClient.text = msgIn.ReadString();
                             byte type = msgIn.ReadByte();
+                            #region ChainRemove
+                            if (type == (byte)PacketType.ChainRemove)
+                            {
+                                ChainRemove(msgIn.ReadString());
+                            }
+                            #endregion
                             #region SpeedUp
                             if (type == (byte)PacketType.SpeedUp)
                             {

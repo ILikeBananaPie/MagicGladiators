@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove }
 
 
     public class TestClient
@@ -303,6 +303,15 @@ namespace MagicGladiators
             client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
+        public void ChainRemove(string id)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.ChainRemove);
+            msgOut.Write(id);
+            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
+        }
+
         public void SendSpeedUp(string id, float factor)
         {
             NetOutgoingMessage msgOut;
@@ -377,6 +386,19 @@ namespace MagicGladiators
                         break;
                     case NetIncomingMessageType.Data:
                         byte type = msgIn.ReadByte();
+                        #region ChainRemove
+                        if (type == (byte)PacketType.ChainRemove)
+                        {
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Player")
+                                {
+                                    (go.GetComponent("Physics") as Physics).chainDeactivated = true;
+                                    (go.GetComponent("Physics") as Physics).chainActivated = false;
+                                }
+                            }
+                        }
+                        #endregion
                         #region SpeedUp
                         if (type == (byte)PacketType.SpeedUp)
                         {
@@ -659,24 +681,6 @@ namespace MagicGladiators
                             //string corrected = sender.Split(' ').Last();
                             //corrected = corrected.Remove(corrected.Length - 1);
                             string name = msgIn.ReadString();
-                            foreach (GameObject go in GameWorld.gameObjects)
-                            {
-                                string test = "";
-                                if (id != "")
-                                {
-                                    //test = id.Split(' ').Last();
-                                    //test = test.Remove(test.Length - 1);
-                                }
-                                //test = id.Split(' ').Last();
-                                //test = test.Remove(test.Length - 1);
-                                if (go.Tag == "Player" && name == "Chain" && go.Id == id)
-                                {
-                                    (go.GetComponent("Physics") as Physics).chainDeactivated = true;
-                                    (go.GetComponent("Physics") as Physics).chainActivated = false;
-
-                                }
-                            }
-
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (go.Tag == name && go.Id == sender)

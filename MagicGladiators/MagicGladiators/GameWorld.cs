@@ -451,7 +451,13 @@ namespace MagicGladiators
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.Tag == "Player")
+                {
+                    player = go;
+                }
+            }
             Rectangle rec = new Rectangle(10, 10, 10, 10);
             Circle circle = new Circle(10, 10, 10);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
