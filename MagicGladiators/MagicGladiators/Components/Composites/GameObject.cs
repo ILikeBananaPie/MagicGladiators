@@ -29,7 +29,7 @@ namespace MagicGladiators
         public float LifeSteal { get; set; } = 0;
         public float CooldownReduction { get; set; } = 1;
         public bool IsInvisible { get; set; } = false;
-
+        public float dmg { get; set; } = 9;
 
         public float AoeBonus { get; set; } = 1;
         public float GoldBonusPercent { get; set; } = 0;
