@@ -263,10 +263,12 @@ namespace MagicGladiators
             {
                 if (gameObject.Tag == "Drain")
                 {
-                    if (other.gameObject.Id != gameObject.Id)
+                    foreach(GameObject go in GameWorld.gameObjects)
                     {
-                        //other.gameObject.CurrentHealth += (other.gameObject.GetComponent("Drain") as Drain).healing;
-                        GameWorld.Instance.player.CurrentHealth += (GameWorld.Instance.player.GetComponent("Drain") as Drain).healing;
+                        if (go.Tag == "Player" && gameObject.Id == go.Id)
+                        {
+                            go.CurrentHealth += (GameWorld.Instance.player.GetComponent("Drain") as Drain).healing;
+                        }
                     }
 
                 }

@@ -745,6 +745,7 @@ namespace MagicGladiators
             Player.items.Clear();
             Player.abilities.Clear();
             Player.gold = 10000;
+            Player.deathAbilities.Clear();
         }
 
         public void UpdateBuyItem(MouseState mouse, Circle mouseCircle)
