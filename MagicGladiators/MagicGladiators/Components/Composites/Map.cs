@@ -92,10 +92,12 @@ namespace MagicGladiators
 
             foreach (GameObject go in GameWorld.gameObjects)
             {
-                if (other.gameObject.Tag == "Chain" && go.Tag == "Chain" && other.gameObject.Id == GameWorld.Instance.player.Id && go.Id == GameWorld.Instance.player.Id && gameObject.Tag == "Pillar")
+                if (other.gameObject.Tag == "Chain" && go.Tag == "Chain" && other.gameObject.Id == GameWorld.Instance.player.Id && go.Id == GameWorld.Instance.player.Id && gameObject.Tag == "Pillar" && !Projectile.chainActivated)
                 {
                     (go.GetComponent("Projectile") as Projectile).chainTarget = gameObject;
-                    (go.GetComponent("Projectile") as Projectile).chainActivated = true;
+                    //(go.GetComponent("Projectile") as Projectile).chainActivated = true;
+                    Projectile.chainActivated = true;
+
                     break;
                 }
             }

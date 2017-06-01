@@ -24,7 +24,7 @@ namespace MagicGladiators
         private Vector2 originalPos;
         private Vector2 testVector;
 
-        public bool chainActivated { get; set; }
+        public static bool chainActivated;
 
         private float homingTimer;
         private float distance;
