@@ -631,35 +631,38 @@ namespace MagicGladiators
 
                 if (chainActivated)
                 {
-                    chainTimer += GameWorld.Instance.deltaTime;
-                    gameObject.transform.position = chainTarget.transform.position;
-                    Vector2 pull = (gameObject.GetComponent("Physics") as Physics).GetVector(GameWorld.Instance.player.transform.position, chainTarget.transform.position);
-                    pull.Normalize();
-                    (GameWorld.Instance.player.GetComponent("Physics") as Physics).Acceleration -= pull / 10;
-                    if (chainTarget.Tag == "Enemy")
+                    if (chainTarget != null)
                     {
-                        //(chainTarget.GetComponent("Physics") as Physics).Acceleration += pull / 10;
-                        if (GameWorld.Instance.client != null)
+                        chainTimer += GameWorld.Instance.deltaTime;
+                        gameObject.transform.position = chainTarget.transform.position;
+                        Vector2 pull = (gameObject.GetComponent("Physics") as Physics).GetVector(GameWorld.Instance.player.transform.position, chainTarget.transform.position);
+                        pull.Normalize();
+                        (GameWorld.Instance.player.GetComponent("Physics") as Physics).Acceleration -= pull / 10;
+                        if (chainTarget.Tag == "Enemy")
                         {
-                            GameWorld.Instance.client.Chain(chainTarget.Id, pull / 10);
-                        }
-                    }
-                    if (keyState.IsKeyDown(Keys.T) || chainTimer > 2 || Vector2.Distance(new Vector2(chainTarget.transform.position.X + 16, chainTarget.transform.position.Y + 16), new Vector2(GameWorld.Instance.player.transform.position.X + 16, GameWorld.Instance.player.transform.position.Y + 16)) < 35)
-                    {
-                        chainActivated = false;
-                        //(chainTarget.GetComponent("Physics") as Physics).chainDeactivated = true;
-                        //(chainTarget.GetComponent("Physics") as Physics).chainActivated = false;
-                        GameWorld.objectsToRemove.Add(gameObject);
-
-                        if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
-                        {
-                            GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
-                            if (chainTarget.Tag == "Enemy")
+                            //(chainTarget.GetComponent("Physics") as Physics).Acceleration += pull / 10;
+                            if (GameWorld.Instance.client != null)
                             {
-                                GameWorld.Instance.client.ChainRemove(chainTarget.Id);
+                                GameWorld.Instance.client.Chain(chainTarget.Id, pull / 10);
                             }
                         }
-                    }
+                        if (keyState.IsKeyDown(Keys.T) || chainTimer > 2 || Vector2.Distance(new Vector2(chainTarget.transform.position.X + 16, chainTarget.transform.position.Y + 16), new Vector2(GameWorld.Instance.player.transform.position.X + 16, GameWorld.Instance.player.transform.position.Y + 16)) < 35)
+                        {
+                            chainActivated = false;
+                            //(chainTarget.GetComponent("Physics") as Physics).chainDeactivated = true;
+                            //(chainTarget.GetComponent("Physics") as Physics).chainActivated = false;
+                            GameWorld.objectsToRemove.Add(gameObject);
+
+                            if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
+                            {
+                                GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
+                                if (chainTarget.Tag == "Enemy")
+                                {
+                                    GameWorld.Instance.client.ChainRemove(chainTarget.Id);
+                                }
+                            }
+                        }
+                    } 
                 }
 
                 if (gameObject.Tag == "HomingMissile")
