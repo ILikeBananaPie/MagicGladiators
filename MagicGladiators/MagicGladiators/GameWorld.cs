@@ -466,10 +466,48 @@ namespace MagicGladiators
                 {
                     if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "NewGame" || CurrentScene.scenetype == "Play")
                     {
+                        if (GameWorld.Instance.server != null)
+                        {
+                            try
+                            {
+                                GameWorld.Instance.server.Kill();
+                            } catch (Exception) { }
+                            try
+                            {
+                                GameWorld.Instance.server = null;
+                            } catch (Exception) { }
+                        }
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.Disconnect();
+                            GameWorld.Instance.client = null;
+                            GameWorld.Instance.canClient = true;
+                        }
+                        GameWorld.gameState = GameState.offgame;
+                        GameWorld.buyPhase = true;
                         NextScene = Scene.MainMenu();
                     }
                     else if (CurrentScene.scenetype == "PracticeChooseRound" || CurrentScene.scenetype == "Host")
                     {
+                        if (GameWorld.Instance.server != null)
+                        {
+                            try
+                            {
+                                GameWorld.Instance.server.Kill();
+                            } catch (Exception) { }
+                            try
+                            {
+                                GameWorld.Instance.server = null;
+                            } catch (Exception) { }
+                        }
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.Disconnect();
+                            GameWorld.Instance.client = null;
+                            GameWorld.Instance.canClient = true;
+                        }
+                        GameWorld.gameState = GameState.offgame;
+                        GameWorld.buyPhase = true;
                         NextScene = Scene.NewGame();
                     }
                     else

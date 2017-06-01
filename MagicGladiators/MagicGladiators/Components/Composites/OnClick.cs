@@ -93,6 +93,8 @@ namespace MagicGladiators
                                 }
                                 GameWorld.gameState = GameState.offgame;
                                 GameWorld.buyPhase = true;
+                                GameWorld.gameState = GameState.offgame;
+                                GameWorld.buyPhase = true;
                                 GameWorld.Instance.NextScene = Scene.MainMenu();
                                 break;
                             case "Join":
@@ -153,12 +155,11 @@ namespace MagicGladiators
                             case "Play":
                                 if (GameWorld.gameObjects.Exists(x => x.Tag == "Player") && GameWorld.gameObjects.Exists(x => x.Id != ""))
                                 {
-                                    GameWorld.Instance.NextScene = Scene.Play();
-
                                     if (GameWorld.gameObjects.Exists(x => x.Tag == "Enemy"))
                                     {
                                         if (GameWorld.Instance.client != null)
                                         {
+                                            GameWorld.Instance.NextScene = Scene.Play();
                                             GameWorld.Instance.client.SendMapSettings(GameWorld.selectedMap, GameWorld.numberOfRounds);
                                             GameWorld.Instance.client.SendStartgame();
 
