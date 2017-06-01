@@ -573,7 +573,7 @@ namespace MagicGladiators
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && canClient)
             {
-                client = new TestClient("25.28.211.248");
+                client = new TestClient("localhost");
                 canClient = false;
                 showServer = true;
                 client.ConnectToServer();

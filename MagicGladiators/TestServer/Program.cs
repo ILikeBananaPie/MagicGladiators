@@ -148,12 +148,12 @@ namespace TestServer
         public static void ChainRemove(string id)
         {
             connectionList.Clear();
-            string text = id;
-            text = text.Split(' ').Last();
-            text = text.Remove(text.Length - 1);
-            foreach (NetConnection con in connectionList)
+            //string text = id;
+            //text = text.Split(' ').Last();
+            //text = text.Remove(text.Length - 1);
+            foreach (NetConnection con in server.Connections)
             {
-                if (con.RemoteEndPoint.ToString() == text)
+                if (con.ToString() == id)
                 {
                     connectionList.Add(con);
                 }
