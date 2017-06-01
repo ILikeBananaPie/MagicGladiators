@@ -225,7 +225,7 @@ namespace MagicGladiators
             msgOut.Write((byte)PacketType.RemoveProjectile);
             msgOut.Write(id);
             msgOut.Write(name);
-            client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
 
         }
 

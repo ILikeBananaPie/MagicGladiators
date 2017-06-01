@@ -666,7 +666,7 @@ namespace TestServer
                 msgOut.Write(id);
                 msgOut.Write(sender.ToString());
                 msgOut.Write(name);
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
             }
         }
 
