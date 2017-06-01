@@ -17,6 +17,7 @@ namespace MagicGladiators
         private IStrategy strategy;
 
         private DIRECTION direction;
+        private GameObject targetHit;
 
         //private GameObject go;
         private Transform transform;
@@ -288,9 +289,12 @@ namespace MagicGladiators
 
                     if (gameObject.Id != other.gameObject.Id || other.gameObject.Tag == "Dummy")
                     {
-                        Push();
+                        if (other.gameObject.Tag != "Player")
+                        {
+                            targetHit = other.gameObject;
+                            Push();
+                        }
                     }
-
                 }
             }
 
@@ -314,43 +318,59 @@ namespace MagicGladiators
         {
             if (gameObject.Tag == "DeathMine" && deathMineActivated && (other.gameObject.Tag == "Enemy" || other.gameObject.Tag == "Dummy") && other.gameObject.Tag != "Deflect")
             {
-                Push();
+                if (other.gameObject.Tag != "Player")
+                {
+                    targetHit = other.gameObject;
+                    Push();
+                }
             }
         }
 
         public void Push()
         {
-            foreach (Collider go in GameWorld.Instance.CircleColliders)
+            foreach (GameObject go in GameWorld.gameObjects)
             {
-                if (Vector2.Distance(go.gameObject.transform.position, gameObject.transform.position) < Aoe * shooter.AoeBonus)
+                if (Vector2.Distance(new Vector2(go.transform.position.X + 16, go.transform.position.Y + 16), new Vector2(targetHit.transform.position.X + 16, targetHit.transform.position.Y + 16)) < Aoe * shooter.AoeBonus)
                 {
-                    Vector2 vectorBetween = go.gameObject.transform.position - gameObject.transform.position;
+                    Vector2 vectorBetween;
+                    //if (go.transform.position == gameObject.transform.position)
+                    //{
+                    //    vectorBetween = new Vector2(go.transform.position.X + 16, go.transform.position.Y + 16) - new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16);
+                    //}
+                    vectorBetween = new Vector2(go.transform.position.X + 16, go.transform.position.Y + 16) - new Vector2(targetHit.transform.position.X + 16, targetHit.transform.position.Y + 16);
                     vectorBetween.Normalize();
-                    if (go.gameObject.Tag == "Player")
+
+                    if (go.Tag == "Player")
                     {
-                        (go.gameObject.GetComponent("Player") as Player).isPushed(vectorBetween);
+                        (go.GetComponent("Player") as Player).isPushed(vectorBetween);
+
+                        //(go.GetComponent("Physics") as Physics).Acceleration += vectorBetween;
+
+
                     }
-                    else if (go.gameObject.Tag == "Enemy")
+                    else if (go.Tag == "Enemy")
                     {
                         if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
                         {
-                            GameWorld.Instance.client.SendPush(go.gameObject.Id, vectorBetween);
+                            vectorBetween = new Vector2(go.transform.position.X + 16, go.transform.position.Y + 16) - new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16);
+                            vectorBetween.Normalize();
+                            GameWorld.Instance.client.SendPush(go.Id, vectorBetween);
                         }
                     }
-                    else if (go.gameObject.Tag == "Dummy" && (!gameObject.Tag.Contains("Chain") && gameObject.Tag != "Pillar"))
+                    else if (go.Tag == "Dummy" && (!gameObject.Tag.Contains("Chain") && gameObject.Tag != "Pillar"))
                     {
-                        (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween, shooter);
+                        (go.GetComponent("Dummy") as Dummy).isPushed(vectorBetween, shooter);
                     }
-                    else if (go.gameObject.Tag == "Enemy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
+                    else if (go.Tag == "Enemy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
                     {
-                        (go.gameObject.GetComponent("Enemy") as Enemy).Hit(shooter);
+                        (go.GetComponent("Enemy") as Enemy).Hit(shooter);
                     }
-                    else if (go.gameObject.Tag.Contains("Critter"))
+                    else if (go.Tag.Contains("Critter"))
                     {
-                        GameWorld.objectsToRemove.Add(go.gameObject);
+                        GameWorld.objectsToRemove.Add(go);
                         if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
                         {
-                            GameWorld.Instance.client.SendRemoval(go.gameObject.Tag, go.gameObject.Id);
+                            GameWorld.Instance.client.SendRemoval(go.Tag, go.Id);
                         }
                     }
                 }
@@ -450,7 +470,7 @@ namespace MagicGladiators
                 }
             }
 
-            if (gameObject.Id == GameWorld.Instance.player.Id || (testName.Exists(x => x == gameObject.Tag) && testID.Exists(x => x == gameObject.Id)))
+            if (gameObject.Id == GameWorld.Instance.player.Id)
             {
 
                 foreach (GameObject other in GameWorld.gameObjects)

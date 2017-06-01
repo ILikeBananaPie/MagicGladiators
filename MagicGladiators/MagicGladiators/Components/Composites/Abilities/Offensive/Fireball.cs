@@ -36,7 +36,7 @@ namespace MagicGladiators
                     director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball", gameObject, gameObject.Id);
                     if (GameWorld.Instance.client != null)
                     {
-                        GameWorld.Instance.client.SendProjectile("Fireball,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                        GameWorld.Instance.client.SendProjectile("Fireball,Create", new Vector2(gameObject.transform.position.X + 1, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
                     }
                     canShoot = false;
                     foreach (GameObject go in GameWorld.gameObjects)
