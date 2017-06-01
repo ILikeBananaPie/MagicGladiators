@@ -91,8 +91,11 @@ namespace MagicGladiators
             }
             if (other.gameObject.Tag == "Chain" && !Projectile.chainActivated && gameObject.Tag == "Pillar")
             {
-                Projectile.chainActivated = true;
-                Projectile.chainTarget = gameObject;
+                if (other.gameObject.Id == GameWorld.Instance.player.Id)
+                {
+                    Projectile.chainActivated = true;
+                    Projectile.chainTarget = gameObject;
+                }
             }
             if (gameObject.Tag == "Pillar")
             {
