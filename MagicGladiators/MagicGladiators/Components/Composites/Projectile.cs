@@ -30,7 +30,7 @@ namespace MagicGladiators
         private float distance;
         private Vector2 bestTarget;
 
-        public static GameObject chainTarget;
+        public GameObject chainTarget { get; set; }
         private float chainTimer;
 
         private bool boomerangReturn = false;
@@ -605,7 +605,7 @@ namespace MagicGladiators
                 {
                     if (gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain"))
                     {
-                        (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 10) * projectileSpeed;
+                        (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 4) * projectileSpeed;
                     }
                     else
                     {
