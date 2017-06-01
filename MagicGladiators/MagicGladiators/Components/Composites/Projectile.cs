@@ -654,7 +654,10 @@ namespace MagicGladiators
                         if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
                         {
                             GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
-                            GameWorld.Instance.client.ChainRemove(chainTarget.Id);
+                            if (chainTarget.Tag == "Enemy")
+                            {
+                                GameWorld.Instance.client.ChainRemove(chainTarget.Id);
+                            }
                         }
                     }
                 }
