@@ -57,6 +57,9 @@ namespace MagicGladiators
                                     try
                                     {
                                         GameWorld.Instance.server.Kill();
+                                    } catch (Exception) { }
+                                    try
+                                    {
                                         GameWorld.Instance.server = null;
                                     } catch (Exception) { }
                                 }
@@ -73,8 +76,14 @@ namespace MagicGladiators
                             case "MainMenu":
                                 if (GameWorld.Instance.server != null)
                                 {
-                                    GameWorld.Instance.server.Kill();
-                                    GameWorld.Instance.server = null;
+                                    try
+                                    {
+                                        GameWorld.Instance.server.Kill();
+                                    } catch (Exception) { }
+                                    try
+                                    {
+                                        GameWorld.Instance.server = null;
+                                    } catch (Exception) { }
                                 }
                                 if (GameWorld.Instance.client != null)
                                 {

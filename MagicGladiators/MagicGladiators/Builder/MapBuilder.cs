@@ -59,7 +59,7 @@ namespace MagicGladiators
 
             gameObject.AddComponent(new Map(gameObject));
 
-            gameObject.AddComponent(new Collider(gameObject, false, true));
+            gameObject.AddComponent(new Collider(gameObject, true, true));
 
             //gameObject.LoadContent(GameWorld.Instance.Content);
 

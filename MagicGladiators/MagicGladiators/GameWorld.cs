@@ -479,8 +479,11 @@ namespace MagicGladiators
                             try
                             {
                                 server.Kill();
-                            }
-                            catch (Exception) { }
+                            } catch (Exception) { }
+                            try
+                            {
+                                server = null;
+                            } catch (Exception) { }
                         }
                         Exit();
                     }
