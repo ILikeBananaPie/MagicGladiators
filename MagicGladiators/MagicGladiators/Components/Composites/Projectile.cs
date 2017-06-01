@@ -24,13 +24,13 @@ namespace MagicGladiators
         private Vector2 originalPos;
         private Vector2 testVector;
 
-        private bool chainActivated;
+        public static bool chainActivated;
 
         private float homingTimer;
         private float distance;
         private Vector2 bestTarget;
 
-        private GameObject chainTarget;
+        public static GameObject chainTarget;
         private float chainTimer;
 
         private bool boomerangReturn = false;
@@ -278,7 +278,7 @@ namespace MagicGladiators
                     //(chainTarget.GetComponent("Physics") as Physics).chainActivated = true;
                     chainActivated = true;
                 }
-                if (gameObject.Tag != "DeathMine" && other.gameObject.Tag != "Pillar" && gameObject.Tag != "Chain" && other.gameObject.Tag != "Deflect" && other.gameObject.Tag != "Spellshield")
+                if (gameObject.Tag != "DeathMine" && gameObject.Tag != "Chain" && other.gameObject.Tag != "Deflect" && other.gameObject.Tag != "Spellshield")
                 {
                     GameObject player = new GameObject();
                     foreach (GameObject go in GameWorld.gameObjects)
