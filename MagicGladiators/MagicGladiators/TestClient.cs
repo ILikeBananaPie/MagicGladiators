@@ -242,12 +242,13 @@ namespace MagicGladiators
             client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
-        public void SendPush(string id, Vector2 vector)
+        public void SendPush(string id, Vector2 vector, float damage)
         {
             NetOutgoingMessage msgOut;
             msgOut = client.CreateMessage();
             msgOut.Write((byte)PacketType.Push);
             msgOut.Write(id);
+            msgOut.Write(damage);
             msgOut.Write(vector.X);
             msgOut.Write(vector.Y);
             client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
@@ -749,9 +750,11 @@ namespace MagicGladiators
                         #region Push
                         if (type == (byte)PacketType.Push)
                         {
+                            float damage = msgIn.ReadFloat();
                             float x = msgIn.ReadFloat();
                             float y = msgIn.ReadFloat();
                             (GameWorld.Instance.player.GetComponent("Player") as Player).isPushed(new Vector2(x, y));
+                            (GameWorld.Instance.player.GetComponent("Player") as Player).TakeDamage(damage);
                         }
                         #endregion
                         #region Deflect

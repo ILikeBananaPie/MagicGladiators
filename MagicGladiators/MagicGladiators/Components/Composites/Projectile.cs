@@ -356,7 +356,17 @@ namespace MagicGladiators
                         {
                             vectorBetween = new Vector2(go.transform.position.X + 16, go.transform.position.Y + 16) - new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16);
                             vectorBetween.Normalize();
-                            GameWorld.Instance.client.SendPush(go.Id, vectorBetween);
+                            string ability;
+                            if (gameObject.Tag.Contains("Nova"))
+                            {
+                                ability = "Nova";
+                            }
+                            else if (gameObject.Tag.Contains("Fireball"))
+                            {
+                                ability = "Fireball";
+                            }
+                            else ability = gameObject.Tag;
+                            GameWorld.Instance.client.SendPush(go.Id, vectorBetween, (GameWorld.Instance.player.GetComponent(ability) as Ability).damage);
                         }
                     }
                     else if (go.Tag == "Dummy" && (!gameObject.Tag.Contains("Chain") && gameObject.Tag != "Pillar"))

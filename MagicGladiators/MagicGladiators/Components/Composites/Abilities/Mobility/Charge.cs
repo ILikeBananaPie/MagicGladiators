@@ -110,7 +110,7 @@ namespace MagicGladiators
                         }
                         if (GameWorld.Instance.client != null)
                         {
-                            GameWorld.Instance.client.SendPush(other.gameObject.Id, vectorBetween);
+                            GameWorld.Instance.client.SendPush(other.gameObject.Id, vectorBetween, damage);
                         }
                     }
                 }

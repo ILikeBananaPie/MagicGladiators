@@ -16,6 +16,7 @@ namespace MagicGladiators
         protected float cooldown;
         protected bool canShoot = true;
         protected float cooldownTimer;
+        public float damage { get; set; }
         private bool canUse;
         public GameObject icon { get; set; }
         //private SpriteBatch spriteBatch;

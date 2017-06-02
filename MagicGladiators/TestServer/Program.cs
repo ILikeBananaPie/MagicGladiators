@@ -397,9 +397,10 @@ namespace TestServer
                             if (type == (byte)PacketType.Push)
                             {
                                 string id = msgIn.ReadString();
+                                float damage = msgIn.ReadFloat();
                                 float x = msgIn.ReadFloat();
                                 float y = msgIn.ReadFloat();
-                                Push(id, x, y);
+                                Push(id, x, y, damage);
                             }
                             #endregion
                             #region Deflect
@@ -640,7 +641,7 @@ namespace TestServer
             }
         }
 
-        public static void Push(string id, float vectorX, float vectorY)
+        public static void Push(string id, float vectorX, float vectorY, float damage)
         {
             connectionList.Clear();
             foreach (NetConnection con in server.Connections)
@@ -654,6 +655,7 @@ namespace TestServer
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
             msgOut.Write((byte)PacketType.Push);
+            msgOut.Write(damage);
             msgOut.Write(vectorX);
             msgOut.Write(vectorY);
             if (connectionList.Count > 0)
