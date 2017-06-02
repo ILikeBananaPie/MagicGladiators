@@ -442,7 +442,7 @@ namespace MagicGladiators
                 }
             }
             Scene send = new Scene(included);
-            send.scenetype = "CreateAccount";
+            send.scenetype = "PostScreen";
             return send;
         }
         #endregion
