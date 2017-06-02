@@ -109,7 +109,7 @@ namespace MagicGladiators
 
         public static GameState gameState = GameState.offgame;
 
-
+        public static string playername;
 
         private static GameWorld instance;
         public static GameWorld Instance
@@ -703,6 +703,7 @@ namespace MagicGladiators
                     Director ability = new Director(new AbilityIconBuilder());
                     Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68, Window.ClientBounds.Height - 42), "Fireball", 0, ""));
                     (player.components.Last() as Ability).icon = Player.abilities.Last();
+                    player.playerName = playername;
                     /*
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));

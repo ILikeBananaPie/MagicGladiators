@@ -22,6 +22,7 @@ namespace TestServer
         private static List<string> TestID = new List<string>();
         private static List<string> TestName = new List<string>();
         private static List<string> colors = new List<string>() { "Blue", "Red", "Orange", "Purple", "Brown", "Green", "LightGreen", "Yellow" };
+        private static List<string> names = new List<string>();
         private static int colorIndex = 0;
         private static int test = 0;
         //private static int spellId = 0;
@@ -174,6 +175,41 @@ namespace TestServer
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
+        public static void SendConnection(NetConnection sender, string name)
+        {
+            if (server.Connections.Count > 1)
+            {
+                connectionList.Clear();
+                foreach (NetConnection con in server.Connections)
+                {
+                    connectionList.Add(con);
+                }
+                connectionList.Remove(sender);
+
+                //to all but the sender(connector). Create an enemy
+                NetOutgoingMessage msgOut;
+                msgOut = server.CreateMessage();
+                msgOut.Write((byte)PacketType.CreatePlayer);
+                msgOut.Write(sender.ToString());
+                msgOut.Write(colors[colorIndex]);
+                msgOut.Write(playerIndex);
+                msgOut.Write(name);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+
+                //to the sender(connector). Create enemies
+                for (int i = 0; i < server.Connections.Count - 1; i++)
+                {
+                    msgOut = server.CreateMessage();
+                    msgOut.Write((byte)PacketType.CreatePlayer);
+                    msgOut.Write(server.Connections[i].ToString());
+                    msgOut.Write(colors[i]);
+                    msgOut.Write(i);
+                    msgOut.Write(names[i]);
+                    server.SendMessage(msgOut, sender, NetDeliveryMethod.Unreliable, 0);
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
@@ -200,7 +236,10 @@ namespace TestServer
                             if (msgIn.SenderConnection.Status == NetConnectionStatus.Connected)
                             {
                                 Console.WriteLine("Player Connected!");
-                                SendConnection(msgIn.SenderConnection);
+                                NetIncomingMessage test = msgIn.SenderConnection.RemoteHailMessage;
+                                string testing = test.ReadString();
+                                names.Add(testing);
+                                SendConnection(msgIn.SenderConnection, testing);
                                 AssignID(msgIn.SenderConnection);
                             }
                             if (msgIn.SenderConnection.Status == NetConnectionStatus.Disconnecting)
@@ -351,7 +390,7 @@ namespace TestServer
                             #region CreatePlayer
                             if (type == (byte)PacketType.CreatePlayer)
                             {
-                                SendConnection(msgIn.SenderConnection);
+                                //SendConnection(msgIn.SenderConnection);
                             }
                             #endregion
                             #region UpdateProjectile
@@ -499,38 +538,7 @@ namespace TestServer
             }
         }
 
-        public static void SendConnection(NetConnection sender)
-        {
-            if (server.Connections.Count > 1)
-            {
-                connectionList.Clear();
-                foreach (NetConnection con in server.Connections)
-                {
-                    connectionList.Add(con);
-                }
-                connectionList.Remove(sender);
 
-                //to all but the sender(connector). Create an enemy
-                NetOutgoingMessage msgOut;
-                msgOut = server.CreateMessage();
-                msgOut.Write((byte)PacketType.CreatePlayer);
-                msgOut.Write(sender.ToString());
-                msgOut.Write(colors[colorIndex]);
-                msgOut.Write(playerIndex);
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-
-                //to the sender(connector). Create enemies
-                for (int i = 0; i < server.Connections.Count - 1; i++)
-                {
-                    msgOut = server.CreateMessage();
-                    msgOut.Write((byte)PacketType.CreatePlayer);
-                    msgOut.Write(server.Connections[i].ToString());
-                    msgOut.Write(colors[i]);
-                    msgOut.Write(i);
-                    server.SendMessage(msgOut, sender, NetDeliveryMethod.Unreliable, 0);
-                }
-            }
-        }
 
         public static void SendClone(string id, float posX, float posY, int cloneNumber)
         {

@@ -113,7 +113,10 @@ namespace MagicGladiators
         {
             try
             {
-                client.Connect(hostip, 51234);
+                NetOutgoingMessage msgOut;
+                msgOut = client.CreateMessage();
+                msgOut.Write(GameWorld.playername);
+                client.Connect(hostip, 51234, msgOut);
             }
             catch (Exception)
             {
@@ -349,7 +352,7 @@ namespace MagicGladiators
                         text = "Ready";
                     }
                     else text = "Not Ready";
-                    spriteBatch.DrawString(font, go.Id + " is " + text, new Vector2(0, 100 + y), Color.Black);
+                    spriteBatch.DrawString(font, go.playerName + " is " + text, new Vector2(0, 100 + y), Color.Black);
                     y += 20;
                 }
             }
@@ -646,6 +649,7 @@ namespace MagicGladiators
                             string id = msgIn.ReadString();
                             string color = msgIn.ReadString();
                             int index = msgIn.ReadInt32();
+                            string name = msgIn.ReadString();
                             GameObject go = new GameObject();
                             go.AddComponent(new SpriteRenderer(go, "PlayerSheet", 1));
                             go.AddComponent(new Animator(go));
@@ -654,6 +658,7 @@ namespace MagicGladiators
                             go.AddComponent(new Physics(go));
                             go.Tag = "Enemy";
                             go.Id = id;
+                            go.playerName = name;
                             go.ConnectionNumber = index;
                             (go.GetComponent("Animator") as Animator).PlayAnimation(color);
                             GameWorld.newObjects.Add(go);
@@ -662,6 +667,7 @@ namespace MagicGladiators
                                 GameObject player = new GameObject();
                                 player.Id = id;
                                 player.isReady = false;
+                                player.playerName = name;
                                 readyList.Add(player);
                             }
                             foreach (GameObject dummy in GameWorld.gameObjects)
@@ -872,6 +878,7 @@ namespace MagicGladiators
                                 GameObject player = new GameObject();
                                 player.Id = id;
                                 player.isReady = false;
+                                player.playerName = GameWorld.playername;
                                 readyList.Add(player);
                             }
                             foreach (GameObject go in GameWorld.gameObjects)
@@ -879,6 +886,7 @@ namespace MagicGladiators
                                 if (go.Tag == "Player")
                                 {
                                     go.Id = id;
+                                    go.playerName = GameWorld.playername;
                                     go.ConnectionNumber = connectionNumber;
                                     go.transform.position = new Vector2(50, 50 * connectionNumber);
                                     //(go.GetComponent("Animator") as Animator).PlayAnimation(color);

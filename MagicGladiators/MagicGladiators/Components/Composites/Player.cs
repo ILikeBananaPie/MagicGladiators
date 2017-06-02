@@ -221,12 +221,12 @@ namespace MagicGladiators
                     if (go.Tag == "Player" || go.Tag == "Enemy")
                     {
                         go.transform.position = new Vector2(50, 50 + 50 * go.ConnectionNumber);
-                        spriteBatch.DrawString(fontText, "Name: " + go.Id, new Vector2(go.transform.position.X + 50, go.transform.position.Y), Color.Black);
+                        spriteBatch.DrawString(fontText, "Name: " + go.playerName, new Vector2(go.transform.position.X + 50, go.transform.position.Y), Color.Black);
                         foreach (GameObject go2 in GameWorld.Instance.client.readyList)
                         {
                             if (go2.Id == go.Id)
                             {
-                                Vector2 textSize = fontText.MeasureString("Name: " + go.Id);
+                                Vector2 textSize = fontText.MeasureString("Name: " + go.playerName);
                                 string text;
                                 if (go.isReady)
                                 {
@@ -247,8 +247,8 @@ namespace MagicGladiators
             spriteBatch.DrawString(fontText, "speed: " + testSpeed, new Vector2(0, 160), Color.Black);
             spriteBatch.DrawString(fontText, "PlayerX: " + (int)gameObject.transform.position.X, new Vector2(0, 40), Color.Black);
             spriteBatch.DrawString(fontText, "PlayerY: " + (int)gameObject.transform.position.Y, new Vector2(0, 60), Color.Black);
-            spriteBatch.DrawString(fontText, "MouseX: " + mouse.X, new Vector2(0, 80), Color.Black);
-            spriteBatch.DrawString(fontText, "MouseY: " + mouse.Y, new Vector2(0, 100), Color.Black);
+            //spriteBatch.DrawString(fontText, "MouseX: " + mouse.X, new Vector2(0, 80), Color.Black);
+            //spriteBatch.DrawString(fontText, "MouseY: " + mouse.Y, new Vector2(0, 100), Color.Black);
 #endif
 
 
