@@ -15,7 +15,9 @@ namespace MagicGladiators
         private float timer;
         private bool activated = false;
         private float activationTime;
-        private string[] directions = new string[4] { "Up", "Down", "Left", "Right" };
+        private string[] directions = new string[4] { "1", "2", "3", "4" };
+        private List<int> numbers = new List<int>() { 1, 2, 3, 4 };
+        private Random rnd = new Random();
 
         public MirrorImage(GameObject gameObject) : base(gameObject)
         {
@@ -36,7 +38,7 @@ namespace MagicGladiators
             {
                 canShoot = false;
                 activated = true;
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     GameObject clone = new GameObject();
                     clone.AddComponent(new SpriteRenderer(clone, "PlayerSheet", 1));
@@ -46,6 +48,9 @@ namespace MagicGladiators
                     clone.AddComponent(new Physics(clone));
                     clone.Tag = "Clone" + directions[i];
                     clone.Id = gameObject.Id;
+                    int number = rnd.Next(numbers.Count);
+                    clone.cloneNumber = numbers[number];
+                    numbers.Remove(number);
                     clone.CurrentHealth = gameObject.CurrentHealth;
                     clone.MaxHealth = gameObject.MaxHealth;
                     clone.LoadContent(GameWorld.Instance.Content);
@@ -53,6 +58,10 @@ namespace MagicGladiators
                     clone.transform.position = new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y);
                     GameWorld.newObjects.Add(clone);
                 }
+                GameWorld.Instance.player.cloneNumber = numbers[0];
+                numbers.Clear();
+                numbers = new List<int>() { 1, 2, 3, 4 };
+
                 if (GameWorld.Instance.client != null)
                 {
                     GameWorld.Instance.client.SendClone(gameObject.Id, gameObject.transform.position);

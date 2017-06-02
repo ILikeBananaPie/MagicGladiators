@@ -49,22 +49,74 @@ namespace MagicGladiators
             {
                 if ((go.Tag == "Enemy" || go.Tag == "Player") && go.Id == gameObject.Id)
                 {
-                    if (gameObject.Tag.Contains("Left"))
-                    {
-                        gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
-                    }
-                    if (gameObject.Tag.Contains("Right"))
+                    if (go.cloneNumber == 1 && gameObject.cloneNumber == 2)
                     {
                         gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y);
                     }
-                    if (gameObject.Tag.Contains("Up"))
+                    if (go.cloneNumber == 1 && gameObject.cloneNumber == 3)
                     {
-                        gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y - 64);
+                        gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y + 64);
                     }
-                    if (gameObject.Tag.Contains("Down"))
+                    if (go.cloneNumber == 1 && gameObject.cloneNumber == 4)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y + 64);
+                    }
+
+                    if (go.cloneNumber == 2 && gameObject.cloneNumber == 1)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
+                    }
+                    if (go.cloneNumber == 2 && gameObject.cloneNumber == 3)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y - 64);
+                    }
+                    if (go.cloneNumber == 2 && gameObject.cloneNumber == 4)
                     {
                         gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y + 64);
                     }
+
+                    if (go.cloneNumber == 3 && gameObject.cloneNumber == 1)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y - 64);
+                    }
+                    if (go.cloneNumber == 3 && gameObject.cloneNumber == 2)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y - 64);
+                    }
+                    if (go.cloneNumber == 3 && gameObject.cloneNumber == 4)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y);
+                    }
+
+                    if (go.cloneNumber == 4 && gameObject.cloneNumber == 1)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y - 64);
+                    }
+                    if (go.cloneNumber == 4 && gameObject.cloneNumber == 2)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y - 64);
+                    }
+                    if (go.cloneNumber == 4 && gameObject.cloneNumber == 3)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
+                    }
+
+                    //if (gameObject.Tag.Contains("1"))
+                    //{
+                    //    gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
+                    //}
+                    //if (gameObject.Tag.Contains("2"))
+                    //{
+                    //    gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y);
+                    //}
+                    //if (gameObject.Tag.Contains("3"))
+                    //{
+                    //    gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y - 64);
+                    //}
+                    //if (gameObject.Tag.Contains("4"))
+                    //{
+                    //    gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y + 64);
+                    //}
                 }
                 foreach (GameObject go2 in GameWorld.gameObjects)
                 {

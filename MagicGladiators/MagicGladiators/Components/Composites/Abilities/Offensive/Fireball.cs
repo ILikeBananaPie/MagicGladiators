@@ -43,12 +43,29 @@ namespace MagicGladiators
                     canShoot = false;
                     foreach (GameObject go in GameWorld.gameObjects)
                     {
+                        Vector2 mousePos = new Vector2(mouse.Position.X, mouse.Position.Y);
                         if (go.Tag.Contains("Clone") && go.Id == gameObject.Id)
                         {
-                            director.ConstructProjectile(new Vector2(go.transform.position.X, go.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball" + go.Tag, go, gameObject.Id);
+                            if (go.Tag == "CloneLeft")
+                            {
+                                mousePos = new Vector2(mouse.Position.X - 64, mouse.Position.Y);
+                            }
+                            if (go.Tag == "CloneRight")
+                            {
+                                mousePos = new Vector2(mouse.Position.X + 64, mouse.Position.Y);
+                            }
+                            if (go.Tag == "CloneUp")
+                            {
+                                mousePos = new Vector2(mouse.Position.X, mouse.Position.Y - 64);
+                            }
+                            if (go.Tag == "CloneDown")
+                            {
+                                mousePos = new Vector2(mouse.Position.X, mouse.Position.Y + 64);
+                            }
+                            director.ConstructProjectile(new Vector2(go.transform.position.X, go.transform.position.Y), mousePos, "Fireball" + go.Tag, go, gameObject.Id);
                             if (GameWorld.Instance.client != null)
                             {
-                                GameWorld.Instance.client.SendProjectile("Fireball" + go.Tag + ",Create", new Vector2(go.transform.position.X, go.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                                GameWorld.Instance.client.SendProjectile("Fireball" + go.Tag + ",Create", new Vector2(go.transform.position.X, go.transform.position.Y), mousePos);
                             }
                         }
                     }

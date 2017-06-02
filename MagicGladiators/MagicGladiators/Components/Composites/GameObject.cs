@@ -17,6 +17,7 @@ namespace MagicGladiators
         public string Id { get; set; }
         public int ConnectionNumber { get; set; }
         public bool isReady = false;
+        public int cloneNumber;
 
         public float MaxHealth { get; set; }
         public float CurrentHealth { get; set; }
