@@ -337,25 +337,25 @@ namespace MagicGladiators
         {
             // name, hp, speed, dmgRes, lavaRes, value, knockRes, projectileSpeed, LifeSteal
             Director director = new Director(new ItemBuilder());
-            string[] testItem = new string[] { "Speed", "0", "0.05", "0", "0", "100", "0", "0", "0", "0", "0", "0" };
+            string[] testItem = new string[] { "Speed", "0", "0.05", "0", "0", "50", "0", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Hp", "5", "0", "0", "0", "100", "0", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "Hp", "5", "0", "0", "0", "50", "0", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LavaRes", "0", "0", "0", "-0.02", "100", "0", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "LavaRes", "0", "0", "0", "-0.02", "50", "0", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "DmgRes", "0", "0", "-0.02", "0", "100", "0", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "DmgRes", "0", "0", "-0.02", "0", "50", "0", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "0.01", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "50", "0.01", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "0.05", "0", "0", "0", "0" };
+            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "50", "0", "0.05", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "0.02", "0", "0", "0" };
+            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "50", "0", "0", "0.02", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "CDR", "0", "0", "0", "0", "100", "0", "0", "0", "0.05", "0", "0" };
+            testItem = new string[] { "CDR", "0", "0", "0", "0", "50", "0", "0", "0", "0.05", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "AOE", "0", "0", "0", "0", "100", "0", "0", "0", "0", "0.1", "0" };
+            testItem = new string[] { "AOE", "0", "0", "0", "0", "50", "0", "0", "0", "0", "0.1", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Gold", "0", "0", "0", "0", "100", "0", "0", "0", "0", "0", "0.03" };
+            testItem = new string[] { "Gold", "0", "0", "0", "0", "50", "0", "0", "0", "0", "0", "0.03" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
         }
 
@@ -819,7 +819,14 @@ namespace MagicGladiators
             buySpellY = Window.ClientBounds.Height - 144;
             Player.items.Clear();
             Player.abilities.Clear();
-            Player.gold = 10000;
+
+            if (CurrentScene.scenetype == "Practice")
+            {
+                Player.gold = 10000;
+            }
+            else Player.gold = 300;
+
+
             Player.deathAbilities.Clear();
             CreateAbility.abilityIndex = 0;
         }
