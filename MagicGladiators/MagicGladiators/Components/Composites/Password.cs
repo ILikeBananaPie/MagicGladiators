@@ -140,7 +140,7 @@ namespace MagicGladiators
                     output +="|";
                 } else
                 {
-                    
+                    output += " ";
                 }
             } else
             {

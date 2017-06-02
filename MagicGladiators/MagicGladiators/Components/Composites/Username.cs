@@ -135,7 +135,7 @@ namespace MagicGladiators
                     output = name + "|";
                 } else
                 {
-                    output = name;
+                    output = name + " ";
                 }
             } else
             {
