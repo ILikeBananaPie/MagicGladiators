@@ -229,6 +229,9 @@ namespace MagicGladiators
                                     }
                                 }
                                 break;
+                            case "BackToLobby":
+                                GameWorld.Instance.NextScene = Scene.Joined(null);
+                                break;
                         }
                     }
                 }
