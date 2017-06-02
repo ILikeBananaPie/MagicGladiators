@@ -11,6 +11,8 @@ using System.Linq;
 using System.Drawing;
 using System.Threading;
 using System.Diagnostics;
+using System.IO;
+using System.Data.SQLite;
 
 namespace MagicGladiators
 {
@@ -140,6 +142,8 @@ namespace MagicGladiators
         {
             // TODO: Add your initialization logic here
             //this.Window.Position = new Point(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2, 10);
+            dbCon.i.StartDataBaseConnection();
+
             this.Window.Position = new Point(10, 10);
             TooltipBox.AddComponent(new SpriteRenderer(TooltipBox, "ToolTipBox", 1));
 
@@ -167,7 +171,7 @@ namespace MagicGladiators
             CircleColliders = new List<Collider>();
             newCircleColliders = new List<Collider>();
 
-            CurrentScene = Scene.MainMenu();
+            CurrentScene = Scene.Login();
             selectedMap = "PillarHoleMap";
 
             base.Initialize();

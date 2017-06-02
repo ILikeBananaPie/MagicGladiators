@@ -172,6 +172,66 @@ namespace MagicGladiators
                                     }
                                 }
                                 break;
+                            case "LoginAttempt":
+                                string a = string.Empty;
+                                string b = string.Empty;
+                                foreach (GameObject obj in GameWorld.gameObjects)
+                                {
+                                    if (obj.GetComponent("Username") is Username)
+                                    {
+                                        a = (obj.GetComponent("Username") as Username).GetInput();
+                                    }
+                                    if (obj.GetComponent("Password") is Password)
+                                    {
+                                        b = (obj.GetComponent("Password") as Password).GetInput();
+                                    }
+                                }
+                                if (a.Length > 0 && b.Length > 0)
+                                {
+                                    if (dbCon.i.IsMatch(dbTables.login, a, b) == dbMatching.Match)
+                                    {
+                                        GameWorld.Instance.NextScene = Scene.MainMenu();
+                                    }
+                                }
+                                break;
+                            case "CreateAccount":
+                                GameWorld.Instance.NextScene = Scene.CreateAccount();
+                                break;
+                            case "Login":
+                                GameWorld.Instance.NextScene = Scene.Login();
+                                break;
+                            case "CreateAttempt":
+                                string c = string.Empty;
+                                string d = string.Empty;
+                                string e = string.Empty;
+                                foreach (GameObject obj in GameWorld.gameObjects)
+                                {
+                                    if (obj.GetComponent("Username") is Username)
+                                    {
+                                        c = (obj.GetComponent("Username") as Username).GetInput();
+                                    }
+                                    if (obj.GetComponent("Password") is Password)
+                                    {
+                                        if (obj.Name == "Password")
+                                            d = (obj.GetComponent("Password") as Password).GetInput();
+                                        if (obj.Name == "Recheck Password")
+                                            e = (obj.GetComponent("Password") as Password).GetInput();
+                                    }
+                                }
+                                if (c.Length > 0 && d.Length > 0 && e.Length > 0)
+                                {
+                                    if (d == e)
+                                    {
+                                        if (dbCon.i.CreateAccount(c, d) == dbCreate.Success)
+                                        {
+                                            GameWorld.Instance.NextScene = Scene.Login();
+                                        }
+                                    }
+                                }
+                                break;
+                            case "BackToLobby":
+                                GameWorld.Instance.NextScene = Scene.Joined(null);
+                                break;
                         }
                     }
                 }
