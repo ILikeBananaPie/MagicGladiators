@@ -292,7 +292,7 @@ namespace MagicGladiators
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "MirrorImage", 100, "Creates 3 clones of yourself \n who mimics your fireball"));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Invisibility", 100, "Makes you invisible to other players"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Invisibility", 100, "Makes you invisible to \nother players"));
 
             int x = Player.deathAbilities.Count * 34;
             Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "RollingMeteor", 0, "Does something"));
