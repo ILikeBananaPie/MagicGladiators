@@ -139,7 +139,8 @@ namespace MagicGladiators
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            //this.Window.Position = new Point(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2, 10);
+            this.Window.Position = new Point(10, 10);
             TooltipBox.AddComponent(new SpriteRenderer(TooltipBox, "ToolTipBox", 1));
 
             var culture = new CultureInfo("en-US");
@@ -192,6 +193,7 @@ namespace MagicGladiators
         {
             CreateMap(selectedMap);
             ResetCharacters();
+            //NextScene = Scene.Play();
 
         }
 
@@ -346,6 +348,13 @@ namespace MagicGladiators
 
         public void CreateMap(string map)
         {
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.Tag == "Map" || go.Tag == "Pillar" || go.Tag == "LavaSpot")
+                {
+                    objectsToRemove.Add(go);
+                }
+            }
             Director director = new Director(new MapBuilder());
             Texture2D sprite = Content.Load<Texture2D>("StandardMap");
             newObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2), "Map"));
@@ -466,10 +475,52 @@ namespace MagicGladiators
                 {
                     if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "NewGame" || CurrentScene.scenetype == "Play")
                     {
+                        if (GameWorld.Instance.server != null)
+                        {
+                            try
+                            {
+                                GameWorld.Instance.server.Kill();
+                            }
+                            catch (Exception) { }
+                            try
+                            {
+                                GameWorld.Instance.server = null;
+                            }
+                            catch (Exception) { }
+                        }
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.Disconnect();
+                            GameWorld.Instance.client = null;
+                            GameWorld.Instance.canClient = true;
+                        }
+                        GameWorld.gameState = GameState.offgame;
+                        GameWorld.buyPhase = true;
                         NextScene = Scene.MainMenu();
                     }
                     else if (CurrentScene.scenetype == "PracticeChooseRound" || CurrentScene.scenetype == "Host")
                     {
+                        if (GameWorld.Instance.server != null)
+                        {
+                            try
+                            {
+                                GameWorld.Instance.server.Kill();
+                            }
+                            catch (Exception) { }
+                            try
+                            {
+                                GameWorld.Instance.server = null;
+                            }
+                            catch (Exception) { }
+                        }
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.Disconnect();
+                            GameWorld.Instance.client = null;
+                            GameWorld.Instance.canClient = true;
+                        }
+                        GameWorld.gameState = GameState.offgame;
+                        GameWorld.buyPhase = true;
                         NextScene = Scene.NewGame();
                     }
                     else
@@ -479,11 +530,13 @@ namespace MagicGladiators
                             try
                             {
                                 server.Kill();
-                            } catch (Exception) { }
+                            }
+                            catch (Exception) { }
                             try
                             {
                                 server = null;
-                            } catch (Exception) { }
+                            }
+                            catch (Exception) { }
                         }
                         Exit();
                     }
@@ -740,7 +793,7 @@ namespace MagicGladiators
             buyPhase = true;
             currentRound = 1;
             itemList.Clear();
-            numberOfRounds = 3;
+            //numberOfRounds = 3;
             playersAlive.Clear();
             readyList.Clear();
             buySpellX = Window.ClientBounds.Width - 144;
@@ -749,6 +802,7 @@ namespace MagicGladiators
             Player.abilities.Clear();
             Player.gold = 10000;
             Player.deathAbilities.Clear();
+            CreateAbility.abilityIndex = 0;
         }
 
         public void UpdateBuyItem(MouseState mouse, Circle mouseCircle)
@@ -1026,6 +1080,7 @@ namespace MagicGladiators
                     {
                         client.SendReady(player.Id, false);
                         player.isReady = false;
+
                     }
                     else
                     {
@@ -1039,74 +1094,35 @@ namespace MagicGladiators
                 canReady = true;
             }
 
-            if (client != null)
+            if (client != null && gameState == GameState.ingame && !buyPhase)
             {
                 if (client.isHost)
                 {
-                    if (buyPhase)
+                    playersAlive.Clear();
+                    foreach (GameObject go in gameObjects)
                     {
-                        bool startRound = false;
-
-                        foreach (GameObject go in gameObjects)
+                        if (go.Tag == "Player" || go.Tag == "Enemy")
                         {
-                            if (gameObjects.Exists(x => x.Tag == "Player") || gameObjects.Exists(x => x.Tag == "Enemy"))
-                            {
-                                if ((go.Tag == "Enemy" || go.Tag == "Player") && !go.isReady)
-                                {
-                                    //don't start the round
-                                    startRound = false;
-                                    break;
-                                }
-                                else startRound = true;
-                            }
-
-                        }
-
-                        if (startRound)
-                        {
-                            client.SendSwitchPhase();
-                            foreach (GameObject go in gameObjects)
-                            {
-                                if (go.Tag == "Enemy" || go.Tag == "Player")
-                                {
-                                    go.isReady = false;
-                                }
-                            }
-                            StartRound();
-                            currentRound++;
-                            //ResetCharacters();
-                            buyPhase = false;
-                            startRound = false;
+                            playersAlive.Add(go);
                         }
                     }
-                    else
+                    if (playersAlive.Count < 2)
                     {
-                        playersAlive.Clear();
-                        foreach (GameObject go in gameObjects)
+                        if (currentRound < numberOfRounds)
                         {
-                            if (go.Tag == "Player" || go.Tag == "Enemy")
-                            {
-                                playersAlive.Add(go);
-                            }
+                            //revive all players & reset all stats
+                            //CreateDummies();
+                            client.SendSwitchPhase();
+                            StartRound();
+                            //CreateMap(selectedMap);
+                            //ResetCharacters();
+                            buyPhase = true;
+                            //currentRound++;
                         }
-                        if (playersAlive.Count < 2)
+                        else
                         {
-                            if (currentRound < numberOfRounds)
-                            {
-                                //revive all players & reset all stats
-                                //CreateDummies();
-                                client.SendSwitchPhase();
-                                StartRound();
-                                //CreateMap(selectedMap);
-                                //ResetCharacters();
-                                buyPhase = true;
-                                //currentRound++;
-                            }
-                            else
-                            {
-                                //show end screen
-                                currentRound = 1;
-                            }
+                            //show end screen
+                            currentRound = 1;
                         }
                     }
                 }
@@ -1121,6 +1137,7 @@ namespace MagicGladiators
                 {
                     if (go.Tag == "Player" || go.Tag == "Enemy")
                     {
+                        go.transform.position = new Vector2(0, 0);
                         characters.Add(go);
                         characterColliders.Add((go.GetComponent("Collider") as Collider));
                     }
@@ -1151,6 +1168,10 @@ namespace MagicGladiators
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
+            if (client != null)
+            {
+                client.Draw();
+            }
 
             spriteBatch.DrawString(fontText, TestClient.text, new Vector2(0, Window.ClientBounds.Height / 2), Color.Black);
 

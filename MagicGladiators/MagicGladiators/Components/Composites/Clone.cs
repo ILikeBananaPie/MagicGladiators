@@ -66,6 +66,17 @@ namespace MagicGladiators
                         gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y + 64);
                     }
                 }
+                foreach (GameObject go2 in GameWorld.gameObjects)
+                {
+                    if (go2.Id == go.Id && go.Tag == "Player" && go2.Tag.Contains("Clone") && go.CurrentHealth < 0)
+                    {
+                        GameWorld.objectsToRemove.Add(go2);
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.SendRemoval(go2.Tag, go2.Id);
+                        }
+                    }
+                }
             }
         }
 

@@ -551,17 +551,16 @@ namespace MagicGladiators
 
 
 
-                if (gameObject.Tag == "DeathMine")
-                {
-                    mineTimer += GameWorld.Instance.deltaTime;
-                    if (mineTimer > mineActivationTime)
-                    {
-                        deathMineActivated = true;
-                        (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
-                    }
-                    //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
-
-                }
+                //if (gameObject.Tag == "DeathMine")
+                //{
+                //    mineTimer += GameWorld.Instance.deltaTime;
+                //    if (mineTimer > mineActivationTime)
+                //    {
+                //        deathMineActivated = true;
+                //        (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
+                //    }
+                //    //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
+                //}
 
                 if (gameObject.Tag == "GravityWell")
                 {

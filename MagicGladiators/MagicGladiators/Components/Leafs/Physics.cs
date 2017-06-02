@@ -17,6 +17,9 @@ namespace MagicGladiators
         private float timer;
         private Vector2 breaking = new Vector2(0.05F, 0.05F);
 
+        private float chainDeactivatedTimer = 0;
+        private float chainActivatedTimer = 0;
+
         public Physics(GameObject gameObject) : base(gameObject)
         {
 
@@ -80,6 +83,15 @@ namespace MagicGladiators
                     Velocity = Vector2.Zero;
                 }
 
+            }
+            if (chainActivated)
+            {
+                chainActivatedTimer += GameWorld.Instance.deltaTime;
+                if (chainActivatedTimer > 2)
+                {
+                    chainActivatedTimer = 0;
+                    chainActivated = false;
+                }
             }
             Velocity = UpdateVelocity(Acceleration, Velocity);
             return Acceleration;

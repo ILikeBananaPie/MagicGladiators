@@ -81,6 +81,10 @@ namespace MagicGladiators
             {
                 newObjects.Add(other.gameObject);
             }
+            if (gameObject.Tag == "LavaSpot")
+            {
+                objectsToRemove.Add(other.gameObject);
+            }
         }
 
         public void OnCollisionEnter(Collider other)
@@ -173,7 +177,7 @@ namespace MagicGladiators
 
                 if (Vector2.Distance(thisCenter, otherCenter) < LavaRadius - otherRadius)
                 {
-                    if (!objects.Exists(x => x == other.gameObject))
+                    if (!objects.Exists(x => x == other.gameObject) && other.gameObject.CurrentHealth > 0)
                     {
                         newObjects.Add(other.gameObject);
                     }
@@ -198,6 +202,10 @@ namespace MagicGladiators
                         timer += GameWorld.Instance.deltaTime;
                     }
                     go.CurrentHealth -= LavaDamage * go.LavaResistance;
+                    if (go.CurrentHealth < 0)
+                    {
+                        objectsToRemove.Add(go);
+                    }
                 }
             }
             UpdateLevel();
