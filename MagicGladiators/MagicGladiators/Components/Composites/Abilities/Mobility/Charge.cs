@@ -34,6 +34,8 @@ namespace MagicGladiators
             this.animator = animator;
             this.transform = transform;
             this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
+            damage = 7;
+
         }
 
         public override void LoadContent(ContentManager content)

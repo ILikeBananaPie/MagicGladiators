@@ -20,7 +20,7 @@ namespace MagicGladiators
 
         private DIRECTION direction;
 
-        public static int gold = 10000;
+        public static int gold = 300;
         public static float speed = 1;
 
         private Transform transform;

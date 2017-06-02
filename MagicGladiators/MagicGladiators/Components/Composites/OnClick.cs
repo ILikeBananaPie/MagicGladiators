@@ -108,6 +108,7 @@ namespace MagicGladiators
                             case "Lobby":
                                 break;
                             case "Practice":
+                                Player.gold = 10000;
                                 GameWorld.Instance.NextScene = Scene.Practice();
                                 break;
                             case "ExitGame":

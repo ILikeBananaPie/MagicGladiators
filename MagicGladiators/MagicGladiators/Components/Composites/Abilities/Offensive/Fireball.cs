@@ -18,6 +18,7 @@ namespace MagicGladiators
             canShoot = true;
             cooldown = 3;
             Name = "Fireball";
+            damage = 7;
         }
 
         public override void LoadContent(ContentManager content)

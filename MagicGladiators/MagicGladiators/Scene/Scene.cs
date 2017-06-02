@@ -253,6 +253,7 @@ namespace MagicGladiators
             GameObject[] included = new GameObject[0];
             Scene send = new Scene(included);
             send.scenetype = "Practice";
+            Player.gold = 10000;
             return send;
         }
         public static Scene PracticeChooseRound()

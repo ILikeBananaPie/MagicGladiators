@@ -16,6 +16,8 @@ namespace MagicGladiators
         {
             canShoot = true;
             cooldown = 3;
+            damage = 7;
+
         }
 
         public override void LoadContent(ContentManager content)
