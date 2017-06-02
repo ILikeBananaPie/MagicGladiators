@@ -146,7 +146,7 @@ namespace MagicGladiators
         {
             if (isConnected)
             {
-                if (Regex.IsMatch(name, @"^[a-zA-Z]+$") && Regex.IsMatch(password, @"^[a-zA-Z]+$"))
+                if (Regex.IsMatch(name, @"^[A-Za-z0-9]+$") && Regex.IsMatch(password, @"^[A-Za-z0-9]+$"))
                 {
                     string testforstring = "select * from login where name='" + name + "';";
                     SQLiteCommand testcommand = new SQLiteCommand(testforstring, connection);
