@@ -387,10 +387,6 @@ namespace TestServer
                                 }
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 RemoveProjectile(name, msgIn.SenderConnection, id);
-
-                                if (!TestName.Exists(x => x == name) && !TestID.Exists(x => x == msgIn.SenderConnection.ToString()))
-                                {
-                                }
                             }
                             #endregion
                             #region Push
@@ -469,10 +465,12 @@ namespace TestServer
                             if (type == (byte)PacketType.Clone)
                             {
                                 string id = msgIn.ReadString();
+                                int cloneNumber = msgIn.ReadInt32();
                                 float posX = msgIn.ReadFloat();
                                 float posY = msgIn.ReadFloat();
+                                Console.WriteLine("Clone" + cloneNumber);
                                 UpdateConnectionList(msgIn.SenderConnection);
-                                SendClone(id, posX, posY);
+                                SendClone(id, posX, posY, cloneNumber);
                             }
                             #endregion
                             break;
@@ -524,12 +522,13 @@ namespace TestServer
             }
         }
 
-        public static void SendClone(string id, float posX, float posY)
+        public static void SendClone(string id, float posX, float posY, int cloneNumber)
         {
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
             msgOut.Write((byte)PacketType.Clone);
             msgOut.Write(id);
+            msgOut.Write(cloneNumber);
             msgOut.Write(posX);
             msgOut.Write(posY);
             server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);

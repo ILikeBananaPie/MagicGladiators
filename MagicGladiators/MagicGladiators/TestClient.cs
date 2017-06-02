@@ -33,6 +33,7 @@ namespace MagicGladiators
         public bool isHost { get; set; } = false;
         private Color previousColor;
         public List<GameObject> readyList { get; set; } = new List<GameObject>();
+        private Random rnd = new Random();
 
         //private float TestTimer;
 
@@ -139,12 +140,13 @@ namespace MagicGladiators
             client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
         }
 
-        public void SendClone(string id, Vector2 position)
+        public void SendClone(string id, Vector2 position, int cloneNumber)
         {
             NetOutgoingMessage msgOut;
             msgOut = client.CreateMessage();
             msgOut.Write((byte)PacketType.Clone);
             msgOut.Write(id);
+            msgOut.Write(cloneNumber);
             msgOut.Write(position.X);
             msgOut.Write(position.Y);
             client.SendMessage(msgOut, NetDeliveryMethod.Unreliable);
@@ -743,6 +745,21 @@ namespace MagicGladiators
                                 {
                                     GameWorld.objectsToRemove.Add(go);
                                 }
+                                //if (name == go.Tag && go.Id == sender)
+                                //{
+
+                                //}
+                                //if (go.Tag.Contains("Clone") && go.Id == sender && name.Contains("Clone") && !go.Tag.Contains("Fireball"))
+                                //{
+                                //    if (!go.Tag.Contains("Fireball"))
+                                //    {
+                                //        if (name.Contains("Clone"))
+                                //        {
+
+                                //        }
+                                //    }
+                                //    GameWorld.objectsToRemove.Add(go);
+                                //}
                             }
 
                         }
@@ -945,14 +962,18 @@ namespace MagicGladiators
                         if (type == (byte)PacketType.Clone)
                         {
                             string id = msgIn.ReadString();
+                            int cloneNumber = msgIn.ReadInt32();
                             float posX = msgIn.ReadFloat();
                             float posY = msgIn.ReadFloat();
+                            List<int> numbers = new List<int>() { 1, 2, 3, 4 };
+                            numbers.Remove(cloneNumber);
 
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (go.Id == id && go.Tag == "Enemy")
                                 {
-                                    for (int i = 0; i < 4; i++)
+                                    go.cloneNumber = cloneNumber;
+                                    for (int i = 0; i < 3; i++)
                                     {
                                         GameObject clone = new GameObject();
                                         clone.AddComponent(new SpriteRenderer(clone, "PlayerSheet", 1));
@@ -960,8 +981,9 @@ namespace MagicGladiators
                                         clone.AddComponent(new Clone(clone));
                                         clone.AddComponent(new Collider(clone, true, true));
                                         clone.AddComponent(new Physics(clone));
-                                        clone.Tag = "Clone" + directions[i];
-                                        clone.Id = go.Id;
+                                        clone.Tag = "Clone" + numbers[i];
+                                        clone.cloneNumber = numbers[i];
+                                        clone.Id = id;
                                         clone.CurrentHealth = go.CurrentHealth;
                                         clone.MaxHealth = go.MaxHealth;
                                         clone.LoadContent(GameWorld.Instance.Content);
