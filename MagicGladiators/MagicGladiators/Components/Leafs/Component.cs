@@ -28,7 +28,7 @@ namespace MagicGladiators
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            //throw new NotImplementedException();
+
         }
     }
 }

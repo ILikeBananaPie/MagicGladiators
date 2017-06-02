@@ -318,6 +318,15 @@ namespace MagicGladiators
                     index++;
                 }
             }
+            int testIndex = 0;
+            for (int i = 0; i < player.components.Count; i++)
+            {
+                if (player.components[i] is IDeathAbility)
+                {
+                    (player.components[i] as Ability).icon = Player.deathAbilities[testIndex];
+                    testIndex++;
+                }
+            }
         }
 
         public void CreateVendorItems()
@@ -685,6 +694,7 @@ namespace MagicGladiators
                     ResetCharacters();
                     Director ability = new Director(new AbilityIconBuilder());
                     Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68, Window.ClientBounds.Height - 42), "Fireball", 0, ""));
+                    (player.components.Last() as Ability).icon = Player.abilities.Last();
                     /*
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
@@ -713,6 +723,7 @@ namespace MagicGladiators
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
                     newObjects.Add(player);
+                    (player.components.Last() as Ability).icon = Player.abilities.Last();
 
                     CreateDummies();
 
@@ -871,11 +882,36 @@ namespace MagicGladiators
                             CreateAbility ca = new CreateAbility(ability.Name);
                             player.AddComponent(ca.GetComponent(player, player.transform.position));
                             abilityList.Remove(ability.gameObject);
+                            CooldownIcon();
                             break;
                         }
                     }
                 }
             }
+        }
+
+        public void CooldownIcon()
+        {
+            (player.components.Last() as Ability).icon = Player.abilities.Last();
+
+            //if (player.components.Last().Name == "HomingMissile")
+            //{
+            //    (player.GetComponent("HomingMissile") as HomingMissile).icon = Player.abilities.Last();
+            //}
+            //if (player.components.Last().Name == "Boomerang")
+            //{
+            //    (player.GetComponent("Boomerang") as Boomerang).icon = Player.abilities.Last();
+            //}
+            //if (player.components.Last().Name == "Chain")
+            //{
+            //    (player.GetComponent("Chain") as Chain).icon = Player.abilities.Last();
+            //}
+            //if (player.components.Last().Name == "HomingMissile")
+            //{
+            //    (player.GetComponent("HomingMissile") as HomingMissile).icon = Player.abilities.Last();
+            //}
+
+
         }
 
         public void UpdateAbilityRebind(MouseState mouse, Circle mouseCircle)
@@ -1172,7 +1208,6 @@ namespace MagicGladiators
             {
                 client.Draw();
             }
-
             spriteBatch.DrawString(fontText, TestClient.text, new Vector2(0, Window.ClientBounds.Height / 2), Color.Black);
 
             foreach (GameObject go in gameObjects)
@@ -1230,6 +1265,20 @@ namespace MagicGladiators
                 DrawPlayerDeathAbilities();
                 DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
                 UpdateAbilityRebind(mouse, mouseCircle);
+            }
+            if (player != null)
+            {
+                foreach (Component comp in player.components)
+                {
+                    if (comp is Ability && !(comp is IDeathAbility) && player.CurrentHealth > 0)
+                    {
+                        (comp as Ability).Draw(spriteBatch);
+                    }
+                    if (comp is IDeathAbility && player.CurrentHealth < 0)
+                    {
+                        (comp as Ability).Draw(spriteBatch);
+                    }
+                }
             }
 
             spriteBatch.End();

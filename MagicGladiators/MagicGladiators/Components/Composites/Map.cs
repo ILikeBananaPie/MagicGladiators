@@ -185,7 +185,7 @@ namespace MagicGladiators
                 else objectsToRemove.Add(other.gameObject);
             }
         }
-
+        
         public void Update()
         {
             foreach (GameObject go in objects)

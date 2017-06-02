@@ -222,6 +222,20 @@ namespace MagicGladiators
                     {
                         go.transform.position = new Vector2(50, 50 + 50 * go.ConnectionNumber);
                         spriteBatch.DrawString(fontText, "Name: " + go.Id, new Vector2(go.transform.position.X + 50, go.transform.position.Y), Color.Black);
+                        foreach (GameObject go2 in GameWorld.Instance.client.readyList)
+                        {
+                            if (go2.Id == go.Id)
+                            {
+                                Vector2 textSize = fontText.MeasureString("Name: " + go.Id);
+                                string text;
+                                if (go.isReady)
+                                {
+                                    text = "Ready";
+                                }
+                                else text = "Not Ready";
+                                spriteBatch.DrawString(fontText, " is " + text, new Vector2(go.transform.position.X + 50 + textSize.X, go.transform.position.Y), Color.Black);
+                            }
+                        }
                     }
                 }
                 return;

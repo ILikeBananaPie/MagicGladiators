@@ -89,7 +89,6 @@ namespace MagicGladiators
 
             if (keyState.IsKeyDown(key) && !qPressed && canShoot)
             {
-                canShoot = false;
                 qPressed = true;
                 if (activated == true)
                 {
@@ -111,6 +110,7 @@ namespace MagicGladiators
 
             if (activated && mouse.LeftButton == ButtonState.Released && !mouseReleasedBool)
             {
+                canShoot = false;
                 pointB = new Vector2(mouse.Position.X, mouse.Position.Y);
 
                 Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(pointB, pointA);

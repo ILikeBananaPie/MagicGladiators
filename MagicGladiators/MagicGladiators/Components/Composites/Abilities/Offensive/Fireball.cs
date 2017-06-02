@@ -11,6 +11,8 @@ namespace MagicGladiators
 {
     class Fireball : OffensiveAbility
     {
+        //public GameObject icon { get; set; }
+
         public Fireball(GameObject go) : base(go)
         {
             canShoot = true;
@@ -52,6 +54,11 @@ namespace MagicGladiators
                     }
                 }
             }
+            //if (!canShoot)
+            //{
+            //    (icon.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Gray;
+            //}
+            //else (icon.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
         }
     }
 }

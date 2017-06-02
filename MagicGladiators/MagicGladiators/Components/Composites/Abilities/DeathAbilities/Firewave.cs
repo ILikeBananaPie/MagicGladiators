@@ -34,7 +34,6 @@ namespace MagicGladiators
 
             if (keyState.IsKeyDown(key) && canShoot)
             {
-                canShoot = false;
                 activated = true;
             }
 
@@ -42,6 +41,7 @@ namespace MagicGladiators
             {
                 if (mouse.LeftButton == ButtonState.Pressed)
                 {
+                    canShoot = false;
                     activated = false;
                     Vector2 position = new Vector2(mouse.Position.X, mouse.Position.Y);
                     Vector2 target;

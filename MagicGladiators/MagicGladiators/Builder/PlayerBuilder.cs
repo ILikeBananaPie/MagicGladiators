@@ -30,65 +30,22 @@ namespace MagicGladiators
             gameObject.AddComponent(new Physics(gameObject));
 
             gameObject.AddComponent(new RollingMeteor(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
-
+            gameObject.AddComponent(new DeathMine(gameObject, gameObject.transform.position));
+            gameObject.AddComponent(new Firewave(gameObject));
+            gameObject.AddComponent(new Critters(gameObject));
             gameObject.AddComponent(new ShrinkMap(gameObject));
             gameObject.AddComponent(new SlowField(gameObject));
 
-            //gameObject.AddComponent(new MirrorImage(gameObject));
-
-            gameObject.AddComponent(new Firewave(gameObject));
-            gameObject.AddComponent(new Critters(gameObject));
-
-            //gameObject.AddComponent(new Invisibility(gameObject));
-
-
-
-            //gameObject.AddComponent(new StoneArmour(gameObject));
-
-            //gameObject.AddComponent(new Spellshield(gameObject));
-
-            //gameObject.AddComponent(new Chain(gameObject));
-
-            //gameObject.AddComponent(new Deflect(gameObject));
-
-            //gameObject.AddComponent(new SpeedBoost(gameObject));
-
-            //gameObject.AddComponent(new Drain(gameObject));
-
-            //gameObject.AddComponent(new HomingMissile(gameObject, gameObject.transform.position, Vector2.Zero));
-
-            // gameObject.LoadContent(GameWorld.Instance.Content);
-
-            //gameObject.LoadContent(GameWorld.Instance.Content);
-
-            //gameObject.AddComponent(new Boomerang(gameObject));
-
-            //gameObject.AddComponent(new GravityWell(gameObject));
-
             gameObject.AddComponent(new Fireball(gameObject));
-
-            //gameObject.AddComponent(new Recall(gameObject));
-
-
-
 
             MouseState mouse = Mouse.GetState();
             gameObject.transform.position = position;
 
+        }
 
-            gameObject.AddComponent(new DeathMine(gameObject, gameObject.transform.position));
-            //gameObject.AddComponent(new Charge(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
-
-            //gameObject.AddComponent(new Blink(gameObject, gameObject.transform, gameObject.GetComponent("Animator") as Animator));
-
-           // gameObject.AddComponent(new Nova(gameObject, gameObject.transform.position, Vector2.Zero));
-            gameObject.transform.position = position;
-
-            //gameObject.AddComponent(new Mine(gameObject, gameObject.transform.position));
-
-
-
-
+        public void SetCooldownIcon()
+        {
+            (gameObject.components.Last() as Ability).icon = Player.deathAbilities.Last();
         }
 
         public void BuildIcon(Vector2 position, string name, string text)

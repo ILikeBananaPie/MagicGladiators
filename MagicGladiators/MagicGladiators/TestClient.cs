@@ -335,7 +335,7 @@ namespace MagicGladiators
         public void Draw()
         {
             spriteBatch.Begin();
-            if (GameWorld.buyPhase)
+            if (GameWorld.buyPhase && GameWorld.gameState == GameState.ingame)
             {
                 int y = 0;
                 foreach (GameObject go in readyList)
@@ -346,7 +346,7 @@ namespace MagicGladiators
                         text = "Ready";
                     }
                     else text = "Not Ready";
-                    spriteBatch.DrawString(font, go.Id + " is " + text, new Vector2(GameWorld.Instance.Window.ClientBounds.Width / 2, 0 + y), Color.Black);
+                    spriteBatch.DrawString(font, go.Id + " is " + text, new Vector2(0, 100 + y), Color.Black);
                     y += 20;
                 }
             }
