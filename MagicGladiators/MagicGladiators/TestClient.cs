@@ -816,17 +816,12 @@ namespace MagicGladiators
                                         }
                                     }
                                 }
-                                string test2 = go.Id;
-                                if (test2 != null && go.Tag == name)
-                                {
-                                    //test2 = go.Id.Split(' ').Last();
-                                    //test2 = test2.Remove(test2.Length - 1);
-                                }
 
-                                if (go.Id == id && name != "Map")
+                                if (go.Id == id && name != "Map" && go.Tag == name)
                                 {
                                     (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = color;
                                 }
+
                             }
                         }
                         #endregion

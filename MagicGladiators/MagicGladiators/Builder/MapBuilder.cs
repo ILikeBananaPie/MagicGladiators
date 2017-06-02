@@ -53,7 +53,7 @@ namespace MagicGladiators
             {
                 gameObject.AddComponent(new SpriteRenderer(gameObject, "Pillar", 1));
             }
-            else gameObject.AddComponent(new SpriteRenderer(gameObject, "StandardMap600x600", 1));
+            else gameObject.AddComponent(new SpriteRenderer(gameObject, "StandardMap", 1));
 
             gameObject.AddComponent(new Animator(gameObject));
 

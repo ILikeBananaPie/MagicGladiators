@@ -93,7 +93,7 @@ namespace MagicGladiators
                         (component as IUpdateable).Update();
                     }
                 }
-                if (component is IAbility)
+                if (component is IAbility && !(component is IDeathAbility))
                 {
                     (component as IAbility).Cooldown();
                 }

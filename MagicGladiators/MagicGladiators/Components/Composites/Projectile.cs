@@ -433,7 +433,7 @@ namespace MagicGladiators
                 }
 
             }
-            (go.GetComponent("Physics") as Physics).Velocity += vector;
+            (go.GetComponent("Physics") as Physics).Acceleration += vector;
         }
 
         public bool intersects(Circle cir, Rectangle rec)
@@ -462,7 +462,7 @@ namespace MagicGladiators
             {
                 foreach (GameObject go in GameWorld.gameObjects)
                 {
-                    if (go.Tag == "Player" || go.Tag == "Dummy" || go.Tag == "Enemy")
+                    if (go.Tag == "Player" || go.Tag == "Dummy")
                     {
                         if (intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox, (gameObject.GetComponent("Collider") as Collider).CollisionBox))
                         {

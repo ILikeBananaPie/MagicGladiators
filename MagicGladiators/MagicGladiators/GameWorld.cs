@@ -359,11 +359,15 @@ namespace MagicGladiators
         {
             foreach (GameObject go in gameObjects)
             {
-                if (go.Tag == "Map" || go.Tag == "Pillar" || go.Tag == "LavaSpot")
+                if (go.Tag == "Map" || go.Tag == "Pillar" || go.Tag == "LavaSpot" || go.Tag == "Lava")
                 {
                     objectsToRemove.Add(go);
                 }
             }
+            //Director director = new Director(new MapBuilder());
+            //Texture2D sprite = Content.Load<Texture2D>("LavaBackGround");
+            //newObjects.Add(director.ConstructMapPart(new Vector2(0, 0), "Lava"));
+
             Director director = new Director(new MapBuilder());
             Texture2D sprite = Content.Load<Texture2D>("StandardMap");
             newObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2), "Map"));
@@ -1252,7 +1256,7 @@ namespace MagicGladiators
                 {
                     if (player.CurrentHealth < 0)
                     {
-                        UpdateDeathAbilities();
+                        //UpdateDeathAbilities();
                         DrawPlayerDeathAbilities();
                         DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
                         UpdateAbilityRebind(mouse, mouseCircle);
@@ -1261,7 +1265,7 @@ namespace MagicGladiators
             }
             if (CurrentScene.scenetype == "Play" && player.CurrentHealth < 0)
             {
-                UpdateDeathAbilities();
+                //UpdateDeathAbilities();
                 DrawPlayerDeathAbilities();
                 DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
                 UpdateAbilityRebind(mouse, mouseCircle);
