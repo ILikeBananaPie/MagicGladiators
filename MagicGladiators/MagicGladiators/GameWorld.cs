@@ -1168,7 +1168,7 @@ namespace MagicGladiators
                             //CreateMap(selectedMap);
                             //ResetCharacters();
                             buyPhase = true;
-                            //currentRound++;
+                            currentRound++;
                         }
                         else
                         {

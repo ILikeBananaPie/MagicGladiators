@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove, UpdateReadyList }
 
     public class Program
     {
@@ -75,6 +75,15 @@ namespace TestServer
                 }
                 server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.Unreliable, 0);
             }
+        }
+
+        private static void RemoveFromReadyList(NetConnection con)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.UpdateReadyList);
+            msgOut.Write(con.ToString());
+            server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.Unreliable, 0);
         }
 
         private static void Critter(string id, string tag, float posX, float posY, string command)
@@ -203,6 +212,7 @@ namespace TestServer
                                 Console.WriteLine("Player Disconnected!");
                                 UpdateConnectionList(msgIn.SenderConnection);
                                 CorrectPlayerIndex(msgIn.SenderConnection, "Remove", 0);
+                                RemoveFromReadyList(msgIn.SenderConnection);
                             }
                             break;
                         case NetIncomingMessageType.UnconnectedData:

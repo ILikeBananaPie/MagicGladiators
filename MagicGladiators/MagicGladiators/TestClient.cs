@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove, UpdateReadyList }
 
 
     public class TestClient
@@ -400,6 +400,20 @@ namespace MagicGladiators
                         break;
                     case NetIncomingMessageType.Data:
                         byte type = msgIn.ReadByte();
+                        #region UpdateReadyList
+                        if (type == (byte)PacketType.UpdateReadyList)
+                        {
+                            string id = msgIn.ReadString();
+                            foreach (GameObject go in readyList)
+                            {
+                                if (go.Id == id)
+                                {
+                                    readyList.Remove(go);
+                                    break;
+                                }
+                            }
+                        }
+                        #endregion
                         #region ChainRemove
                         if (type == (byte)PacketType.ChainRemove)
                         {
@@ -448,7 +462,6 @@ namespace MagicGladiators
                             {
                                 GameWorld.buyPhase = false;
                                 GameWorld.Instance.player.isReady = false;
-                                GameWorld.currentRound++;
                                 GameWorld.Instance.StartRound();
                                 foreach (GameObject go in readyList)
                                 {
@@ -460,6 +473,7 @@ namespace MagicGladiators
                             else
                             {
                                 GameWorld.buyPhase = true;
+                                GameWorld.currentRound++;
                                 GameWorld.Instance.StartRound();
 
                                 //GameWorld.CreateMap(GameWorld.selectedMap);
@@ -499,7 +513,7 @@ namespace MagicGladiators
                                     //SendStartgame();
                                     SendSwitchPhase();
                                     GameWorld.Instance.StartRound();
-                                    GameWorld.currentRound++;
+                                    //GameWorld.currentRound++;
                                     //ResetCharacters();
                                     GameWorld.buyPhase = false;
                                     //startRound = false;
@@ -878,15 +892,31 @@ namespace MagicGladiators
                         {
                             string id = msgIn.ReadString();
                             int number = msgIn.ReadInt32();
+                            List<GameObject> removed = new List<GameObject>();
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
                                 if (go.Id == id)
                                 {
-                                    GameWorld.objectsToRemove.Add(go);
+                                    removed.Add(go);
+                                    //GameWorld.objectsToRemove.Add(go);
                                 }
                                 if (go.Tag == "Player")
                                 {
                                     go.ConnectionNumber = number;
+                                }
+                            }
+                            foreach (GameObject go in removed)
+                            {
+                                GameWorld.gameObjects.Remove(go);
+                            }
+                            removed.Clear();
+                            foreach (GameObject go in GameWorld.characters)
+                            {
+                                if (go.Id == id)
+                                {
+                                    GameWorld.characterColliders.Remove((go.GetComponent("Collider") as Collider));
+                                    GameWorld.characters.Remove(go);
+                                    break;
                                 }
                             }
                             CorrectPlayerIndex(number);
