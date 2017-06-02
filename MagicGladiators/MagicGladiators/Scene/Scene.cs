@@ -333,6 +333,91 @@ namespace MagicGladiators
             send.scenetype = "Play";
             return send;
         }
+        public static Scene Login()
+        {
+            GameObject[] included = new GameObject[5];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaLogIn", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "LoginAttempt"));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "CreateAccount"));
+                        break;
+                    case 2:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaExitGame", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "ExitGame"));
+                        break;
+                    case 3:
+                        included[i] = new GameObject();
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
+                        included[i].AddComponent(new Username(included[i]));
+                        break;
+                    case 4:
+                        included[i] = new GameObject();
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2.5f - 40);
+                        included[i].AddComponent(new Password(included[i]));
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "Login";
+            return send;
+        }
+        public static Scene CreateAccount()
+        {
+            GameObject[] included = new GameObject[6];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "CreateAttempt"));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "Login"));
+                        break;
+                    case 2:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaExitGame", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "ExitGame"));
+                        break;
+                    case 3:
+                        included[i] = new GameObject();
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
+                        included[i].AddComponent(new Username(included[i]));
+                        break;
+                    case 4:
+                        included[i] = new GameObject();
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2.5f - 40);
+                        included[i].AddComponent(new Password(included[i]));
+                        included[i].Name = "Password";
+                        break;
+                    case 5:
+                        included[i] = new GameObject();
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 3 - 40);
+                        included[i].AddComponent(new Password(included[i]));
+                        included[i].Name = "Recheck Password";
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "CreateAccount";
+            return send;
+        }
         #endregion
 
         public void Draw(SpriteBatch spriteBatch)

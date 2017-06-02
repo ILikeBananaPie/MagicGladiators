@@ -81,6 +81,8 @@
     <Compile Include="Components\Composites\Dummy.cs" />
     <Compile Include="Components\Composites\Enemy.cs" />
     <Compile Include="Components\Composites\InputReciever.cs" />
+    <Compile Include="Components\Composites\Password.cs" />
+    <Compile Include="Components\Composites\Username.cs" />
     <Compile Include="Components\Composites\IPInput.cs" />
     <Compile Include="Components\Composites\LobbyMenuButton.cs" />
     <Compile Include="Components\Composites\Map.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Components\Leafs\Component.cs" />
     <Compile Include="Components\Leafs\Physics.cs" />
     <Compile Include="CreateAbility.cs" />
+    <Compile Include="dbCon.cs" />
     <Compile Include="GameWorld.cs" />
     <Compile Include="Components\Composites\GameObject.cs" />
     <Compile Include="Components\Interfaces\IAnimateable.cs" />
@@ -146,6 +149,15 @@
       <HintPath>Extra\ProtobufSerializer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.105.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Extra\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.105.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Extra\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
