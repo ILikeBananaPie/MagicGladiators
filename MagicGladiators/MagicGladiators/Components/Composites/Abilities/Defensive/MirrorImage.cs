@@ -21,7 +21,7 @@ namespace MagicGladiators
 
         public MirrorImage(GameObject gameObject) : base(gameObject)
         {
-            cooldown = 20;
+            cooldown = 5;
             canShoot = true;
         }
 
@@ -46,11 +46,11 @@ namespace MagicGladiators
                     clone.AddComponent(new Clone(clone));
                     clone.AddComponent(new Collider(gameObject, true, true));
                     clone.AddComponent(new Physics(clone));
-                    clone.Tag = "Clone" + directions[i];
                     clone.Id = gameObject.Id;
                     int number = rnd.Next(numbers.Count);
+                    clone.Tag = "Clone" + numbers[number];
                     clone.cloneNumber = numbers[number];
-                    numbers.Remove(number);
+                    numbers.Remove(numbers[number]);
                     clone.CurrentHealth = gameObject.CurrentHealth;
                     clone.MaxHealth = gameObject.MaxHealth;
                     clone.LoadContent(GameWorld.Instance.Content);

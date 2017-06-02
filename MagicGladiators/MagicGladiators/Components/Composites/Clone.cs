@@ -55,7 +55,7 @@ namespace MagicGladiators
                     }
                     if (go.cloneNumber == 1 && gameObject.cloneNumber == 3)
                     {
-                        gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y + 64);
+                        gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y + 64);
                     }
                     if (go.cloneNumber == 1 && gameObject.cloneNumber == 4)
                     {
@@ -68,7 +68,7 @@ namespace MagicGladiators
                     }
                     if (go.cloneNumber == 2 && gameObject.cloneNumber == 3)
                     {
-                        gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y - 64);
+                        gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y + 64);
                     }
                     if (go.cloneNumber == 2 && gameObject.cloneNumber == 4)
                     {
