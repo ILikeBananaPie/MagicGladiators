@@ -259,7 +259,7 @@ namespace MagicGladiators
                     GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
                 }
             }
-            if ((other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" || other.gameObject.Tag == "Pillar" || other.gameObject.Tag.Contains("Clone") || other.gameObject.Tag.Contains("Critter")) && gameObject.Tag != "DeathMine")
+            if ((other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy" || other.gameObject.Tag == "Pillar" || other.gameObject.Tag.Contains("Clone") || other.gameObject.Tag.Contains("Critter")) && gameObject.Tag != "DeathMine" && other.gameObject.Tag != "Deflect")
             {
                 if (gameObject.Tag == "Drain")
                 {
@@ -484,37 +484,43 @@ namespace MagicGladiators
 
             if (gameObject.Id == GameWorld.Instance.player.Id)
             {
-
                 foreach (GameObject other in GameWorld.gameObjects)
                 {
                     if (other.Tag == "Deflect" && other.Id != gameObject.Id)
                     {
                         GameObject temp = new GameObject();
-                        GameObject player = new GameObject();
+                        //GameObject player = new GameObject();
                         foreach (GameObject go in GameWorld.gameObjects)
                         {
-
                             if (go.Tag == "Enemy" && go.Id == other.Id)
                             {
                                 temp = go;
                             }
-                            if (go.Tag == "Deflect" && go.Id != gameObject.Id && temp != new GameObject())
+                            if (temp.Tag == "Enemy")
                             {
                                 //run deflect code
                                 Circle playerCircle = new Circle();
                                 playerCircle.Center = new Vector2(temp.transform.position.X + 16, temp.transform.position.Y + 16);
                                 playerCircle.Radius = (temp.GetComponent("Collider") as Collider).CircleCollisionBox.Radius * 2F;
-                                foreach (GameObject obj in GameWorld.gameObjects)
+                                if (playerCircle.Intersects((gameObject.GetComponent("Collider") as Collider).CircleCollisionBox))
                                 {
-                                    if (abilities.Exists(x => x == obj.Tag))
-                                    {
-                                        if (playerCircle.Intersects((obj.GetComponent("Collider") as Collider).CircleCollisionBox))
-                                        {
-                                            //(player, spell)
-                                            Deflect.SetVector(temp, gameObject);
-                                        }
-                                    }
+                                    Deflect.SetVector(temp, gameObject);
+                                    temp = new GameObject();
                                 }
+
+                                //foreach (GameObject obj in GameWorld.gameObjects)
+                                //{
+                                //    if (abilities.Exists(x => x == obj.Tag))
+                                //    {
+                                //        if (playerCircle.Intersects((obj.GetComponent("Collider") as Collider).CircleCollisionBox))
+                                //        {
+                                //            //(player, spell)
+                                //            Deflect.SetVector(temp, gameObject);
+                                //        }
+                                //    }
+                                //}
+
+
                             }
                         }
                     }

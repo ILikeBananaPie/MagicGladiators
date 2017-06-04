@@ -27,189 +27,6 @@ namespace TestServer
         private static int test = 0;
         //private static int spellId = 0;
 
-        private static void CorrectPlayerIndex(NetConnection con, string command, int index)
-        {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            if (command == "Remove")
-            {
-                foreach (Player player in players)
-                {
-                    if (player.connectionID == con)
-                    {
-                        players.Remove(player);
-                        break;
-                    }
-                }
-                while (server.Connections.Count != players.Count)
-                {
-                    Thread.Sleep(50);
-                }
-
-                for (int i = 0; i < server.Connections.Count; i++)
-                {
-                    //players[i].playerIndex = i;
-                    msgOut = server.CreateMessage();
-                    msgOut.Write((byte)PacketType.RemovePlayer);
-                    msgOut.Write(con.ToString());
-                    msgOut.Write(i);
-                    if (server.Connections[i] != null)
-                    {
-                    }
-                    server.SendMessage(msgOut, server.Connections[i], NetDeliveryMethod.ReliableOrdered, 0);
-
-                    test++;
-                }
-                playerIndex--;
-                colorIndex--;
-                test = 0;
-            }
-
-            else
-            {
-                msgOut = server.CreateMessage();
-                msgOut.Write((byte)PacketType.UpdatePlayerIndex);
-                msgOut.Write(con.ToString());
-                msgOut.Write(index);
-                if (connectionList.Count > 0)
-                {
-                }
-                server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.Unreliable, 0);
-            }
-        }
-
-        private static void RemoveFromReadyList(NetConnection con)
-        {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.UpdateReadyList);
-            msgOut.Write(con.ToString());
-            server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.Unreliable, 0);
-        }
-
-        private static void Critter(string id, string tag, float posX, float posY, string command)
-        {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.Critter);
-            msgOut.Write(id);
-            msgOut.Write(tag);
-            msgOut.Write(posX);
-            msgOut.Write(posY);
-            msgOut.Write(command);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-        }
-
-        private static void SendEnemyAcceleration(string id, float x, float y)
-        {
-            connectionList.Clear();
-            foreach (NetConnection con in server.Connections)
-            {
-                if (con.ToString() == id)
-                {
-                    connectionList.Add(con);
-                }
-            }
-
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.EnemyAcceleration);
-            msgOut.Write(x);
-            msgOut.Write(y);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-        }
-
-        private static void SendMapSettings(string map, int rounds)
-        {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.MapSettings);
-            msgOut.Write(map);
-            msgOut.Write(rounds);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-        }
-
-        public static void SendSwitchPhase()
-        {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.SwitchPhase);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-        }
-
-        public static void SendStartgame()
-        {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.StartGame);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-        }
-
-        public static void SendReady(string id, bool isReady)
-        {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.Ready);
-            msgOut.Write(id);
-            msgOut.Write(isReady);
-            server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.Unreliable, 0);
-        }
-
-        public static void ChainRemove(string id)
-        {
-            connectionList.Clear();
-            //string text = id;
-            //text = text.Split(' ').Last();
-            //text = text.Remove(text.Length - 1);
-            foreach (NetConnection con in server.Connections)
-            {
-                if (con.ToString() == id)
-                {
-                    connectionList.Add(con);
-                }
-            }
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.ChainRemove);
-            //msgOut.Write(id);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-        }
-
-        public static void SendConnection(NetConnection sender, string name)
-        {
-            if (server.Connections.Count > 1)
-            {
-                connectionList.Clear();
-                foreach (NetConnection con in server.Connections)
-                {
-                    connectionList.Add(con);
-                }
-                connectionList.Remove(sender);
-
-                //to all but the sender(connector). Create an enemy
-                NetOutgoingMessage msgOut;
-                msgOut = server.CreateMessage();
-                msgOut.Write((byte)PacketType.CreatePlayer);
-                msgOut.Write(sender.ToString());
-                msgOut.Write(colors[colorIndex]);
-                msgOut.Write(playerIndex);
-                msgOut.Write(name);
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-
-                //to the sender(connector). Create enemies
-                for (int i = 0; i < server.Connections.Count - 1; i++)
-                {
-                    msgOut = server.CreateMessage();
-                    msgOut.Write((byte)PacketType.CreatePlayer);
-                    msgOut.Write(server.Connections[i].ToString());
-                    msgOut.Write(colors[i]);
-                    msgOut.Write(i);
-                    msgOut.Write(names[i]);
-                    server.SendMessage(msgOut, sender, NetDeliveryMethod.Unreliable, 0);
-                }
-            }
-        }
-
         static void Main(string[] args)
         {
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
@@ -537,94 +354,7 @@ namespace TestServer
                 }
             }
         }
-
-
-
-        public static void SendClone(string id, float posX, float posY, int cloneNumber)
-        {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.Clone);
-            msgOut.Write(id);
-            msgOut.Write(cloneNumber);
-            msgOut.Write(posX);
-            msgOut.Write(posY);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-        }
-
-        public static void AssignID(NetConnection con)
-        {
-            //connectionList.Clear();
-            //connectionList.Add(con);
-            players.Add(new Player(playerIndex, con));
-
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.AssignID);
-            msgOut.Write(con.ToString());
-            msgOut.Write(colors[colorIndex]);
-            msgOut.Write(playerIndex);
-            server.SendMessage(msgOut, con, NetDeliveryMethod.Unreliable, 0);
-            HostInfo();
-            colorIndex++;
-            playerIndex++;
-        }
-
-        public static void HostInfo()
-        {
-
-        }
-
-        public static void UpdateConnectionList(NetConnection con)
-        {
-            connectionList.Clear();
-            foreach (NetConnection con2 in server.Connections)
-            {
-                connectionList.Add(con2);
-            }
-            connectionList.Remove(con);
-        }
-
-        public static void SendPosition(int x, int y, NetConnection sender)
-        {
-
-            if (connectionList.Count > 0)
-            {
-                NetOutgoingMessage msgOut;
-                msgOut = server.CreateMessage();
-                msgOut.Write((byte)PacketType.EnemyPos);
-                msgOut.Write(sender.ToString());
-                msgOut.Write(x);
-                msgOut.Write(y);
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-            }
-        }
-
-        public static void SendProjectileVel(string name, float velX, float velY, NetConnection sender)
-        {
-            if (connectionList.Count > 0)
-            {
-                NetOutgoingMessage msgOut;
-                msgOut = server.CreateMessage();
-
-                name = name.Split(',').First();
-                msgOut.Write((byte)PacketType.ProjectileVel);
-                msgOut.Write(sender.ToString());
-                msgOut.Write(name);
-                msgOut.Write(velX);
-                msgOut.Write(velY);
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-            }
-        }
-
-        public static void ShrinkMap()
-        {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.ShrinkMap);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-        }
-
+        //0-1
         public static void SendProjectile(string name, float posX, float posY, float targetX, float targetY, NetConnection sender)
         {
             if (connectionList.Count > 0)
@@ -641,7 +371,7 @@ namespace TestServer
                     msgOut.Write(posY);
                     msgOut.Write(targetX);
                     msgOut.Write(targetY);
-                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableSequenced, 1);
                 }
                 if (name.Contains("Create"))
                 {
@@ -653,11 +383,41 @@ namespace TestServer
                     msgOut.Write(posY);
                     msgOut.Write(targetX);
                     msgOut.Write(targetY);
-                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
                 }
             }
         }
+        //2
+        public static void SendPosition(int x, int y, NetConnection sender)
+        {
 
+            if (connectionList.Count > 0)
+            {
+                NetOutgoingMessage msgOut;
+                msgOut = server.CreateMessage();
+                msgOut.Write((byte)PacketType.EnemyPos);
+                msgOut.Write(sender.ToString());
+                msgOut.Write(x);
+                msgOut.Write(y);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+            }
+        }
+        //0
+        public static void RemoveProjectile(string name, NetConnection sender, string id)
+        {
+            if (connectionList.Count > 0)
+            {
+                NetOutgoingMessage msgOut;
+                msgOut = server.CreateMessage();
+                //string name2 = name + "Enemy";
+                msgOut.Write((byte)PacketType.RemoveProjectile);
+                msgOut.Write(id);
+                msgOut.Write(sender.ToString());
+                msgOut.Write(name);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+            }
+        }
+        //4
         public static void Push(string id, float vectorX, float vectorY, float damage)
         {
             connectionList.Clear();
@@ -677,10 +437,30 @@ namespace TestServer
             msgOut.Write(vectorY);
             if (connectionList.Count > 0)
             {
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 4);
             }
         }
-
+        //0
+        public static void SendClone(string id, float posX, float posY, int cloneNumber)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Clone);
+            msgOut.Write(id);
+            msgOut.Write(cloneNumber);
+            msgOut.Write(posX);
+            msgOut.Write(posY);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+        }
+        //0
+        public static void ShrinkMap()
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.ShrinkMap);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+        }
+        //0
         public static void SendColor(string id, string name, byte R, byte G, byte B, byte A)
         {
             NetOutgoingMessage msgOut;
@@ -692,9 +472,114 @@ namespace TestServer
             msgOut.Write(G);
             msgOut.Write(B);
             msgOut.Write(A);
-            server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.Unreliable, 0);
+            server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.ReliableUnordered, 0);
         }
+        //0
+        public static void Chain(string id, float vectorX, float vectorY)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Chain);
+            msgOut.Write(id);
+            msgOut.Write(vectorX);
+            msgOut.Write(vectorY);
 
+            //string test = id.Split(' ').Last();
+            //test = test.Remove(test.Length - 1);
+            connectionList.Clear();
+            foreach (NetConnection con in server.Connections)
+            {
+                string test2 = con.ToString();
+                if (test2 == id)
+                {
+                    connectionList.Add(con);
+                }
+            }
+
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+        }
+        //0
+        public static void SendInvisibility(string id, bool isInvis)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Invisibility);
+            msgOut.Write(id);
+            msgOut.Write(isInvis);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+        }
+        //0
+        private static void Critter(string id, string tag, float posX, float posY, string command)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Critter);
+            msgOut.Write(id);
+            msgOut.Write(tag);
+            msgOut.Write(posX);
+            msgOut.Write(posY);
+            msgOut.Write(command);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+        }
+        //
+        public static void SendSpeedUp(string id, float factor)
+        {
+            connectionList.Clear();
+            foreach (NetConnection con in server.Connections)
+            {
+                if (con.ToString() == id)
+                {
+                    connectionList.Add(con);
+                    break;
+                }
+            }
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.SpeedUp);
+            msgOut.Write(id);
+            msgOut.Write(factor);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+        }
+        //0
+        public static void SendSpeedDown(string id, float factor)
+        {
+            connectionList.Clear();
+            foreach (NetConnection con in server.Connections)
+            {
+                if (con.ToString() == id)
+                {
+                    connectionList.Add(con);
+                    break;
+                }
+            }
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.SpeedDown);
+            msgOut.Write(id);
+            msgOut.Write(factor);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+        }
+        //0
+        public static void ChainRemove(string id)
+        {
+            connectionList.Clear();
+            //string text = id;
+            //text = text.Split(' ').Last();
+            //text = text.Remove(text.Length - 1);
+            foreach (NetConnection con in server.Connections)
+            {
+                if (con.ToString() == id)
+                {
+                    connectionList.Add(con);
+                }
+            }
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.ChainRemove);
+            //msgOut.Write(id);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+        }
+        //0
         public static void UpdateStats(string id, float DamageResistance)
         {
             NetOutgoingMessage msgOut;
@@ -702,24 +587,170 @@ namespace TestServer
             msgOut.Write((byte)PacketType.UpdateStats);
             msgOut.Write(id);
             msgOut.Write(DamageResistance);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
         }
-
-        public static void RemoveProjectile(string name, NetConnection sender, string id)
+        //15
+        public static void AssignID(NetConnection con)
         {
-            if (connectionList.Count > 0)
+            //connectionList.Clear();
+            //connectionList.Add(con);
+            players.Add(new Player(playerIndex, con));
+
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.AssignID);
+            msgOut.Write(con.ToString());
+            msgOut.Write(colors[colorIndex]);
+            msgOut.Write(playerIndex);
+            server.SendMessage(msgOut, con, NetDeliveryMethod.ReliableOrdered, 15);
+            //HostInfo();
+            colorIndex++;
+            playerIndex++;
+        }
+        //16
+        private static void CorrectPlayerIndex(NetConnection con, string command, int index)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            if (command == "Remove")
             {
+                foreach (Player player in players)
+                {
+                    if (player.connectionID == con)
+                    {
+                        players.Remove(player);
+                        break;
+                    }
+                }
+                while (server.Connections.Count != players.Count)
+                {
+                    Thread.Sleep(50);
+                }
+
+                for (int i = 0; i < server.Connections.Count; i++)
+                {
+                    //players[i].playerIndex = i;
+                    msgOut = server.CreateMessage();
+                    msgOut.Write((byte)PacketType.RemovePlayer);
+                    msgOut.Write(con.ToString());
+                    msgOut.Write(i);
+                    if (server.Connections[i] != null)
+                    {
+                    }
+                    server.SendMessage(msgOut, server.Connections[i], NetDeliveryMethod.ReliableOrdered, 16);
+
+                    test++;
+                }
+                playerIndex--;
+                colorIndex--;
+                test = 0;
+            }
+
+            else
+            {
+                msgOut = server.CreateMessage();
+                msgOut.Write((byte)PacketType.UpdatePlayerIndex);
+                msgOut.Write(con.ToString());
+                msgOut.Write(index);
+                if (connectionList.Count > 0)
+                {
+                }
+                server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.Unreliable, 0);
+            }
+        }
+        //17
+        private static void RemoveFromReadyList(NetConnection con)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.UpdateReadyList);
+            msgOut.Write(con.ToString());
+            server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.ReliableOrdered, 17);
+        }
+        //18
+        private static void SendMapSettings(string map, int rounds)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.MapSettings);
+            msgOut.Write(map);
+            msgOut.Write(rounds);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 18);
+        }
+        //19
+        public static void SendSwitchPhase()
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.SwitchPhase);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 19);
+        }
+        //20
+        public static void SendStartgame()
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.StartGame);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+        }
+        //0
+        public static void SendReady(string id, bool isReady)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Ready);
+            msgOut.Write(id);
+            msgOut.Write(isReady);
+            server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.ReliableUnordered, 0);
+        }
+        //22-23
+        public static void SendConnection(NetConnection sender, string name)
+        {
+            if (server.Connections.Count > 1)
+            {
+                connectionList.Clear();
+                foreach (NetConnection con in server.Connections)
+                {
+                    connectionList.Add(con);
+                }
+                connectionList.Remove(sender);
+
+                //to all but the sender(connector). Create an enemy
                 NetOutgoingMessage msgOut;
                 msgOut = server.CreateMessage();
-                //string name2 = name + "Enemy";
-                msgOut.Write((byte)PacketType.RemoveProjectile);
-                msgOut.Write(id);
+                msgOut.Write((byte)PacketType.CreatePlayer);
                 msgOut.Write(sender.ToString());
+                msgOut.Write(colors[colorIndex]);
+                msgOut.Write(playerIndex);
                 msgOut.Write(name);
-                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 22);
+
+                //to the sender(connector). Create enemies
+                for (int i = 0; i < server.Connections.Count - 1; i++)
+                {
+                    msgOut = server.CreateMessage();
+                    msgOut.Write((byte)PacketType.CreatePlayer);
+                    msgOut.Write(server.Connections[i].ToString());
+                    msgOut.Write(colors[i]);
+                    msgOut.Write(i);
+                    msgOut.Write(names[i]);
+                    server.SendMessage(msgOut, sender, NetDeliveryMethod.ReliableOrdered, 23);
+                }
             }
         }
 
+        public static void UpdateConnectionList(NetConnection con)
+        {
+            connectionList.Clear();
+            foreach (NetConnection con2 in server.Connections)
+            {
+                connectionList.Add(con2);
+            }
+            connectionList.Remove(con);
+        }
+
+
+        //not used methods?
         public static void Deflect(string id, string name, float posX, float posY, float newVelX, float newVelY)
         {
             NetOutgoingMessage msgOut;
@@ -746,41 +777,24 @@ namespace TestServer
 
         }
 
-        public static void Chain(string id, float vectorX, float vectorY)
+        public static void SendProjectileVel(string name, float velX, float velY, NetConnection sender)
         {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.Chain);
-            msgOut.Write(id);
-            msgOut.Write(vectorX);
-            msgOut.Write(vectorY);
-
-            //string test = id.Split(' ').Last();
-            //test = test.Remove(test.Length - 1);
-            connectionList.Clear();
-            foreach (NetConnection con in server.Connections)
+            if (connectionList.Count > 0)
             {
-                string test2 = con.ToString();
-                if (test2 == id)
-                {
-                    connectionList.Add(con);
-                }
+                NetOutgoingMessage msgOut;
+                msgOut = server.CreateMessage();
+
+                name = name.Split(',').First();
+                msgOut.Write((byte)PacketType.ProjectileVel);
+                msgOut.Write(sender.ToString());
+                msgOut.Write(name);
+                msgOut.Write(velX);
+                msgOut.Write(velY);
+                server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
             }
-
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
-        public static void SendInvisibility(string id, bool isInvis)
-        {
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.Invisibility);
-            msgOut.Write(id);
-            msgOut.Write(isInvis);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
-        }
-
-        public static void SendSpeedUp(string id, float factor)
+        private static void SendEnemyAcceleration(string id, float x, float y)
         {
             connectionList.Clear();
             foreach (NetConnection con in server.Connections)
@@ -788,34 +802,15 @@ namespace TestServer
                 if (con.ToString() == id)
                 {
                     connectionList.Add(con);
-                    break;
                 }
             }
-            NetOutgoingMessage msgOut;
-            msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.SpeedUp);
-            msgOut.Write(id);
-            msgOut.Write(factor);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
-        }
 
-        public static void SendSpeedDown(string id, float factor)
-        {
-            connectionList.Clear();
-            foreach (NetConnection con in server.Connections)
-            {
-                if (con.ToString() == id)
-                {
-                    connectionList.Add(con);
-                    break;
-                }
-            }
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
-            msgOut.Write((byte)PacketType.SpeedDown);
-            msgOut.Write(id);
-            msgOut.Write(factor);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
+            msgOut.Write((byte)PacketType.EnemyAcceleration);
+            msgOut.Write(x);
+            msgOut.Write(y);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.Unreliable, 0);
         }
 
     }

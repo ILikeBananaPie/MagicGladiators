@@ -35,6 +35,7 @@ namespace MagicGladiators
             gameObject.AddComponent(new Critters(gameObject));
             gameObject.AddComponent(new ShrinkMap(gameObject));
             gameObject.AddComponent(new SlowField(gameObject));
+            gameObject.AddComponent(new IceField(gameObject));
 
             gameObject.AddComponent(new Fireball(gameObject));
 
