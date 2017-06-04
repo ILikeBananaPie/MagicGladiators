@@ -505,7 +505,7 @@ namespace MagicGladiators
                                 if (playerCircle.Intersects((gameObject.GetComponent("Collider") as Collider).CircleCollisionBox))
                                 {
                                     Deflect.SetVector(temp, gameObject);
-
+                                    temp = new GameObject();
                                 }
 
                                 //foreach (GameObject obj in GameWorld.gameObjects)

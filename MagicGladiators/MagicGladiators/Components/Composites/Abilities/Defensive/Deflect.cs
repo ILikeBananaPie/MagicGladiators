@@ -67,7 +67,7 @@ namespace MagicGladiators
             if (activated)
             {
                 activationTime += GameWorld.Instance.deltaTime;
-                if (activationTime > 2)
+                if (activationTime > 30)
                 {
                     activated = false;
                     activationTime = 0;
@@ -194,7 +194,11 @@ namespace MagicGladiators
                 (go.GetComponent("Physics") as Physics).Velocity = new Vector2((float)vx2, (float)vy2);
                 Vector2 temp = new Vector2((float)vx2, (float)vy2);
                 temp.Normalize();
-                (go.GetComponent("Projectile") as Projectile).TestVector = temp;
+                if (go.Tag == "GravityWell")
+                {
+                    (go.GetComponent("Projectile") as Projectile).TestVector = temp * 2;
+                }
+                else (go.GetComponent("Projectile") as Projectile).TestVector = temp;
                 go.transform.position += new Vector2((float)vx2, (float)vy2);
             }
 
