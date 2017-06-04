@@ -23,7 +23,7 @@ namespace MagicGladiators
         public Blink(GameObject go, Transform transform, Animator animator) : base(go)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 8;
             this.go = go;
             this.animator = animator;
             this.transform = transform;

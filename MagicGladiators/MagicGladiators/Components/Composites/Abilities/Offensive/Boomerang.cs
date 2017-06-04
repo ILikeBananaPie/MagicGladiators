@@ -19,7 +19,7 @@ namespace MagicGladiators
         public Boomerang(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 6;
             damage = 7;
 
         }

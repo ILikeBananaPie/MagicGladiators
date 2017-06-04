@@ -20,7 +20,7 @@ namespace MagicGladiators
         public Chain(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 8;
             damage = 7;
 
         }

@@ -23,7 +23,7 @@ namespace MagicGladiators
 
         public SpeedBoost(GameObject go) : base(go)
         {
-            cooldown = 5;
+            cooldown = 7;
             canShoot = true;
         }
 

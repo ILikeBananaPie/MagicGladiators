@@ -189,7 +189,7 @@ namespace MagicGladiators
             if (gameObject.Tag.Contains("HomingMissile"))
             {
                 animator.PlayAnimation("HomingMissile");
-                travelDistance = 1000;
+                travelDistance = 4000;
             }
             if (gameObject.Tag.Contains("Drain"))
             {

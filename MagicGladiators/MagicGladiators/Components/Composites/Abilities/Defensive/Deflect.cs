@@ -32,7 +32,7 @@ namespace MagicGladiators
         public Deflect(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 8;
             //LoadContent(GameWorld.Instance.Content);
         }
 
