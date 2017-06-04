@@ -11,22 +11,18 @@ namespace MagicGladiators
     {
         public Vector2 Velocity { get; set; }
         public Vector2 Acceleration { get; set; }
-        public float breakFactor { get; set; } = 0.050F;
+        private float breakFactor = 0.050F;
         public bool chainDeactivated { get; set; } = false;
         public bool chainActivated { get; set; } = false;
         private float timer;
         private Vector2 breaking = new Vector2(0.05F, 0.05F);
-        private float testX;
-        private float tesY;
-        private Vector2 normalAcc;
-        private Vector2 changedAcc;
-        private bool correctVel = false;
 
         private float chainDeactivatedTimer = 0;
         private float chainActivatedTimer = 0;
 
         public Physics(GameObject gameObject) : base(gameObject)
         {
+
         }
 
         public Vector2 GetVector(Vector2 origin, Vector2 target)
@@ -36,6 +32,10 @@ namespace MagicGladiators
 
         public Vector2 physicsBreak(float breakFactor, Vector2 velocity)
         {
+            if (gameObject.Tag == "Dummy")
+            {
+
+            }
             float distanceTest = Vector2.Distance(velocity, Vector2.Zero);
             if (!(Vector2.Distance(velocity, Vector2.Zero) < 0.005F && Vector2.Distance(velocity, Vector2.Zero) > -0.005F) && gameObject.Id == GameWorld.Instance.player.Id)
             {
@@ -47,20 +47,14 @@ namespace MagicGladiators
                 {
                     if (gameObject.Tag == "Boomerang")
                     {
-                        normalAcc = 0.05F * -velocity;
                         Acceleration = 0.001F * -velocity;
                         //Acceleration = new Vector2(Acceleration.X + Acceleration.X * 10F, Acceleration.Y);
 
                     }
-                    else
-                    {
-                        normalAcc = 0.05F * -velocity;
-                        Acceleration = 0.004F * -velocity;
-                    }
+                    else Acceleration = 0.004F * -velocity;
                 }
                 else if (chainActivated)
                 {
-                    normalAcc = 0.05F * -velocity;
                     Acceleration = 0.001F * -velocity;
                 }
                 else if (chainDeactivated)
@@ -71,17 +65,11 @@ namespace MagicGladiators
                         chainDeactivated = false;
                         timer = 0;
                     }
-                    else
-                    {
-                        normalAcc = 0.05F * -velocity;
-                        Acceleration = 0.001F * -velocity;
-                    }
+                    else Acceleration = 0.001F * -velocity;
                 }
                 else
                 {
                     Acceleration = breakFactor * -velocity;
-                    changedAcc = breakFactor * -velocity;
-                    normalAcc = 0.05F * -velocity;
                 }
 
                 //velocityTest += accelerationTest;
@@ -113,38 +101,7 @@ namespace MagicGladiators
 
         public Vector2 UpdateVelocity(Vector2 acceleration, Vector2 velocity)
         {
-            //Vector2 testAcc2 = velocity + this.testAcc2;
-
-            //Vector2 testAcc = velocity + this.testAcc;
-
-
-            if (this.normalAcc != Vector2.Zero && changedAcc != normalAcc && (gameObject.Tag == "Player" || gameObject.Tag == "Enemy" || gameObject.Tag == "Dummy"))
-            {
-                float tempX = changedAcc.X;
-                float tempY = changedAcc.Y;
-                if (changedAcc.X > normalAcc.X && changedAcc.X > 0)
-                {
-                    tempX = this.normalAcc.X;
-                }
-                if (changedAcc.Y > normalAcc.Y && changedAcc.Y > 0)
-                {
-                    tempY = this.normalAcc.Y;
-                }
-                if (changedAcc.X < normalAcc.X && changedAcc.X < 0)
-                {
-                    tempX = this.normalAcc.X;
-                }
-                if (changedAcc.Y < normalAcc.Y && changedAcc.Y < 0)
-                {
-                    tempY = this.normalAcc.Y;
-                }
-
-                return velocity += new Vector2(tempX, tempY);
-            }
-            else
-            {
-                return velocity += acceleration;
-            }
+            return velocity += acceleration;
         }
 
         public void Update()

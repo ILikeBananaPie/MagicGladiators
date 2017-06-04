@@ -539,8 +539,7 @@ namespace MagicGladiators
                         GameWorld.gameState = GameState.offgame;
                         GameWorld.buyPhase = true;
                         NextScene = Scene.NewGame();
-                    }
-                    else
+                    } else
                     {
                         if (server != null)
                         {
@@ -559,8 +558,7 @@ namespace MagicGladiators
                     }
                 }
                 pressed = true;
-            }
-            else { pressed = false; }
+            } else { pressed = false; }
 
             // TODO: Add your update logic here
             try
@@ -568,7 +566,7 @@ namespace MagicGladiators
                 graphics.ApplyChanges();
             }
             catch (NullReferenceException nre) { }
-
+          
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
@@ -708,7 +706,7 @@ namespace MagicGladiators
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
                     Director ability = new Director(new AbilityIconBuilder());
-                    Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68, Window.ClientBounds.Height - 42), "Fireball", 0, ""));
+                    Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68,Window.ClientBounds.Height - 42), "Fireball", 0, ""));
                     newObjects.Add(player);
                     */
                     //CreateDummies();
@@ -1201,7 +1199,7 @@ namespace MagicGladiators
 
             if (newObjects.Count > 0)
             {
-                foreach (GameObject obj in newObjects) { obj.LoadContent(Content); }
+                foreach(GameObject obj in newObjects) { obj.LoadContent(Content); }
                 gameObjects.AddRange(newObjects);
                 newObjects.Clear();
             }
