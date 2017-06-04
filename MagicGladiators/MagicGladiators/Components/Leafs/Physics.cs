@@ -81,7 +81,6 @@ namespace MagicGladiators
                 {
                     Acceleration = Vector2.Zero;
                     Velocity = Vector2.Zero;
-                    normalAcc = Vector2.Zero;
                 }
 
             }
