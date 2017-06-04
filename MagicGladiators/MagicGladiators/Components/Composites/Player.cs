@@ -25,7 +25,7 @@ namespace MagicGladiators
 
         private Transform transform;
         private SpriteFont fontText;
-        public bool testPush { get; set; }
+        private bool testPush;
         private Vector2 testVector;
         private float testTimer;
         private SpriteRenderer sprite;

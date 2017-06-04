@@ -17,7 +17,7 @@ namespace MagicGladiators
         private IStrategy strategy;
 
         private DIRECTION direction;
-        public bool testPush { get; set; }
+        private bool testPush;
         private Vector2 testVector;
         private float testTimer;
         private int testSpeed = 10;
