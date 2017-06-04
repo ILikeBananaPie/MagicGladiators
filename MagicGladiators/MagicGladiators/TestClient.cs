@@ -845,6 +845,7 @@ namespace MagicGladiators
                             {
                                 if (name == "Map" && go.Tag == "Map")
                                 {
+                                    (go.GetComponent("Map") as Map).lastChangedBy = id;
                                     (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = color;
                                     foreach (GameObject go2 in GameWorld.gameObjects)
                                     {
@@ -932,6 +933,16 @@ namespace MagicGladiators
                                     GameWorld.characterColliders.Remove((go.GetComponent("Collider") as Collider));
                                     GameWorld.characters.Remove(go);
                                     break;
+                                }
+                            }
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Map")
+                                {
+                                    if ((go.GetComponent("Map") as Map).lastChangedBy == id)
+                                    {
+
+                                    }
                                 }
                             }
                             CorrectPlayerIndex(number);
@@ -1042,7 +1053,6 @@ namespace MagicGladiators
                         #endregion
                         break;
                     case NetIncomingMessageType.Receipt:
-
                         break;
                     case NetIncomingMessageType.DiscoveryRequest:
 
