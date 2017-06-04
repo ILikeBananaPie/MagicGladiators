@@ -9,7 +9,6 @@ namespace MagicGladiators
 {
     public class Physics : Component, IUpdateable
     {
-        private IceField iceField;
         public Vector2 Velocity { get; set; }
         public Vector2 Acceleration { get; set; }
         public float breakFactor { get; set; } = 0.050F;
