@@ -126,7 +126,7 @@ namespace MagicGladiators
 
                         if (playerCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                         {
-                            SetVector(gameObject, go);
+                            //SetVector(gameObject, go);
                         }
                     }
                 }
