@@ -792,7 +792,7 @@ namespace MagicGladiators
             {
                 if (player != null)
                 {
-                    if (player.CurrentHealth <= 0)
+                    if (player.CurrentHealth <= 0 && !buyPhase)
                     {
                         foreach (Component component in player.components)
                         {

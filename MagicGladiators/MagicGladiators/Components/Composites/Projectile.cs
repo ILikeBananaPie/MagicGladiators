@@ -289,7 +289,7 @@ namespace MagicGladiators
                         }
                     }
 
-                    if (gameObject.Id != other.gameObject.Id || other.gameObject.Tag == "Dummy")
+                    if (gameObject.Id != other.gameObject.Id || other.gameObject.Tag == "Dummy" && !other.gameObject.Tag.Contains("Critter"))
                     {
                         if (other.gameObject.Tag != "Player")
                         {
@@ -370,7 +370,11 @@ namespace MagicGladiators
                                 ability = "Fireball";
                             }
                             else ability = gameObject.Tag;
-                            GameWorld.Instance.client.SendPush(go.Id, vectorBetween, (GameWorld.Instance.player.GetComponent(ability) as Ability).damage);
+                            if (gameObject.Tag == "DeathMeteor" || gameObject.Tag == "DeathMine" || gameObject.Tag == "RollingMeteor" || gameObject.Tag.Contains("Firewave"))
+                            {
+                                GameWorld.Instance.client.SendPush(go.Id, vectorBetween, 0);
+                            }
+                            else GameWorld.Instance.client.SendPush(go.Id, vectorBetween, (GameWorld.Instance.player.GetComponent(ability) as Ability).damage);
                         }
                     }
                     else if (go.Tag == "Dummy" && (!gameObject.Tag.Contains("Chain") && gameObject.Tag != "Pillar"))

@@ -31,7 +31,7 @@ namespace MagicGladiators
         private string[] directions = new string[4] { "Up", "Down", "Left", "Right" };
         private string hostip;
         public bool isHost { get; set; } = false;
-        private Color previousColor;
+        private Color previousColor = Color.White;
         public List<GameObject> readyList { get; set; } = new List<GameObject>();
         private Random rnd = new Random();
 
