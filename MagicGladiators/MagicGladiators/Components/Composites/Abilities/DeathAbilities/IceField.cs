@@ -20,7 +20,7 @@ namespace MagicGladiators
 
         private float speedFactor = 0.5f;
 
-        private float activationTime = 2;
+        private float activationTime = 1;
         private float activationTimer;
 
         private Vector2 testVector;
@@ -57,7 +57,6 @@ namespace MagicGladiators
                     {
 
                         (go.GetComponent("Physics") as Physics).breakFactor = 0.001F;
-                        //(go.GetComponent("Physics") as Physics).Ice = true;
                         //(go.GetComponent("Physics") as Physics).test = 0.9F;
                     }
 
@@ -94,8 +93,6 @@ namespace MagicGladiators
                         {
                             (go.GetComponent("Physics") as Physics).breakFactor = 0.050F;
                             //(go.GetComponent("Physics") as Physics).test = 1;
-                            //(go.GetComponent("Physics") as Physics).Ice = false;
-
                         }
 
                     }
