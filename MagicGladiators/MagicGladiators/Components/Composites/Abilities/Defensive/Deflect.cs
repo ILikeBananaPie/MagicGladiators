@@ -32,7 +32,7 @@ namespace MagicGladiators
         public Deflect(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 15;
             //LoadContent(GameWorld.Instance.Content);
         }
 
@@ -67,7 +67,7 @@ namespace MagicGladiators
             if (activated)
             {
                 activationTime += GameWorld.Instance.deltaTime;
-                if (activationTime > 30)
+                if (activationTime > 2)
                 {
                     activated = false;
                     activationTime = 0;

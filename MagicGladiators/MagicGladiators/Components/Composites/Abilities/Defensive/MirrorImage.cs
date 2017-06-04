@@ -21,7 +21,7 @@ namespace MagicGladiators
 
         public MirrorImage(GameObject gameObject) : base(gameObject)
         {
-            cooldown = 5;
+            cooldown = 20;
             canShoot = true;
         }
 

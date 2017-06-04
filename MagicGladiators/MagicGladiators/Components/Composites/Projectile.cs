@@ -294,6 +294,10 @@ namespace MagicGladiators
                         if (other.gameObject.Tag != "Player")
                         {
                             targetHit = other.gameObject;
+                            if (!GameWorld.buyPhase)
+                            {
+                                (GameWorld.Instance.player.GetComponent("Player") as Player).GoldReward(3);
+                            }
                             Push();
                         }
                     }
@@ -375,7 +379,7 @@ namespace MagicGladiators
                     }
                     else if (go.Tag == "Enemy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
                     {
-                        (go.GetComponent("Enemy") as Enemy).Hit(shooter);
+                        (go.GetComponent("Enemy") as Enemy).Hit(GameWorld.Instance.player);
                     }
                     else if (go.Tag.Contains("Critter"))
                     {
