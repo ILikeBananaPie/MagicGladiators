@@ -536,6 +536,13 @@ namespace MagicGladiators
                             {
                                 go.isReady = false;
                             }
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Fireball")
+                                {
+                                    GameWorld.objectsToRemove.Add(go);
+                                }
+                            }
                         }
                         #endregion
                         #region MapSettings
