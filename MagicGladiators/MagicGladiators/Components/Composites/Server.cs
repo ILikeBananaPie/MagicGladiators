@@ -31,7 +31,7 @@ namespace MagicGladiators
             
             Connection.StartListening(ConnectionType.TCP, new IPEndPoint(IPAddress.Any, 0));
 
-            //playerPos = (GameWorld.gameObjects.Find(x => x.Tag == "Player").GetComponent("Player") as Player);
+          
 
         }
 

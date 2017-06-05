@@ -102,7 +102,6 @@ namespace MagicGladiators
                 if (other.gameObject.Tag == "Chain" && go.Tag == "Chain" && other.gameObject.Id == GameWorld.Instance.player.Id && go.Id == GameWorld.Instance.player.Id && gameObject.Tag == "Pillar" && !Projectile.chainActivated)
                 {
                     (go.GetComponent("Projectile") as Projectile).chainTarget = gameObject;
-                    //(go.GetComponent("Projectile") as Projectile).chainActivated = true;
                     Projectile.chainActivated = true;
 
                     break;
@@ -216,7 +215,7 @@ namespace MagicGladiators
                     if (timer >= 0.25F)
                     {
                         timer = 0;
-                        //go.CurrentHealth -= LavaDamage;
+
                     }
                     else
                     {
