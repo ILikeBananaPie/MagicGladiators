@@ -236,6 +236,9 @@ namespace MagicGladiators
                             case "BackToLobby":
                                 GameWorld.Instance.NextScene = Scene.Joined(null);
                                 break;
+                            case "Statistic":
+                                GameWorld.Instance.NextScene = Scene.Statistic();
+                                break;
                         }
                     }
                 }

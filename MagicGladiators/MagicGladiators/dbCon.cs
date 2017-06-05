@@ -11,8 +11,8 @@ using System.Text.RegularExpressions;
 namespace MagicGladiators
 {
     public enum dbMatching { NotConnected = 0, NoMatch = 1, Match = 2, DuplicatesError = 3, UnknownError = 4 }
-    public enum dbCreate { NotConnected = 0, Success = 1, AlreadyExist = 2, InvalidInput = 3 ,UnknownError = 4}
-    public enum dbTables { login = 0 , stats = 1}
+    public enum dbCreate { NotConnected = 0, Success = 1, AlreadyExist = 2, InvalidInput = 3, UnknownError = 4 }
+    public enum dbTables { login = 0, stats = 1 }
 
     public class dbCon
     {
@@ -41,11 +41,13 @@ namespace MagicGladiators
             sql = "create table if not exists login (id integer primary key, name text, password text, battles int, battleswon int)";
             SQLiteCommand command = new SQLiteCommand(sql, connection);
             command.ExecuteNonQuery();
-            
+
 
             connection.Close();
             isConnected = false;
             savedId = -1;
+            savedName = string.Empty;
+            lastID = -1;
 
             connection.StateChange += UpdateIfOpen;
         }
@@ -257,6 +259,32 @@ namespace MagicGladiators
             } else
             {
                 return new Dictionary<string, int>();
+            }
+        }
+
+        private string savedName;
+        private int lastID;
+        public string GetName()
+        {
+            if (savedId >= 0 && isConnected)
+            {
+                if (lastID != savedId)
+                {
+                    string testforstring = "select * from login where id='" + savedId + "';";
+                    SQLiteCommand testcommand = new SQLiteCommand(testforstring, connection);
+                    testcommand.ExecuteNonQuery();
+                    SQLiteDataReader testread = testcommand.ExecuteReader();
+                    while (testread.Read())
+                    {
+                        savedName = testread["name"].ToString();
+                    }
+                    testread.Close();
+                    lastID = savedId;
+                }
+                return savedName;
+            } else
+            {
+                return string.Empty;
             }
         }
 
