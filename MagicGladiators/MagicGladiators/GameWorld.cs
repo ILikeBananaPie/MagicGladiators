@@ -1573,12 +1573,9 @@ namespace MagicGladiators
             if (tempura >= 10)
             {
                 spercent = percent.ToString().Truncate(5);
-            } else if (tempura > 0)
-            {
-                spercent = percent.ToString().Truncate(4);
             } else
             {
-                spercent = percent.ToString().Truncate(3);
+                spercent = percent.ToString().Truncate(4);
             }
             spercent += "%";
             
