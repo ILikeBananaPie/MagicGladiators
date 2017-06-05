@@ -30,7 +30,7 @@ namespace MagicGladiators
             this.transform = transform;
             this.animator = animator;
             Name = "DeathMine";
-            cooldown = 10;
+            cooldown = 20;
         }
 
 

@@ -15,7 +15,7 @@ namespace MagicGladiators
         public GravityWell(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 3;
+            cooldown = 10;
             damage = 7;
 
         }

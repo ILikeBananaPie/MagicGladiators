@@ -19,7 +19,7 @@ namespace MagicGladiators
         public Mine(GameObject gameObject, Vector2 position) : base(gameObject)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 10;
             go = gameObject;
             originalPos = position;
 

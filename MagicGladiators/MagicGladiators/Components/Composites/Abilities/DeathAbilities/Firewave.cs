@@ -17,7 +17,7 @@ namespace MagicGladiators
 
         public Firewave(GameObject gameObject) : base(gameObject)
         {
-            cooldown = 15;
+            cooldown = 25;
             Name = "Firewave";
         }
 

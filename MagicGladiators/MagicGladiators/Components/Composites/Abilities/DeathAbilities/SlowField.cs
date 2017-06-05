@@ -23,7 +23,7 @@ namespace MagicGladiators
         public SlowField(GameObject gameObject) : base(gameObject)
         {
             Name = "SlowField";
-            cooldown = 10;
+            cooldown = 20;
         }
 
         public override void Update()

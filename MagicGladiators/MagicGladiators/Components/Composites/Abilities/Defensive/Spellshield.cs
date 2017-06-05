@@ -28,7 +28,7 @@ namespace MagicGladiators
 
         public Spellshield(GameObject go) : base(go)
         {
-            cooldown = 5;
+            cooldown = 10;
             canShoot = true;
 
         }
