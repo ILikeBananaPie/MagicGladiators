@@ -20,6 +20,9 @@ namespace MagicGladiators
         private List<GameObject> objects = new List<GameObject>();
         private List<GameObject> objectsToRemove = new List<GameObject>();
         private List<GameObject> newObjects = new List<GameObject>();
+        public string lastChangedBy { get; set; }
+        public bool stopSlowField;
+        private float slowfieldStopTimer;
 
         private List<string> abilities = new List<string>() { "Fireball", "Chain", "Drain", "HomingMissile", "RollingMeteor", "DeathMeteor" };
 
@@ -185,9 +188,27 @@ namespace MagicGladiators
                 else objectsToRemove.Add(other.gameObject);
             }
         }
-        
+
         public void Update()
         {
+            if (stopSlowField)
+            {
+                slowfieldStopTimer += GameWorld.Instance.deltaTime;
+                if (slowfieldStopTimer > 2)
+                {
+                    stopSlowField = false;
+                    slowfieldStopTimer = 0;
+                    (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+                    foreach (GameObject go2 in GameWorld.gameObjects)
+                    {
+                        if (go2.Tag == "Player")
+                        {
+                            go2.Speed += 0.5F;
+                        }
+                    }
+                }
+            }
+
             foreach (GameObject go in objects)
             {
                 if ((go.Tag == "Player" || go.Tag == "Dummy") && go.Tag != "Enemy")

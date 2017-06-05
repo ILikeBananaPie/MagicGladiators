@@ -109,7 +109,7 @@ namespace MagicGladiators
 
         public static GameState gameState = GameState.offgame;
 
-
+        public static string playername;
 
         private static GameWorld instance;
         public static GameWorld Instance
@@ -578,11 +578,11 @@ namespace MagicGladiators
                 foreach (GameObject go in gameObjects)
                 {
                     string name = go.Tag;
-                    if (go.CurrentHealth < 0)
+                    if (go.CurrentHealth < 0 && !buyPhase)
                     {
                         if (go.GetComponent("Enemy") is Enemy)
                         {
-                            (go.GetComponent("Enemy") as Enemy).UponDeath();
+                            //(go.GetComponent("Enemy") as Enemy).UponDeath();
                         }
                         objectsToRemove.Add(go);
                         if (client != null)
@@ -704,11 +704,12 @@ namespace MagicGladiators
                     Director ability = new Director(new AbilityIconBuilder());
                     Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68, Window.ClientBounds.Height - 42), "Fireball", 0, ""));
                     (player.components.Last() as Ability).icon = Player.abilities.Last();
+                    player.playerName = playername;
                     /*
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
                     Director ability = new Director(new AbilityIconBuilder());
-                    Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68, Window.ClientBounds.Height - 42), "Fireball", 0, ""));
+                    Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68,Window.ClientBounds.Height - 42), "Fireball", 0, ""));
                     newObjects.Add(player);
                     */
                     //CreateDummies();
@@ -792,7 +793,7 @@ namespace MagicGladiators
             {
                 if (player != null)
                 {
-                    if (player.CurrentHealth <= 0)
+                    if (player.CurrentHealth <= 0 && !buyPhase)
                     {
                         foreach (Component component in player.components)
                         {
@@ -843,23 +844,22 @@ namespace MagicGladiators
                     Item item = (go.GetComponent("Item") as Item);
                     if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                     {
-                        if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.items.Count <= 6)
+                        if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.items.Count <= 6 && Player.gold >= item.Value)
                         {
                             canBuy = false;
-                            if (Player.gold >= item.Value)
+
+                            foreach (GameObject go2 in Player.items)
                             {
-                                foreach (GameObject go2 in Player.items)
+                                Item item2 = (go2.GetComponent("Item") as Item);
+                                if (item2.Name == item.Name && item2.upgradeLevel < 3)
                                 {
-                                    Item item2 = (go2.GetComponent("Item") as Item);
-                                    if (item2.Name == item.Name && item2.upgradeLevel < 3)
-                                    {
-                                        item2.Upgrade();
-                                        Player.gold -= item2.UpgradeValue;
-                                        isBuying = false;
-                                        break;
-                                    }
+                                    item2.Upgrade();
+                                    Player.gold -= item2.UpgradeValue;
+                                    isBuying = false;
+                                    break;
                                 }
                             }
+
                             if (isBuying && Player.items.Count < 6)
                             {
                                 Director director = new Director(new ItemBuilder());
@@ -887,19 +887,22 @@ namespace MagicGladiators
                             AbilityIcon ability = (go.GetComponent("AbilityIcon") as AbilityIcon);
                             canBuy = false;
 
-                            Director director = new Director(new AbilityIconBuilder());
-                            int x = Player.abilities.Count * 34;
-                            Player.abilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), ability.Name, ability.Value, ability.Text));
-                            (Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).index = abilityIndex;
-                            //(Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).Name = go.Name;
-                            abilityIndex++;
-                            Player.gold -= ability.Value;
+                            if (Player.gold >= ability.Value)
+                            {
+                                Director director = new Director(new AbilityIconBuilder());
+                                int x = Player.abilities.Count * 34;
+                                Player.abilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), ability.Name, ability.Value, ability.Text));
+                                (Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).index = abilityIndex;
+                                //(Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).Name = go.Name;
+                                abilityIndex++;
+                                Player.gold -= ability.Value;
 
-                            CreateAbility ca = new CreateAbility(ability.Name);
-                            player.AddComponent(ca.GetComponent(player, player.transform.position));
-                            abilityList.Remove(ability.gameObject);
-                            CooldownIcon();
-                            break;
+                                CreateAbility ca = new CreateAbility(ability.Name);
+                                player.AddComponent(ca.GetComponent(player, player.transform.position));
+                                abilityList.Remove(ability.gameObject);
+                                CooldownIcon();
+                                break;
+                            }
                         }
                     }
                 }
@@ -1169,7 +1172,7 @@ namespace MagicGladiators
                             //CreateMap(selectedMap);
                             //ResetCharacters();
                             buyPhase = true;
-                            //currentRound++;
+                            currentRound++;
                         }
                         else
                         {
@@ -1195,6 +1198,15 @@ namespace MagicGladiators
                     }
                     CircleColliders.Remove((go.GetComponent("Collider") as Collider));
                     gameObjects.Remove(go);
+                    if (go.Tag == "Player")
+                    {
+                        Player player = (go.GetComponent("Player") as Player);
+                        if (client != null && player.lastHitBy != "" && !buyPhase)
+                        {
+                            client.SendGold(player.lastHitBy, 20);
+                            player.lastHitBy = "";
+                        }
+                    }
                 }
                 objectsToRemove.Clear();
             }

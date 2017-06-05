@@ -44,7 +44,7 @@ namespace MagicGladiators
             this.animator = animator;
             this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
             Name = "RollingMeteor";
-            cooldown = 15;
+            cooldown = 25;
         }
 
 

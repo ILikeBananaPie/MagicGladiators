@@ -37,6 +37,8 @@ namespace MagicGladiators
         public List<Component> components = new List<Component>();
         private List<Component> componentsToRemove = new List<Component>();
 
+        public string playerName { get; set; }
+
         public string Tag { get; set; } = "Untagged";
         public ObjectType objectType { get; set; }
 

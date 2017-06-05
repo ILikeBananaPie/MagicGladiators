@@ -93,6 +93,7 @@ namespace MagicGladiators
                     chainActivated = false;
                 }
             }
+
             Velocity = UpdateVelocity(Acceleration, Velocity);
             return Acceleration;
         }

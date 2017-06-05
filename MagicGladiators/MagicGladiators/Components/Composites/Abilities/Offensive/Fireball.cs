@@ -16,7 +16,7 @@ namespace MagicGladiators
         public Fireball(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 3;
+            cooldown = 7;
             Name = "Fireball";
             damage = 7;
         }
@@ -47,22 +47,60 @@ namespace MagicGladiators
                         Vector2 mousePos = new Vector2(mouse.Position.X, mouse.Position.Y);
                         if (go.Tag.Contains("Clone") && go.Id == gameObject.Id)
                         {
-                            if (go.Tag == "CloneLeft")
-                            {
-                                mousePos = new Vector2(mouse.Position.X - 64, mouse.Position.Y);
-                            }
-                            if (go.Tag == "CloneRight")
+                            #region clone mouse positions
+                            if (GameWorld.Instance.player.cloneNumber == 1 && go.cloneNumber == 2)
                             {
                                 mousePos = new Vector2(mouse.Position.X + 64, mouse.Position.Y);
                             }
-                            if (go.Tag == "CloneUp")
-                            {
-                                mousePos = new Vector2(mouse.Position.X, mouse.Position.Y - 64);
-                            }
-                            if (go.Tag == "CloneDown")
+                            if (GameWorld.Instance.player.cloneNumber == 1 && go.cloneNumber == 3)
                             {
                                 mousePos = new Vector2(mouse.Position.X, mouse.Position.Y + 64);
                             }
+                            if (GameWorld.Instance.player.cloneNumber == 1 && go.cloneNumber == 4)
+                            {
+                                mousePos = new Vector2(mouse.Position.X + 64, mouse.Position.Y + 64);
+                            }
+
+                            if (GameWorld.Instance.player.cloneNumber == 2 && go.cloneNumber == 1)
+                            {
+                                mousePos = new Vector2(mouse.Position.X - 64, mouse.Position.Y);
+                            }
+                            if (GameWorld.Instance.player.cloneNumber == 2 && go.cloneNumber == 3)
+                            {
+                                mousePos = new Vector2(mouse.Position.X - 64, mouse.Position.Y + 64);
+                            }
+                            if (GameWorld.Instance.player.cloneNumber == 2 && go.cloneNumber == 4)
+                            {
+                                mousePos = new Vector2(mouse.Position.X, mouse.Position.Y + 64);
+                            }
+
+                            if (GameWorld.Instance.player.cloneNumber == 3 && go.cloneNumber == 1)
+                            {
+                                mousePos = new Vector2(mouse.Position.X, mouse.Position.Y - 64);
+                            }
+                            if (GameWorld.Instance.player.cloneNumber == 3 && go.cloneNumber == 2)
+                            {
+                                mousePos = new Vector2(mouse.Position.X + 64, mouse.Position.Y - 64);
+                            }
+                            if (GameWorld.Instance.player.cloneNumber == 3 && go.cloneNumber == 4)
+                            {
+                                mousePos = new Vector2(mouse.Position.X + 64, mouse.Position.Y);
+                            }
+
+                            if (GameWorld.Instance.player.cloneNumber == 4 && go.cloneNumber == 1)
+                            {
+                                mousePos = new Vector2(mouse.Position.X - 64, mouse.Position.Y - 64);
+                            }
+                            if (GameWorld.Instance.player.cloneNumber == 4 && go.cloneNumber == 2)
+                            {
+                                mousePos = new Vector2(mouse.Position.X, mouse.Position.Y - 64);
+                            }
+                            if (GameWorld.Instance.player.cloneNumber == 4 && go.cloneNumber == 3)
+                            {
+                                mousePos = new Vector2(mouse.Position.X - 64, mouse.Position.Y);
+                            }
+                            #endregion
+
                             director.ConstructProjectile(new Vector2(go.transform.position.X, go.transform.position.Y), mousePos, "Fireball" + go.Tag, go, gameObject.Id);
                             if (GameWorld.Instance.client != null)
                             {

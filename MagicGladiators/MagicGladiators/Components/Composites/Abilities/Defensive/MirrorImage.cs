@@ -21,7 +21,7 @@ namespace MagicGladiators
 
         public MirrorImage(GameObject gameObject) : base(gameObject)
         {
-            cooldown = 5;
+            cooldown = 20;
             canShoot = true;
         }
 
@@ -38,6 +38,13 @@ namespace MagicGladiators
             {
                 canShoot = false;
                 activated = true;
+                Color color = (GameWorld.Instance.player.GetComponent("SpriteRenderer") as SpriteRenderer).Color;
+                (GameWorld.Instance.player.GetComponent("SpriteRenderer") as SpriteRenderer).Color = new Color(color, 0.0001F);
+
+                int random = rnd.Next(numbers.Count);
+                GameWorld.Instance.player.cloneNumber = numbers[random];
+                numbers.Remove(numbers[random]);
+
                 for (int i = 0; i < 3; i++)
                 {
                     GameObject clone = new GameObject();
@@ -55,18 +62,91 @@ namespace MagicGladiators
                     clone.MaxHealth = gameObject.MaxHealth;
                     clone.LoadContent(GameWorld.Instance.Content);
                     (clone.GetComponent("Animator") as Animator).PlayAnimation((gameObject.GetComponent("Animator") as Animator).AnimationName);
-                    clone.transform.position = new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y);
+
+                    #region clone positions
+                    GameObject go = GameWorld.Instance.player;
+                    if (go.cloneNumber == 1 && clone.cloneNumber == 2)
+                    {
+                        clone.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y);
+                    }
+                    if (go.cloneNumber == 1 && clone.cloneNumber == 3)
+                    {
+                        clone.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y + 64);
+                    }
+                    if (go.cloneNumber == 1 && clone.cloneNumber == 4)
+                    {
+                        clone.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y + 64);
+                    }
+
+                    if (go.cloneNumber == 2 && clone.cloneNumber == 1)
+                    {
+                        clone.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
+                    }
+                    if (go.cloneNumber == 2 && clone.cloneNumber == 3)
+                    {
+                        clone.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y + 64);
+                    }
+                    if (go.cloneNumber == 2 && clone.cloneNumber == 4)
+                    {
+                        clone.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y + 64);
+                    }
+
+                    if (go.cloneNumber == 3 && clone.cloneNumber == 1)
+                    {
+                        clone.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y - 64);
+                    }
+                    if (go.cloneNumber == 3 && clone.cloneNumber == 2)
+                    {
+                        clone.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y - 64);
+                    }
+                    if (go.cloneNumber == 3 && clone.cloneNumber == 4)
+                    {
+                        clone.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y);
+                    }
+
+                    if (go.cloneNumber == 4 && clone.cloneNumber == 1)
+                    {
+                        clone.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y - 64);
+                    }
+                    if (go.cloneNumber == 4 && clone.cloneNumber == 2)
+                    {
+                        clone.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y - 64);
+                    }
+                    if (go.cloneNumber == 4 && clone.cloneNumber == 3)
+                    {
+                        clone.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
+                    }
+                    #endregion
+                    //clone.transform.position = new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y);
+
                     GameWorld.newObjects.Add(clone);
                 }
-                GameWorld.Instance.player.cloneNumber = numbers[0];
                 numbers.Clear();
                 numbers = new List<int>() { 1, 2, 3, 4 };
 
+                int test = rnd.Next(numbers.Count);
+                test = numbers[test];
+                foreach (GameObject go in GameWorld.newObjects)
+                {
+                    if (go.cloneNumber == test)
+                    {
+                        Vector2 tempVector = go.transform.position;
+                        int tempNumber = go.cloneNumber;
+
+                        go.transform.position = GameWorld.Instance.player.transform.position;
+                        go.cloneNumber = GameWorld.Instance.player.cloneNumber;
+                        go.Tag = "Clone" + go.cloneNumber;
+
+                        GameWorld.Instance.player.transform.position = tempVector;
+                        GameWorld.Instance.player.cloneNumber = tempNumber;
+
+                        break;
+                    }
+                }
                 if (GameWorld.Instance.client != null)
                 {
-                    GameWorld.Instance.client.SendClone(gameObject.Id, gameObject.transform.position);
+                    GameWorld.Instance.client.SendClone(gameObject.Id, gameObject.transform.position, GameWorld.Instance.player.cloneNumber);
                 }
-
             }
 
             if (activated)
@@ -76,11 +156,20 @@ namespace MagicGladiators
                 {
                     activated = false;
                     activationTime = 0;
+                    Color color = (GameWorld.Instance.player.GetComponent("SpriteRenderer") as SpriteRenderer).Color;
+                    (GameWorld.Instance.player.GetComponent("SpriteRenderer") as SpriteRenderer).Color = new Color(color, 1F);
                     foreach (GameObject go in GameWorld.gameObjects)
                     {
-                        if (go.Tag.Contains("Clone"))
+                        if (go.Tag.Contains("Clone") && go.Id == gameObject.Id)
                         {
                             GameWorld.objectsToRemove.Add(go);
+                        }
+                    }
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        if (go.Tag.Contains("Clone") && !go.Tag.Contains("Fireball") && go.Id == gameObject.Id)
+                        {
+                            int test = go.cloneNumber;
                             if (GameWorld.Instance.client != null)
                             {
                                 GameWorld.Instance.client.SendRemoval(go.Tag, go.Id);

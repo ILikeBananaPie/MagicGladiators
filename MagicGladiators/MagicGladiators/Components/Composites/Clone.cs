@@ -49,6 +49,10 @@ namespace MagicGladiators
             {
                 if ((go.Tag == "Enemy" || go.Tag == "Player") && go.Id == gameObject.Id)
                 {
+                    if (go.Tag == "Enemy")
+                    {
+
+                    }
                     if (go.cloneNumber == 1 && gameObject.cloneNumber == 2)
                     {
                         gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y);

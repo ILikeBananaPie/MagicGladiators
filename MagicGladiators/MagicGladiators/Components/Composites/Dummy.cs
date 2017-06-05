@@ -94,7 +94,7 @@ namespace MagicGladiators
         {
             if (go.GetComponent("Player") is Player)
             {
-                (go.GetComponent("Player") as Player).GoldReward(3);
+                //(go.GetComponent("Player") as Player).GoldReward(3);
             }
             lastHit = go;
             testPush = true;

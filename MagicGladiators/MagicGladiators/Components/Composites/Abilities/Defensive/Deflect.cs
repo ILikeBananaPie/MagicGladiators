@@ -32,7 +32,7 @@ namespace MagicGladiators
         public Deflect(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 20;
             //LoadContent(GameWorld.Instance.Content);
         }
 
@@ -126,7 +126,7 @@ namespace MagicGladiators
 
                         if (playerCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                         {
-                            SetVector(gameObject, go);
+                            //SetVector(gameObject, go);
                         }
                     }
                 }
@@ -194,7 +194,11 @@ namespace MagicGladiators
                 (go.GetComponent("Physics") as Physics).Velocity = new Vector2((float)vx2, (float)vy2);
                 Vector2 temp = new Vector2((float)vx2, (float)vy2);
                 temp.Normalize();
-                (go.GetComponent("Projectile") as Projectile).TestVector = temp;
+                if (go.Tag == "GravityWell")
+                {
+                    (go.GetComponent("Projectile") as Projectile).TestVector = temp * 2;
+                }
+                else (go.GetComponent("Projectile") as Projectile).TestVector = temp;
                 go.transform.position += new Vector2((float)vx2, (float)vy2);
             }
 

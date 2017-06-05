@@ -19,7 +19,7 @@ namespace MagicGladiators
         public Drain(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 15;
             damage = 7;
 
         }
