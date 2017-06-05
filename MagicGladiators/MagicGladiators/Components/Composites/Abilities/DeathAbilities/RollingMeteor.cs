@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class RollingMeteor : Ability, IDeathAbility, ILoadable
+    class RollingMeteor : Ability, IDeathAbility
     {
         private float movementSpeed = 200;
 
@@ -49,36 +49,7 @@ namespace MagicGladiators
         }
 
 
-        private void CreateAnimations()
-        {
-            SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
-
-
-
-            animator.CreateAnimation("IdleFront", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("IdleBack", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("IdleLeft", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("IdleRight", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("WalkFront", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("WalkBack", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("WalkLeft", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("WalkRight", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("Shoot", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-
-            animator.PlayAnimation("Shoot");
-
-            strategy = new Idle(animator);
-        }
-
-        
-        public void LoadContent(ContentManager content)
-        {
-            animator = (Animator)gameObject.GetComponent("Animator");
-
-            Texture2D sprite = content.Load<Texture2D>("Player");
-
-        }
-        
+   
         public override void Update()
         {
             if (GameWorld.Instance.player.CurrentHealth > 0) { return; }
