@@ -620,60 +620,6 @@ namespace MagicGladiators
                 UpdateItemUpgrade(mouse, mouseCircle);
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.F2) && canServer)
-            {
-                //server = new TestServer();
-
-                canServer = false;
-                showServer = true;
-                server = new Process();
-                server.StartInfo.FileName = "TestServer.exe";
-                server.EnableRaisingEvents = true;
-                server.Start();
-                //GameWorld.Instance.client = new TestClient("localhost");
-                //Thread update = new Thread(ServerUpdate);
-                //update.IsBackground = true;
-                //update.Start();
-                //threads.Add(update);
-            }
-            if (!canServer)
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.F6))
-                {
-                    //server.SendMessage("Server sending text!");
-                }
-
-                //server.Update();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.F3) && canClient)
-            {
-                client = new TestClient("localhost");
-                canClient = false;
-                showServer = true;
-                client.ConnectToServer();
-
-                //Thread update = new Thread(ClientUpdate);
-                //update.IsBackground = true;
-                //update.Start();
-                //threads.Add(update);
-
-                //Thread draw = new Thread(ClientDraw);
-                //draw.IsBackground = true;
-                //draw.Start();
-                //threads.Add(draw);
-            }
-            if (!canClient)
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.F4))
-                {
-                    client.SendMessage("Client sending text!");
-                }
-                if (client != null)
-                {
-                    client.Update();
-                }
-                //client.Draw();
-            }
             if (Keyboard.GetState().IsKeyDown(Keys.F9) && CurrentScene.scenetype == "Practice")
             {
                 ResetItemsAndAbilities();
