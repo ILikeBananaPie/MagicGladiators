@@ -267,37 +267,37 @@ namespace MagicGladiators
         public void CreateVendorAbilities()
         {
             Director director = new Director(new AbilityIconBuilder());
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 100, "Fires a projectile in the target \n direction, moving towards the \n closest enemy."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 100, "Fire a projectile in the target \n direction, moving towards the \n closest enemy."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100, "Sends you in the direction of the \n mouse. Exploding on contact."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100, "Send you in the target direction. \n Exploding on contact."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Drain", 100, "Fires a slow moving projectile \n towards your mouse."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Drain", 100, "Fire a slow moving projectile \n in the target direction."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Deflect", 100, "Creates a shield around you, \n deflecting any spells coming \n your way."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Deflect", 100, "Create a shield around you, \n deflecting any spells coming \n your way."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Mine", 100, "Places a static mine at the \n target position. Will explode \n on contact."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Mine", 100, "Place a static mine at the \n target position. Will explode \n on contact."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "SpeedBoost", 100, "Increases your movement speed"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "SpeedBoost", 100, "Increase your movement speed \n temporarily"));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Chain", 100, "Fires a slow moving projectile, \n that pulls you and the target \n together for a period of time."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Blink", 100, "Instantly moves your character \n towards your mouse's position."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Blink", 100, "Instantly moves your character \n towards the target direction."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Nova", 100, "Sends out 8 straight flying \n projectiles in different directions."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Nova", 100, "Send out 8 straight flying \n projectiles in different directions."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Spellshield", 100, "Creates a shield around you, \n deleting any spells coming \n your way."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Spellshield", 100, "Create a shield around you, \n deleting any spells coming \n your way."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "StoneArmour", 100, "Grants reduced knockback \n effect for a period of time, \n while reducing movement speed."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "StoneArmour", 100, "Increase your knockback \n resistance and reduces your \n movement speed temporarily."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Boomerang", 100, "Fires a projectile that return to \n your position"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Boomerang", 100, "Fire a projectile that return to \n your position"));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Recall", 100, "teleport you to the position, you \n had when casting the spell"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Recall", 100, "Teleport you to the position, you \n had when casting the spell"));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "GravityWell", 100, "shoot a projektile that pulls \n people in"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "GravityWell", 100, "Fire a projektile that pulls \n people in an area towards it."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "MirrorImage", 100, "Creates 3 clones of yourself \n who mimics your fireball"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "MirrorImage", 100, "Create 3 clones of yourself. \n The clones mimics your fireball"));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Invisibility", 100, "Makes you invisible to \nother players"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Invisibility", 100, "Become invisible to other players"));
 
             int x = Player.deathAbilities.Count * 34;
             Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "RollingMeteor", 0, "Does something"));
@@ -735,11 +735,28 @@ namespace MagicGladiators
 
         public void UpdateDeathAbilities()
         {
-            if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "Play")
+            if (CurrentScene.scenetype == "Play")
             {
                 if (player != null)
                 {
                     if (player.CurrentHealth <= 0 && !buyPhase)
+                    {
+                        foreach (Component component in player.components)
+                        {
+                            if (component is IDeathAbility)
+                            {
+                                (component as Ability).Cooldown();
+                                (component as IDeathAbility).Update();
+                            }
+                        }
+                    }
+                }
+            }
+            if (CurrentScene.scenetype == "Practice")
+            {
+                if (player != null)
+                {
+                    if (player.CurrentHealth <= 0)
                     {
                         foreach (Component component in player.components)
                         {
@@ -1399,9 +1416,9 @@ namespace MagicGladiators
                     int height = (TooltipBox.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height;
                     TooltipBox.transform.position = new Vector2(mouse.Position.X - width, mouse.Position.Y - height);
                     TooltipBox.Draw(spriteBatch);
-                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
-                    spriteBatch.DrawString(fontText, "Value: " + icon.Value.ToString(), new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
-                    spriteBatch.DrawString(describtionFont, icon.Text, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 40), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(fontText, "Cost: " + icon.Value.ToString(), new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.White, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(describtionFont, icon.Text, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 40), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
             }
@@ -1419,7 +1436,7 @@ namespace MagicGladiators
                     int height = (TooltipBox.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height;
                     TooltipBox.transform.position = new Vector2(mouse.Position.X - width, mouse.Position.Y - height);
                     TooltipBox.Draw(spriteBatch);
-                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     //spriteBatch.DrawString(fontText, "Value: " + icon.Value.ToString(), new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
                     //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
@@ -1438,7 +1455,7 @@ namespace MagicGladiators
                     int height = (TooltipBox.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height;
                     TooltipBox.transform.position = new Vector2(mouse.Position.X - width, mouse.Position.Y - height);
                     TooltipBox.Draw(spriteBatch);
-                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     //spriteBatch.DrawString(fontText, "Value: " + icon.Value.ToString(), new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
                     //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }

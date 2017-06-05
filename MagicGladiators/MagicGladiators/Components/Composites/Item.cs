@@ -130,7 +130,7 @@ namespace MagicGladiators
 
             int plus = 0;
             int index = 0;
-            spriteBatch.DrawString(fontText, Name, new Vector2(x + 50, y - 50), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+            spriteBatch.DrawString(fontText, Name, new Vector2(x + 50, y - 50), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
             plus += 20;
             var fieldValues2 = this.GetType().GetProperties().Select(field => field.GetValue(this)).ToList();
             for (int i = 1; i < fieldValues2.Count - 5; i++)
@@ -141,13 +141,13 @@ namespace MagicGladiators
                 {
                     if (testInt < 5)
                     {
-                        spriteBatch.DrawString(fontText, list[index] + ": " + (testInt * 100).ToString(".") + "%", new Vector2(x + 50, y - 50 + plus), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                        spriteBatch.DrawString(fontText, list[index] + ": " + (testInt * 100).ToString(".") + "%", new Vector2(x + 50, y - 50 + plus), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                         plus += 20;
                         index++;
                     }
                     else
                     {
-                        spriteBatch.DrawString(fontText, list[index] + " " + "+ " + testInt, new Vector2(x + 50, y - 50 + plus), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                        spriteBatch.DrawString(fontText, list[index] + " " + "+ " + testInt, new Vector2(x + 50, y - 50 + plus), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                         plus += 20;
                         index++;
 

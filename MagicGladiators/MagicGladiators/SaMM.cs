@@ -31,6 +31,7 @@ namespace MagicGladiators
 
         private SaMM()
         {
-            
+
         }
+    }
 }
