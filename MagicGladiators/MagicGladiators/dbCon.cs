@@ -41,6 +41,9 @@ namespace MagicGladiators
             sql = "create table if not exists login (id integer primary key, name text, password text)";
             SQLiteCommand command = new SQLiteCommand(sql, connection);
             command.ExecuteNonQuery();
+
+            sql = "create table if not exists stats (id integer primary key, won int, loss int)";
+
             connection.Close();
             isConnected = false;
 
