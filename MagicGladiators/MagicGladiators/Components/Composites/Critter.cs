@@ -11,7 +11,6 @@ namespace MagicGladiators
     class Critter : Component, IUpdateable, ILoadable
     {
         private Animator animator;
-        //private Random rnd = new Random();
         private float timer;
         private bool canMove = true;
         private float aliveTimer;

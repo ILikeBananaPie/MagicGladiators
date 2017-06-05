@@ -18,9 +18,7 @@ namespace MagicGladiators
         private IStrategy strategy;
         private SpriteFont fontText;
 
-        //private int tooltipX;
-        //private int tooltipY;
-        //private bool showTooltip = false;
+   
         private string[] list = new string[2] { "Stat", "Value" };
 
         public string Name { get; set; }

@@ -51,55 +51,55 @@ namespace MagicGladiators
             }
             if (keyState.IsKeyDown(Keys.A) && keyState.IsKeyUp(Keys.W) && keyState.IsKeyUp(Keys.S) && keyState.IsKeyUp(Keys.D))
             {
-                //physics.Acceleration += new Vector2(-0.25F * player.Speed, 0);
+               
                 testVector = new Vector2(-10, -10);
                 testVector.Normalize();
                 testVector = new Vector2(testVector.X, 0);
-                currentDirection = Left;
+              
             }
             if (keyState.IsKeyDown(Keys.S) && keyState.IsKeyUp(Keys.A) && keyState.IsKeyUp(Keys.W) && keyState.IsKeyUp(Keys.D))
             {
-                //physics.Acceleration += new Vector2(0, 0.25F * player.Speed);
+                
                 testVector = new Vector2(10, 10);
                 testVector.Normalize();
                 testVector = new Vector2(0, testVector.Y);
-                currentDirection = Front;
+              
             }
             if (keyState.IsKeyDown(Keys.D) && keyState.IsKeyUp(Keys.A) && keyState.IsKeyUp(Keys.S) && keyState.IsKeyUp(Keys.W))
             {
-                //physics.Acceleration += new Vector2(0.25F * player.Speed, 0);
+               
                 testVector = new Vector2(10, 10);
                 testVector.Normalize();
                 testVector = new Vector2(testVector.X, 0);
-               // currentDirection = Right;
+              
             }
             if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.A) && keyState.IsKeyUp(Keys.S) && keyState.IsKeyUp(Keys.D))
             {
-                //physics.Acceleration += new Vector2(0.25F * player.Speed, 0);
+               
                 testVector = new Vector2(-10, -10);
                 testVector.Normalize();
-               // currentDirection = Right;
+               
             }
             if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.D) && keyState.IsKeyUp(Keys.S) && keyState.IsKeyUp(Keys.A))
             {
-                //physics.Acceleration += new Vector2(0.25F * player.Speed, 0);
+                
                 testVector = new Vector2(10, -10);
                 testVector.Normalize();
-                //currentDirection = Right;
+               
             }
             if (keyState.IsKeyDown(Keys.S) && keyState.IsKeyDown(Keys.A) && keyState.IsKeyUp(Keys.W) && keyState.IsKeyUp(Keys.D))
             {
-                //physics.Acceleration += new Vector2(0.25F * player.Speed, 0);
+               
                 testVector = new Vector2(-10, 10);
                 testVector.Normalize();
-               // currentDirection = Right;
+              
             }
             if (keyState.IsKeyDown(Keys.S) && keyState.IsKeyDown(Keys.D) && keyState.IsKeyUp(Keys.W) && keyState.IsKeyUp(Keys.A))
             {
-                //physics.Acceleration += new Vector2(0.25F * player.Speed, 0);
+                
                 testVector = new Vector2(10, 10);
                 testVector.Normalize();
-             //   currentDirection = Right;
+            
             }
 
             Player.testSpeed = physics.Acceleration;

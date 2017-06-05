@@ -105,22 +105,7 @@ namespace MagicGladiators
                         gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
                     }
 
-                    //if (gameObject.Tag.Contains("1"))
-                    //{
-                    //    gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
-                    //}
-                    //if (gameObject.Tag.Contains("2"))
-                    //{
-                    //    gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y);
-                    //}
-                    //if (gameObject.Tag.Contains("3"))
-                    //{
-                    //    gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y - 64);
-                    //}
-                    //if (gameObject.Tag.Contains("4"))
-                    //{
-                    //    gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y + 64);
-                    //}
+                 
                 }
                 foreach (GameObject go2 in GameWorld.gameObjects)
                 {
