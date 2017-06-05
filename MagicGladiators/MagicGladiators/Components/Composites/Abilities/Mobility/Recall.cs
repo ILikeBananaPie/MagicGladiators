@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace MagicGladiators
 {
-    class Recall: MobilityAbility, IUpdateable, ILoadable
+    class Recall: MobilityAbility, IUpdateable
     {
         private float activated;
         private float activatedTimer = 4f;
@@ -24,10 +24,7 @@ namespace MagicGladiators
             cooldown = 10;
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-           
-        }
+       
 
         public override void Update()
         {

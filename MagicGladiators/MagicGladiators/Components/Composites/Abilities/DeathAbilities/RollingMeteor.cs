@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class RollingMeteor : Ability, ILoadable, IDeathAbility
+    class RollingMeteor : Ability, IDeathAbility, ILoadable
     {
         private float movementSpeed = 200;
 
@@ -21,6 +21,7 @@ namespace MagicGladiators
         private Animator animator;
 
         private Physics physics;
+
 
         private Random rnd;
 
@@ -70,14 +71,14 @@ namespace MagicGladiators
         }
 
         
-        public override void LoadContent(ContentManager content)
+        public void LoadContent(ContentManager content)
         {
             animator = (Animator)gameObject.GetComponent("Animator");
 
             Texture2D sprite = content.Load<Texture2D>("Player");
 
         }
-
+        
         public override void Update()
         {
             if (GameWorld.Instance.player.CurrentHealth > 0) { return; }

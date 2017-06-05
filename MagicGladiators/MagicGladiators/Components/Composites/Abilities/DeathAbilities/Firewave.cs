@@ -21,9 +21,7 @@ namespace MagicGladiators
             Name = "Firewave";
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-        }
+        
 
         public override void Update()
         {
@@ -145,8 +143,7 @@ namespace MagicGladiators
                         GameWorld.Instance.client.SendProjectile(side + ",Create", position, target);
                     }
 
-                    //activated = false;
-                    //canShoot = true;
+                
                 }
             }
         }

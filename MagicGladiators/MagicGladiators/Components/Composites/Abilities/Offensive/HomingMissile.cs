@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MagicGladiators
 {
-    class HomingMissile : OffensiveAbility, IUpdateable, ILoadable
+    class HomingMissile : OffensiveAbility, IUpdateable
     {
         private Animator animator;
         private IStrategy strategy;
@@ -24,7 +24,7 @@ namespace MagicGladiators
         private Vector2 target;
         private GameObject player;
         private float timer;
-        //public GameObject icon { get; set; }
+       
 
 
         public HomingMissile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
@@ -58,18 +58,10 @@ namespace MagicGladiators
                     GameWorld.Instance.client.SendProjectile("HomingMissile,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
                 }
             }
-            //if (!canShoot)
-            //{
-            //    (icon.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Gray;
-            //}
-            //else (icon.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
         }
 
 
 
-        public override void LoadContent(ContentManager content)
-        {
-            //throw new NotImplementedException();
-        }
+        
     }
 }

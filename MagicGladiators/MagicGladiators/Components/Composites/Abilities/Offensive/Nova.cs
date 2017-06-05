@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MagicGladiators
 {
-    class Nova : OffensiveAbility, IUpdateable, ILoadable
+    class Nova : OffensiveAbility, IUpdateable
     {
        
         private Animator animator;
@@ -40,8 +40,7 @@ namespace MagicGladiators
 
         }
 
-        public override void LoadContent(ContentManager content)
-        { }
+       
         public override void Update()
         {
             KeyboardState keyState = Keyboard.GetState();

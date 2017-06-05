@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace MagicGladiators
 {
-    class StoneArmour : DefensiveAbility, IUpdateable, ILoadable
+    class StoneArmour : DefensiveAbility, IUpdateable
     {
 
        
@@ -26,10 +26,6 @@ namespace MagicGladiators
             cooldown = 10;
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-           
-        }
 
         public override void Update()
         {

@@ -47,13 +47,7 @@ namespace MagicGladiators
                             GameWorld.Instance.client.SendColor("", "Map", color.R, color.G, color.B, color.A);
                         }
                     }
-                    if (go.Tag == "Enemy")
-                    {
-                        if (GameWorld.Instance.client != null)
-                        {
-                            //GameWorld.Instance.client.SendSpeedDown(go.Id, -speedFactor);
-                        }
-                    }
+                  
                 }
             }
             if (activated)
@@ -72,13 +66,7 @@ namespace MagicGladiators
                                 GameWorld.Instance.client.SendColor("", "Map", color.R, color.G, color.B, color.A);
                             }
                         }
-                        if (go.Tag == "Enemy")
-                        {
-                            if (GameWorld.Instance.client != null)
-                            {
-                                //GameWorld.Instance.client.SendSpeedUp(go.Id, speedFactor);
-                            }
-                        }
+                       
 
                     }
                     activated = false;
@@ -87,9 +75,6 @@ namespace MagicGladiators
             }
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-            //throw new NotImplementedException();
-        }
+        
     }
 }

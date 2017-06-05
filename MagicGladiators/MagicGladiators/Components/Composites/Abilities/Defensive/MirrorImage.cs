@@ -25,10 +25,7 @@ namespace MagicGladiators
             canShoot = true;
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-
-        }
+      
 
         public override void Update()
         {
@@ -117,7 +114,7 @@ namespace MagicGladiators
                         clone.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
                     }
                     #endregion
-                    //clone.transform.position = new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y);
+                    
 
                     GameWorld.newObjects.Add(clone);
                 }
@@ -180,9 +177,6 @@ namespace MagicGladiators
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-
-        }
+        
     }
 }

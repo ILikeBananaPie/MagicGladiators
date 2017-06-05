@@ -33,25 +33,22 @@ namespace MagicGladiators
         {
             canShoot = true;
             cooldown = 20;
-            //LoadContent(GameWorld.Instance.Content);
+           
         }
 
         private void CreateAnimations()
         {
-            //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
+            
 
             animator.CreateAnimation("Idle", new Animation(1, 0, 0, 39, 39, 1, Vector2.Zero, sprite));
 
             animator.PlayAnimation("Idle");
         }
 
-        public override void LoadContent(ContentManager content)
+        public  void LoadContent(ContentManager content)
         {
             isLoaded = true;
-            //animator = (Animator)gameObject.GetComponent("Animator");
-            //sprite = content.Load<Texture2D>("Deflect");
-            //effect.LoadContent(GameWorld.Instance.Content);
-            //CreateAnimations();
+           
         }
 
         public override void Update()
@@ -183,11 +180,7 @@ namespace MagicGladiators
             {
                 (gameObject.GetComponent("Physics") as Physics).Velocity = new Vector2((float)vx1, (float)vy1);
                 gameObject.transform.position += new Vector2((float)vx1, (float)vy1) * 2 ;
-                /*
-                Vector2 test = new Vector2((float)vx2, (float)vy2);
-                (go.GetComponent("Physics") as Physics).Velocity = test;
-                go.transform.position += test;
-                */
+              
             }
             else
             {
@@ -203,28 +196,8 @@ namespace MagicGladiators
             }
 
 
-            /*
-            if (GameWorld.Instance.client != null)
-            {
-                GameWorld.Instance.client.Deflect(go.Id, go.Tag, go.transform.position, (go.GetComponent("Physics") as Physics).Velocity);
-                Vector2 testVector = new Vector2((float)vx2, (float)vy2);
-                testVector.Normalize();
-                (go.GetComponent("Projectile") as Projectile).TestVector = testVector / 2;
-            }
-            */
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            /*
-            if (activated)
-            {
-                float radius = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Radius * 1.2F;
-                radius = radius - (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Radius;
-                effect.transform.position = new Vector2(gameObject.transform.position.X - radius, gameObject.transform.position.Y - radius);
-                effect.Draw(spriteBatch);
-            }
-            */
-        }
+    
     }
 }

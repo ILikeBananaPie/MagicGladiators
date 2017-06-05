@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MagicGladiators
 {
-    class Mine : DefensiveAbility, ILoadable, IUpdateable, ICollisionEnter
+    class Mine : DefensiveAbility, IUpdateable, ICollisionEnter
     {
         private GameObject go;
         private Vector2 originalPos;
@@ -32,10 +32,7 @@ namespace MagicGladiators
 
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-
-        }
+      
 
         public override void Update()
         {
