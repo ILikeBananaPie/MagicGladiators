@@ -192,6 +192,8 @@ namespace MagicGladiators
                                     if (dbCon.i.IsMatch(dbTables.login, a, b) == dbMatching.Match)
                                     {
                                         GameWorld.playername = a;
+                                        dbCon.i.FindNSetID(a);
+                                        //GameWorld.Instance.player.playerName = a;
                                         GameWorld.Instance.NextScene = Scene.MainMenu();
                                     }
                                 }
