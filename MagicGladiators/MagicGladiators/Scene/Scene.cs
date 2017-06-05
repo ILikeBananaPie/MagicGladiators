@@ -532,7 +532,7 @@ namespace MagicGladiators
                         break;
                 }
             }
-            Scene send = new Scene(included, true);
+            Scene send = new Scene(included);
             send.scenetype = "Statistic";
             return send;
         }
