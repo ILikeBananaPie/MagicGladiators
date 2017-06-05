@@ -1197,6 +1197,15 @@ namespace MagicGladiators
                     }
                     CircleColliders.Remove((go.GetComponent("Collider") as Collider));
                     gameObjects.Remove(go);
+                    if (go.Tag == "Player")
+                    {
+                        Player player = (go.GetComponent("Player") as Player);
+                        if (client != null && player.lastHitBy != "" && !buyPhase)
+                        {
+                            client.SendGold(player.lastHitBy, 20);
+                            player.lastHitBy = "";
+                        }
+                    }
                 }
                 objectsToRemove.Clear();
             }

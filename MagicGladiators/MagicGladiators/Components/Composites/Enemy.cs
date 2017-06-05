@@ -96,13 +96,13 @@ namespace MagicGladiators
 
         public void UponDeath()
         {
-            if (lastHit != null)
-            {
-                if (lastHit.GetComponent("Player") is Player)
-                {
-                    (lastHit.GetComponent("Player") as Player).GoldReward(20);
-                }
-            }
+            //if (lastHit != null)
+            //{
+            //    if (lastHit.GetComponent("Player") is Player)
+            //    {
+            //        (lastHit.GetComponent("Player") as Player).GoldReward(20);
+            //    }
+            //}
         }
     }
 }

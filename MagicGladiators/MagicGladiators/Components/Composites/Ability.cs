@@ -64,7 +64,7 @@ namespace MagicGladiators
         {
             int x = 0;
             //spriteBatch.Begin();
-            if (!canShoot && !(this is IDeathAbility))
+            if (!canShoot && !(this is IDeathAbility) && GameWorld.gameState == GameState.ingame)
             {
                 if (cooldown * GameWorld.Instance.player.CooldownReduction - cooldownTimer > 10)
                 {
@@ -72,7 +72,7 @@ namespace MagicGladiators
                 }
                 spriteBatch.DrawString(font, (cooldown * GameWorld.Instance.player.CooldownReduction - cooldownTimer).ToString(".0"), new Vector2(icon.transform.position.X + 5 + x, icon.transform.position.Y), Color.White);
             }
-            if (!canShoot && this is IDeathAbility)
+            if (!canShoot && this is IDeathAbility && GameWorld.gameState == GameState.ingame)
             {
                 if (cooldown - cooldownTimer > 10)
                 {

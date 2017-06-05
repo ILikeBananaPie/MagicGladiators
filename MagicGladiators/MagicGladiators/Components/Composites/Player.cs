@@ -38,7 +38,9 @@ namespace MagicGladiators
         public static List<GameObject> deathAbilities = new List<GameObject>();
 
         private List<string> colors = new List<string>() { "Blue", "Red", "Orange", "Purple", "Brown", "Green", "LightGreen", "Yellow" };
+        private List<string> noGoldList = new List<string>() { "Map", "LavaHole", "LavaSpot", "Pillar", "Spellshield", "Deflect", "Enemy" };
 
+        public string lastHitBy { get; set; } = "";
 
         public static Vector2 testSpeed;
 
@@ -113,6 +115,10 @@ namespace MagicGladiators
             if (other.gameObject.Tag == "Enemy")
             {
                 //Deflect.SetVector(gameObject, other.gameObject);
+            }
+            if (other.gameObject.Id != gameObject.Id && !noGoldList.Exists(x => x == other.gameObject.Tag))
+            {
+                lastHitBy = other.gameObject.Id;
             }
         }
 
@@ -297,6 +303,7 @@ namespace MagicGladiators
             }
 
         }
+
         public void GoldReward(int amount)
         {
             gold += (int)(amount * (1 + gameObject.GoldBonusPercent));

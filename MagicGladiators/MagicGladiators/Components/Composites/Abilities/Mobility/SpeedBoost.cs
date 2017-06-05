@@ -42,8 +42,8 @@ namespace MagicGladiators
                 canShoot = false;
                 //canUse = false;
                 activated = true;
-                (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.DarkSlateGray;
-                Color color = Color.DarkSlateGray;
+                (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Green;
+                Color color = Color.Green;
                 if (GameWorld.Instance.client != null)
                 {
                     GameWorld.Instance.client.SendColor(gameObject.Id, "Enemy", color.R, color.G, color.B, color.A);
