@@ -651,17 +651,17 @@ namespace MagicGladiators
                 {
                     if (homingTimer > 0.5F)
                     {
-                        if (!GameWorld.gameObjects.Exists(x => x.Tag == "Enemy") && !GameWorld.gameObjects.Exists(x => x.Tag == "Dummy"))
-                        {
-                            GameWorld.objectsToRemove.Add(gameObject);
-                            if (GameWorld.Instance.client != null)
-                            {
-                                GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
-                            }
-                        }
+                        //if (!GameWorld.gameObjects.Exists(x => x.Tag == "Enemy") && !GameWorld.gameObjects.Exists(x => x.Tag == "Dummy"))
+                        //{
+                        //    GameWorld.objectsToRemove.Add(gameObject);
+                        //    if (GameWorld.Instance.client != null)
+                        //    {
+                        //        GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
+                        //    }
+                        //}
                         foreach (GameObject go in GameWorld.gameObjects)
                         {
-                            if (Vector2.Distance(gameObject.transform.position, go.transform.position) < 10000 && (go.Tag == "Dummy" || go.Tag == "Enemy"))
+                            if (Vector2.Distance(gameObject.transform.position, go.transform.position) < 300 && (go.Tag == "Dummy" || go.Tag == "Enemy"))
                             {
                                 distance = Vector2.Distance(gameObject.transform.position, go.transform.position);
                                 bestTarget = go.transform.position;
@@ -679,7 +679,18 @@ namespace MagicGladiators
                                 }
                                 Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(bestTarget, gameObject.transform.position);
                                 test.Normalize();
-                                (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 14) * projectileSpeed;
+                                if (go.Tag == "Enemy")
+                                {
+                                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 3) * projectileSpeed;
+                                }
+                                else (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 15) * projectileSpeed;
+
+                            }
+                            else if (Vector2.Distance(gameObject.transform.position, go.transform.position) > 300 && (go.Tag == "Dummy" || go.Tag == "Enemy"))
+                            {
+                                //Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(target, gameObject.transform.position);
+                                //test.Normalize();
+                                (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 10) * projectileSpeed;
                             }
                         }
                     }
