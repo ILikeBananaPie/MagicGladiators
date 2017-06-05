@@ -205,9 +205,9 @@ namespace MagicGladiators
         public void CreateDummies()
         {
             Director director = new Director(new DummyBuilder());
-            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16)));
-            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16)));
-            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
+            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 100, mapCenter.Y - 16)));
+            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 100, mapCenter.Y - 16)));
+            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 100)));
             foreach (GameObject go in newObjects)
             {
                 if (go.Tag == "Dummy")

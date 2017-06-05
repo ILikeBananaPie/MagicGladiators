@@ -104,7 +104,7 @@ namespace MagicGladiators
                         vectorBetween.Normalize();
                         if (go.gameObject.Tag == "Dummy")
                         {
-                            //(go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+                            (go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween, gameObject);
                         }
                         if (GameWorld.Instance.client != null)
                         {
