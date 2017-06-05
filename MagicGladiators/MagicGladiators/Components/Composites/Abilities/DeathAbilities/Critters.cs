@@ -18,7 +18,7 @@ namespace MagicGladiators
         public Critters(GameObject gameObject) : base(gameObject)
         {
             Name = "Critters";
-            cooldown = 10;
+            cooldown = 20;
         }
 
         public override void LoadContent(ContentManager content)

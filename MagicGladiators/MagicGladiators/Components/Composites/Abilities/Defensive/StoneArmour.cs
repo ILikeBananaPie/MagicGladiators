@@ -23,7 +23,7 @@ namespace MagicGladiators
         public StoneArmour(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 8;
+            cooldown = 10;
         }
 
         public override void LoadContent(ContentManager content)

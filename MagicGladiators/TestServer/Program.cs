@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove, UpdateReadyList }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove, UpdateReadyList, Gold }
 
     public class Program
     {
@@ -109,6 +109,14 @@ namespace TestServer
                         case NetIncomingMessageType.Data:
                             //TestClient.text = msgIn.ReadString();
                             byte type = msgIn.ReadByte();
+                            #region Gold
+                            if (type == (byte)PacketType.Gold)
+                            {
+                                string id = msgIn.ReadString();
+                                int gold = msgIn.ReadInt32();
+                                SendGold(id, gold);
+                            }
+                            #endregion
                             #region ChainRemove
                             if (type == (byte)PacketType.ChainRemove)
                             {
@@ -353,6 +361,23 @@ namespace TestServer
                     }
                 }
             }
+        }
+
+        public static void SendGold(string id, int gold)
+        {
+            connectionList.Clear();
+            foreach (NetConnection con in server.Connections)
+            {
+                if (con.ToString() == id)
+                {
+                    connectionList.Add(con);
+                }
+            }
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Gold);
+            msgOut.Write(gold);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
         }
         //0-1
         public static void SendProjectile(string name, float posX, float posY, float targetX, float targetY, NetConnection sender)

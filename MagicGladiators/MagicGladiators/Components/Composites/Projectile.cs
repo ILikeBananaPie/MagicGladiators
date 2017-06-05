@@ -289,11 +289,15 @@ namespace MagicGladiators
                         }
                     }
 
-                    if (gameObject.Id != other.gameObject.Id || other.gameObject.Tag == "Dummy")
+                    if (gameObject.Id != other.gameObject.Id || other.gameObject.Tag == "Dummy" && !other.gameObject.Tag.Contains("Critter"))
                     {
                         if (other.gameObject.Tag != "Player")
                         {
                             targetHit = other.gameObject;
+                            if (!GameWorld.buyPhase)
+                            {
+                                (GameWorld.Instance.player.GetComponent("Player") as Player).GoldReward(3);
+                            }
                             Push();
                         }
                     }
@@ -366,7 +370,11 @@ namespace MagicGladiators
                                 ability = "Fireball";
                             }
                             else ability = gameObject.Tag;
-                            GameWorld.Instance.client.SendPush(go.Id, vectorBetween, (GameWorld.Instance.player.GetComponent(ability) as Ability).damage);
+                            if (gameObject.Tag == "DeathMeteor" || gameObject.Tag == "DeathMine" || gameObject.Tag == "RollingMeteor" || gameObject.Tag.Contains("Firewave"))
+                            {
+                                GameWorld.Instance.client.SendPush(go.Id, vectorBetween, 0);
+                            }
+                            else GameWorld.Instance.client.SendPush(go.Id, vectorBetween, (GameWorld.Instance.player.GetComponent(ability) as Ability).damage);
                         }
                     }
                     else if (go.Tag == "Dummy" && (!gameObject.Tag.Contains("Chain") && gameObject.Tag != "Pillar"))
@@ -375,7 +383,7 @@ namespace MagicGladiators
                     }
                     else if (go.Tag == "Enemy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
                     {
-                        (go.GetComponent("Enemy") as Enemy).Hit(shooter);
+                        (go.GetComponent("Enemy") as Enemy).Hit(GameWorld.Instance.player);
                     }
                     else if (go.Tag.Contains("Critter"))
                     {

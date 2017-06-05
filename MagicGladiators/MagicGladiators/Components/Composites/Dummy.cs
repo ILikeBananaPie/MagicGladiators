@@ -17,7 +17,7 @@ namespace MagicGladiators
         private IStrategy strategy;
 
         private DIRECTION direction;
-        public bool testPush { get; set; }
+        private bool testPush;
         private Vector2 testVector;
         private float testTimer;
         private int testSpeed = 10;
@@ -94,7 +94,7 @@ namespace MagicGladiators
         {
             if (go.GetComponent("Player") is Player)
             {
-                (go.GetComponent("Player") as Player).GoldReward(3);
+                //(go.GetComponent("Player") as Player).GoldReward(3);
             }
             lastHit = go;
             testPush = true;

@@ -29,7 +29,7 @@ namespace MagicGladiators
         public Charge(GameObject go, Transform transform, Animator animator) : base(go)
         {
             canShoot = true;
-            cooldown = 8;
+            cooldown = 10;
             this.go = go;
             this.animator = animator;
             this.transform = transform;

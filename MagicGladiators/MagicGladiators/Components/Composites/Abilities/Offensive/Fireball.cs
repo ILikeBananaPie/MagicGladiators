@@ -16,7 +16,7 @@ namespace MagicGladiators
         public Fireball(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 3;
+            cooldown = 7;
             Name = "Fireball";
             damage = 7;
         }

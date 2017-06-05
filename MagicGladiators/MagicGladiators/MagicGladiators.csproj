@@ -49,7 +49,6 @@
     <Compile Include="Components\Composites\Abilities\DeathAbilities\DeathAbility.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\DeathMine.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\Firewave.cs" />
-    <Compile Include="Components\Composites\Abilities\DeathAbilities\IceField.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\RollingMeteor.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\ShrinkMap.cs" />
     <Compile Include="Components\Composites\Abilities\DeathAbilities\SlowField.cs" />
@@ -111,6 +110,7 @@
     <Compile Include="Components\Composites\Player.cs" />
     <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Builder\PlayerBuilder.cs" />
+    <Compile Include="SaMM.cs" />
     <Compile Include="Strategies\FollowTarget.cs" />
     <Compile Include="Components\Composites\Item.cs" />
     <Compile Include="Scene\Scene.cs" />

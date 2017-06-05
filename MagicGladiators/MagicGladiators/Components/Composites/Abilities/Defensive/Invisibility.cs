@@ -16,7 +16,7 @@ namespace MagicGladiators
         public Invisibility(GameObject gameObject) : base(gameObject)
         {
             canShoot = true;
-            cooldown = 8;
+            cooldown = 10;
         }
 
         public override void LoadContent(ContentManager content)
