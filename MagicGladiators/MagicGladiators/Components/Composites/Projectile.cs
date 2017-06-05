@@ -216,7 +216,7 @@ namespace MagicGladiators
                     animator.PlayAnimation("FirewaveTopBottom");
                 }
                 else animator.PlayAnimation("FirewaveLeftRight");
-                travelDistance = 1920;
+                travelDistance = 1380;
             }
             strategy = new Idle(animator);
         }
@@ -277,7 +277,7 @@ namespace MagicGladiators
                         }
                     }
 
-                    if (gameObject.Id != other.gameObject.Id || other.gameObject.Tag == "Dummy" && !other.gameObject.Tag.Contains("Critter"))
+                    if (gameObject.Id != other.gameObject.Id || other.gameObject.Tag == "Dummy" && !other.gameObject.Tag.Contains("Critter") && !other.gameObject.Tag.Contains("Firewave"))
                     {
                         if (other.gameObject.Tag != "Player")
                         {
@@ -347,9 +347,6 @@ namespace MagicGladiators
                     if (go.Tag == "Player")
                     {
                         (go.GetComponent("Player") as Player).isPushed(vectorBetween);
-
-
-
                     }
                     else if (go.Tag == "Enemy")
                     {
