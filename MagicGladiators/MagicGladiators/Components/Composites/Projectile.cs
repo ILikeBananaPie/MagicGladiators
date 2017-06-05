@@ -54,15 +54,13 @@ namespace MagicGladiators
 
         private GameObject shooter;
 
-
-
         private Vector2 target;
 
         public static List<string> testName { get; set; } = new List<string>();
+
         public static List<string> testID { get; set; } = new List<string>();
 
         private List<string> abilities = new List<string>() { "Fireball", "Chain", "Drain", "HomingMissile", "RollingMeteor", "DeathMeteor" };
-
 
         private float projectileSpeed;
 
@@ -141,8 +139,6 @@ namespace MagicGladiators
             (gameObject.GetComponent("Physics") as Physics).Velocity = testVector;
 
         }
-
-
 
         private void CreateAnimations()
         {
@@ -468,8 +464,6 @@ namespace MagicGladiators
             return (cornorDistance <= ((int)cir.Radius ^ 2));
         }
 
-
-
         public void Update()
         {
             if (gameObject.Tag.Contains("Firewave"))
@@ -511,10 +505,6 @@ namespace MagicGladiators
                                     Deflect.SetVector(temp, gameObject);
                                     temp = new GameObject();
                                 }
-
-
-
-
                             }
                         }
                     }
@@ -551,15 +541,11 @@ namespace MagicGladiators
                     }
                 }
 
-
                 if (gameObject.Tag == "DeathMeteor")
                 {
                     (gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector / 10;
                     abilityTimer += 0.001f;
                 }
-
-
-
 
                 if (gameObject.Tag == "GravityWell")
                 {
@@ -596,7 +582,6 @@ namespace MagicGladiators
                             GameWorld.Instance.client.SendColor(gameObject.Id, gameObject.Tag, color.R, color.G, color.B, color.A);
                         }
                     }
-
                 }
 
                 if ((gameObject.Tag.Contains("Fireball") || gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain") || gameObject.Tag.Contains("Nova")) && !gameObject.Tag.Contains("Firewave"))
@@ -694,7 +679,7 @@ namespace MagicGladiators
                                 }
                                 Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(bestTarget, gameObject.transform.position);
                                 test.Normalize();
-                                (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 15) * projectileSpeed;
+                                (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 14) * projectileSpeed;
                             }
                         }
                     }
@@ -728,7 +713,6 @@ namespace MagicGladiators
                 }
             }
         }
-
 
         public void CheckDistance()
         {

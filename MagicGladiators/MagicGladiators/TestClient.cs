@@ -338,6 +338,7 @@ namespace MagicGladiators
             msgOut.Write(factor);
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
         }
+
         public void SendSpeedDown(string id, float factor)
         {
             NetOutgoingMessage msgOut;

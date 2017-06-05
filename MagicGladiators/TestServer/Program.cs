@@ -621,6 +621,8 @@ namespace TestServer
             //connectionList.Add(con);
             players.Add(new Player(playerIndex, con));
 
+            string test = con.ToString();
+
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
             msgOut.Write((byte)PacketType.AssignID);
