@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove, UpdateReadyList, Gold }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove, UpdateReadyList, Gold, Score }
 
     public class Program
     {
@@ -109,6 +109,13 @@ namespace TestServer
                         case NetIncomingMessageType.Data:
                             //TestClient.text = msgIn.ReadString();
                             byte type = msgIn.ReadByte();
+                            #region Score
+                            if (type == (byte)PacketType.Score)
+                            {
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                SendScore(msgIn.ReadString(), msgIn.ReadInt32(), msgIn.ReadFloat(), msgIn.ReadInt32());
+                            }
+                            #endregion
                             #region Gold
                             if (type == (byte)PacketType.Gold)
                             {
@@ -361,6 +368,18 @@ namespace TestServer
                     }
                 }
             }
+        }
+
+        public static void SendScore(string id, int kills, float damage, int score)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Score);
+            msgOut.Write(id);
+            msgOut.Write(kills);
+            msgOut.Write(damage);
+            msgOut.Write(score);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
         }
 
         public static void SendGold(string id, int gold)

@@ -39,6 +39,11 @@ namespace MagicGladiators
 
         public string playerName { get; set; }
 
+        public int RoundScore { get; set; }
+        public int TotalScore { get; set; }
+        public int kills { get; set; }
+        public float DamageDone { get; set; }
+
         public string Tag { get; set; } = "Untagged";
         public ObjectType objectType { get; set; }
 

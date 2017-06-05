@@ -30,7 +30,6 @@ namespace MagicGladiators
         private float testTimer;
         private SpriteRenderer sprite;
         private float regenTimer;
-
         private float timer;
 
         public static List<GameObject> items = new List<GameObject>();
@@ -251,14 +250,7 @@ namespace MagicGladiators
 
             if (GameWorld.Instance.CurrentScene.scenetype == "Play")
             {
-                string phase;
-                if (GameWorld.buyPhase)
-                {
-                    phase = "Buy Phase";
-                }
-                else phase = "Combat Phase";
-                spriteBatch.DrawString(fontText, phase, new Vector2(0, 80), Color.Black);
-                spriteBatch.DrawString(fontText, "Round: " + GameWorld.currentRound + " / " + GameWorld.numberOfRounds, new Vector2(0, 100), Color.Black);
+
             }
         }
 

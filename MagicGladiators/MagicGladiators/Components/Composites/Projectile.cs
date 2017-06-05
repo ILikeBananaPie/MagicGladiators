@@ -285,6 +285,11 @@ namespace MagicGladiators
                             if (!GameWorld.buyPhase)
                             {
                                 (GameWorld.Instance.player.GetComponent("Player") as Player).GoldReward(3);
+                                GameWorld.Instance.player.TotalScore += 3;
+                                if (GameWorld.Instance.client != null)
+                                {
+                                    GameWorld.Instance.client.SendScore(GameWorld.Instance.player.Id, GameWorld.Instance.player.kills, GameWorld.Instance.player.DamageDone, GameWorld.Instance.player.TotalScore);
+                                }
                             }
                             Push();
                         }
@@ -366,7 +371,18 @@ namespace MagicGladiators
                             {
                                 GameWorld.Instance.client.SendPush(go.Id, vectorBetween, 0);
                             }
-                            else GameWorld.Instance.client.SendPush(go.Id, vectorBetween, (GameWorld.Instance.player.GetComponent(ability) as Ability).damage);
+                            else
+                            {
+                                GameWorld.Instance.client.SendPush(go.Id, vectorBetween, (GameWorld.Instance.player.GetComponent(ability) as Ability).damage * go.DamageResistance);
+                                if (!GameWorld.buyPhase)
+                                {
+                                    GameWorld.Instance.player.DamageDone += (GameWorld.Instance.player.GetComponent(ability) as Ability).damage * go.DamageResistance;
+                                    if (GameWorld.Instance.client != null)
+                                    {
+                                        GameWorld.Instance.client.SendScore(GameWorld.Instance.player.Id, GameWorld.Instance.player.kills, GameWorld.Instance.player.DamageDone, GameWorld.Instance.player.TotalScore);
+                                    }
+                                }
+                            }
                         }
                     }
                     else if (go.Tag == "Dummy" && (!gameObject.Tag.Contains("Chain") && gameObject.Tag != "Pillar"))

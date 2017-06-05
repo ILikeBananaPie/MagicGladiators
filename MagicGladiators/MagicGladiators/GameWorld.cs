@@ -1138,6 +1138,8 @@ namespace MagicGladiators
                             //revive all players & reset all stats
                             //CreateDummies();
                             client.SendSwitchPhase();
+                            player.TotalScore += player.RoundScore;
+                            player.RoundScore = 0;
                             StartRound();
                             //CreateMap(selectedMap);
                             //ResetCharacters();
@@ -1279,6 +1281,10 @@ namespace MagicGladiators
                 }
             }
 
+            if (CurrentScene.scenetype == "Play")
+            {
+                DrawScore();
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -1480,6 +1486,66 @@ namespace MagicGladiators
                     TooltipBox.Draw(spriteBatch);
                     //spriteBatch.DrawString(fontText, item.Name, new Vector2(mouse.Position.X + 50, mouse.Position.Y - 50), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
                     item.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
+                }
+            }
+        }
+
+        public void DrawScore()
+        {
+            string phase;
+            string text;
+            Vector2 textSize;
+            int columnOne = 220;
+            int columnTwo = 165;
+            int columnThree = 120;
+            int columnFour = 50;
+
+            int x = 0;
+            if (GameWorld.buyPhase)
+            {
+                phase = "Buy Phase";
+            }
+            else phase = "Combat Phase";
+            spriteBatch.DrawString(fontText, phase, new Vector2(Window.ClientBounds.Width - columnTwo, 10), Color.Black);
+            spriteBatch.DrawString(fontText, "Round: " + currentRound + " / " + GameWorld.numberOfRounds, new Vector2(Window.ClientBounds.Width - columnTwo, 30), Color.Black);
+
+            text = "Player | Kills | Damage | Score";
+            textSize = fontText.MeasureString(text);
+            spriteBatch.DrawString(fontText, "Player | ", new Vector2(Window.ClientBounds.Width - columnOne, 50), Color.Black);
+            spriteBatch.DrawString(fontText, "Kills | ", new Vector2(Window.ClientBounds.Width - columnTwo, 50), Color.Black);
+            spriteBatch.DrawString(fontText, "Damage | ", new Vector2(Window.ClientBounds.Width - columnThree, 50), Color.Black);
+            spriteBatch.DrawString(fontText, "Score", new Vector2(Window.ClientBounds.Width - columnFour, 50), Color.Black);
+
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.Tag == "Player" || go.Tag == "Enemy")
+                {
+                    text = go.playerName;
+                    textSize = fontText.MeasureString(text);
+                    Vector2 temp = fontText.MeasureString("Player");
+                    if (textSize.X > temp.X)
+                    {
+                        text += "...";
+                        textSize = fontText.MeasureString(text);
+                        for (int i = text.Length; i >= 0; i--)
+                        {
+                            //text = text.Remove(text.Length - 2);
+                            text = text.Remove(i - 3);
+                            text += "...";
+                            textSize = fontText.MeasureString(text);
+                            if (textSize.X > temp.X)
+                            {
+                                continue;
+                            }
+                            else break;
+                        }
+                    }
+                    spriteBatch.DrawString(fontText, text, new Vector2(Window.ClientBounds.Width - columnOne, 70 + x), Color.Black);
+                    spriteBatch.DrawString(fontText, go.kills.ToString(), new Vector2(Window.ClientBounds.Width - columnTwo, 70 + x), Color.Black);
+                    spriteBatch.DrawString(fontText, go.DamageDone.ToString(), new Vector2(Window.ClientBounds.Width - columnThree, 70 + x), Color.Black);
+                    spriteBatch.DrawString(fontText, go.TotalScore.ToString(), new Vector2(Window.ClientBounds.Width - columnFour, 70 + x), Color.Black);
+
+                    x += 20;
                 }
             }
         }

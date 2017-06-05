@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove, UpdateReadyList, Gold }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove, UpdateReadyList, Gold, Score }
 
 
     public class TestClient
@@ -51,6 +51,18 @@ namespace MagicGladiators
             }
             hostip = ip;
             //client.DiscoverLocalPeers(24049);
+        }
+
+        public void SendScore(string id, int kills, float damage, int score)
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.Score);
+            msgOut.Write(id);
+            msgOut.Write(kills);
+            msgOut.Write(damage);
+            msgOut.Write(score);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableUnordered);
         }
 
         public void SendGold(string id, int gold)
@@ -414,11 +426,35 @@ namespace MagicGladiators
                         break;
                     case NetIncomingMessageType.Data:
                         byte type = msgIn.ReadByte();
+                        #region Score
+                        if (type == (byte)PacketType.Score)
+                        {
+                            string id = msgIn.ReadString();
+                            int kills = msgIn.ReadInt32();
+                            float damage = msgIn.ReadFloat();
+                            int score = msgIn.ReadInt32();
+                            foreach (GameObject go in GameWorld.gameObjects)
+                            {
+                                if (go.Tag == "Enemy" && go.Id == id)
+                                {
+                                    go.kills = kills;
+                                    go.DamageDone = damage;
+                                    go.TotalScore = score;
+                                }
+                            }
+                        }
+                        #endregion
                         #region Gold
                         if (type == (byte)PacketType.Gold)
                         {
                             int gold = msgIn.ReadInt32();
                             Player.gold += (int)(gold * (1 + GameWorld.Instance.player.GoldBonusPercent));
+                            GameWorld.Instance.player.TotalScore += gold;
+                            GameWorld.Instance.player.kills++;
+                            if (GameWorld.Instance.client != null)
+                            {
+                                GameWorld.Instance.client.SendScore(GameWorld.Instance.player.Id, GameWorld.Instance.player.kills, GameWorld.Instance.player.DamageDone, GameWorld.Instance.player.TotalScore);
+                            }
                         }
                         #endregion
                         #region UpdateReadyList
@@ -488,7 +524,6 @@ namespace MagicGladiators
                                 {
                                     go.isReady = false;
                                 }
-
                                 //GameWorld.Instance.ResetCharacters();
                             }
                             else
@@ -496,7 +531,8 @@ namespace MagicGladiators
                                 GameWorld.buyPhase = true;
                                 GameWorld.currentRound++;
                                 GameWorld.Instance.StartRound();
-
+                                GameWorld.Instance.player.TotalScore += GameWorld.Instance.player.RoundScore;
+                                GameWorld.Instance.player.RoundScore = 0;
                                 //GameWorld.CreateMap(GameWorld.selectedMap);
                                 //GameWorld.Instance.ResetCharacters();
                             }
