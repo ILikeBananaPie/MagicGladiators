@@ -26,7 +26,7 @@ namespace MagicGladiators
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class GameWorld : Game
+    public class GameWorld:Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -435,8 +435,7 @@ namespace MagicGladiators
             {
                 buySpellX = Window.ClientBounds.Width - 144;
                 buySpellY += 34;
-            }
-            else buySpellX += 34;
+            } else buySpellX += 34;
         }
 
         /// <summary>
@@ -500,13 +499,11 @@ namespace MagicGladiators
                             try
                             {
                                 GameWorld.Instance.server.Kill();
-                            }
-                            catch (Exception) { }
+                            } catch (Exception) { }
                             try
                             {
                                 GameWorld.Instance.server = null;
-                            }
-                            catch (Exception) { }
+                            } catch (Exception) { }
                         }
                         if (GameWorld.Instance.client != null)
                         {
@@ -517,21 +514,18 @@ namespace MagicGladiators
                         GameWorld.gameState = GameState.offgame;
                         GameWorld.buyPhase = true;
                         NextScene = Scene.MainMenu();
-                    }
-                    else if (CurrentScene.scenetype == "PracticeChooseRound" || CurrentScene.scenetype == "Host")
+                    } else if (CurrentScene.scenetype == "PracticeChooseRound" || CurrentScene.scenetype == "Host")
                     {
                         if (GameWorld.Instance.server != null)
                         {
                             try
                             {
                                 GameWorld.Instance.server.Kill();
-                            }
-                            catch (Exception) { }
+                            } catch (Exception) { }
                             try
                             {
                                 GameWorld.Instance.server = null;
-                            }
-                            catch (Exception) { }
+                            } catch (Exception) { }
                         }
                         if (GameWorld.Instance.client != null)
                         {
@@ -542,35 +536,30 @@ namespace MagicGladiators
                         GameWorld.gameState = GameState.offgame;
                         GameWorld.buyPhase = true;
                         NextScene = Scene.NewGame();
-                    }
-                    else
+                    } else
                     {
                         if (server != null)
                         {
                             try
                             {
                                 server.Kill();
-                            }
-                            catch (Exception) { }
+                            } catch (Exception) { }
                             try
                             {
                                 server = null;
-                            }
-                            catch (Exception) { }
+                            } catch (Exception) { }
                         }
                         Exit();
                     }
                 }
                 pressed = true;
-            }
-            else { pressed = false; }
+            } else { pressed = false; }
 
             // TODO: Add your update logic here
             try
             {
                 graphics.ApplyChanges();
-            }
-            catch (NullReferenceException nre) { }
+            } catch (NullReferenceException nre) { }
 
             // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
@@ -807,8 +796,7 @@ namespace MagicGladiators
             if (CurrentScene.scenetype == "Practice")
             {
                 Player.gold = 10000;
-            }
-            else Player.gold = 300;
+            } else Player.gold = 300;
 
 
             Player.deathAbilities.Clear();
@@ -1020,8 +1008,7 @@ namespace MagicGladiators
                         (player.GetComponent("Player") as Player).UpdateStats();
                         break;
                     }
-                }
-                else
+                } else
                 {
                     MouseOnIcon = false;
                 }
@@ -1057,8 +1044,7 @@ namespace MagicGladiators
                 {
                     MouseOnIcon = true;
                     break;
-                }
-                else MouseOnIcon = false;
+                } else MouseOnIcon = false;
             }
         }
 
@@ -1118,8 +1104,7 @@ namespace MagicGladiators
                         client.SendReady(player.Id, false);
                         player.isReady = false;
 
-                    }
-                    else
+                    } else
                     {
                         client.SendReady(player.Id, true);
                         player.isReady = true;
@@ -1157,8 +1142,7 @@ namespace MagicGladiators
                             //ResetCharacters();
                             buyPhase = true;
                             currentRound++;
-                        }
-                        else
+                        } else
                         {
                             //show end screen
                             currentRound = 1;
@@ -1233,8 +1217,7 @@ namespace MagicGladiators
                 if (!go.IsInvisible)
                 {
                     go.Draw(spriteBatch);
-                }
-                else
+                } else
                 {
                     if (go.Tag == "Player")
                     {
@@ -1305,10 +1288,12 @@ namespace MagicGladiators
             if (CurrentScene.scenetype == "Play")
             {
                 DrawScore(new Vector2(Window.ClientBounds.Width, 50));
-            }
-            else if (CurrentScene.scenetype == "PostScreen")
+            } else if (CurrentScene.scenetype == "PostScreen")
             {
                 DrawScore(new Vector2(Window.ClientBounds.Width / 10 * 6, Window.ClientBounds.Height / 10 * 2));
+            } else if (CurrentScene.scenetype == "Statistic")
+            {
+                DrawStatistic(new Vector2(Window.ClientBounds.Width / 10 * 5.7f, Window.ClientBounds.Height / 10 * 2));
             }
 
             spriteBatch.End();
@@ -1329,8 +1314,7 @@ namespace MagicGladiators
                     {
                         x = 10;
                         y += 34;
-                    }
-                    else x += 34;
+                    } else x += 34;
                 }
             }
         }
@@ -1347,8 +1331,7 @@ namespace MagicGladiators
                 {
                     x = 180;
                     y += 34;
-                }
-                else x += 34;
+                } else x += 34;
             }
         }
 
@@ -1389,8 +1372,7 @@ namespace MagicGladiators
                         if (text == "D")
                         {
                             //do nothing
-                        }
-                        else if (text.Contains("D"))
+                        } else if (text.Contains("D"))
                         {
                             text = text.Split('D').Last();
                         }
@@ -1530,8 +1512,7 @@ namespace MagicGladiators
             if (buyPhase)
             {
                 phase = "Buy Phase";
-            }
-            else phase = "Combat Phase";
+            } else phase = "Combat Phase";
             if (CurrentScene.scenetype == "Play")
             {
                 spriteBatch.DrawString(fontText, phase, new Vector2(position.X - columnTwo, position.Y - 40), Color.Black);
@@ -1565,8 +1546,7 @@ namespace MagicGladiators
                             if (textSize.X > temp.X)
                             {
                                 continue;
-                            }
-                            else break;
+                            } else break;
                         }
                     }
                     spriteBatch.DrawString(fontText, text, new Vector2(position.X - columnOne, position.Y + 20 + x), Color.Black);
@@ -1577,6 +1557,80 @@ namespace MagicGladiators
                     x += 20;
                 }
             }
+        }
+
+        public void DrawStatistic(Vector2 position)
+        {
+            string text;
+            Vector2 textSize;
+            int columnOne = 220;
+            int columnTwo = 165;
+            int columnThree = 105;
+            int columnFour = 5;
+
+            Dictionary<string, int> info = dbCon.i.GetStats();
+            float percent;
+            if (info["battles"] == 0)
+            {
+                percent = 0;
+            } else
+            {
+                percent = ((float)info["battleswon"] / (float)info["battles"]) * 100;
+            }
+            int tempura = (int)percent;
+            string spercent;
+            if (tempura >= 10)
+            {
+                spercent = percent.ToString().Truncate(5);
+            } else
+            {
+                spercent = percent.ToString().Truncate(4);
+            }
+            spercent += "%";
+            
+
+            int x = 0;
+
+            text = "Player | Games | Games Won | Win Percent";
+            textSize = fontText.MeasureString(text);
+            spriteBatch.DrawString(fontText, "Player | ", new Vector2(position.X - columnOne, position.Y), Color.Black);
+            spriteBatch.DrawString(fontText, "Games | ", new Vector2(position.X - columnTwo, position.Y), Color.Black);
+            spriteBatch.DrawString(fontText, "Games Won | ", new Vector2(position.X - columnThree, position.Y), Color.Black);
+            spriteBatch.DrawString(fontText, "Win Percent", new Vector2(position.X - columnFour, position.Y), Color.Black);
+
+            if (player != null)
+            {
+                text = player.playerName;
+            } else
+            {
+                text = dbCon.i.GetName();
+            }
+            
+            textSize = fontText.MeasureString(text);
+            Vector2 temp = fontText.MeasureString("Player");
+            if (textSize.X > temp.X)
+            {
+                text += "...";
+                textSize = fontText.MeasureString(text);
+                for (int i = text.Length; i >= 0; i--)
+                {
+                    //text = text.Remove(text.Length - 2);
+                    text = text.Remove(i - 3);
+                    text += "...";
+                    textSize = fontText.MeasureString(text);
+                    if (textSize.X > temp.X)
+                    {
+                        continue;
+                    } else break;
+                }
+            }
+            spriteBatch.DrawString(fontText, text, new Vector2(position.X - columnOne, position.Y + 20 + x), Color.Black);
+            spriteBatch.DrawString(fontText, info["battles"].ToString(), new Vector2(position.X - columnTwo, position.Y + 20 + x), Color.Black);
+            spriteBatch.DrawString(fontText, info["battleswon"].ToString(), new Vector2(position.X - columnThree, position.Y + 20 + x), Color.Black);
+            spriteBatch.DrawString(fontText, spercent, new Vector2(position.X - columnFour, position.Y + 20 + x), Color.Black);
+
+            x += 20;
+
         }
 
         public GameObject FindGameObjectWithTag(string tag)

@@ -113,7 +113,7 @@ namespace MagicGladiators
         public static Scene MainMenu()
         {
             GameWorld.Instance.ResetItemsAndAbilities();
-            GameObject[] included = new GameObject[4];
+            GameObject[] included = new GameObject[5];
             for (int i = 0; i < included.Length; i++)
             {
                 included[i] = new GameObject();
@@ -126,18 +126,23 @@ namespace MagicGladiators
                         break;
                     case 1:
                         included[i].AddComponent(new SpriteRenderer(included[i], "AlphaOptions", 0));
-                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 3 - 40);
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2.75f - 40);
                         included[i].AddComponent(new OnClick(included[i], "Options"));
                         break;
                     case 2:
                         included[i].AddComponent(new SpriteRenderer(included[i], "AlphaCredits", 0));
-                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4.25f - 40);
                         included[i].AddComponent(new OnClick(included[i], "Credits"));
                         break;
                     case 3:
                         included[i].AddComponent(new SpriteRenderer(included[i], "AlphaExitGame", 0));
                         included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
                         included[i].AddComponent(new OnClick(included[i], "ExitGame"));
+                        break;
+                    case 4:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 3.5f - 40);
+                        included[i].AddComponent(new OnClick(included[i], "Statistic"));
                         break;
                 }
             }
@@ -510,6 +515,25 @@ namespace MagicGladiators
             }
             Scene send = new Scene(included, false);
             send.scenetype = "PostScreen";
+            return send;
+        }
+        public static Scene Statistic()
+        {
+            GameObject[] included = new GameObject[1];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 2) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "MainMenu"));
+                        break;
+                }
+            }
+            Scene send = new Scene(included, true);
+            send.scenetype = "Statistic";
             return send;
         }
         #endregion
