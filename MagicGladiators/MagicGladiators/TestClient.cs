@@ -362,7 +362,7 @@ namespace MagicGladiators
                         text = "Ready";
                     }
                     else text = "Not Ready";
-                    spriteBatch.DrawString(font, go.playerName + " is " + text, new Vector2(0, 100 + y), Color.Black);
+                    spriteBatch.DrawString(font, go.playerName + " is " + text, new Vector2(0, 120 + y), Color.Black);
                     y += 20;
                 }
             }
