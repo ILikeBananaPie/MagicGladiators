@@ -143,6 +143,7 @@ namespace MagicGladiators
             // TODO: Add your initialization logic here
             //this.Window.Position = new Point(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2, 10);
             dbCon.i.StartDataBaseConnection();
+            if (SaMM.i is SaMM) { }
 
             this.Window.Position = new Point(10, 10);
             TooltipBox.AddComponent(new SpriteRenderer(TooltipBox, "ToolTipBox", 1));
