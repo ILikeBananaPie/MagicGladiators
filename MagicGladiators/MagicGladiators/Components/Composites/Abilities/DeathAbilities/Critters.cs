@@ -21,10 +21,7 @@ namespace MagicGladiators
             cooldown = 20;
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-            //throw new NotImplementedException();
-        }
+        
 
         public override void Update()
         {

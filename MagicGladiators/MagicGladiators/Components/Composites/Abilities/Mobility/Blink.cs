@@ -31,10 +31,6 @@ namespace MagicGladiators
         }
 
 
-        public override void LoadContent(ContentManager content)
-        {
-            
-        }
 
         public override void Update()
         {

@@ -11,7 +11,7 @@ namespace MagicGladiators
 {
     public enum actions { Fireball, HomingMissile, Drain, Chain }
 
-    public abstract class Ability : Component, ILoadable, IUpdateable, IAbility, IDrawable
+    public abstract class Ability : Component, IUpdateable, IAbility, IDrawable
     {
         protected float cooldown;
         protected bool canShoot = true;
@@ -19,18 +19,16 @@ namespace MagicGladiators
         public float damage { get; set; }
         private bool canUse;
         public GameObject icon { get; set; }
-        //private SpriteBatch spriteBatch;
         private SpriteFont font;
 
 
         public Ability(GameObject gameObject) : base(gameObject)
         {
-            //spriteBatch = new SpriteBatch(GameWorld.Instance.GraphicsDevice);
             font = GameWorld.Instance.Content.Load<SpriteFont>("fontText");
 
         }
 
-        public abstract void LoadContent(ContentManager content);
+      
 
 
 
@@ -39,7 +37,7 @@ namespace MagicGladiators
 
         public void Cooldown()
         {
-            //Draw();
+            
             if (!canShoot)
             {
                 cooldownTimer += GameWorld.Instance.deltaTime;
@@ -63,7 +61,7 @@ namespace MagicGladiators
         public void Draw(SpriteBatch spriteBatch)
         {
             int x = 0;
-            //spriteBatch.Begin();
+            
             if (!canShoot && !(this is IDeathAbility) && GameWorld.gameState == GameState.ingame)
             {
                 if (cooldown * GameWorld.Instance.player.CooldownReduction - cooldownTimer > 10)
@@ -80,7 +78,7 @@ namespace MagicGladiators
                 }
                 spriteBatch.DrawString(font, (cooldown - cooldownTimer).ToString(".0"), new Vector2(icon.transform.position.X + 5 + x, icon.transform.position.Y), Color.White);
             }
-            //spriteBatch.End();
+            
         }
     }
 }

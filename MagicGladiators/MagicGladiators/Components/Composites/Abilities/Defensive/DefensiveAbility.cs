@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace MagicGladiators
 {
-    abstract class DefensiveAbility: Ability, ILoadable, IUpdateable
+    abstract class DefensiveAbility: Ability, IUpdateable
     {
        
         //Something stationary or character based

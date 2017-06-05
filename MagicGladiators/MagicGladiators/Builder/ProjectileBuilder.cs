@@ -10,8 +10,7 @@ namespace MagicGladiators
     class ProjectileBuilder : IBuilder
     {
         private GameObject gameObject;
-        //private GameObject target;
-
+      
         public void BuildGameObject(Vector2 position)
         {
             throw new NotImplementedException();
@@ -63,8 +62,7 @@ namespace MagicGladiators
             gameObject.AddComponent(new Projectile(gameObject, position, targetVector, shooter));
             gameObject.transform.position = position;
             gameObject.LoadContent(GameWorld.Instance.Content);
-            //GameWorld.newObjects.Add(gameObject);
-
+          
             gameObject.CurrentHealth = 100;
             gameObject.transform.position = position;
 

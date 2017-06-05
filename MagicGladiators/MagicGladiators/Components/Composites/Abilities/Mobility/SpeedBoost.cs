@@ -27,10 +27,6 @@ namespace MagicGladiators
             canShoot = true;
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-
-        }
 
         public override void Update()
         {
@@ -38,9 +34,9 @@ namespace MagicGladiators
 
             if (keyState.IsKeyDown(key) && canShoot)
             {
-                //oldSpeed = Player.speed;
+              
                 canShoot = false;
-                //canUse = false;
+              
                 activated = true;
                 (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Green;
                 Color color = Color.Green;
@@ -55,12 +51,12 @@ namespace MagicGladiators
                 {
                     use = true;
                     gameObject.Speed = gameObject.Speed + speedFactor;
-                    //Player.speed = Player.speed + speedFactor;
+                  
                 }
                 activationTimer += GameWorld.Instance.deltaTime;
                 if (activationTimer > activationTime)
                 {
-                    //Player.speed = oldSpeed;
+                   
                     gameObject.Speed = gameObject.Speed - speedFactor;
                     use = false;
                     activated = false;

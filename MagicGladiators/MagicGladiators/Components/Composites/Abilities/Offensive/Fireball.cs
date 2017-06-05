@@ -21,10 +21,6 @@ namespace MagicGladiators
             damage = 7;
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-
-        }
 
         public override void Update()
         {
@@ -110,11 +106,7 @@ namespace MagicGladiators
                     }
                 }
             }
-            //if (!canShoot)
-            //{
-            //    (icon.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Gray;
-            //}
-            //else (icon.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+          
         }
     }
 }

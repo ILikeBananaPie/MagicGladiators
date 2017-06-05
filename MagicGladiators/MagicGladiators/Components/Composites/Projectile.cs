@@ -19,7 +19,6 @@ namespace MagicGladiators
         private DIRECTION direction;
         private GameObject targetHit;
 
-        //private GameObject go;
         private Transform transform;
         private Vector2 originalPos;
         private Vector2 testVector;
@@ -56,11 +55,7 @@ namespace MagicGladiators
         private GameObject shooter;
 
 
-        //private float Aoe = 50;
-
-        //private float abilityTimer = 0;
-
-        //private GameObject shooter;
+       
         private Vector2 target;
 
         public static List<string> testName { get; set; } = new List<string>();
@@ -86,7 +81,7 @@ namespace MagicGladiators
 
         public Projectile(GameObject gameObject, Vector2 position, Vector2 target, GameObject shooter) : base(gameObject)
         {
-            //go = gameObject;
+           
             this.shooter = shooter;
             projectileSpeed = GameWorld.Instance.player.ProjectileSpeed;
             originalPos = position;
@@ -100,9 +95,7 @@ namespace MagicGladiators
 
             }
 
-
-            //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
-            //go.transform.position = new Vector2(position.X - spriteRenderer.Sprite.Width, position.Y - spriteRenderer.Sprite.Height);
+            
             this.target = target;
             if (gameObject.Tag.Contains("Firewave"))
             {
@@ -143,8 +136,7 @@ namespace MagicGladiators
                 testVector = new Vector2(-0.2f, -0.2f);
             }
             testVector.Normalize();
-            //target = target - originalPos;
-            //target.Normalize();
+           
             this.transform = gameObject.transform;
             (gameObject.GetComponent("Physics") as Physics).Velocity = testVector;
 
@@ -189,7 +181,7 @@ namespace MagicGladiators
             if (gameObject.Tag.Contains("HomingMissile"))
             {
                 animator.PlayAnimation("HomingMissile");
-                travelDistance = 1000;
+                travelDistance = 4000;
             }
             if (gameObject.Tag.Contains("Drain"))
             {
@@ -198,7 +190,7 @@ namespace MagicGladiators
             }
             if (gameObject.Tag == "DeathMeteor")
             {
-                //animator.PlayAnimation("DeathMeteor");
+                
                 animator.PlayAnimation("Fireball");
                 travelDistance = 1500;
             }
@@ -244,7 +236,7 @@ namespace MagicGladiators
             else sprite = content.Load<Texture2D>("ProjectileSheet");
 
             GameWorld.newObjects.Add(gameObject);
-            //go.Tag = "Ability";
+           
 
             CreateAnimations();
         }
@@ -275,7 +267,7 @@ namespace MagicGladiators
                 if (gameObject.Tag == "Chain" && gameObject.Id == GameWorld.Instance.player.Id && !chainActivated)
                 {
                     chainTarget = other.gameObject;
-                    //(chainTarget.GetComponent("Physics") as Physics).chainActivated = true;
+                   
                     chainActivated = true;
                 }
                 if (gameObject.Tag != "DeathMine" && gameObject.Tag != "Chain" && other.gameObject.Tag != "Deflect" && other.gameObject.Tag != "Spellshield")
@@ -339,10 +331,7 @@ namespace MagicGladiators
                 if (Vector2.Distance(new Vector2(go.transform.position.X + 16, go.transform.position.Y + 16), new Vector2(targetHit.transform.position.X + 16, targetHit.transform.position.Y + 16)) < Aoe * shooter.AoeBonus)
                 {
                     Vector2 vectorBetween;
-                    //if (go.transform.position == gameObject.transform.position)
-                    //{
-                    //    vectorBetween = new Vector2(go.transform.position.X + 16, go.transform.position.Y + 16) - new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16);
-                    //}
+                
                     vectorBetween = new Vector2(go.transform.position.X + 16, go.transform.position.Y + 16) - new Vector2(targetHit.transform.position.X + 16, targetHit.transform.position.Y + 16);
                     vectorBetween.Normalize();
 
@@ -350,7 +339,6 @@ namespace MagicGladiators
                     {
                         (go.GetComponent("Player") as Player).isPushed(vectorBetween);
 
-                        //(go.GetComponent("Physics") as Physics).Acceleration += vectorBetween;
 
 
                     }
@@ -497,7 +485,7 @@ namespace MagicGladiators
                     if (other.Tag == "Deflect" && other.Id != gameObject.Id)
                     {
                         GameObject temp = new GameObject();
-                        //GameObject player = new GameObject();
+                        
                         foreach (GameObject go in GameWorld.gameObjects)
                         {
                             if (go.Tag == "Enemy" && go.Id == other.Id)
@@ -506,7 +494,7 @@ namespace MagicGladiators
                             }
                             if (temp.Tag == "Enemy")
                             {
-                                //run deflect code
+                                
                                 Circle playerCircle = new Circle();
                                 playerCircle.Center = new Vector2(temp.transform.position.X + 16, temp.transform.position.Y + 16);
                                 playerCircle.Radius = (temp.GetComponent("Collider") as Collider).CircleCollisionBox.Radius * 2F;
@@ -516,17 +504,7 @@ namespace MagicGladiators
                                     temp = new GameObject();
                                 }
 
-                                //foreach (GameObject obj in GameWorld.gameObjects)
-                                //{
-                                //    if (abilities.Exists(x => x == obj.Tag))
-                                //    {
-                                //        if (playerCircle.Intersects((obj.GetComponent("Collider") as Collider).CircleCollisionBox))
-                                //        {
-                                //            //(player, spell)
-                                //            Deflect.SetVector(temp, gameObject);
-                                //        }
-                                //    }
-                                //}
+                           
 
 
                             }
@@ -553,8 +531,7 @@ namespace MagicGladiators
                         Vector2 boomReturn = (gameObject.GetComponent("Physics") as Physics).GetVector((new Vector2(playerPos.X + 16, playerPos.Y + 16)), new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16));
                         boomReturn.Normalize();
                         (gameObject.GetComponent("Physics") as Physics).Acceleration += boomReturn / 10 * projectileSpeed;
-                        //(gameObject.GetComponent("Physics") as Physics).Velocity = (gameObject.GetComponent("Physics") as Physics).UpdateVelocity((gameObject.GetComponent("Physics") as Physics).Acceleration, (gameObject.GetComponent("Physics") as Physics).Velocity);
-
+                      
                     }
 
                     if (boomerangTimer >= 5)
@@ -575,16 +552,6 @@ namespace MagicGladiators
 
 
 
-                //if (gameObject.Tag == "DeathMine")
-                //{
-                //    mineTimer += GameWorld.Instance.deltaTime;
-                //    if (mineTimer > mineActivationTime)
-                //    {
-                //        deathMineActivated = true;
-                //        (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Red;
-                //    }
-                //    //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
-                //}
 
                 if (gameObject.Tag == "GravityWell")
                 {
@@ -621,7 +588,7 @@ namespace MagicGladiators
                             GameWorld.Instance.client.SendColor(gameObject.Id, gameObject.Tag, color.R, color.G, color.B, color.A);
                         }
                     }
-                    //(gameObject.GetComponent("Physics") as Physics).Acceleration += meteorVector;
+                    
                 }
 
                 if ((gameObject.Tag.Contains("Fireball") || gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain") || gameObject.Tag.Contains("Nova")) && !gameObject.Tag.Contains("Firewave"))
@@ -663,7 +630,7 @@ namespace MagicGladiators
                         (GameWorld.Instance.player.GetComponent("Physics") as Physics).Acceleration -= pull / 10;
                         if (chainTarget.Tag == "Enemy")
                         {
-                            //(chainTarget.GetComponent("Physics") as Physics).Acceleration += pull / 10;
+                            
                             if (GameWorld.Instance.client != null)
                             {
                                 GameWorld.Instance.client.Chain(chainTarget.Id, pull / 10);
@@ -672,8 +639,7 @@ namespace MagicGladiators
                         if (keyState.IsKeyDown(Keys.T) || chainTimer > 2 || Vector2.Distance(new Vector2(chainTarget.transform.position.X + 16, chainTarget.transform.position.Y + 16), new Vector2(GameWorld.Instance.player.transform.position.X + 16, GameWorld.Instance.player.transform.position.Y + 16)) < 35)
                         {
                             chainActivated = false;
-                            //(chainTarget.GetComponent("Physics") as Physics).chainDeactivated = true;
-                            //(chainTarget.GetComponent("Physics") as Physics).chainActivated = false;
+                           
                             GameWorld.objectsToRemove.Add(gameObject);
 
                             if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
