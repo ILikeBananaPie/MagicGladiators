@@ -15,6 +15,8 @@ namespace MagicGladiators
     {
         List<GameObject> gameObjects;
         public string scenetype;
+        public static List<GameObject> tempList = new List<GameObject>();
+
 
         #region Constructors
         public Scene(GameObject[] go)
@@ -34,21 +36,64 @@ namespace MagicGladiators
         }
         public Scene(GameObject[] go, bool reset)
         {
+            if (!reset)
+            {
+                foreach (GameObject obj in GameWorld.characters)
+                {
+                    if (!tempList.Exists(x => x.Id == obj.Id))
+                    {
+                        tempList.Add(obj);
+                    }
+                }
+                foreach (GameObject obj in GameWorld.gameObjects)
+                {
+                    if (obj.Tag == "Enemy" || obj.Tag == "Player")
+                    {
+                        if (!tempList.Exists(x => x.Id == obj.Id))
+                        {
+                            tempList.Add(obj);
+                        }
+                    }
+                }
+            }
 
             gameObjects = new List<GameObject>();
             foreach (GameObject g in go)
             {
-                gameObjects.Add(g);
+                if (g.Tag == "Untagged")
+                {
+                    gameObjects.Add(g);
+                }
             }
-            if (reset)
+            if (!reset)
             {
                 ResetGameWorld();
-            }
-            foreach (GameObject obj in gameObjects)
-            {
-                GameWorld.newObjects.Add(obj);
+                ClearGameWorld();
             }
 
+            foreach (GameObject obj in gameObjects)
+            {
+                if (obj.Tag == "Untagged")
+                {
+                    GameWorld.newObjects.Add(obj);
+                }
+            }
+            foreach (GameObject obj in tempList)
+            {
+                GameWorld.objectsToRemove.Add(obj);
+                if (obj.Tag == "Player" || obj.Tag == "Enemy")
+                {
+                    GameObject scoreGameObject = new GameObject();
+                    scoreGameObject.playerName = obj.playerName;
+                    scoreGameObject.Id = obj.Id;
+                    scoreGameObject.Tag = "Score";
+                    scoreGameObject.kills = obj.kills;
+                    scoreGameObject.DamageDone = obj.DamageDone;
+                    scoreGameObject.TotalScore = obj.TotalScore;
+                    GameWorld.newObjects.Add(scoreGameObject);
+                }
+            }
+            tempList.Clear();
         }
         public Scene(List<GameObject> go)
         {
@@ -442,8 +487,9 @@ namespace MagicGladiators
             GameWorld.gameState = GameState.offgame;
             GameWorld.buyPhase = true;
             CreateAbility.abilityIndex = 0;
+            GameWorld.Instance.waitingForServerResponse = false;
             //GameWorld.Instance.DrawScore();
-            ClearGameWorld();
+            //ClearGameWorld();
             GameObject[] included = new GameObject[2];
             for (int i = 0; i < included.Length; i++)
             {
@@ -497,7 +543,7 @@ namespace MagicGladiators
             }
         }
 
-        public void ResetGameWorld()
+        public static void ResetGameWorld()
         {
             GameWorld.newObjects.Clear();
             foreach (GameObject obj in GameWorld.gameObjects)
@@ -510,43 +556,30 @@ namespace MagicGladiators
 
         public static void ClearGameWorld()
         {
-            List<GameObject> tempList = new List<GameObject>();
-            foreach (GameObject go in GameWorld.gameObjects)
-            {
-                tempList.Add(go);
-            }
-            foreach (GameObject go in GameWorld.newObjects)
-            {
-                tempList.Add(go);
-            }
-            foreach (GameObject go in GameWorld.objectsToRemove)
-            {
-                tempList.Add(go);
-            }
-            foreach (GameObject go in tempList)
-            {
-                GameWorld.objectsToRemove.Add(go);
-                if (go.Tag == "Player" || go.Tag == "Enemy")
-                {
-                    GameObject scoreGameObject = new GameObject();
-                    scoreGameObject.playerName = go.playerName;
-                    scoreGameObject.Tag = "Score";
-                    scoreGameObject.kills = go.kills;
-                    scoreGameObject.DamageDone = go.DamageDone;
-                    scoreGameObject.TotalScore = go.TotalScore;
-                    GameWorld.newObjects.Add(scoreGameObject);
-                }
-            }
-            tempList.Clear();
+            //foreach (GameObject go in GameWorld.gameObjects)
+            //{
+            //    tempList.Add(go);
+            //}
+            //foreach (GameObject go in GameWorld.newObjects)
+            //{
+            //    tempList.Add(go);
+            //}
+            //foreach (GameObject go in GameWorld.objectsToRemove)
+            //{
+            //    tempList.Add(go);
+            //}
 
-            GameWorld.Instance.ResetCharacters();
-            GameWorld.characters.Clear();
-            GameWorld.characterColliders.Clear();
+            //tempList.Clear();
+            //GameWorld.gameObjects.Clear();
+            //GameWorld.Instance.ResetCharacters();
+            //GameWorld.characters.Clear();
+            //GameWorld.characterColliders.Clear();
             Player.abilities.Clear();
             Player.deathAbilities.Clear();
             Player.items.Clear();
             GameWorld.itemList.Clear();
             GameWorld.abilityList.Clear();
+            //ResetGameWorld();
         }
     }
 }

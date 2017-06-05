@@ -72,6 +72,7 @@ namespace MagicGladiators
                                 }
                                 GameWorld.gameState = GameState.offgame;
                                 GameWorld.buyPhase = true;
+                                Scene.tempList.Clear();
                                 GameWorld.Instance.NextScene = Scene.NewGame();
                                 break;
                             case "MainMenu":
@@ -95,8 +96,7 @@ namespace MagicGladiators
                                 }
                                 GameWorld.gameState = GameState.offgame;
                                 GameWorld.buyPhase = true;
-                                GameWorld.gameState = GameState.offgame;
-                                GameWorld.buyPhase = true;
+                                Scene.tempList.Clear();
                                 GameWorld.Instance.NextScene = Scene.MainMenu();
                                 break;
                             case "Join":

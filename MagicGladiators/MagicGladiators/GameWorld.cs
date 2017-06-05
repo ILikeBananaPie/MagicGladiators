@@ -38,6 +38,8 @@ namespace MagicGladiators
         private Keys[] keys;
         private string bindName;
 
+        public bool waitingForServerResponse { get; set; } = false;
+
         public static List<GameObject> gameObjects;
         public static List<GameObject> newObjects;
         public static List<GameObject> objectsToRemove;
@@ -1129,7 +1131,7 @@ namespace MagicGladiators
                 canReady = true;
             }
 
-            if (client != null && gameState == GameState.ingame && !buyPhase)
+            if (client != null && gameState == GameState.ingame && !buyPhase && !waitingForServerResponse)
             {
                 if (client.isHost)
                 {
@@ -1160,8 +1162,10 @@ namespace MagicGladiators
                         {
                             //show end screen
                             currentRound = 1;
-                            NextScene = Scene.PostScreen();
+                            waitingForServerResponse = true;
                             client.SendEnding();
+                            //Thread.Sleep(50);
+                            //NextScene = Scene.PostScreen();
                         }
                     }
                 }
@@ -1182,6 +1186,7 @@ namespace MagicGladiators
                     }
                     CircleColliders.Remove((go.GetComponent("Collider") as Collider));
                     gameObjects.Remove(go);
+
                     if (go.Tag == "Player")
                     {
                         Player player = (go.GetComponent("Player") as Player);
@@ -1222,6 +1227,7 @@ namespace MagicGladiators
             }
             spriteBatch.DrawString(fontText, TestClient.text, new Vector2(0, Window.ClientBounds.Height / 2), Color.Black);
 
+
             foreach (GameObject go in gameObjects)
             {
                 if (!go.IsInvisible)
@@ -1235,7 +1241,10 @@ namespace MagicGladiators
                         go.Draw(spriteBatch);
                     }
                 }
+
             }
+
+
 
 
             DrawPlayerAbilities();
@@ -1299,7 +1308,7 @@ namespace MagicGladiators
             }
             else if (CurrentScene.scenetype == "PostScreen")
             {
-                DrawScore(new Vector2(Window.ClientBounds.Width / 10 * 4, Window.ClientBounds.Height / 10 * 2));
+                DrawScore(new Vector2(Window.ClientBounds.Width / 10 * 6, Window.ClientBounds.Height / 10 * 2));
             }
 
             spriteBatch.End();

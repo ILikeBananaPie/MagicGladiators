@@ -112,7 +112,7 @@ namespace TestServer
                             #region Ending
                             if (type == (byte)PacketType.Ending)
                             {
-                                UpdateConnectionList(msgIn.SenderConnection);
+                                //UpdateConnectionList(msgIn.SenderConnection);
                                 SendEnding();
                             }
                             #endregion
@@ -382,7 +382,7 @@ namespace TestServer
             NetOutgoingMessage msgOut;
             msgOut = server.CreateMessage();
             msgOut.Write((byte)PacketType.Ending);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+            server.SendMessage(msgOut, server.Connections, NetDeliveryMethod.ReliableUnordered, 0);
         }
 
         public static void SendScore(string id, int kills, float damage, int score)

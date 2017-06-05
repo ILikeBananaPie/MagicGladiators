@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MagicGladiators;
 using System.Net;
+using System.Diagnostics;
 //using TestServer;
 
 namespace MagicGladiators
@@ -63,6 +64,7 @@ namespace MagicGladiators
             msgOut.Write(damage);
             msgOut.Write(score);
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableUnordered);
+            Debug.WriteLine("Sending score " + DateTime.Now);
         }
 
         public void SendGold(string id, int gold)
@@ -73,6 +75,7 @@ namespace MagicGladiators
             msgOut.Write(id);
             msgOut.Write(gold);
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableUnordered);
+            Debug.WriteLine("Sending gold " + DateTime.Now);
         }
 
         public void SendMapSettings(string map, int rounds)
@@ -367,6 +370,7 @@ namespace MagicGladiators
             msgOut = client.CreateMessage();
             msgOut.Write((byte)PacketType.Ending);
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableUnordered);
+            Debug.WriteLine("Sending end game " + DateTime.Now);
         }
 
         public void Draw()
@@ -437,19 +441,49 @@ namespace MagicGladiators
                         #region Ending
                         if (type == (byte)PacketType.Ending)
                         {
+                            Debug.WriteLine("Receiving end game " + DateTime.Now);
                             GameWorld.Instance.NextScene = Scene.PostScreen();
                         }
                         #endregion
                         #region Score
                         if (type == (byte)PacketType.Score)
                         {
+                            Debug.WriteLine("Receiving score " + DateTime.Now);
+
                             string id = msgIn.ReadString();
                             int kills = msgIn.ReadInt32();
                             float damage = msgIn.ReadFloat();
                             int score = msgIn.ReadInt32();
                             foreach (GameObject go in GameWorld.gameObjects)
                             {
-                                if (go.Tag == "Enemy" && go.Id == id)
+                                if ((go.Tag == "Enemy" || go.Tag == "Score") && go.Id == id)
+                                {
+                                    go.kills = kills;
+                                    go.DamageDone = damage;
+                                    go.TotalScore = score;
+                                }
+                            }
+                            foreach (GameObject go in GameWorld.characters)
+                            {
+                                if ((go.Tag == "Enemy" || go.Tag == "Score") && go.Id == id)
+                                {
+                                    go.kills = kills;
+                                    go.DamageDone = damage;
+                                    go.TotalScore = score;
+                                }
+                            }
+                            foreach (GameObject go in GameWorld.newObjects)
+                            {
+                                if ((go.Tag == "Enemy" || go.Tag == "Score") && go.Id == id)
+                                {
+                                    go.kills = kills;
+                                    go.DamageDone = damage;
+                                    go.TotalScore = score;
+                                }
+                            }
+                            foreach (GameObject go in GameWorld.objectsToRemove)
+                            {
+                                if ((go.Tag == "Enemy" || go.Tag == "Score") && go.Id == id)
                                 {
                                     go.kills = kills;
                                     go.DamageDone = damage;
@@ -461,6 +495,8 @@ namespace MagicGladiators
                         #region Gold
                         if (type == (byte)PacketType.Gold)
                         {
+                            Debug.WriteLine("Receiving gold " + DateTime.Now);
+
                             int gold = msgIn.ReadInt32();
                             Player.gold += (int)(gold * (1 + GameWorld.Instance.player.GoldBonusPercent));
                             GameWorld.Instance.player.TotalScore += gold;
