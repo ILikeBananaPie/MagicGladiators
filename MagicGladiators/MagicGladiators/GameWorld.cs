@@ -679,6 +679,16 @@ namespace MagicGladiators
                 ResetItemsAndAbilities();
                 NextScene = Scene.Practice();
             }
+#if DEBUG
+            if (Keyboard.GetState().IsKeyDown(Keys.F7))
+            {
+                dbCon.i.AddBattleNotWonToSavedID();
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.F8))
+            {
+                dbCon.i.AddBattleWonToSavedID();
+            }
+#endif 
 
             UpdateMouseRelease(mouse);
 
