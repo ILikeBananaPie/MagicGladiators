@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestServer
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove, UpdateReadyList, Gold, Score }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove, UpdateReadyList, Gold, Score, Ending }
 
     public class Program
     {
@@ -109,6 +109,13 @@ namespace TestServer
                         case NetIncomingMessageType.Data:
                             //TestClient.text = msgIn.ReadString();
                             byte type = msgIn.ReadByte();
+                            #region Ending
+                            if (type == (byte)PacketType.Ending)
+                            {
+                                UpdateConnectionList(msgIn.SenderConnection);
+                                SendEnding();
+                            }
+                            #endregion
                             #region Score
                             if (type == (byte)PacketType.Score)
                             {
@@ -368,6 +375,14 @@ namespace TestServer
                     }
                 }
             }
+        }
+
+        public static void SendEnding()
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = server.CreateMessage();
+            msgOut.Write((byte)PacketType.Ending);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
         }
 
         public static void SendScore(string id, int kills, float damage, int score)

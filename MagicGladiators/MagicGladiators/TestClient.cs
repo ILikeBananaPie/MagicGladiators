@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MagicGladiators
 {
-    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove, UpdateReadyList, Gold, Score }
+    public enum PacketType { PlayerPos, EnemyPos, CreatePlayer, PlayerVel, EnemyVel, RemoveProjectile, CreateProjectile, UpdateProjectile, Push, Deflect, ProjectileVel, ColorChange, AssignID, UpdateStats, ShrinkMap, Chain, Invisibility, Clone, RemovePlayer, UpdatePlayerIndex, Critter, EnemyAcceleration, MapSettings, StartGame, Ready, SwitchPhase, SpeedUp, SpeedDown, ChainRemove, UpdateReadyList, Gold, Score, Ending }
 
 
     public class TestClient
@@ -361,6 +361,14 @@ namespace MagicGladiators
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
         }
 
+        public void SendEnding()
+        {
+            NetOutgoingMessage msgOut;
+            msgOut = client.CreateMessage();
+            msgOut.Write((byte)PacketType.Ending);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableUnordered);
+        }
+
         public void Draw()
         {
             spriteBatch.Begin();
@@ -426,6 +434,12 @@ namespace MagicGladiators
                         break;
                     case NetIncomingMessageType.Data:
                         byte type = msgIn.ReadByte();
+                        #region Ending
+                        if (type == (byte)PacketType.Ending)
+                        {
+                            GameWorld.Instance.NextScene = Scene.PostScreen();
+                        }
+                        #endregion
                         #region Score
                         if (type == (byte)PacketType.Score)
                         {
