@@ -143,6 +143,7 @@ namespace MagicGladiators
             // TODO: Add your initialization logic here
             //this.Window.Position = new Point(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2, 10);
             dbCon.i.StartDataBaseConnection();
+            if (SaMM.i is SaMM) { }
 
             this.Window.Position = new Point(10, 10);
             TooltipBox.AddComponent(new SpriteRenderer(TooltipBox, "ToolTipBox", 1));
@@ -310,8 +311,8 @@ namespace MagicGladiators
             Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "ShrinkMap", 0, "Does something"));
             x = Player.deathAbilities.Count * 34;
             Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "SlowField", 0, "Does something"));
-            x = Player.deathAbilities.Count * 34;
-            Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "IceField", 0, "Does something"));
+            //x = Player.deathAbilities.Count * 34;
+            //Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "IceField", 0, "Does something"));
 
             int index = 0;
             foreach (Component component in player.components)
@@ -619,60 +620,6 @@ namespace MagicGladiators
                 UpdateItemUpgrade(mouse, mouseCircle);
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.F2) && canServer)
-            {
-                //server = new TestServer();
-
-                canServer = false;
-                showServer = true;
-                server = new Process();
-                server.StartInfo.FileName = "TestServer.exe";
-                server.EnableRaisingEvents = true;
-                server.Start();
-                //GameWorld.Instance.client = new TestClient("localhost");
-                //Thread update = new Thread(ServerUpdate);
-                //update.IsBackground = true;
-                //update.Start();
-                //threads.Add(update);
-            }
-            if (!canServer)
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.F6))
-                {
-                    //server.SendMessage("Server sending text!");
-                }
-
-                //server.Update();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.F3) && canClient)
-            {
-                client = new TestClient("localhost");
-                canClient = false;
-                showServer = true;
-                client.ConnectToServer();
-
-                //Thread update = new Thread(ClientUpdate);
-                //update.IsBackground = true;
-                //update.Start();
-                //threads.Add(update);
-
-                //Thread draw = new Thread(ClientDraw);
-                //draw.IsBackground = true;
-                //draw.Start();
-                //threads.Add(draw);
-            }
-            if (!canClient)
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.F4))
-                {
-                    client.SendMessage("Client sending text!");
-                }
-                if (client != null)
-                {
-                    client.Update();
-                }
-                //client.Draw();
-            }
             if (Keyboard.GetState().IsKeyDown(Keys.F9) && CurrentScene.scenetype == "Practice")
             {
                 ResetItemsAndAbilities();
