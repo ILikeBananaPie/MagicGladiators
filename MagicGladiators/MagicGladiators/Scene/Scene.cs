@@ -161,11 +161,6 @@ namespace MagicGladiators
                         included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
                         included[i].AddComponent(new OnClick(included[i], "NewGame"));
                         break;
-                    case 1:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaReady", 0));
-                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
-                        included[i].AddComponent(new OnClick(included[i], "Ready"));
-                        break;
                 }
             }
             Scene send = new Scene(included);
