@@ -12,7 +12,7 @@ namespace MagicGladiators
 {
     public enum dbMatching { NotConnected = 0, NoMatch = 1, Match = 2, DuplicatesError = 3, UnknownError = 4 }
     public enum dbCreate { NotConnected = 0, Success = 1, AlreadyExist = 2, InvalidInput = 3 ,UnknownError = 4}
-    public enum dbTables { login = 0 }
+    public enum dbTables { login = 0 , stats = 1}
 
     public class dbCon
     {
@@ -38,14 +38,14 @@ namespace MagicGladiators
             connection.Open();
             string sql;
 
-            sql = "create table if not exists login (id integer primary key, name text, password text)";
+            sql = "create table if not exists login (id integer primary key, name text, password text, battles int, battleswon int)";
             SQLiteCommand command = new SQLiteCommand(sql, connection);
             command.ExecuteNonQuery();
-
-            sql = "create table if not exists stats (id integer primary key, won int, loss int)";
+            
 
             connection.Close();
             isConnected = false;
+            savedId = -1;
 
             connection.StateChange += UpdateIfOpen;
         }
@@ -54,6 +54,7 @@ namespace MagicGladiators
 
         private SQLiteConnection connection;
         private bool isConnected;
+        private int savedId;
 
         public void StartDataBaseConnection()
         {
@@ -90,31 +91,15 @@ namespace MagicGladiators
         {
             if (isConnected)
             {
-                if (table == dbTables.login)
+                if (Regex.IsMatch(info1, @"^[A-Za-z0-9]+$") && Regex.IsMatch(info2, @"^[A-Za-z0-9]+$"))
                 {
-                    string commandString = "select * from login where name='" + info1 + "' and password='" + info2 + "' ";
-                    SQLiteCommand loginCommand = new SQLiteCommand(commandString, connection);
-                    loginCommand.ExecuteNonQuery();
-                    SQLiteDataReader dr = loginCommand.ExecuteReader();
-                    int count = 0;
-                    while (dr.Read())
+                    if (table == dbTables.login)
                     {
-                        count++;
-                    }
-                    dr.Close();
-                    if (count == 1)
-                    {
-                        return dbMatching.Match;
-                    } else if (count > 1)
-                    {
-                        return dbMatching.DuplicatesError;
-                    } else if (count == 0)
-                    {
-                        commandString = "select * from login where name='" + info2 + "' and password='" + info1 + "' ";
-                        loginCommand = new SQLiteCommand(commandString, connection);
+                        string commandString = "select * from login where name='" + info1 + "' and password='" + info2 + "' ";
+                        SQLiteCommand loginCommand = new SQLiteCommand(commandString, connection);
                         loginCommand.ExecuteNonQuery();
-                        dr = loginCommand.ExecuteReader();
-                        count = 0;
+                        SQLiteDataReader dr = loginCommand.ExecuteReader();
+                        int count = 0;
                         while (dr.Read())
                         {
                             count++;
@@ -128,14 +113,33 @@ namespace MagicGladiators
                             return dbMatching.DuplicatesError;
                         } else if (count == 0)
                         {
-                            return dbMatching.NoMatch;
+                            commandString = "select * from login where name='" + info2 + "' and password='" + info1 + "' ";
+                            loginCommand = new SQLiteCommand(commandString, connection);
+                            loginCommand.ExecuteNonQuery();
+                            dr = loginCommand.ExecuteReader();
+                            count = 0;
+                            while (dr.Read())
+                            {
+                                count++;
+                            }
+                            dr.Close();
+                            if (count == 1)
+                            {
+                                return dbMatching.Match;
+                            } else if (count > 1)
+                            {
+                                return dbMatching.DuplicatesError;
+                            } else if (count == 0)
+                            {
+                                return dbMatching.NoMatch;
+                            } else
+                            {
+                                return dbMatching.UnknownError;
+                            }
                         } else
                         {
                             return dbMatching.UnknownError;
                         }
-                    } else
-                    {
-                        return dbMatching.UnknownError;
                     }
                 }
                 return dbMatching.NoMatch;
@@ -167,7 +171,7 @@ namespace MagicGladiators
 
                     } else if (count == 0)
                     {
-                        string tempCommand = "insert into login (id, name, password) values (null, '" + name + "', '" + password + "');";
+                        string tempCommand = "insert into login (id, name, password, battles, battleswon) values (null, '" + name + "', '" + password + "', '0', '0');";
                         SQLiteCommand command = new SQLiteCommand(tempCommand, connection);
                         command.ExecuteNonQuery();
                         return dbCreate.Success;
@@ -182,6 +186,124 @@ namespace MagicGladiators
             } else
             {
                 return dbCreate.NotConnected;
+            }
+        }
+
+        public int SetID
+        {
+            set
+            {
+                savedId = value;
+            }
+        }
+        public void ResetID() { savedId = -1; }
+        public dbMatching FindNSetID(string username)
+        {
+            if (isConnected)
+            {
+                if (Regex.IsMatch(username, @"^[A-Za-z0-9]+$"))
+                {
+                    string testforstring = "select * from login where name='" + username + "';";
+                    SQLiteCommand testcommand = new SQLiteCommand(testforstring, connection);
+                    testcommand.ExecuteNonQuery();
+                    SQLiteDataReader testread = testcommand.ExecuteReader();
+                    int count = 0;
+                    int idt = -1;
+                    while (testread.Read())
+                    {
+                        count++;
+                        idt = int.Parse(testread["id"].ToString());
+                    }
+                    testread.Close();
+                    if (count > 1)
+                    {
+                        return dbMatching.DuplicatesError;
+                    } else if (count == 1)
+                    {
+                        savedId = idt;
+                        return dbMatching.Match;
+
+                    } else if (count == 0)
+                    {
+                        return dbMatching.NoMatch;
+                    } else
+                    {
+                        return dbMatching.UnknownError;
+                    }
+                }
+                return dbMatching.NoMatch;
+            } else
+            {
+                return dbMatching.NotConnected;
+            }
+        }
+
+        public Dictionary<string, int> GetStats()
+        {
+            if (savedId >= 0 && isConnected)
+            {
+                Dictionary<string, int> rtrn = new Dictionary<string, int>();
+                string testforstring = "select * from login where id='" + savedId + "';";
+                SQLiteCommand testcommand = new SQLiteCommand(testforstring, connection);
+                testcommand.ExecuteNonQuery();
+                SQLiteDataReader testread = testcommand.ExecuteReader();
+                while (testread.Read())
+                {
+                    rtrn.Add("battles", (int)testread["battles"]);
+                    rtrn.Add("battleswon", (int)testread["battleswon"]);
+                }
+                testread.Close();
+                return rtrn;
+            } else
+            {
+                return new Dictionary<string, int>();
+            }
+        }
+
+        public void AddBattleWonToSavedID()
+        {
+            if (savedId >= 0 && isConnected)
+            {
+                int i = 0;
+                int j = 0;
+                string testforstring = "select * from login where id='" + savedId + "';";
+                SQLiteCommand testcommand = new SQLiteCommand(testforstring, connection);
+                testcommand.ExecuteNonQuery();
+                SQLiteDataReader testread = testcommand.ExecuteReader();
+                while (testread.Read())
+                {
+                    i = (int)testread["battles"] + 1;
+                    j = (int)testread["battleswon"] + 1;
+                }
+                testread.Close();
+
+                testforstring = "update login set battles='" + i + "' where id='" + savedId + "';";
+                testcommand = new SQLiteCommand(testforstring, connection);
+                testcommand.ExecuteNonQuery();
+                testforstring = "update login set battleswon='" + j + "' where id='" + savedId + "';";
+                testcommand = new SQLiteCommand(testforstring, connection);
+                testcommand.ExecuteNonQuery();
+            }
+        }
+
+        public void AddBattleNotWonToSavedID()
+        {
+            if (savedId >= 0 && isConnected)
+            {
+                int i = 0;
+                string testforstring = "select * from login where id='" + savedId + "';";
+                SQLiteCommand testcommand = new SQLiteCommand(testforstring, connection);
+                testcommand.ExecuteNonQuery();
+                SQLiteDataReader testread = testcommand.ExecuteReader();
+                while (testread.Read())
+                {
+                    i = (int)testread["battles"] + 1;
+                }
+                testread.Close();
+
+                testforstring = "update login set battles='" + i + "' where id='" + savedId + "';";
+                testcommand = new SQLiteCommand(testforstring, connection);
+                testcommand.ExecuteNonQuery();
             }
         }
     }
