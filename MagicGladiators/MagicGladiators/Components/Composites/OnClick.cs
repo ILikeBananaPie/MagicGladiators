@@ -241,6 +241,12 @@ namespace MagicGladiators
                             case "Statistic":
                                 GameWorld.Instance.NextScene = Scene.Statistic();
                                 break;
+                            case "Mute":
+                                SaMM.i.MuteMusic();
+                                break;
+                            case "Options":
+                                GameWorld.Instance.NextScene = Scene.Option();
+                                break;
                         }
                     }
                 }

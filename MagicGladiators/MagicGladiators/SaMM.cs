@@ -43,6 +43,7 @@ namespace MagicGladiators
         private Song bbgm;
         private SongState newSong;
         private SongState lastSong;
+        private bool muted;
         //private Sound
 
         private SaMM()
@@ -82,6 +83,11 @@ namespace MagicGladiators
                 }
                 lastSong = ss;
             }
+        }
+
+        public void MuteMusic()
+        {
+            MediaPlayer.IsMuted = !MediaPlayer.IsMuted;
         }
     }
 }

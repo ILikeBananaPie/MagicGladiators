@@ -531,6 +531,32 @@ namespace MagicGladiators
             send.scenetype = "Statistic";
             return send;
         }
+        public static Scene Option()
+        {
+            GameObject[] included = new GameObject[4];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "Mute", 0));
+                        included[i].AddComponent(new Animator(included[i]));
+                        included[i].AddComponent(new Muter(included[i]));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - (203 / 2), (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "Mute"));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "MainMenu"));
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "Option";
+            return send;
+        }
         #endregion
 
         public void Draw(SpriteBatch spriteBatch)
