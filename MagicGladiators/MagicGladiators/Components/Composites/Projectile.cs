@@ -242,10 +242,10 @@ namespace MagicGladiators
         {
             if (other.gameObject.Tag.Contains("Critter"))
             {
-                GameWorld.objectsToRemove.Add(other.gameObject);
+                GameWorld.objectsToRemove.Add(gameObject);
                 if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
                 {
-                    GameWorld.Instance.client.SendRemoval(other.gameObject.Tag, other.gameObject.Id);
+                    GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
                 }
                 return;
             }
