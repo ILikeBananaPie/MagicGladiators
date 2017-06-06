@@ -557,6 +557,29 @@ namespace MagicGladiators
             send.scenetype = "Option";
             return send;
         }
+        public static Scene Credits()
+        {
+            GameObject[] included = new GameObject[4];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaCreditsInfo", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - (1200 / 2), (GameWorld.Instance.GraphicsDevice.Viewport.Height / 2) - (600 / 2));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "MainMenu"));
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "Credits";
+            return send;
+        }
         #endregion
 
         public void Draw(SpriteBatch spriteBatch)

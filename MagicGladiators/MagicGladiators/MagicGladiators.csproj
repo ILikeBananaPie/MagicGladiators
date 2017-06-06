@@ -258,6 +258,9 @@
     <Content Include="Extra\ProtobufSerializer.pdb" />
     <Content Include="Extra\ProtobufSerializer.XML" />
     <Content Include="Icon.ico" />
+    <Content Include="LIDGREN LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
