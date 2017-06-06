@@ -241,7 +241,7 @@ namespace MagicGladiators
             {
                 instructions += " / Press F9 to reset Practice";
             }
-            if (GameWorld.Instance.CurrentScene.scenetype == "Play")
+            if (GameWorld.Instance.CurrentScene.scenetype == "Play" && GameWorld.buyPhase)
             {
                 instructions += " / Press F6 to ready up";
             }

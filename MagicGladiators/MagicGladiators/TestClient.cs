@@ -63,8 +63,7 @@ namespace MagicGladiators
             msgOut.Write(kills);
             msgOut.Write(damage);
             msgOut.Write(score);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableUnordered);
-            Debug.WriteLine("Sending score " + DateTime.Now);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
         }
 
         public void SendGold(string id, int gold)
@@ -74,8 +73,7 @@ namespace MagicGladiators
             msgOut.Write((byte)PacketType.Gold);
             msgOut.Write(id);
             msgOut.Write(gold);
-            client.SendMessage(msgOut, NetDeliveryMethod.ReliableUnordered);
-            Debug.WriteLine("Sending gold " + DateTime.Now);
+            client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
         }
 
         public void SendMapSettings(string map, int rounds)
@@ -245,7 +243,7 @@ namespace MagicGladiators
                 msgOut.Write(position.Y);
                 msgOut.Write(target.X);
                 msgOut.Write(target.Y);
-                client.SendMessage(msgOut, NetDeliveryMethod.ReliableUnordered);
+                client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
             }
         }
 
@@ -370,7 +368,6 @@ namespace MagicGladiators
             msgOut = client.CreateMessage();
             msgOut.Write((byte)PacketType.Ending);
             client.SendMessage(msgOut, NetDeliveryMethod.ReliableUnordered);
-            Debug.WriteLine("Sending end game " + DateTime.Now);
         }
 
         public void Draw()
@@ -441,15 +438,12 @@ namespace MagicGladiators
                         #region Ending
                         if (type == (byte)PacketType.Ending)
                         {
-                            Debug.WriteLine("Receiving end game " + DateTime.Now);
                             GameWorld.Instance.NextScene = Scene.PostScreen();
                         }
                         #endregion
                         #region Score
                         if (type == (byte)PacketType.Score)
                         {
-                            Debug.WriteLine("Receiving score " + DateTime.Now);
-
                             string id = msgIn.ReadString();
                             int kills = msgIn.ReadInt32();
                             float damage = msgIn.ReadFloat();
@@ -495,8 +489,6 @@ namespace MagicGladiators
                         #region Gold
                         if (type == (byte)PacketType.Gold)
                         {
-                            Debug.WriteLine("Receiving gold " + DateTime.Now);
-
                             int gold = msgIn.ReadInt32();
                             Player.gold += (int)(gold * (1 + GameWorld.Instance.player.GoldBonusPercent));
                             GameWorld.Instance.player.TotalScore += gold;
@@ -565,15 +557,16 @@ namespace MagicGladiators
                         #region SwitchPhase
                         if (type == (byte)PacketType.SwitchPhase)
                         {
+                            foreach (Component component in GameWorld.Instance.player.components)
+                            {
+                                if (component is Ability)
+                                {
+                                    (component as Ability).CanShoot = true;
+                                    (component as Ability).CooldownTimer = 0;
+                                }
+                            }
                             if (GameWorld.buyPhase)
                             {
-                                foreach (Component component in GameWorld.Instance.player.components)
-                                {
-                                    if (component is Ability)
-                                    {
-                                        (component as Ability).CooldownTimer = (component as Ability).CooldownTime;
-                                    }
-                                }
                                 GameWorld.buyPhase = false;
                                 GameWorld.Instance.player.isReady = false;
                                 GameWorld.Instance.StartRound();
@@ -629,11 +622,15 @@ namespace MagicGladiators
                                     {
                                         if (component is Ability)
                                         {
-                                            (component as Ability).CooldownTimer = (component as Ability).CooldownTime;
+                                            (component as Ability).CanShoot = true;
+                                            (component as Ability).CooldownTimer = 0;
                                         }
                                     }
                                     //SendStartgame();
-                                    Player.gold += 20;
+                                    if (GameWorld.currentRound != 1)
+                                    {
+                                        Player.gold += 20;
+                                    }
                                     SendSwitchPhase();
                                     GameWorld.Instance.StartRound();
                                     //GameWorld.currentRound++;
@@ -918,7 +915,8 @@ namespace MagicGladiators
                             float x = msgIn.ReadFloat();
                             float y = msgIn.ReadFloat();
                             (GameWorld.Instance.player.GetComponent("Player") as Player).isPushed(new Vector2(x, y));
-                            (GameWorld.Instance.player.GetComponent("Player") as Player).TakeDamage(damage);
+                            (GameWorld.Instance.player.GetComponent("Player") as Player).TakeDamage(damage * GameWorld.Instance.player.DamageResistance);
+                            Debug.WriteLine("Receiving " + (damage * GameWorld.Instance.player.DamageResistance) + " " + DateTime.Now);
                         }
                         #endregion
                         #region Deflect
