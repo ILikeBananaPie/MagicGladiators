@@ -104,7 +104,7 @@ namespace MagicGladiators
         public void OnCollisionEnter(Collider other)
         {
            
-            if (other.gameObject.Id != gameObject.Id && !noGoldList.Exists(x => x == other.gameObject.Tag))
+            if (other.gameObject.Id != gameObject.Id && !noGoldList.Exists(x => x == other.gameObject.Tag) && !other.gameObject.Tag.Contains("Critter") && !other.gameObject.Tag.Contains("Clone") && !other.gameObject.Tag.Contains("Firewave") && other.gameObject.Tag != "DeathMine" && other.gameObject.Tag != "DeathMeteor")
             {
                 lastHitBy = other.gameObject.Id;
             }
