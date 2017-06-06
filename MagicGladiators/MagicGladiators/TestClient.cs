@@ -567,6 +567,13 @@ namespace MagicGladiators
                         {
                             if (GameWorld.buyPhase)
                             {
+                                foreach (Component component in GameWorld.Instance.player.components)
+                                {
+                                    if (component is Ability)
+                                    {
+                                        (component as Ability).CooldownTimer = (component as Ability).CooldownTime;
+                                    }
+                                }
                                 GameWorld.buyPhase = false;
                                 GameWorld.Instance.player.isReady = false;
                                 GameWorld.Instance.StartRound();
@@ -578,6 +585,7 @@ namespace MagicGladiators
                             }
                             else
                             {
+                                Player.gold += 20;
                                 GameWorld.buyPhase = true;
                                 GameWorld.currentRound++;
                                 GameWorld.Instance.StartRound();
@@ -617,7 +625,15 @@ namespace MagicGladiators
                                     {
                                         go.isReady = false;
                                     }
+                                    foreach (Component component in GameWorld.Instance.player.components)
+                                    {
+                                        if (component is Ability)
+                                        {
+                                            (component as Ability).CooldownTimer = (component as Ability).CooldownTime;
+                                        }
+                                    }
                                     //SendStartgame();
+                                    Player.gold += 20;
                                     SendSwitchPhase();
                                     GameWorld.Instance.StartRound();
                                     //GameWorld.currentRound++;

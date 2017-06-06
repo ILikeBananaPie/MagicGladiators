@@ -28,9 +28,42 @@ namespace MagicGladiators
 
         }
 
-      
+        public float CooldownTimer
+        {
+            get
+            {
+                return cooldownTimer;
+            }
 
+            set
+            {
+                cooldownTimer = value;
+            }
+        }
+        public bool CanShoot
+        {
+            get
+            {
+                return canShoot;
+            }
 
+            set
+            {
+                canShoot = value;
+            }
+        }
+        public float CooldownTime
+        {
+            get
+            {
+                return cooldown;
+            }
+
+            set
+            {
+                cooldown = value;
+            }
+        }
 
 
         public abstract void Update();

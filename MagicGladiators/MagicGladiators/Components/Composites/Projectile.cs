@@ -284,8 +284,19 @@ namespace MagicGladiators
                             targetHit = other.gameObject;
                             if (!GameWorld.buyPhase)
                             {
-                                (GameWorld.Instance.player.GetComponent("Player") as Player).GoldReward(3);
-                                GameWorld.Instance.player.TotalScore += 3;
+                                string ability;
+                                if (gameObject.Tag.Contains("Nova"))
+                                {
+                                    ability = "Nova";
+                                }
+                                else if (gameObject.Tag.Contains("Fireball"))
+                                {
+                                    ability = "Fireball";
+                                }
+                                else ability = gameObject.Tag;
+                                (GameWorld.Instance.player.GetComponent("Player") as Player).GoldReward(4);
+                                GameWorld.Instance.player.DamageDone += (GameWorld.Instance.player.GetComponent(ability) as Ability).damage * other.gameObject.DamageResistance;
+                                GameWorld.Instance.player.TotalScore += (int)((GameWorld.Instance.player.GetComponent(ability) as Ability).damage * other.gameObject.DamageResistance);
                                 if (GameWorld.Instance.client != null)
                                 {
                                     GameWorld.Instance.client.SendScore(GameWorld.Instance.player.Id, GameWorld.Instance.player.kills, GameWorld.Instance.player.DamageDone, GameWorld.Instance.player.TotalScore);
@@ -373,11 +384,11 @@ namespace MagicGladiators
                                 GameWorld.Instance.client.SendPush(go.Id, vectorBetween, (GameWorld.Instance.player.GetComponent(ability) as Ability).damage * go.DamageResistance);
                                 if (!GameWorld.buyPhase)
                                 {
-                                    GameWorld.Instance.player.DamageDone += (GameWorld.Instance.player.GetComponent(ability) as Ability).damage * go.DamageResistance;
-                                    if (GameWorld.Instance.client != null)
-                                    {
-                                        GameWorld.Instance.client.SendScore(GameWorld.Instance.player.Id, GameWorld.Instance.player.kills, GameWorld.Instance.player.DamageDone, GameWorld.Instance.player.TotalScore);
-                                    }
+
+                                    //if (GameWorld.Instance.client != null)
+                                    //{
+                                    //    GameWorld.Instance.client.SendScore(GameWorld.Instance.player.Id, GameWorld.Instance.player.kills, GameWorld.Instance.player.DamageDone, GameWorld.Instance.player.TotalScore);
+                                    //}
                                 }
                             }
                         }
