@@ -13,6 +13,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.IO;
 using System.Data.SQLite;
+using Microsoft.Xna.Framework.Media;
 
 namespace MagicGladiators
 {
@@ -148,6 +149,7 @@ namespace MagicGladiators
             //this.Window.Position = new Point(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2, 10);
             dbCon.i.StartDataBaseConnection();
             if (SaMM.i is SaMM) { }
+            MediaPlayer.Volume = 0.06F;
 
             this.Window.Position = new Point(10, 10);
             TooltipBox.AddComponent(new SpriteRenderer(TooltipBox, "ToolTipBox", 1));
@@ -576,6 +578,13 @@ namespace MagicGladiators
             catch (NullReferenceException nre) { }
 
             // TODO: Add your update logic here
+            if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "Play")
+            {
+                SaMM.i.NewPlaystate(SongState.Battle);
+            } else
+            {
+                SaMM.i.NewPlaystate(SongState.Menu);
+            }
             MouseState mouse = Mouse.GetState();
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
             if (CurrentScene.scenetype == "Play")
