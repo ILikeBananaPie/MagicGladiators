@@ -240,6 +240,15 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
+            if (other.gameObject.Tag.Contains("Critter"))
+            {
+                GameWorld.objectsToRemove.Add(other.gameObject);
+                if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
+                {
+                    GameWorld.Instance.client.SendRemoval(other.gameObject.Tag, other.gameObject.Id);
+                }
+                return;
+            }
             if (gameObject.Tag.Contains("Boomerang") && other.gameObject.Tag == "Player" && boomerangReturn)
             {
                 GameWorld.objectsToRemove.Add(gameObject);
@@ -303,14 +312,6 @@ namespace MagicGladiators
                                     if (GameWorld.Instance.client != null)
                                     {
                                         GameWorld.Instance.client.SendScore(GameWorld.Instance.player.Id, GameWorld.Instance.player.kills, GameWorld.Instance.player.DamageDone, GameWorld.Instance.player.TotalScore);
-                                    }
-                                }
-                                if (other.gameObject.Tag.Contains("Critter"))
-                                {
-                                    GameWorld.objectsToRemove.Add(other.gameObject);
-                                    if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
-                                    {
-                                        GameWorld.Instance.client.SendRemoval(other.gameObject.Tag, other.gameObject.Id);
                                     }
                                 }
                             }
