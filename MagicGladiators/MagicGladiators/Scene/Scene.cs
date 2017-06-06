@@ -495,7 +495,7 @@ namespace MagicGladiators
             GameWorld.Instance.waitingForServerResponse = false;
             //GameWorld.Instance.DrawScore();
             //ClearGameWorld();
-            GameObject[] included = new GameObject[2];
+            GameObject[] included = new GameObject[1];
             for (int i = 0; i < included.Length; i++)
             {
                 included[i] = new GameObject();
@@ -503,13 +503,8 @@ namespace MagicGladiators
                 {
                     case 0:
                         included[i].AddComponent(new SpriteRenderer(included[i], "AlphaToMainMenu", 0));
-                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 2) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
                         included[i].AddComponent(new OnClick(included[i], "MainMenu"));
-                        break;
-                    case 1:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaToLobby", 0));
-                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
-                        included[i].AddComponent(new OnClick(included[i], "BackToLobby"));
                         break;
                 }
             }
