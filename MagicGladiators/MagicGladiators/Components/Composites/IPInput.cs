@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using System.Windows;
+using System.Text.RegularExpressions;
 
 namespace MagicGladiators
 {
@@ -114,6 +116,20 @@ namespace MagicGladiators
                         } else if (key == Keys.Enter)
                         {
 
+                        } else if (key == Keys.LeftControl || key == Keys.RightControl)
+                        {
+                            if (pressedKeys.Contains(Keys.V))
+                            {
+                                string x = System.Windows.Forms.Clipboard.GetText();
+                                for (int i =0; i < x.Length; i++)
+                                {
+                                    string y = string.Empty + x[i];
+                                    if (Regex.IsMatch(y, @"[0-9\.\:]+$"))
+                                    {
+                                        ip += x[i];
+                                    }
+                                }
+                            }
                         }
                         //else
                         //{
