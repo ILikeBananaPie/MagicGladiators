@@ -275,7 +275,7 @@ namespace MagicGladiators
             Director director = new Director(new AbilityIconBuilder());
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 110, "Fire a projectile in the target \n direction, moving towards the \n closest enemy."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100, "Send you in the target direction. \n Exploding on contact."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100, "Send you in the target direction."));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Drain", 100, "Fire a slow moving projectile \n in the target direction."));
             buySpellPosition();

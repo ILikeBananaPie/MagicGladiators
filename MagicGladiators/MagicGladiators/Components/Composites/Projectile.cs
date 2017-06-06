@@ -294,7 +294,7 @@ namespace MagicGladiators
                                     ability = "Fireball";
                                 }
                                 else ability = gameObject.Tag;
-                                if (!getScore && gameObject.Id == GameWorld.Instance.player.Id)
+                                if (!getScore && gameObject.Id == GameWorld.Instance.player.Id && !gameObject.Tag.Contains("Firewave") && gameObject.Tag != "DeathMeteor" && gameObject.Tag != "DeathMine")
                                 {
                                     getScore = true;
                                     (GameWorld.Instance.player.GetComponent("Player") as Player).GoldReward(4);
