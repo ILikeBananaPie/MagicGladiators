@@ -14,7 +14,7 @@ namespace MagicGladiators
     class Fireball : OffensiveAbility
     {
         //public GameObject icon { get; set; }
-
+        private Vector2 lastpos = Vector2.Zero;
         public Fireball(GameObject go) : base(go)
         {
             canShoot = true;
@@ -26,6 +26,7 @@ namespace MagicGladiators
 
         public override void Update()
         {
+            if (gameObject.transform.position == lastpos) { GameWorld.objectsToRemove.Add(gameObject); } else { lastpos = gameObject.transform.position; }
             if (GameWorld.gameState == GameState.offgame) { return; }
             KeyboardState keyState = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
