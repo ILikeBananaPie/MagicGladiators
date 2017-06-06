@@ -965,6 +965,7 @@ namespace MagicGladiators
                                 {
                                     (go.GetComponent("Map") as Map).lastChangedBy = id;
                                     (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = color;
+                                    (go.GetComponent("Map") as Map).stopSlowField = true;
                                     foreach (GameObject go2 in GameWorld.gameObjects)
                                     {
                                         if (go2.Tag == "Player")
@@ -973,6 +974,7 @@ namespace MagicGladiators
                                             {
                                                 go2.Speed += 0.5F;
                                                 previousColor = color;
+
                                             }
                                             if (color == Color.DarkGreen && previousColor == Color.White)
                                             {

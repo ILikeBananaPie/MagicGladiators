@@ -178,7 +178,7 @@ namespace MagicGladiators
             if (gameObject.Tag.Contains("HomingMissile"))
             {
                 animator.PlayAnimation("HomingMissile");
-                travelDistance = 4000;
+                travelDistance = 2800;
             }
             if (gameObject.Tag.Contains("Drain"))
             {
@@ -294,7 +294,7 @@ namespace MagicGladiators
                                     ability = "Fireball";
                                 }
                                 else ability = gameObject.Tag;
-                                if (!getScore && gameObject.Id == GameWorld.Instance.player.Id)
+                                if (!getScore && gameObject.Id == GameWorld.Instance.player.Id && !gameObject.Tag.Contains("Firewave") && gameObject.Tag != "DeathMeteor" && gameObject.Tag != "DeathMine")
                                 {
                                     getScore = true;
                                     (GameWorld.Instance.player.GetComponent("Player") as Player).GoldReward(4);
@@ -303,6 +303,14 @@ namespace MagicGladiators
                                     if (GameWorld.Instance.client != null)
                                     {
                                         GameWorld.Instance.client.SendScore(GameWorld.Instance.player.Id, GameWorld.Instance.player.kills, GameWorld.Instance.player.DamageDone, GameWorld.Instance.player.TotalScore);
+                                    }
+                                }
+                                if (other.gameObject.Tag.Contains("Critter"))
+                                {
+                                    GameWorld.objectsToRemove.Add(go);
+                                    if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
+                                    {
+                                        GameWorld.Instance.client.SendRemoval(other.gameObject.Tag, other.gameObject.Id);
                                     }
                                 }
                             }
@@ -408,14 +416,6 @@ namespace MagicGladiators
                     else if (go.Tag == "Enemy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
                     {
                         (go.GetComponent("Enemy") as Enemy).Hit(GameWorld.Instance.player);
-                    }
-                    else if (go.Tag.Contains("Critter"))
-                    {
-                        GameWorld.objectsToRemove.Add(go);
-                        if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
-                        {
-                            GameWorld.Instance.client.SendRemoval(go.Tag, go.Id);
-                        }
                     }
                 }
             }
@@ -711,14 +711,21 @@ namespace MagicGladiators
                                 }
                                 Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(bestTarget, gameObject.transform.position);
                                 test.Normalize();
-                                if (go.Tag == "Enemy")
-                                {
-                                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 3) * projectileSpeed;
-                                }
-                                else (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 15) * projectileSpeed;
+                                (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 5) * projectileSpeed;
+                                break;
+                                //if (go.Tag == "Enemy")
+                                //{
+                                //    (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 10) * projectileSpeed;
+                                //    break;
+                                //}
+                                //else
+                                //{
+                                //    (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 10) * projectileSpeed;
+                                //    break;
+                                //}
 
                             }
-                            else if (Vector2.Distance(gameObject.transform.position, go.transform.position) > 300 && (go.Tag == "Dummy" || go.Tag == "Enemy"))
+                            if (Vector2.Distance(gameObject.transform.position, go.transform.position) > 300 && (go.Tag == "Dummy" || go.Tag == "Enemy"))
                             {
                                 //Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(target, gameObject.transform.position);
                                 //test.Normalize();
