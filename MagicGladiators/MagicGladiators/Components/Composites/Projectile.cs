@@ -494,8 +494,10 @@ namespace MagicGladiators
             return (cornorDistance <= ((int)cir.Radius ^ 2));
         }
 
+        private Vector2 lastpos = Vector2.Zero;
         public void Update()
         {
+            if (gameObject.transform.position == lastpos) { GameWorld.objectsToRemove.Add(gameObject); } else { lastpos = gameObject.transform.position; }
             if (gameObject.Tag.Contains("Firewave"))
             {
                 foreach (GameObject go in GameWorld.gameObjects)
