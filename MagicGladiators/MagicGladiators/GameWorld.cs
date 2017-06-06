@@ -1501,7 +1501,7 @@ namespace MagicGladiators
                     TooltipBox.transform.position = new Vector2(mouse.Position.X - width, mouse.Position.Y - height);
                     TooltipBox.Draw(spriteBatch);
                     spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
-                    //spriteBatch.DrawString(fontText, "Value: " + icon.Value.ToString(), new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(describtionFont, "To Rebind key: \n Press and hold LMB while \n pressing the desired key" , new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
             }
