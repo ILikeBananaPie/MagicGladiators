@@ -581,7 +581,8 @@ namespace MagicGladiators
             if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "Play")
             {
                 SaMM.i.NewPlaystate(SongState.Battle);
-            } else
+            }
+            else
             {
                 SaMM.i.NewPlaystate(SongState.Menu);
             }
@@ -1501,7 +1502,7 @@ namespace MagicGladiators
                     TooltipBox.transform.position = new Vector2(mouse.Position.X - width, mouse.Position.Y - height);
                     TooltipBox.Draw(spriteBatch);
                     spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
-                    spriteBatch.DrawString(describtionFont, "To Rebind key: \n Press and hold LMB while \n pressing the desired key" , new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(describtionFont, "To Rebind key: \n Press and hold LMB while \n pressing the desired key", new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
             }
@@ -1594,32 +1595,41 @@ namespace MagicGladiators
                     if (!tempList.Exists(i => i.Id == go.Id))
                     {
                         tempList.Add(go);
-                        text = go.playerName;
+                    }
+                }
+            }
+            foreach (GameObject go in tempList)
+            {
+                if (go.Tag == "Player" || go.Tag == "Enemy" || go.Tag == "Score")
+                {
+
+                    //tempList.Add(go);
+                    text = go.playerName;
+                    textSize = fontText.MeasureString(text);
+                    Vector2 temp = fontText.MeasureString("Player");
+                    if (textSize.X > temp.X)
+                    {
+                        text += "...";
                         textSize = fontText.MeasureString(text);
-                        Vector2 temp = fontText.MeasureString("Player");
-                        if (textSize.X > temp.X)
+                        for (int i = text.Length; i >= 0; i--)
                         {
+                            //text = text.Remove(text.Length - 2);
+                            text = text.Remove(i - 3);
                             text += "...";
                             textSize = fontText.MeasureString(text);
-                            for (int i = text.Length; i >= 0; i--)
+                            if (textSize.X > temp.X)
                             {
-                                //text = text.Remove(text.Length - 2);
-                                text = text.Remove(i - 3);
-                                text += "...";
-                                textSize = fontText.MeasureString(text);
-                                if (textSize.X > temp.X)
-                                {
-                                    continue;
-                                }
-                                else break;
+                                continue;
                             }
+                            else break;
                         }
-                        spriteBatch.DrawString(fontText, text, new Vector2(position.X - columnOne, position.Y + 20 + x), Color.Black);
-                        spriteBatch.DrawString(fontText, go.kills.ToString(), new Vector2(position.X - columnTwo, position.Y + 20 + x), Color.Black);
-                        spriteBatch.DrawString(fontText, go.DamageDone.ToString(), new Vector2(position.X - columnThree, position.Y + 20 + x), Color.Black);
-                        spriteBatch.DrawString(fontText, go.TotalScore.ToString(), new Vector2(position.X - columnFour, position.Y + 20 + x), Color.Black);
-                        x += 20;
                     }
+                    spriteBatch.DrawString(fontText, text, new Vector2(position.X - columnOne, position.Y + 20 + x), Color.Black);
+                    spriteBatch.DrawString(fontText, go.kills.ToString(), new Vector2(position.X - columnTwo, position.Y + 20 + x), Color.Black);
+                    spriteBatch.DrawString(fontText, go.DamageDone.ToString(), new Vector2(position.X - columnThree, position.Y + 20 + x), Color.Black);
+                    spriteBatch.DrawString(fontText, go.TotalScore.ToString(), new Vector2(position.X - columnFour, position.Y + 20 + x), Color.Black);
+                    x += 20;
+
                 }
             }
             tempList.Clear();
@@ -1667,7 +1677,7 @@ namespace MagicGladiators
             spriteBatch.DrawString(fontText, "Win Percent", new Vector2(position.X - columnFour, position.Y), Color.Black);
 
             text = dbCon.i.GetName();
-            
+
             textSize = fontText.MeasureString(text);
             Vector2 temp = fontText.MeasureString("Player");
             if (textSize.X > temp.X)

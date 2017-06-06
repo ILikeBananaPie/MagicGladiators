@@ -321,7 +321,7 @@ namespace MagicGladiators
                 }
             }
 
-            if (other.gameObject.Tag == "Spellshield")
+            if (other.gameObject.Tag == "Spellshield" && !gameObject.Tag.Contains("Firewave") && gameObject.Tag != "DeathMine" && gameObject.Tag != "DeathMeteor")
             {
                 foreach (GameObject go in GameWorld.gameObjects)
                 {
