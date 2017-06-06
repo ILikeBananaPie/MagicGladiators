@@ -713,12 +713,17 @@ namespace MagicGladiators
                                 test.Normalize();
                                 if (go.Tag == "Enemy")
                                 {
-                                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 3) * projectileSpeed;
+                                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 10) * projectileSpeed;
+                                    break;
                                 }
-                                else (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 15) * projectileSpeed;
+                                else
+                                {
+                                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 10) * projectileSpeed;
+                                    break;
+                                }
 
                             }
-                            else if (Vector2.Distance(gameObject.transform.position, go.transform.position) > 300 && (go.Tag == "Dummy" || go.Tag == "Enemy"))
+                            if (Vector2.Distance(gameObject.transform.position, go.transform.position) > 300 && (go.Tag == "Dummy" || go.Tag == "Enemy"))
                             {
                                 //Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(target, gameObject.transform.position);
                                 //test.Normalize();
