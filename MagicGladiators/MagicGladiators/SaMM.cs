@@ -54,44 +54,44 @@ namespace MagicGladiators
 
         public void Update()
         {
-            if (changingSong)
-            {
-                if (volumeradiant > 0)
-                {
-                    volumeradiant -= GameWorld.Instance.deltaTime;
-                }
-                if (volumeradiant <= 0)
-                {
-                    changingSong = false;
-                    volumeradiant = 0;
-                    if (newSong == SongState.Menu)
-                    {
-                        MediaPlayer.Play(mbgm);
-                    }
-                    if (newSong == SongState.Battle)
-                    {
-                        MediaPlayer.Play(bbgm);
-                    }
-                    lastSong = newSong;
-                }
-            } else
-            {
-                if (volumeradiant < 100)
-                {
-                    volumeradiant += GameWorld.Instance.deltaTime;
-                }
-                if (volumeradiant > 100)
-                {
-                    volumeradiant = 100;
-                }
-            }
+            //if (changingSong)
+            //{
+            //    if (volumeradiant > 0)
+            //    {
+            //        volumeradiant -= GameWorld.Instance.deltaTime;
+            //    }
+            //    if (volumeradiant <= 0)
+            //    {
+            //        changingSong = false;
+            //        volumeradiant = 0;
+            //        if (newSong == SongState.Menu)
+            //        {
+            //            MediaPlayer.Play(mbgm);
+            //        }
+            //        if (newSong == SongState.Battle)
+            //        {
+            //            MediaPlayer.Play(bbgm);
+            //        }
+            //        lastSong = newSong;
+            //    }
+            //} else
+            //{
+            //    if (volumeradiant < 100)
+            //    {
+            //        volumeradiant += GameWorld.Instance.deltaTime;
+            //    }
+            //    if (volumeradiant > 100)
+            //    {
+            //        volumeradiant = 100;
+            //    }
+            //}
 
-            if (lastSong != newSong)
-            {
-                changingSong = true;
-            }
+            //if (lastSong != newSong)
+            //{
+            //    changingSong = true;
+            //}
 
-            MediaPlayer.Volume = (volume / 100) * volumeradiant;
+            //MediaPlayer.Volume = (volume / 100) * volumeradiant;
         }
 
         public void LoadContent(ContentManager content)
