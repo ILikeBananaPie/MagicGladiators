@@ -43,6 +43,7 @@ namespace MagicGladiators
         private Song bbgm;
         private SongState newSong;
         private SongState lastSong;
+        //private Sound
 
         private SaMM()
         {
@@ -95,10 +96,12 @@ namespace MagicGladiators
 
         public void LoadContent(ContentManager content)
         {
+            /*
             mbgm = content.Load<Song>("All This");
             bbgm = content.Load<Song>("Alchemists Tower");
             MediaPlayer.Play(mbgm);
             MediaPlayer.IsRepeating = true;
+            */
         }
 
         public void NewPlaystate(SongState ss)
