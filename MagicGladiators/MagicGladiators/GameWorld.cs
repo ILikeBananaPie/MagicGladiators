@@ -448,6 +448,7 @@ namespace MagicGladiators
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+            SaMM.i.LoadContent(Content);
             spriteBatch = new SpriteBatch(GraphicsDevice);
             fontText = Content.Load<SpriteFont>("fontText");
             keyFont = Content.Load<SpriteFont>("lunchtime");
