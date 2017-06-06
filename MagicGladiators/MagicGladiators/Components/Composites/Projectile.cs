@@ -208,7 +208,7 @@ namespace MagicGladiators
             if (gameObject.Tag == "Boomerang")
             {
                 animator.PlayAnimation("Boomerang");
-                travelDistance = 4000;
+                travelDistance = 2800;
             }
             if (gameObject.Tag.Contains("Firewave"))
             {
@@ -242,10 +242,10 @@ namespace MagicGladiators
         {
             if (other.gameObject.Tag.Contains("Critter"))
             {
-                GameWorld.objectsToRemove.Add(other.gameObject);
+                GameWorld.objectsToRemove.Add(gameObject);
                 if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
                 {
-                    GameWorld.Instance.client.SendRemoval(other.gameObject.Tag, other.gameObject.Id);
+                    GameWorld.Instance.client.SendRemoval(gameObject.Tag, gameObject.Id);
                 }
                 return;
             }
@@ -321,7 +321,7 @@ namespace MagicGladiators
                 }
             }
 
-            if (other.gameObject.Tag == "Spellshield")
+            if (other.gameObject.Tag == "Spellshield" && !gameObject.Tag.Contains("Firewave") && gameObject.Tag != "DeathMine" && gameObject.Tag != "DeathMeteor")
             {
                 foreach (GameObject go in GameWorld.gameObjects)
                 {
