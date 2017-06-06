@@ -701,6 +701,13 @@ namespace MagicGladiators
                     {
                         go.LoadContent(Content);
                     }
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        if (go.Tag == "Fireball")
+                        {
+                            GameWorld.objectsToRemove.Add(go);
+                        }
+                    }
                 }
                 if (NextScene.scenetype == "Practice")
                 {
