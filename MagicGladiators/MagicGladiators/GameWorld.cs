@@ -885,6 +885,8 @@ namespace MagicGladiators
                 {
                     if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                     {
+                        MouseOnIcon = true;
+
                         if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.abilities.Count <= 7)
                         {
                             AbilityIcon ability = (go.GetComponent("AbilityIcon") as AbilityIcon);
@@ -907,6 +909,10 @@ namespace MagicGladiators
                                 break;
                             }
                         }
+                    }
+                    else
+                    {
+                        MouseOnIcon = false;
                     }
                 }
             }
@@ -958,27 +964,6 @@ namespace MagicGladiators
                     }
                 }
             }
-            //if (deathCanBind)
-            //{
-            //    foreach (GameObject go in Player.deathAbilities)
-            //    {
-            //        if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
-            //        {
-            //            if (canBuy && mouse.LeftButton == ButtonState.Pressed && player.CurrentHealth < 0)
-            //            {
-            //                //rebind ability
-            //                KeyboardState keyState = Keyboard.GetState();
-            //                keys = keyState.GetPressedKeys();
-            //                if (keys.Length > 0)
-            //                {
-            //                    deathCanBind = false;
-            //                    bindName = (go.GetComponent("AbilityIcon") as AbilityIcon).Name;
-            //                }
-
-            //            }
-            //        }
-            //    }
-            //}
             if (!aliveCanBind)
             {
                 foreach (Component component in player.components)
@@ -1000,28 +985,6 @@ namespace MagicGladiators
                     }
                 }
             }
-            //if (!deathCanBind)
-            //{
-            //    foreach (Component component in player.components)
-            //    {
-            //        if (component is IDeathAbility && component.Name == bindName)
-            //        {
-            //            foreach (Component comp in player.components)
-            //            {
-            //                if (comp.key == keys.Last())
-            //                {
-            //                    comp.key = component.key;
-            //                }
-            //            }
-            //            component.key = keys.Last();
-            //            Array.Clear(keys, 0, keys.Length);
-            //            bindName = "NoName";
-            //            deathCanBind = true;
-            //            break;
-            //        }
-            //    }
-            //}
-
         }
 
         public void UpdateItemUpgrade(MouseState mouse, Circle mouseCircle)
