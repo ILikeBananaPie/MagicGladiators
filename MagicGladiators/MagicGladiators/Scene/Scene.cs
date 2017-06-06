@@ -566,7 +566,7 @@ namespace MagicGladiators
                 switch (i)
                 {
                     case 0:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaCreditsInfo", 0));
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaCreditsInfo2", 0));
                         included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - (1200 / 2), (GameWorld.Instance.GraphicsDevice.Viewport.Height / 2) - (600 / 2));
                         break;
                     case 1:
