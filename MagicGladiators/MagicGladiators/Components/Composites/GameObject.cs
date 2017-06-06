@@ -96,6 +96,7 @@ namespace MagicGladiators
                     //{
                     //    //do nothing
                     //}
+
                     else
                     {
                         (component as IUpdateable).Update();
@@ -105,6 +106,7 @@ namespace MagicGladiators
                 {
                     (component as IAbility).Cooldown();
                 }
+
             }
             UpdateComponents();
         }
