@@ -119,7 +119,7 @@ namespace MagicGladiators
             testPush = true;
             testVector = vectorBetween;
             testVector.Normalize();
-            testVector = testVector * (1 + gameObject.CurrentHealth / gameObject.MaxHealth);
+            testVector = testVector * (2 - gameObject.CurrentHealth / gameObject.MaxHealth);
         }
 
         public void Update()
