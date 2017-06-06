@@ -69,14 +69,18 @@ namespace MagicGladiators
 
         public void NewPlaystate(SongState ss)
         {
-            newSong = ss;
-            if (ss == SongState.Battle)
+            //newSong = ss;
+            if (lastSong != ss)
             {
-                MediaPlayer.Play(bbgm);
-            }
-            if (ss == SongState.Menu)
-            {
-                MediaPlayer.Play(mbgm);
+                if (ss == SongState.Battle)
+                {
+                    MediaPlayer.Play(bbgm);
+                }
+                if (ss == SongState.Menu)
+                {
+                    MediaPlayer.Play(mbgm);
+                }
+                lastSong = ss;
             }
         }
     }

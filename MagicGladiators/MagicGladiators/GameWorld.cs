@@ -576,6 +576,13 @@ namespace MagicGladiators
             catch (NullReferenceException nre) { }
 
             // TODO: Add your update logic here
+            if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "Play")
+            {
+                SaMM.i.NewPlaystate(SongState.Battle);
+            } else
+            {
+                SaMM.i.NewPlaystate(SongState.Menu);
+            }
             MouseState mouse = Mouse.GetState();
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
             if (CurrentScene.scenetype == "Play")
