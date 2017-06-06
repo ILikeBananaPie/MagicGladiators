@@ -623,7 +623,7 @@ namespace MagicGladiators
                 {
                     if (gameObject.Tag.Contains("Drain") || gameObject.Tag.Contains("Chain"))
                     {
-                        (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 4) * projectileSpeed;
+                        (gameObject.GetComponent("Physics") as Physics).Acceleration += (testVector / 2.5F) * projectileSpeed;
                     }
                     else
                     {
