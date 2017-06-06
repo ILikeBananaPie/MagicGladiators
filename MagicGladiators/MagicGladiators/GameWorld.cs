@@ -1649,15 +1649,8 @@ namespace MagicGladiators
             spriteBatch.DrawString(fontText, "Games Won | ", new Vector2(position.X - columnThree, position.Y), Color.Black);
             spriteBatch.DrawString(fontText, "Win Percent", new Vector2(position.X - columnFour, position.Y), Color.Black);
 
-            if (player != null)
-            {
-                text = player.playerName;
-            }
-            else
-            {
-                text = dbCon.i.GetName();
-            }
-
+            text = dbCon.i.GetName();
+            
             textSize = fontText.MeasureString(text);
             Vector2 temp = fontText.MeasureString("Player");
             if (textSize.X > temp.X)
