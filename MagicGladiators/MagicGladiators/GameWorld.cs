@@ -1411,7 +1411,7 @@ namespace MagicGladiators
                         text = text.Split('.').Last();
                         if (name == "Fireball")
                         {
-                            text = "LMB";
+                            text = "RMB";
                             x = -10;
                         }
                         if (text == "Space")

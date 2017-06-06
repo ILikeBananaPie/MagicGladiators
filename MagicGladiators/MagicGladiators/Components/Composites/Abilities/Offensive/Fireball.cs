@@ -30,7 +30,7 @@ namespace MagicGladiators
             MouseState mouse = Mouse.GetState();
             if (mouse.Position.X > 0 && mouse.Position.X < GameWorld.Instance.Window.ClientBounds.Width && mouse.Y > 0 && mouse.Y < GameWorld.Instance.Window.ClientBounds.Height)
             {
-                if (mouse.LeftButton == ButtonState.Pressed && canShoot && !GameWorld.Instance.MouseOnIcon)
+                if (mouse.RightButton == ButtonState.Pressed && canShoot && !GameWorld.Instance.MouseOnIcon)
                 {
                     Thread.Sleep(50);
                     if (!GameWorld.buyPhase)
