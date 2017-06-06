@@ -247,6 +247,9 @@ namespace MagicGladiators
                             case "Options":
                                 GameWorld.Instance.NextScene = Scene.Option();
                                 break;
+                            case "Credits":
+                                GameWorld.Instance.NextScene = Scene.Credits();
+                                break;
                         }
                     }
                 }
