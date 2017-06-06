@@ -102,6 +102,7 @@ namespace MagicGladiators
                 {
                     (component as IAbility).Cooldown();
                 }
+
             }
             UpdateComponents();
         }
