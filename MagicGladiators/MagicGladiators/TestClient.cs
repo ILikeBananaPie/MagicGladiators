@@ -567,6 +567,13 @@ namespace MagicGladiators
                         {
                             if (GameWorld.buyPhase)
                             {
+                                foreach (Component component in GameWorld.Instance.player.components)
+                                {
+                                    if (component is Ability)
+                                    {
+                                        (component as Ability).CooldownTimer = (component as Ability).CooldownTime;
+                                    }
+                                }
                                 GameWorld.buyPhase = false;
                                 GameWorld.Instance.player.isReady = false;
                                 GameWorld.Instance.StartRound();
@@ -616,6 +623,13 @@ namespace MagicGladiators
                                     foreach (GameObject go in readyList)
                                     {
                                         go.isReady = false;
+                                    }
+                                    foreach (Component component in GameWorld.Instance.player.components)
+                                    {
+                                        if (component is Ability)
+                                        {
+                                            (component as Ability).CooldownTimer = (component as Ability).CooldownTime;
+                                        }
                                     }
                                     //SendStartgame();
                                     SendSwitchPhase();

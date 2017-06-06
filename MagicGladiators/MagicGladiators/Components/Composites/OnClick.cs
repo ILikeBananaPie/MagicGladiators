@@ -72,6 +72,7 @@ namespace MagicGladiators
                                 }
                                 GameWorld.gameState = GameState.offgame;
                                 GameWorld.buyPhase = true;
+                                GameWorld.Instance.canUpdateStatistics = true;
                                 Scene.tempList.Clear();
                                 GameWorld.Instance.NextScene = Scene.NewGame();
                                 break;
@@ -96,6 +97,7 @@ namespace MagicGladiators
                                 }
                                 GameWorld.gameState = GameState.offgame;
                                 GameWorld.buyPhase = true;
+                                GameWorld.Instance.canUpdateStatistics = true;
                                 Scene.tempList.Clear();
                                 GameWorld.Instance.NextScene = Scene.MainMenu();
                                 break;
