@@ -116,9 +116,9 @@ namespace MagicGladiators
                         } else if (key == Keys.Enter)
                         {
 
-                        } else if (key == Keys.LeftControl || key == Keys.RightControl)
+                        } else if (pressedKeys.Contains(Keys.V))
                         {
-                            if (pressedKeys.Contains(Keys.V))
+                            if (key == Keys.LeftControl || key == Keys.RightControl)
                             {
                                 string x = System.Windows.Forms.Clipboard.GetText();
                                 for (int i =0; i < x.Length; i++)
