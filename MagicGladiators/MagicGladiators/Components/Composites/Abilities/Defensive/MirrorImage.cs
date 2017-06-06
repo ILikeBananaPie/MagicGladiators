@@ -25,7 +25,7 @@ namespace MagicGladiators
             canShoot = true;
         }
 
-      
+
 
         public override void Update()
         {
@@ -36,8 +36,10 @@ namespace MagicGladiators
                 canShoot = false;
                 activated = true;
                 Color color = (GameWorld.Instance.player.GetComponent("SpriteRenderer") as SpriteRenderer).Color;
-                (GameWorld.Instance.player.GetComponent("SpriteRenderer") as SpriteRenderer).Color = new Color(color, 0.0001F);
+                //(gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = new Color(color, 0.0001F);
+                gameObject.IsInvisible = true;
 
+                //(GameWorld.Instance.player.GetComponent("SpriteRenderer") as SpriteRenderer).Color
                 int random = rnd.Next(numbers.Count);
                 GameWorld.Instance.player.cloneNumber = numbers[random];
                 numbers.Remove(numbers[random]);
@@ -114,7 +116,7 @@ namespace MagicGladiators
                         clone.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
                     }
                     #endregion
-                    
+
 
                     GameWorld.newObjects.Add(clone);
                 }
@@ -154,7 +156,9 @@ namespace MagicGladiators
                     activated = false;
                     activationTime = 0;
                     Color color = (GameWorld.Instance.player.GetComponent("SpriteRenderer") as SpriteRenderer).Color;
-                    (GameWorld.Instance.player.GetComponent("SpriteRenderer") as SpriteRenderer).Color = new Color(color, 1F);
+                    //(gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = new Color(color, 1F);
+                    gameObject.IsInvisible = false;
+
                     foreach (GameObject go in GameWorld.gameObjects)
                     {
                         if (go.Tag.Contains("Clone") && go.Id == gameObject.Id)
@@ -164,7 +168,7 @@ namespace MagicGladiators
                     }
                     foreach (GameObject go in GameWorld.gameObjects)
                     {
-                        if (go.Tag.Contains("Clone") && !go.Tag.Contains("Fireball") && go.Id == gameObject.Id)
+                        if (go.Tag.Contains("Clone") && go.Id == gameObject.Id)
                         {
                             int test = go.cloneNumber;
                             if (GameWorld.Instance.client != null)
@@ -177,6 +181,6 @@ namespace MagicGladiators
             }
         }
 
-        
+
     }
 }

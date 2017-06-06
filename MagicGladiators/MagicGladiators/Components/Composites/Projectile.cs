@@ -89,11 +89,6 @@ namespace MagicGladiators
                 meteorVector = (gameObject.GetComponent("Physics") as Physics).GetVector(target, position);
                 meteorVector.Normalize();
             }
-            if (gameObject.Tag == "DeathMine")
-            {
-
-            }
-
 
             this.target = target;
             if (gameObject.Tag.Contains("Firewave"))
