@@ -23,7 +23,7 @@ namespace MagicGladiators
         public SlowField(GameObject gameObject) : base(gameObject)
         {
             Name = "SlowField";
-            cooldown = 10;
+            cooldown = 20;
         }
 
         public override void Update()
@@ -47,14 +47,7 @@ namespace MagicGladiators
                             GameWorld.Instance.client.SendColor("", "Map", color.R, color.G, color.B, color.A);
                         }
                     }
-                    if (go.Tag == "Enemy")
-                    {
-                        if (GameWorld.Instance.client != null)
-                        {
-                            //GameWorld.Instance.client.SendColor(go.Id, "Player", color.R, color.G, color.B, color.A);
-                            GameWorld.Instance.client.SendSpeedDown(go.Id, -speedFactor);
-                        }
-                    }
+                  
                 }
             }
             if (activated)
@@ -62,36 +55,25 @@ namespace MagicGladiators
                 activationTimer += GameWorld.Instance.deltaTime;
                 if (activationTimer > activationTime)
                 {
-                    Color color = Color.White;
-                    foreach (var go in GameWorld.gameObjects)
-                    {
-                        if (go.Tag == "Map")
-                        {
-                            (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
-                            if (GameWorld.Instance.client != null)
-                            {
-                                GameWorld.Instance.client.SendColor("", "Map", color.R, color.G, color.B, color.A);
-                            }
-                        }
-                        if (go.Tag == "Enemy")
-                        {
-                            if (GameWorld.Instance.client != null)
-                            {
-                                //GameWorld.Instance.client.SendColor(go.Id, "Player", color.R, color.G, color.B, color.A);
-                                GameWorld.Instance.client.SendSpeedUp(go.Id, speedFactor);
-                            }
-                        }
-
-                    }
+                    //Color color = Color.White;
+                    //foreach (var go in GameWorld.gameObjects)
+                    //{
+                    //    if (go.Tag == "Map")
+                    //    {
+                    //        (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+                    //        if (GameWorld.Instance.client != null)
+                    //        {
+                    //            GameWorld.Instance.client.SendColor("", "Map", color.R, color.G, color.B, color.A);
+                    //        }
+                    //    }
+                       
+                    //}
                     activated = false;
                     activationTimer = 0;
                 }
             }
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-            //throw new NotImplementedException();
-        }
+        
     }
 }

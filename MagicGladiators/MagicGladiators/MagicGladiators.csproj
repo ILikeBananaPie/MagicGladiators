@@ -78,9 +78,12 @@
     <Compile Include="Builder\ProjectileBuilder.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="Components\Composites\Clone.cs" />
+    <Compile Include="Components\Composites\Muter.cs" />
     <Compile Include="Components\Composites\Dummy.cs" />
     <Compile Include="Components\Composites\Enemy.cs" />
     <Compile Include="Components\Composites\InputReciever.cs" />
+    <Compile Include="Components\Composites\Password.cs" />
+    <Compile Include="Components\Composites\Username.cs" />
     <Compile Include="Components\Composites\IPInput.cs" />
     <Compile Include="Components\Composites\LobbyMenuButton.cs" />
     <Compile Include="Components\Composites\Map.cs" />
@@ -97,6 +100,7 @@
     <Compile Include="Components\Leafs\Component.cs" />
     <Compile Include="Components\Leafs\Physics.cs" />
     <Compile Include="CreateAbility.cs" />
+    <Compile Include="dbCon.cs" />
     <Compile Include="GameWorld.cs" />
     <Compile Include="Components\Composites\GameObject.cs" />
     <Compile Include="Components\Interfaces\IAnimateable.cs" />
@@ -107,6 +111,7 @@
     <Compile Include="Components\Composites\Player.cs" />
     <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Builder\PlayerBuilder.cs" />
+    <Compile Include="SaMM.cs" />
     <Compile Include="Strategies\FollowTarget.cs" />
     <Compile Include="Components\Composites\Item.cs" />
     <Compile Include="Scene\Scene.cs" />
@@ -146,9 +151,21 @@
       <HintPath>Extra\ProtobufSerializer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.105.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Extra\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.105.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Extra\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Alchemists Tower.mp3" />
+    <Content Include="Content\All This.mp3" />
     <Content Include="Content\CollisionTexture.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -242,6 +259,9 @@
     <Content Include="Extra\ProtobufSerializer.pdb" />
     <Content Include="Extra\ProtobufSerializer.XML" />
     <Content Include="Icon.ico" />
+    <Content Include="LIDGREN LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />

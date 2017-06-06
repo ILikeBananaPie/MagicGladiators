@@ -20,6 +20,9 @@ namespace MagicGladiators
         private List<GameObject> objects = new List<GameObject>();
         private List<GameObject> objectsToRemove = new List<GameObject>();
         private List<GameObject> newObjects = new List<GameObject>();
+        public string lastChangedBy { get; set; }
+        public bool stopSlowField;
+        private float slowfieldStopTimer;
 
         private List<string> abilities = new List<string>() { "Fireball", "Chain", "Drain", "HomingMissile", "RollingMeteor", "DeathMeteor" };
 
@@ -81,6 +84,10 @@ namespace MagicGladiators
             {
                 newObjects.Add(other.gameObject);
             }
+            if (gameObject.Tag == "LavaSpot")
+            {
+                objectsToRemove.Add(other.gameObject);
+            }
         }
 
         public void OnCollisionEnter(Collider other)
@@ -89,11 +96,23 @@ namespace MagicGladiators
             {
                 objectsToRemove.Add(other.gameObject);
             }
+
+            foreach (GameObject go in GameWorld.gameObjects)
+            {
+                if (other.gameObject.Tag == "Chain" && go.Tag == "Chain" && other.gameObject.Id == GameWorld.Instance.player.Id && go.Id == GameWorld.Instance.player.Id && gameObject.Tag == "Pillar" && !Projectile.chainActivated)
+                {
+                    (go.GetComponent("Projectile") as Projectile).chainTarget = gameObject;
+                    Projectile.chainActivated = true;
+
+                    break;
+                }
+            }
+
             if (gameObject.Tag == "Pillar")
             {
                 foreach (GameObject go in GameWorld.gameObjects)
                 {
-                    if (go.Tag != "Map" && go.Tag != "Pillar" && go.Tag != "Lava" && gameObject.Tag != "Map" && gameObject.Tag != "Lava" && gameObject.Tag != "LavaSpot")
+                    if (go.Tag != "Map" && go.Tag != "Pillar" && go.Tag != "Lava" && go.Tag != "LavaSpot" && go.Tag != "Spellshield" && go.Tag != "Deflect" && go.Tag != "Chain")
                     {
                         Circle playerCircle = new Circle();
                         playerCircle.Center = new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16);
@@ -160,7 +179,7 @@ namespace MagicGladiators
 
                 if (Vector2.Distance(thisCenter, otherCenter) < LavaRadius - otherRadius)
                 {
-                    if (!objects.Exists(x => x == other.gameObject))
+                    if (!objects.Exists(x => x == other.gameObject) && other.gameObject.CurrentHealth > 0)
                     {
                         newObjects.Add(other.gameObject);
                     }
@@ -171,6 +190,24 @@ namespace MagicGladiators
 
         public void Update()
         {
+            if (stopSlowField)
+            {
+                slowfieldStopTimer += GameWorld.Instance.deltaTime;
+                if (slowfieldStopTimer > 2)
+                {
+                    stopSlowField = false;
+                    slowfieldStopTimer = 0;
+                    (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+                    foreach (GameObject go2 in GameWorld.gameObjects)
+                    {
+                        if (go2.Tag == "Player")
+                        {
+                            go2.Speed += 0.5F;
+                        }
+                    }
+                }
+            }
+
             foreach (GameObject go in objects)
             {
                 if ((go.Tag == "Player" || go.Tag == "Dummy") && go.Tag != "Enemy")
@@ -178,13 +215,17 @@ namespace MagicGladiators
                     if (timer >= 0.25F)
                     {
                         timer = 0;
-                        //go.CurrentHealth -= LavaDamage;
+
                     }
                     else
                     {
                         timer += GameWorld.Instance.deltaTime;
                     }
                     go.CurrentHealth -= LavaDamage * go.LavaResistance;
+                    if (go.CurrentHealth < 0)
+                    {
+                        objectsToRemove.Add(go);
+                    }
                 }
             }
             UpdateLevel();

@@ -29,17 +29,15 @@ namespace MagicGladiators
         public Charge(GameObject go, Transform transform, Animator animator) : base(go)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 10;
             this.go = go;
             this.animator = animator;
             this.transform = transform;
             this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
-        }
-
-        public override void LoadContent(ContentManager content)
-        {
+            damage = 7;
 
         }
+
 
         public override void Update()
         {
@@ -106,11 +104,11 @@ namespace MagicGladiators
                         vectorBetween.Normalize();
                         if (go.gameObject.Tag == "Dummy")
                         {
-                            //(go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween);
+                            //(go.gameObject.GetComponent("Dummy") as Dummy).isPushed(vectorBetween, gameObject);
                         }
                         if (GameWorld.Instance.client != null)
                         {
-                            GameWorld.Instance.client.SendPush(other.gameObject.Id, vectorBetween);
+                            //GameWorld.Instance.client.SendPush(other.gameObject.Id, vectorBetween, damage);
                         }
                     }
                 }

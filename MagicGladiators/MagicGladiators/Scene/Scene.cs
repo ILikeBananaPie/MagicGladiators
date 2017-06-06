@@ -15,10 +15,13 @@ namespace MagicGladiators
     {
         List<GameObject> gameObjects;
         public string scenetype;
+        public static List<GameObject> tempList = new List<GameObject>();
+
 
         #region Constructors
         public Scene(GameObject[] go)
         {
+
             gameObjects = new List<GameObject>();
             foreach (GameObject g in go)
             {
@@ -29,6 +32,68 @@ namespace MagicGladiators
             {
                 GameWorld.newObjects.Add(obj);
             }
+
+        }
+        public Scene(GameObject[] go, bool reset)
+        {
+            if (!reset)
+            {
+                foreach (GameObject obj in GameWorld.characters)
+                {
+                    if (!tempList.Exists(x => x.Id == obj.Id))
+                    {
+                        tempList.Add(obj);
+                    }
+                }
+                foreach (GameObject obj in GameWorld.gameObjects)
+                {
+                    if (obj.Tag == "Enemy" || obj.Tag == "Player")
+                    {
+                        if (!tempList.Exists(x => x.Id == obj.Id))
+                        {
+                            tempList.Add(obj);
+                        }
+                    }
+                }
+            }
+
+            gameObjects = new List<GameObject>();
+            foreach (GameObject g in go)
+            {
+                if (g.Tag == "Untagged")
+                {
+                    gameObjects.Add(g);
+                }
+            }
+            if (!reset)
+            {
+                ResetGameWorld();
+                ClearGameWorld();
+            }
+
+            foreach (GameObject obj in gameObjects)
+            {
+                if (obj.Tag == "Untagged")
+                {
+                    GameWorld.newObjects.Add(obj);
+                }
+            }
+            foreach (GameObject obj in tempList)
+            {
+                GameWorld.objectsToRemove.Add(obj);
+                if (obj.Tag == "Player" || obj.Tag == "Enemy")
+                {
+                    GameObject scoreGameObject = new GameObject();
+                    scoreGameObject.playerName = obj.playerName;
+                    scoreGameObject.Id = obj.Id;
+                    scoreGameObject.Tag = "Score";
+                    scoreGameObject.kills = obj.kills;
+                    scoreGameObject.DamageDone = obj.DamageDone;
+                    scoreGameObject.TotalScore = obj.TotalScore;
+                    GameWorld.newObjects.Add(scoreGameObject);
+                }
+            }
+            tempList.Clear();
         }
         public Scene(List<GameObject> go)
         {
@@ -48,7 +113,7 @@ namespace MagicGladiators
         public static Scene MainMenu()
         {
             GameWorld.Instance.ResetItemsAndAbilities();
-            GameObject[] included = new GameObject[4];
+            GameObject[] included = new GameObject[5];
             for (int i = 0; i < included.Length; i++)
             {
                 included[i] = new GameObject();
@@ -61,18 +126,23 @@ namespace MagicGladiators
                         break;
                     case 1:
                         included[i].AddComponent(new SpriteRenderer(included[i], "AlphaOptions", 0));
-                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 3 - 40);
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2.75f - 40);
                         included[i].AddComponent(new OnClick(included[i], "Options"));
                         break;
                     case 2:
                         included[i].AddComponent(new SpriteRenderer(included[i], "AlphaCredits", 0));
-                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4.25f - 40);
                         included[i].AddComponent(new OnClick(included[i], "Credits"));
                         break;
                     case 3:
                         included[i].AddComponent(new SpriteRenderer(included[i], "AlphaExitGame", 0));
                         included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
                         included[i].AddComponent(new OnClick(included[i], "ExitGame"));
+                        break;
+                    case 4:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaStatistics", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 3.5f - 40);
+                        included[i].AddComponent(new OnClick(included[i], "Statistic"));
                         break;
                 }
             }
@@ -143,11 +213,14 @@ namespace MagicGladiators
         }
         public static Scene Joined(string ip)
         {
-            GameWorld.Instance.client = new TestClient(ip);
-            GameWorld.Instance.canClient = false;
-            GameWorld.Instance.showServer = true;
+            if (ip != null || ip == string.Empty)
+            {
+                GameWorld.Instance.client = new TestClient(ip);
+                GameWorld.Instance.canClient = false;
+                GameWorld.Instance.showServer = true;
+            }
 
-            GameObject[] included = new GameObject[2];
+            GameObject[] included = new GameObject[1];
             for (int i = 0; i < included.Length; i++)
             {
                 included[i] = new GameObject();
@@ -157,11 +230,6 @@ namespace MagicGladiators
                         included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
                         included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
                         included[i].AddComponent(new OnClick(included[i], "NewGame"));
-                        break;
-                    case 1:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaReady", 0));
-                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
-                        included[i].AddComponent(new OnClick(included[i], "Ready"));
                         break;
                 }
             }
@@ -250,6 +318,7 @@ namespace MagicGladiators
             GameObject[] included = new GameObject[0];
             Scene send = new Scene(included);
             send.scenetype = "Practice";
+            Player.gold = 10000;
             return send;
         }
         public static Scene PracticeChooseRound()
@@ -333,6 +402,184 @@ namespace MagicGladiators
             send.scenetype = "Play";
             return send;
         }
+        public static Scene Login()
+        {
+            GameObject[] included = new GameObject[5];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaLogIn", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "LoginAttempt"));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaCreateAccount", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "CreateAccount"));
+                        break;
+                    case 2:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaExitGame", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "ExitGame"));
+                        break;
+                    case 3:
+                        included[i] = new GameObject();
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
+                        included[i].AddComponent(new Username(included[i]));
+                        break;
+                    case 4:
+                        included[i] = new GameObject();
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2.5f - 40);
+                        included[i].AddComponent(new Password(included[i]));
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "Login";
+            return send;
+        }
+        public static Scene CreateAccount()
+        {
+            GameObject[] included = new GameObject[6];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaCreateAccount", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "CreateAttempt"));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "Login"));
+                        break;
+                    case 2:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaExitGame", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "ExitGame"));
+                        break;
+                    case 3:
+                        included[i] = new GameObject();
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
+                        included[i].AddComponent(new Username(included[i]));
+                        break;
+                    case 4:
+                        included[i] = new GameObject();
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2.5f - 40);
+                        included[i].AddComponent(new Password(included[i]));
+                        included[i].Name = "Password";
+                        break;
+                    case 5:
+                        included[i] = new GameObject();
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 3 - 40);
+                        included[i].AddComponent(new Password(included[i]));
+                        included[i].Name = "Recheck Password";
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "CreateAccount";
+            return send;
+        }
+        public static Scene PostScreen()
+        {
+            GameWorld.gameState = GameState.offgame;
+            GameWorld.buyPhase = true;
+            CreateAbility.abilityIndex = 0;
+            GameWorld.Instance.waitingForServerResponse = false;
+            //GameWorld.Instance.DrawScore();
+            //ClearGameWorld();
+            GameObject[] included = new GameObject[1];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaToMainMenu", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 2) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "MainMenu"));
+                        break;
+                }
+            }
+            Scene send = new Scene(included, false);
+            send.scenetype = "PostScreen";
+            return send;
+        }
+        public static Scene Statistic()
+        {
+            GameObject[] included = new GameObject[1];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 2) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "MainMenu"));
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "Statistic";
+            return send;
+        }
+        public static Scene Option()
+        {
+            GameObject[] included = new GameObject[4];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "Mute", 0));
+                        included[i].AddComponent(new Animator(included[i]));
+                        included[i].AddComponent(new Muter(included[i]));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - (203 / 2), (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 2 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "Mute"));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "MainMenu"));
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "Option";
+            return send;
+        }
+        public static Scene Credits()
+        {
+            GameObject[] included = new GameObject[4];
+            for (int i = 0; i < included.Length; i++)
+            {
+                included[i] = new GameObject();
+                switch (i)
+                {
+                    case 0:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaCreditsInfo4", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - (1200 / 2), (GameWorld.Instance.GraphicsDevice.Viewport.Height / 2) - (600 / 2));
+                        break;
+                    case 1:
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaBack", 0));
+                        included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
+                        included[i].AddComponent(new OnClick(included[i], "MainMenu"));
+                        break;
+                }
+            }
+            Scene send = new Scene(included);
+            send.scenetype = "Credits";
+            return send;
+        }
         #endregion
 
         public void Draw(SpriteBatch spriteBatch)
@@ -364,7 +611,7 @@ namespace MagicGladiators
             }
         }
 
-        public void ResetGameWorld()
+        public static void ResetGameWorld()
         {
             GameWorld.newObjects.Clear();
             foreach (GameObject obj in GameWorld.gameObjects)
@@ -373,6 +620,34 @@ namespace MagicGladiators
             }
             GameWorld.characters.Clear();
             GameWorld.characterColliders.Clear();
+        }
+
+        public static void ClearGameWorld()
+        {
+            //foreach (GameObject go in GameWorld.gameObjects)
+            //{
+            //    tempList.Add(go);
+            //}
+            //foreach (GameObject go in GameWorld.newObjects)
+            //{
+            //    tempList.Add(go);
+            //}
+            //foreach (GameObject go in GameWorld.objectsToRemove)
+            //{
+            //    tempList.Add(go);
+            //}
+
+            //tempList.Clear();
+            //GameWorld.gameObjects.Clear();
+            //GameWorld.Instance.ResetCharacters();
+            //GameWorld.characters.Clear();
+            //GameWorld.characterColliders.Clear();
+            Player.abilities.Clear();
+            Player.deathAbilities.Clear();
+            Player.items.Clear();
+            GameWorld.itemList.Clear();
+            GameWorld.abilityList.Clear();
+            //ResetGameWorld();
         }
     }
 }

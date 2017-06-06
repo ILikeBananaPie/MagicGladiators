@@ -11,6 +11,9 @@ using System.Linq;
 using System.Drawing;
 using System.Threading;
 using System.Diagnostics;
+using System.IO;
+using System.Data.SQLite;
+using Microsoft.Xna.Framework.Media;
 
 namespace MagicGladiators
 {
@@ -35,6 +38,10 @@ namespace MagicGladiators
         private bool deathCanBind = true;
         private Keys[] keys;
         private string bindName;
+
+        public bool canUpdateStatistics = true;
+
+        public bool waitingForServerResponse { get; set; } = false;
 
         public static List<GameObject> gameObjects;
         public static List<GameObject> newObjects;
@@ -107,7 +114,7 @@ namespace MagicGladiators
 
         public static GameState gameState = GameState.offgame;
 
-
+        public static string playername;
 
         private static GameWorld instance;
         public static GameWorld Instance
@@ -139,7 +146,12 @@ namespace MagicGladiators
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //this.Window.Position = new Point(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2, 10);
+            dbCon.i.StartDataBaseConnection();
+            if (SaMM.i is SaMM) { }
+            MediaPlayer.Volume = 0.06F;
 
+            this.Window.Position = new Point(10, 10);
             TooltipBox.AddComponent(new SpriteRenderer(TooltipBox, "ToolTipBox", 1));
 
             var culture = new CultureInfo("en-US");
@@ -166,7 +178,7 @@ namespace MagicGladiators
             CircleColliders = new List<Collider>();
             newCircleColliders = new List<Collider>();
 
-            CurrentScene = Scene.MainMenu();
+            CurrentScene = Scene.Login();
             selectedMap = "PillarHoleMap";
 
             base.Initialize();
@@ -192,15 +204,16 @@ namespace MagicGladiators
         {
             CreateMap(selectedMap);
             ResetCharacters();
+            //NextScene = Scene.Play();
 
         }
 
         public void CreateDummies()
         {
             Director director = new Director(new DummyBuilder());
-            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16)));
-            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16)));
-            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280)));
+            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 - 100, mapCenter.Y - 16)));
+            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16 + 100, mapCenter.Y - 16)));
+            newObjects.Add(director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 100)));
             foreach (GameObject go in newObjects)
             {
                 if (go.Tag == "Dummy")
@@ -260,37 +273,37 @@ namespace MagicGladiators
         public void CreateVendorAbilities()
         {
             Director director = new Director(new AbilityIconBuilder());
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 100, "Fires a projectile in the target \n direction, moving towards the \n closest enemy."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 110, "Fire a projectile in the target \n direction, moving towards the \n closest enemy."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100, "Sends you in the direction of the \n mouse. Exploding on contact."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100, "Send you in the target direction."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Drain", 100, "Fires a slow moving projectile \n towards your mouse."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Drain", 100, "Fire a slow moving projectile \n in the target direction."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Deflect", 100, "Creates a shield around you, \n deflecting any spells coming \n your way."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Deflect", 100, "Create a shield around you, \n deflecting any spells coming \n your way."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Mine", 100, "Places a static mine at the \n target position. Will explode \n on contact."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Mine", 50, "Place a static mine at the \n target position. Will explode \n on contact."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "SpeedBoost", 100, "Increases your movement speed"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "SpeedBoost", 100, "Increase your movement speed \n temporarily"));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Chain", 100, "Fires a slow moving projectile, \n that pulls you and the target \n together for a period of time."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Blink", 100, "Instantly moves your character \n towards your mouse's position."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Blink", 100, "Instantly moves your character \n towards the target direction."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Nova", 100, "Sends out 8 straight flying \n projectiles in different directions."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Nova", 100, "Send out 8 straight flying \n projectiles in different directions."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Spellshield", 100, "Creates a shield around you, \n deleting any spells coming \n your way."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Spellshield", 110, "Create a shield around you, \n deleting any spells coming \n your way."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "StoneArmour", 100, "Grants reduced knockback \n effect for a period of time, \n while reducing movement speed."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "StoneArmour", 100, "Increase your knockback \n resistance and reduces your \n movement speed temporarily."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Boomerang", 100, "Fires a projectile that return to \n your position"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Boomerang", 100, "Fire a projectile that return to \n your position"));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Recall", 100, "teleport you to the position, you \n had when casting the spell"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Recall", 100, "Teleport you to the position, you \n had when casting the spell"));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "GravityWell", 100, "shoot a projektile that pulls \n people in"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "GravityWell", 100, "Fire a projektile that pulls \n people in an area towards it."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "MirrorImage", 100, "Creates 3 clones of yourself \n who mimics your fireball"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "MirrorImage", 100, "Create 3 clones of yourself. \n The clones mimics your fireball"));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Invisibility", 100, "Makes you invisible to other players"));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Invisibility", 100, "Become invisible to other players"));
 
             int x = Player.deathAbilities.Count * 34;
             Player.deathAbilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), "RollingMeteor", 0, "Does something"));
@@ -316,36 +329,56 @@ namespace MagicGladiators
                     index++;
                 }
             }
+            int testIndex = 0;
+            for (int i = 0; i < player.components.Count; i++)
+            {
+                if (player.components[i] is IDeathAbility)
+                {
+                    (player.components[i] as Ability).icon = Player.deathAbilities[testIndex];
+                    testIndex++;
+                }
+            }
         }
 
         public void CreateVendorItems()
         {
             // name, hp, speed, dmgRes, lavaRes, value, knockRes, projectileSpeed, LifeSteal
             Director director = new Director(new ItemBuilder());
-            string[] testItem = new string[] { "Speed", "0", "0.05", "0", "0", "100", "0", "0", "0", "0", "0", "0" };
+            string[] testItem = new string[] { "Speed", "0", "0.05", "0", "0", "25", "0", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Hp", "5", "0", "0", "0", "100", "0", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "Hp", "5", "0", "0", "0", "25", "0", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LavaRes", "0", "0", "0", "-0.02", "100", "0", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "LavaRes", "0", "0", "0", "-0.02", "25", "0", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "DmgRes", "0", "0", "-0.02", "0", "100", "0", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "DmgRes", "0", "0", "-0.02", "0", "25", "0", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "100", "0.01", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "25", "0.01", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "100", "0", "0.05", "0", "0", "0", "0" };
+            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "25", "0", "0.05", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "100", "0", "0", "0.02", "0", "0", "0" };
+            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "25", "0", "0", "0.02", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "CDR", "0", "0", "0", "0", "100", "0", "0", "0", "0.05", "0", "0" };
+            testItem = new string[] { "CDR", "0", "0", "0", "0", "25", "0", "0", "0", "0.05", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "AOE", "0", "0", "0", "0", "100", "0", "0", "0", "0", "0.1", "0" };
+            testItem = new string[] { "AOE", "0", "0", "0", "0", "25", "0", "0", "0", "0", "0.1", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Gold", "0", "0", "0", "0", "100", "0", "0", "0", "0", "0", "0.03" };
+            testItem = new string[] { "Gold", "0", "0", "0", "0", "25", "0", "0", "0", "0", "0", "0.03" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
         }
 
         public void CreateMap(string map)
         {
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.Tag == "Map" || go.Tag == "Pillar" || go.Tag == "LavaSpot" || go.Tag == "Lava")
+                {
+                    objectsToRemove.Add(go);
+                }
+            }
+            //Director director = new Director(new MapBuilder());
+            //Texture2D sprite = Content.Load<Texture2D>("LavaBackGround");
+            //newObjects.Add(director.ConstructMapPart(new Vector2(0, 0), "Lava"));
+
             Director director = new Director(new MapBuilder());
             Texture2D sprite = Content.Load<Texture2D>("StandardMap");
             newObjects.Add(director.ConstructMapPart(new Vector2(Window.ClientBounds.Width / 2 - sprite.Width / 2, Window.ClientBounds.Height / 2 - sprite.Height / 2), "Map"));
@@ -417,6 +450,7 @@ namespace MagicGladiators
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+            SaMM.i.LoadContent(Content);
             spriteBatch = new SpriteBatch(GraphicsDevice);
             fontText = Content.Load<SpriteFont>("fontText");
             keyFont = Content.Load<SpriteFont>("lunchtime");
@@ -451,7 +485,13 @@ namespace MagicGladiators
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.Tag == "Player")
+                {
+                    player = go;
+                }
+            }
             Rectangle rec = new Rectangle(10, 10, 10, 10);
             Circle circle = new Circle(10, 10, 10);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -460,10 +500,52 @@ namespace MagicGladiators
                 {
                     if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "NewGame" || CurrentScene.scenetype == "Play")
                     {
+                        if (GameWorld.Instance.server != null)
+                        {
+                            try
+                            {
+                                GameWorld.Instance.server.Kill();
+                            }
+                            catch (Exception) { }
+                            try
+                            {
+                                GameWorld.Instance.server = null;
+                            }
+                            catch (Exception) { }
+                        }
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.Disconnect();
+                            GameWorld.Instance.client = null;
+                            GameWorld.Instance.canClient = true;
+                        }
+                        GameWorld.gameState = GameState.offgame;
+                        GameWorld.buyPhase = true;
                         NextScene = Scene.MainMenu();
                     }
                     else if (CurrentScene.scenetype == "PracticeChooseRound" || CurrentScene.scenetype == "Host")
                     {
+                        if (GameWorld.Instance.server != null)
+                        {
+                            try
+                            {
+                                GameWorld.Instance.server.Kill();
+                            }
+                            catch (Exception) { }
+                            try
+                            {
+                                GameWorld.Instance.server = null;
+                            }
+                            catch (Exception) { }
+                        }
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.Disconnect();
+                            GameWorld.Instance.client = null;
+                            GameWorld.Instance.canClient = true;
+                        }
+                        GameWorld.gameState = GameState.offgame;
+                        GameWorld.buyPhase = true;
                         NextScene = Scene.NewGame();
                     }
                     else
@@ -473,6 +555,11 @@ namespace MagicGladiators
                             try
                             {
                                 server.Kill();
+                            }
+                            catch (Exception) { }
+                            try
+                            {
+                                server = null;
                             }
                             catch (Exception) { }
                         }
@@ -491,6 +578,14 @@ namespace MagicGladiators
             catch (NullReferenceException nre) { }
 
             // TODO: Add your update logic here
+            if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "Play")
+            {
+                SaMM.i.NewPlaystate(SongState.Battle);
+            }
+            else
+            {
+                SaMM.i.NewPlaystate(SongState.Menu);
+            }
             MouseState mouse = Mouse.GetState();
             Circle mouseCircle = new Circle(mouse.X, mouse.Y, 1);
             if (CurrentScene.scenetype == "Play")
@@ -498,11 +593,11 @@ namespace MagicGladiators
                 foreach (GameObject go in gameObjects)
                 {
                     string name = go.Tag;
-                    if (go.CurrentHealth < 0)
+                    if (go.CurrentHealth < 0 && !buyPhase)
                     {
                         if (go.GetComponent("Enemy") is Enemy)
                         {
-                            (go.GetComponent("Enemy") as Enemy).UponDeath();
+                            //(go.GetComponent("Enemy") as Enemy).UponDeath();
                         }
                         objectsToRemove.Add(go);
                         if (client != null)
@@ -540,65 +635,29 @@ namespace MagicGladiators
                 UpdateItemUpgrade(mouse, mouseCircle);
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.F2) && canServer)
-            {
-                //server = new TestServer();
-
-                canServer = false;
-                showServer = true;
-                server = new Process();
-                server.StartInfo.FileName = "TestServer.exe";
-                server.EnableRaisingEvents = true;
-                server.Start();
-                //GameWorld.Instance.client = new TestClient("localhost");
-                //Thread update = new Thread(ServerUpdate);
-                //update.IsBackground = true;
-                //update.Start();
-                //threads.Add(update);
-            }
-            if (!canServer)
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.F6))
-                {
-                    //server.SendMessage("Server sending text!");
-                }
-
-                //server.Update();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.F3) && canClient)
-            {
-                client = new TestClient("25.28.211.248");
-                canClient = false;
-                showServer = true;
-                client.ConnectToServer();
-
-                //Thread update = new Thread(ClientUpdate);
-                //update.IsBackground = true;
-                //update.Start();
-                //threads.Add(update);
-
-                //Thread draw = new Thread(ClientDraw);
-                //draw.IsBackground = true;
-                //draw.Start();
-                //threads.Add(draw);
-            }
             if (!canClient)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.F4))
-                {
-                    client.SendMessage("Client sending text!");
-                }
                 if (client != null)
                 {
                     client.Update();
                 }
-                //client.Draw();
             }
+
             if (Keyboard.GetState().IsKeyDown(Keys.F9) && CurrentScene.scenetype == "Practice")
             {
                 ResetItemsAndAbilities();
                 NextScene = Scene.Practice();
             }
+#if DEBUG
+            if (Keyboard.GetState().IsKeyDown(Keys.F7))
+            {
+                dbCon.i.AddBattleNotWonToSavedID();
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.F8))
+            {
+                dbCon.i.AddBattleWonToSavedID();
+            }
+#endif 
 
             UpdateMouseRelease(mouse);
 
@@ -623,11 +682,13 @@ namespace MagicGladiators
                     ResetCharacters();
                     Director ability = new Director(new AbilityIconBuilder());
                     Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68, Window.ClientBounds.Height - 42), "Fireball", 0, ""));
+                    (player.components.Last() as Ability).icon = Player.abilities.Last();
+                    player.playerName = playername;
                     /*
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
                     Director ability = new Director(new AbilityIconBuilder());
-                    Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68, Window.ClientBounds.Height - 42), "Fireball", 0, ""));
+                    Player.abilities.Add(ability.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68,Window.ClientBounds.Height - 42), "Fireball", 0, ""));
                     newObjects.Add(player);
                     */
                     //CreateDummies();
@@ -640,6 +701,13 @@ namespace MagicGladiators
                     {
                         go.LoadContent(Content);
                     }
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        if (go.Tag == "Fireball")
+                        {
+                            GameWorld.objectsToRemove.Add(go);
+                        }
+                    }
                 }
                 if (NextScene.scenetype == "Practice")
                 {
@@ -651,6 +719,7 @@ namespace MagicGladiators
                     Director director = new Director(new PlayerBuilder());
                     player = director.Construct(new Vector2(mapCenter.X - 16, mapCenter.Y - 280 - 16));
                     newObjects.Add(player);
+                    (player.components.Last() as Ability).icon = Player.abilities.Last();
 
                     CreateDummies();
 
@@ -706,7 +775,24 @@ namespace MagicGladiators
 
         public void UpdateDeathAbilities()
         {
-            if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "Play")
+            if (CurrentScene.scenetype == "Play")
+            {
+                if (player != null)
+                {
+                    if (player.CurrentHealth <= 0 && !buyPhase)
+                    {
+                        foreach (Component component in player.components)
+                        {
+                            if (component is IDeathAbility)
+                            {
+                                (component as Ability).Cooldown();
+                                (component as IDeathAbility).Update();
+                            }
+                        }
+                    }
+                }
+            }
+            if (CurrentScene.scenetype == "Practice")
             {
                 if (player != null)
                 {
@@ -731,14 +817,23 @@ namespace MagicGladiators
             buyPhase = true;
             currentRound = 1;
             itemList.Clear();
-            numberOfRounds = 3;
+            //numberOfRounds = 3;
             playersAlive.Clear();
             readyList.Clear();
             buySpellX = Window.ClientBounds.Width - 144;
             buySpellY = Window.ClientBounds.Height - 144;
             Player.items.Clear();
             Player.abilities.Clear();
-            Player.gold = 10000;
+
+            if (CurrentScene.scenetype == "Practice")
+            {
+                Player.gold = 10000;
+            }
+            else Player.gold = 300;
+
+
+            Player.deathAbilities.Clear();
+            CreateAbility.abilityIndex = 0;
         }
 
         public void UpdateBuyItem(MouseState mouse, Circle mouseCircle)
@@ -752,22 +847,22 @@ namespace MagicGladiators
                     Item item = (go.GetComponent("Item") as Item);
                     if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                     {
-                        if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.items.Count <= 6)
+                        if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.items.Count <= 6 && Player.gold >= item.Value)
                         {
                             canBuy = false;
-                            if (Player.gold >= item.Value)
+
+                            foreach (GameObject go2 in Player.items)
                             {
-                                foreach (GameObject go2 in Player.items)
+                                Item item2 = (go2.GetComponent("Item") as Item);
+                                if (item2.Name == item.Name && item2.upgradeLevel < 3)
                                 {
-                                    Item item2 = (go2.GetComponent("Item") as Item);
-                                    if (item2.Name == item.Name && item2.upgradeLevel < 3)
-                                    {
-                                        item2.Upgrade();
-                                        isBuying = false;
-                                        break;
-                                    }
+                                    item2.Upgrade();
+                                    Player.gold -= item.Value;
+                                    isBuying = false;
+                                    break;
                                 }
                             }
+
                             if (isBuying && Player.items.Count < 6)
                             {
                                 Director director = new Director(new ItemBuilder());
@@ -790,27 +885,61 @@ namespace MagicGladiators
                 {
                     if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                     {
+                        MouseOnIcon = true;
+
                         if (canBuy && mouse.RightButton == ButtonState.Pressed && Player.abilities.Count <= 7)
                         {
                             AbilityIcon ability = (go.GetComponent("AbilityIcon") as AbilityIcon);
                             canBuy = false;
 
-                            Director director = new Director(new AbilityIconBuilder());
-                            int x = Player.abilities.Count * 34;
-                            Player.abilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), ability.Name, ability.Value, ability.Text));
-                            (Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).index = abilityIndex;
-                            //(Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).Name = go.Name;
-                            abilityIndex++;
-                            Player.gold -= ability.Value;
+                            if (Player.gold >= ability.Value)
+                            {
+                                Director director = new Director(new AbilityIconBuilder());
+                                int x = Player.abilities.Count * 34;
+                                Player.abilities.Add(director.ConstructIcon(new Vector2(Window.ClientBounds.Width / 2 - 68 + x, Window.ClientBounds.Height - 42), ability.Name, ability.Value, ability.Text));
+                                (Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).index = abilityIndex;
+                                //(Player.abilities[Player.abilities.Count - 1].GetComponent("AbilityIcon") as AbilityIcon).Name = go.Name;
+                                abilityIndex++;
+                                Player.gold -= ability.Value;
 
-                            CreateAbility ca = new CreateAbility(ability.Name);
-                            player.AddComponent(ca.GetComponent(player, player.transform.position));
-                            abilityList.Remove(ability.gameObject);
-                            break;
+                                CreateAbility ca = new CreateAbility(ability.Name);
+                                player.AddComponent(ca.GetComponent(player, player.transform.position));
+                                abilityList.Remove(ability.gameObject);
+                                CooldownIcon();
+                                break;
+                            }
                         }
+                    }
+                    else
+                    {
+                        MouseOnIcon = false;
                     }
                 }
             }
+        }
+
+        public void CooldownIcon()
+        {
+            (player.components.Last() as Ability).icon = Player.abilities.Last();
+
+            //if (player.components.Last().Name == "HomingMissile")
+            //{
+            //    (player.GetComponent("HomingMissile") as HomingMissile).icon = Player.abilities.Last();
+            //}
+            //if (player.components.Last().Name == "Boomerang")
+            //{
+            //    (player.GetComponent("Boomerang") as Boomerang).icon = Player.abilities.Last();
+            //}
+            //if (player.components.Last().Name == "Chain")
+            //{
+            //    (player.GetComponent("Chain") as Chain).icon = Player.abilities.Last();
+            //}
+            //if (player.components.Last().Name == "HomingMissile")
+            //{
+            //    (player.GetComponent("HomingMissile") as HomingMissile).icon = Player.abilities.Last();
+            //}
+
+
         }
 
         public void UpdateAbilityRebind(MouseState mouse, Circle mouseCircle)
@@ -821,7 +950,7 @@ namespace MagicGladiators
                 {
                     if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                     {
-                        if (canBuy && mouse.LeftButton == ButtonState.Pressed && player.CurrentHealth > 0)
+                        if (canBuy && mouse.LeftButton == ButtonState.Pressed && player.CurrentHealth > 0 && !(go is IDeathAbility))
                         {
                             //rebind ability
                             KeyboardState keyState = Keyboard.GetState();
@@ -831,27 +960,6 @@ namespace MagicGladiators
                                 aliveCanBind = false;
                                 bindName = (go.GetComponent("AbilityIcon") as AbilityIcon).Name;
                             }
-                        }
-                    }
-                }
-            }
-            if (deathCanBind)
-            {
-                foreach (GameObject go in Player.deathAbilities)
-                {
-                    if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
-                    {
-                        if (canBuy && mouse.LeftButton == ButtonState.Pressed && player.CurrentHealth < 0)
-                        {
-                            //rebind ability
-                            KeyboardState keyState = Keyboard.GetState();
-                            keys = keyState.GetPressedKeys();
-                            if (keys.Length > 0)
-                            {
-                                deathCanBind = false;
-                                bindName = (go.GetComponent("AbilityIcon") as AbilityIcon).Name;
-                            }
-
                         }
                     }
                 }
@@ -877,28 +985,6 @@ namespace MagicGladiators
                     }
                 }
             }
-            if (!deathCanBind)
-            {
-                foreach (Component component in player.components)
-                {
-                    if (component is IDeathAbility && component.Name == bindName)
-                    {
-                        foreach (Component comp in player.components)
-                        {
-                            if (comp.key == keys.Last())
-                            {
-                                comp.key = component.key;
-                            }
-                        }
-                        component.key = keys.Last();
-                        Array.Clear(keys, 0, keys.Length);
-                        bindName = "NoName";
-                        deathCanBind = true;
-                        break;
-                    }
-                }
-            }
-
         }
 
         public void UpdateItemUpgrade(MouseState mouse, Circle mouseCircle)
@@ -1015,6 +1101,7 @@ namespace MagicGladiators
                     {
                         client.SendReady(player.Id, false);
                         player.isReady = false;
+
                     }
                     else
                     {
@@ -1028,74 +1115,49 @@ namespace MagicGladiators
                 canReady = true;
             }
 
-            if (client != null)
+            if (client != null && gameState == GameState.ingame && !buyPhase && !waitingForServerResponse)
             {
                 if (client.isHost)
                 {
-                    if (buyPhase)
+                    playersAlive.Clear();
+                    foreach (GameObject go in gameObjects)
                     {
-                        bool startRound = false;
-
-                        foreach (GameObject go in gameObjects)
+                        if (go.Tag == "Player" || go.Tag == "Enemy")
                         {
-                            if (gameObjects.Exists(x => x.Tag == "Player") || gameObjects.Exists(x => x.Tag == "Enemy"))
-                            {
-                                if ((go.Tag == "Enemy" || go.Tag == "Player") && !go.isReady)
-                                {
-                                    //don't start the round
-                                    startRound = false;
-                                    break;
-                                }
-                                else startRound = true;
-                            }
-
-                        }
-
-                        if (startRound)
-                        {
-                            client.SendSwitchPhase();
-                            foreach (GameObject go in gameObjects)
-                            {
-                                if (go.Tag == "Enemy" || go.Tag == "Player")
-                                {
-                                    go.isReady = false;
-                                }
-                            }
-                            StartRound();
-                            currentRound++;
-                            //ResetCharacters();
-                            buyPhase = false;
-                            startRound = false;
+                            playersAlive.Add(go);
                         }
                     }
-                    else
+                    if (playersAlive.Count < 2)
                     {
-                        playersAlive.Clear();
-                        foreach (GameObject go in gameObjects)
+                        if (currentRound < numberOfRounds)
                         {
-                            if (go.Tag == "Player" || go.Tag == "Enemy")
+                            foreach (Component component in player.components)
                             {
-                                playersAlive.Add(go);
+                                if (component is Ability)
+                                {
+                                    (component as Ability).CanShoot = true;
+                                    (component as Ability).CooldownTimer = 0;
+                                }
                             }
+                            //revive all players & reset all stats
+                            //CreateDummies();
+                            client.SendSwitchPhase();
+                            //player.TotalScore += player.RoundScore;
+                            //player.RoundScore = 0;
+                            StartRound();
+                            //CreateMap(selectedMap);
+                            //ResetCharacters();
+                            buyPhase = true;
+                            currentRound++;
                         }
-                        if (playersAlive.Count < 2)
+                        else
                         {
-                            if (currentRound < numberOfRounds)
-                            {
-                                //revive all players & reset all stats
-                                //CreateDummies();
-                                client.SendSwitchPhase();
-                                StartRound();
-                                //CreateMap(selectedMap);
-                                //ResetCharacters();
-                                buyPhase = true;
-                                //currentRound++;
-                            }
-                            else
-                            {
-                                //show end screen
-                                currentRound = 1;
-                            }
+                            //show end screen
+                            currentRound = 1;
+                            waitingForServerResponse = true;
+                            client.SendEnding();
+                            //Thread.Sleep(50);
+                            //NextScene = Scene.PostScreen();
                         }
                     }
                 }
@@ -1110,11 +1172,22 @@ namespace MagicGladiators
                 {
                     if (go.Tag == "Player" || go.Tag == "Enemy")
                     {
+                        go.transform.position = new Vector2(0, 0);
                         characters.Add(go);
                         characterColliders.Add((go.GetComponent("Collider") as Collider));
                     }
                     CircleColliders.Remove((go.GetComponent("Collider") as Collider));
                     gameObjects.Remove(go);
+
+                    if (go.Tag == "Player")
+                    {
+                        Player player = (go.GetComponent("Player") as Player);
+                        if (client != null && player.lastHitBy != "" && !buyPhase)
+                        {
+                            client.SendGold(player.lastHitBy, 25);
+                            player.lastHitBy = "";
+                        }
+                    }
                 }
                 objectsToRemove.Clear();
             }
@@ -1140,8 +1213,12 @@ namespace MagicGladiators
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-
+            if (client != null)
+            {
+                client.Draw();
+            }
             spriteBatch.DrawString(fontText, TestClient.text, new Vector2(0, Window.ClientBounds.Height / 2), Color.Black);
+
 
             foreach (GameObject go in gameObjects)
             {
@@ -1156,7 +1233,10 @@ namespace MagicGladiators
                         go.Draw(spriteBatch);
                     }
                 }
+
             }
+
+
 
 
             DrawPlayerAbilities();
@@ -1185,7 +1265,7 @@ namespace MagicGladiators
                 {
                     if (player.CurrentHealth < 0)
                     {
-                        UpdateDeathAbilities();
+                        //UpdateDeathAbilities();
                         DrawPlayerDeathAbilities();
                         DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
                         UpdateAbilityRebind(mouse, mouseCircle);
@@ -1194,10 +1274,37 @@ namespace MagicGladiators
             }
             if (CurrentScene.scenetype == "Play" && player.CurrentHealth < 0)
             {
-                UpdateDeathAbilities();
+                //UpdateDeathAbilities();
                 DrawPlayerDeathAbilities();
                 DrawTooltipPlayerDeathAbility(mouse, mouseCircle);
                 UpdateAbilityRebind(mouse, mouseCircle);
+            }
+            if (player != null)
+            {
+                foreach (Component comp in player.components)
+                {
+                    if (comp is Ability && !(comp is IDeathAbility) && player.CurrentHealth > 0)
+                    {
+                        (comp as Ability).Draw(spriteBatch);
+                    }
+                    if (comp is IDeathAbility && player.CurrentHealth < 0)
+                    {
+                        (comp as Ability).Draw(spriteBatch);
+                    }
+                }
+            }
+
+            if (CurrentScene.scenetype == "Play")
+            {
+                DrawScore(new Vector2(Window.ClientBounds.Width, 50));
+            }
+            else if (CurrentScene.scenetype == "PostScreen")
+            {
+                DrawScore(new Vector2(Window.ClientBounds.Width / 10 * 6, Window.ClientBounds.Height / 10 * 2));
+            }
+            else if (CurrentScene.scenetype == "Statistic")
+            {
+                DrawStatistic(new Vector2(Window.ClientBounds.Width / 10 * 5.7f, Window.ClientBounds.Height / 10 * 2));
             }
 
             spriteBatch.End();
@@ -1267,7 +1374,7 @@ namespace MagicGladiators
                         text = text.Split('.').Last();
                         if (name == "Fireball")
                         {
-                            text = "LMB";
+                            text = "RMB";
                             x = -10;
                         }
                         if (text == "Space")
@@ -1344,9 +1451,9 @@ namespace MagicGladiators
                     int height = (TooltipBox.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height;
                     TooltipBox.transform.position = new Vector2(mouse.Position.X - width, mouse.Position.Y - height);
                     TooltipBox.Draw(spriteBatch);
-                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
-                    spriteBatch.DrawString(fontText, "Value: " + icon.Value.ToString(), new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
-                    spriteBatch.DrawString(describtionFont, icon.Text, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 40), Color.Black, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(fontText, "Cost: " + icon.Value.ToString(), new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.White, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(describtionFont, icon.Text, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 40), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
             }
@@ -1364,8 +1471,8 @@ namespace MagicGladiators
                     int height = (TooltipBox.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height;
                     TooltipBox.transform.position = new Vector2(mouse.Position.X - width, mouse.Position.Y - height);
                     TooltipBox.Draw(spriteBatch);
-                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
-                    //spriteBatch.DrawString(fontText, "Value: " + icon.Value.ToString(), new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(describtionFont, "To Rebind key: \n Press and hold LMB while \n pressing the desired key", new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
             }
@@ -1383,7 +1490,7 @@ namespace MagicGladiators
                     int height = (TooltipBox.GetComponent("SpriteRenderer") as SpriteRenderer).Sprite.Height;
                     TooltipBox.transform.position = new Vector2(mouse.Position.X - width, mouse.Position.Y - height);
                     TooltipBox.Draw(spriteBatch);
-                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                    spriteBatch.DrawString(fontText, icon.Name, new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                     //spriteBatch.DrawString(fontText, "Value: " + icon.Value.ToString(), new Vector2(mouse.Position.X - width + 5, mouse.Position.Y - height + 5 + 20), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
                     //icon.Draw(spriteBatch, mouse.Position.X, mouse.Position.Y);
                 }
@@ -1405,10 +1512,173 @@ namespace MagicGladiators
             }
         }
 
+        public void DrawScore(Vector2 position)
+        {
+            string phase;
+            string text;
+            Vector2 textSize;
+            int columnOne = 220;
+            int columnTwo = 165;
+            int columnThree = 120;
+            int columnFour = 50;
+
+            int x = 0;
+            if (buyPhase)
+            {
+                phase = "Buy Phase";
+            }
+            else phase = "Combat Phase";
+            if (CurrentScene.scenetype == "Play")
+            {
+                spriteBatch.DrawString(fontText, phase, new Vector2(position.X - columnTwo, position.Y - 40), Color.Black);
+                spriteBatch.DrawString(fontText, "Round: " + currentRound + " / " + GameWorld.numberOfRounds, new Vector2(position.X - columnTwo, position.Y - 20), Color.Black);
+            }
+
+            text = "Player | Kills | Damage | Score";
+            textSize = fontText.MeasureString(text);
+            spriteBatch.DrawString(fontText, "Player | ", new Vector2(position.X - columnOne, position.Y), Color.Black);
+            spriteBatch.DrawString(fontText, "Kills | ", new Vector2(position.X - columnTwo, position.Y), Color.Black);
+            spriteBatch.DrawString(fontText, "Damage | ", new Vector2(position.X - columnThree, position.Y), Color.Black);
+            spriteBatch.DrawString(fontText, "Score", new Vector2(position.X - columnFour, position.Y), Color.Black);
+
+            if (CurrentScene.scenetype == "PostScreen")
+            {
+                gameObjects = gameObjects.OrderByDescending(o => o.TotalScore).ToList();
+                if (canUpdateStatistics)
+                {
+                    canUpdateStatistics = false;
+                    if (player.Id == gameObjects[0].Id)
+                    {
+                        dbCon.i.AddBattleWonToSavedID();
+                    }
+                    else
+                    {
+                        dbCon.i.AddBattleNotWonToSavedID();
+                    }
+                }
+            }
+            List<GameObject> tempList = new List<GameObject>();
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.Tag == "Player" || go.Tag == "Enemy" || go.Tag == "Score")
+                {
+                    if (!tempList.Exists(i => i.Id == go.Id))
+                    {
+                        tempList.Add(go);
+                    }
+                }
+            }
+            foreach (GameObject go in tempList)
+            {
+                if (go.Tag == "Player" || go.Tag == "Enemy" || go.Tag == "Score")
+                {
+
+                    //tempList.Add(go);
+                    text = go.playerName;
+                    textSize = fontText.MeasureString(text);
+                    Vector2 temp = fontText.MeasureString("Player");
+                    if (textSize.X > temp.X)
+                    {
+                        text += "...";
+                        textSize = fontText.MeasureString(text);
+                        for (int i = text.Length; i >= 0; i--)
+                        {
+                            //text = text.Remove(text.Length - 2);
+                            text = text.Remove(i - 3);
+                            text += "...";
+                            textSize = fontText.MeasureString(text);
+                            if (textSize.X > temp.X)
+                            {
+                                continue;
+                            }
+                            else break;
+                        }
+                    }
+                    spriteBatch.DrawString(fontText, text, new Vector2(position.X - columnOne, position.Y + 20 + x), Color.Black);
+                    spriteBatch.DrawString(fontText, go.kills.ToString(), new Vector2(position.X - columnTwo, position.Y + 20 + x), Color.Black);
+                    spriteBatch.DrawString(fontText, go.DamageDone.ToString(), new Vector2(position.X - columnThree, position.Y + 20 + x), Color.Black);
+                    spriteBatch.DrawString(fontText, go.TotalScore.ToString(), new Vector2(position.X - columnFour, position.Y + 20 + x), Color.Black);
+                    x += 20;
+
+                }
+            }
+            tempList.Clear();
+        }
+
+        public void DrawStatistic(Vector2 position)
+        {
+            string text;
+            Vector2 textSize;
+            int columnOne = 220;
+            int columnTwo = 165;
+            int columnThree = 105;
+            int columnFour = 5;
+
+            Dictionary<string, int> info = dbCon.i.GetStats();
+            float percent;
+            if (info["battles"] == 0)
+            {
+                percent = 0;
+            }
+            else
+            {
+                percent = ((float)info["battleswon"] / (float)info["battles"]) * 100;
+            }
+            int tempura = (int)percent;
+            string spercent;
+            if (tempura >= 10)
+            {
+                spercent = percent.ToString().Truncate(5);
+            }
+            else
+            {
+                spercent = percent.ToString().Truncate(4);
+            }
+            spercent += "%";
+
+
+            int x = 0;
+
+            text = "Player | Games | Games Won | Win Percent";
+            textSize = fontText.MeasureString(text);
+            spriteBatch.DrawString(fontText, "Player | ", new Vector2(position.X - columnOne, position.Y), Color.Black);
+            spriteBatch.DrawString(fontText, "Games | ", new Vector2(position.X - columnTwo, position.Y), Color.Black);
+            spriteBatch.DrawString(fontText, "Games Won | ", new Vector2(position.X - columnThree, position.Y), Color.Black);
+            spriteBatch.DrawString(fontText, "Win Percent", new Vector2(position.X - columnFour, position.Y), Color.Black);
+
+            text = dbCon.i.GetName();
+
+            textSize = fontText.MeasureString(text);
+            Vector2 temp = fontText.MeasureString("Player");
+            if (textSize.X > temp.X)
+            {
+                text += "...";
+                textSize = fontText.MeasureString(text);
+                for (int i = text.Length; i >= 0; i--)
+                {
+                    //text = text.Remove(text.Length - 2);
+                    text = text.Remove(i - 3);
+                    text += "...";
+                    textSize = fontText.MeasureString(text);
+                    if (textSize.X > temp.X)
+                    {
+                        continue;
+                    }
+                    else break;
+                }
+            }
+            spriteBatch.DrawString(fontText, text, new Vector2(position.X - columnOne, position.Y + 20 + x), Color.Black);
+            spriteBatch.DrawString(fontText, info["battles"].ToString(), new Vector2(position.X - columnTwo, position.Y + 20 + x), Color.Black);
+            spriteBatch.DrawString(fontText, info["battleswon"].ToString(), new Vector2(position.X - columnThree, position.Y + 20 + x), Color.Black);
+            spriteBatch.DrawString(fontText, spercent, new Vector2(position.X - columnFour, position.Y + 20 + x), Color.Black);
+
+            x += 20;
+
+        }
+
         public GameObject FindGameObjectWithTag(string tag)
         {
             return gameObjects.Find(x => x.Tag == tag);
         }
     }
-
 }

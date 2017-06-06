@@ -19,10 +19,7 @@ namespace MagicGladiators
             Name = "ShrinkMap";
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-            //throw new NotImplementedException();
-        }
+       
 
         public override void Update()
         {

@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MagicGladiators
 {
-    class Nova : OffensiveAbility, IUpdateable, ILoadable
+    class Nova : OffensiveAbility, IUpdateable
     {
        
         private Animator animator;
@@ -32,15 +32,15 @@ namespace MagicGladiators
             go = gameObject;
             originalPos = position;
             this.target = target;
-            cooldown = 5;
+            cooldown = 20;
             testVector = target - originalPos;
             testVector.Normalize();
             this.transform = gameObject.transform;
+            damage = 3;
 
         }
 
-        public override void LoadContent(ContentManager content)
-        { }
+       
         public override void Update()
         {
             KeyboardState keyState = Keyboard.GetState();

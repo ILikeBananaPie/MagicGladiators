@@ -52,29 +52,53 @@ namespace MagicGladiators
                         switch (destination)
                         {
                             case "NewGame":
+                                CreateAbility.abilityIndex = 0;
                                 if (GameWorld.Instance.server != null)
                                 {
-                                    GameWorld.Instance.server.Kill();
-                                    GameWorld.Instance.server = null;
+                                    try
+                                    {
+                                        GameWorld.Instance.server.Kill();
+                                    } catch (Exception) { }
+                                    try
+                                    {
+                                        GameWorld.Instance.server = null;
+                                    } catch (Exception) { }
                                 }
                                 if (GameWorld.Instance.client != null)
                                 {
                                     GameWorld.Instance.client.Disconnect();
                                     GameWorld.Instance.client = null;
+                                    GameWorld.Instance.canClient = true;
                                 }
+                                GameWorld.gameState = GameState.offgame;
+                                GameWorld.buyPhase = true;
+                                GameWorld.Instance.canUpdateStatistics = true;
+                                Scene.tempList.Clear();
                                 GameWorld.Instance.NextScene = Scene.NewGame();
                                 break;
                             case "MainMenu":
+                                CreateAbility.abilityIndex = 0;
                                 if (GameWorld.Instance.server != null)
                                 {
-                                    GameWorld.Instance.server.Kill();
-                                    GameWorld.Instance.server = null;
+                                    try
+                                    {
+                                        GameWorld.Instance.server.Kill();
+                                    } catch (Exception) { }
+                                    try
+                                    {
+                                        GameWorld.Instance.server = null;
+                                    } catch (Exception) { }
                                 }
                                 if (GameWorld.Instance.client != null)
                                 {
                                     GameWorld.Instance.client.Disconnect();
                                     GameWorld.Instance.client = null;
+                                    GameWorld.Instance.canClient = true;
                                 }
+                                GameWorld.gameState = GameState.offgame;
+                                GameWorld.buyPhase = true;
+                                GameWorld.Instance.canUpdateStatistics = true;
+                                Scene.tempList.Clear();
                                 GameWorld.Instance.NextScene = Scene.MainMenu();
                                 break;
                             case "Join":
@@ -86,6 +110,7 @@ namespace MagicGladiators
                             case "Lobby":
                                 break;
                             case "Practice":
+                                Player.gold = 10000;
                                 GameWorld.Instance.NextScene = Scene.Practice();
                                 break;
                             case "ExitGame":
@@ -133,17 +158,97 @@ namespace MagicGladiators
                                 GameWorld.selectedMap = "PillarHoleMap";
                                 break;
                             case "Play":
-                                GameWorld.Instance.NextScene = Scene.Play();
-
-                                if (GameWorld.gameObjects.Exists(x => x.Tag == "Enemy"))
+                                if (GameWorld.gameObjects.Exists(x => x.Tag == "Player") && GameWorld.gameObjects.Exists(x => x.Id != ""))
                                 {
-                                    if (GameWorld.Instance.client != null)
+                                    if (GameWorld.gameObjects.Exists(x => x.Tag == "Enemy"))
                                     {
-                                        GameWorld.Instance.client.SendMapSettings(GameWorld.selectedMap, GameWorld.numberOfRounds);
-                                        GameWorld.Instance.client.SendStartgame();
-
+                                        if (GameWorld.Instance.client != null)
+                                        {
+                                            GameWorld.Instance.NextScene = Scene.Play();
+                                            GameWorld.Instance.client.SendMapSettings(GameWorld.selectedMap, GameWorld.numberOfRounds);
+                                            GameWorld.Instance.client.SendStartgame();
+                                            foreach (GameObject go in GameWorld.Instance.client.readyList)
+                                            {
+                                                go.isReady = false;
+                                            }
+                                        }
                                     }
                                 }
+                                break;
+                            case "LoginAttempt":
+                                string a = string.Empty;
+                                string b = string.Empty;
+                                foreach (GameObject obj in GameWorld.gameObjects)
+                                {
+                                    if (obj.GetComponent("Username") is Username)
+                                    {
+                                        a = (obj.GetComponent("Username") as Username).GetInput();
+                                    }
+                                    if (obj.GetComponent("Password") is Password)
+                                    {
+                                        b = (obj.GetComponent("Password") as Password).GetInput();
+                                    }
+                                }
+                                if (a.Length > 0 && b.Length > 0)
+                                {
+                                    if (dbCon.i.IsMatch(dbTables.login, a, b) == dbMatching.Match)
+                                    {
+                                        GameWorld.playername = a;
+                                        dbCon.i.FindNSetID(a);
+                                        //GameWorld.Instance.player.playerName = a;
+                                        GameWorld.Instance.NextScene = Scene.MainMenu();
+                                    }
+                                }
+                                break;
+                            case "CreateAccount":
+                                GameWorld.Instance.NextScene = Scene.CreateAccount();
+                                break;
+                            case "Login":
+                                GameWorld.Instance.NextScene = Scene.Login();
+                                break;
+                            case "CreateAttempt":
+                                string c = string.Empty;
+                                string d = string.Empty;
+                                string e = string.Empty;
+                                foreach (GameObject obj in GameWorld.gameObjects)
+                                {
+                                    if (obj.GetComponent("Username") is Username)
+                                    {
+                                        c = (obj.GetComponent("Username") as Username).GetInput();
+                                    }
+                                    if (obj.GetComponent("Password") is Password)
+                                    {
+                                        if (obj.Name == "Password")
+                                            d = (obj.GetComponent("Password") as Password).GetInput();
+                                        if (obj.Name == "Recheck Password")
+                                            e = (obj.GetComponent("Password") as Password).GetInput();
+                                    }
+                                }
+                                if (c.Length > 0 && d.Length > 0 && e.Length > 0)
+                                {
+                                    if (d == e)
+                                    {
+                                        if (dbCon.i.CreateAccount(c, d) == dbCreate.Success)
+                                        {
+                                            GameWorld.Instance.NextScene = Scene.Login();
+                                        }
+                                    }
+                                }
+                                break;
+                            case "BackToLobby":
+                                GameWorld.Instance.NextScene = Scene.Joined(null);
+                                break;
+                            case "Statistic":
+                                GameWorld.Instance.NextScene = Scene.Statistic();
+                                break;
+                            case "Mute":
+                                SaMM.i.MuteMusic();
+                                break;
+                            case "Options":
+                                GameWorld.Instance.NextScene = Scene.Option();
+                                break;
+                            case "Credits":
+                                GameWorld.Instance.NextScene = Scene.Credits();
                                 break;
                         }
                     }

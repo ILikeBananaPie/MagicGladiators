@@ -18,9 +18,7 @@ namespace MagicGladiators
         private IStrategy strategy;
         private SpriteFont fontText;
 
-        //private int tooltipX;
-        //private int tooltipY;
-        //private bool showTooltip = false;
+   
         private string[] list = new string[2] { "Stat", "Value" };
 
         public string Name { get; set; }
@@ -53,7 +51,7 @@ namespace MagicGladiators
             this.AOEBonus = float.Parse(stats[10]);
             this.GoldBonusPercent = float.Parse(stats[11]);
             this.Value = int.Parse(stats[5]);
-            this.UpgradeValue = (int)(Value + Value * 0.2F);
+            this.UpgradeValue = Value * 2;
         }
 
         public void LoadContent(ContentManager content)
@@ -130,7 +128,7 @@ namespace MagicGladiators
 
             int plus = 0;
             int index = 0;
-            spriteBatch.DrawString(fontText, Name, new Vector2(x + 50, y - 50), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+            spriteBatch.DrawString(fontText, Name, new Vector2(x + 50, y - 50), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
             plus += 20;
             var fieldValues2 = this.GetType().GetProperties().Select(field => field.GetValue(this)).ToList();
             for (int i = 1; i < fieldValues2.Count - 5; i++)
@@ -141,13 +139,13 @@ namespace MagicGladiators
                 {
                     if (testInt < 5)
                     {
-                        spriteBatch.DrawString(fontText, list[index] + ": " + (testInt * 100).ToString(".") + "%", new Vector2(x + 50, y - 50 + plus), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                        spriteBatch.DrawString(fontText, list[index] + ": " + (testInt * 100).ToString(".") + "%", new Vector2(x + 50, y - 50 + plus), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                         plus += 20;
                         index++;
                     }
                     else
                     {
-                        spriteBatch.DrawString(fontText, list[index] + " " + "+ " + testInt, new Vector2(x + 50, y - 50 + plus), Color.Black, 0, Vector2.Zero, 0.9F, SpriteEffects.None, 1);
+                        spriteBatch.DrawString(fontText, list[index] + " " + "+ " + testInt, new Vector2(x + 50, y - 50 + plus), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
                         plus += 20;
                         index++;
 

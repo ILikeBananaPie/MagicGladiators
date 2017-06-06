@@ -17,6 +17,7 @@ namespace MagicGladiators
         public string Id { get; set; }
         public int ConnectionNumber { get; set; }
         public bool isReady = false;
+        public int cloneNumber;
 
         public float MaxHealth { get; set; }
         public float CurrentHealth { get; set; }
@@ -29,12 +30,19 @@ namespace MagicGladiators
         public float LifeSteal { get; set; } = 0;
         public float CooldownReduction { get; set; } = 1;
         public bool IsInvisible { get; set; } = false;
-
+        public float dmg { get; set; } = 9;
 
         public float AoeBonus { get; set; } = 1;
         public float GoldBonusPercent { get; set; } = 0;
         public List<Component> components = new List<Component>();
         private List<Component> componentsToRemove = new List<Component>();
+
+        public string playerName { get; set; }
+
+        public int RoundScore { get; set; }
+        public int TotalScore { get; set; }
+        public int kills { get; set; }
+        public float DamageDone { get; set; }
 
         public string Tag { get; set; } = "Untagged";
         public ObjectType objectType { get; set; }
@@ -80,23 +88,21 @@ namespace MagicGladiators
             {
                 if (component is IUpdateable)
                 {
-                    if ((component is IDeathAbility) && GameWorld.Instance.player.CurrentHealth < 0)
-                    {
-                        (component as IDeathAbility).Update();
-                    }
-                    else if ((component is IDeathAbility) && GameWorld.Instance.player.CurrentHealth > 0)
-                    {
-                        //do nothing
-                    }
-                    else
-                    {
-                        (component as IUpdateable).Update();
-                    }
+                    //if ((component is IDeathAbility) && GameWorld.Instance.player.CurrentHealth < 0)
+                    //{
+                    //    (component as IDeathAbility).Update();
+                    //}
+                    //else if ((component is IDeathAbility) && GameWorld.Instance.player.CurrentHealth > 0)
+                    //{
+                    //    //do nothing
+                    //}
+                    (component as IUpdateable).Update();
                 }
-                if (component is IAbility)
+                if (component is IAbility && !(component is IDeathAbility))
                 {
                     (component as IAbility).Cooldown();
                 }
+
             }
             UpdateComponents();
         }

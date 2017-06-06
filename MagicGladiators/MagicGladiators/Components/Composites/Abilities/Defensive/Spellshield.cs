@@ -28,29 +28,26 @@ namespace MagicGladiators
 
         public Spellshield(GameObject go) : base(go)
         {
-            cooldown = 5;
+            cooldown = 15;
             canShoot = true;
 
         }
 
         private void CreateAnimations()
         {
-            //SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
+           
 
             animator.CreateAnimation("Idle", new Animation(1, 0, 0, 39, 39, 1, Vector2.Zero, sprite));
 
             animator.PlayAnimation("Idle");
         }
 
-        public override void LoadContent(ContentManager content)
+        public void LoadContent(ContentManager content)
         {
             isLoaded = true;
-            //animator = (Animator)gameObject.GetComponent("Animator");
-            //sprite = content.Load<Texture2D>("Spellshield");
-            //effect.LoadContent(GameWorld.Instance.Content);
-            //CreateAnimations();
+            
         }
-
+        
         public override void Update()
         {
 
@@ -117,28 +114,12 @@ namespace MagicGladiators
                         playerCircle.Center = new Vector2(gameObject.transform.position.X + 16, gameObject.transform.position.Y + 16);
                         playerCircle.Radius = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Radius * 2F;
 
-                        if (playerCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
-                        {
-                            //GameWorld.objectsToRemove.Add(go);
-                            if (GameWorld.Instance.client != null)
-                            {
-                                //GameWorld.Instance.client.SendRemoval(go.Tag, go.Id);
-                            }
-                        }
+                       
                     }
                 }
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            //if (activated)
-            //{
-            //    float radius = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Radius * 2F;
-            //    radius = radius - (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Radius;
-            //    effect.transform.position = new Vector2(gameObject.transform.position.X - radius, gameObject.transform.position.Y - radius);
-            //    effect.Draw(spriteBatch);
-            //}
-        }
+        
     }
 }

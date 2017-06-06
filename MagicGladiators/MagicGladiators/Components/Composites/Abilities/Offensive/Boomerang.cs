@@ -19,13 +19,12 @@ namespace MagicGladiators
         public Boomerang(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 15;
+            damage = 7;
+
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-           
-        }
+      
 
         public override void Update()
         {

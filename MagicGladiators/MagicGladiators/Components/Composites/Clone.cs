@@ -49,21 +49,73 @@ namespace MagicGladiators
             {
                 if ((go.Tag == "Enemy" || go.Tag == "Player") && go.Id == gameObject.Id)
                 {
-                    if (gameObject.Tag.Contains("Left"))
+                    if (go.Tag == "Enemy")
                     {
-                        gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
+
                     }
-                    if (gameObject.Tag.Contains("Right"))
+                    if (go.cloneNumber == 1 && gameObject.cloneNumber == 2)
                     {
                         gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y);
                     }
-                    if (gameObject.Tag.Contains("Up"))
+                    if (go.cloneNumber == 1 && gameObject.cloneNumber == 3)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y + 64);
+                    }
+                    if (go.cloneNumber == 1 && gameObject.cloneNumber == 4)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y + 64);
+                    }
+
+                    if (go.cloneNumber == 2 && gameObject.cloneNumber == 1)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
+                    }
+                    if (go.cloneNumber == 2 && gameObject.cloneNumber == 3)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y + 64);
+                    }
+                    if (go.cloneNumber == 2 && gameObject.cloneNumber == 4)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y + 64);
+                    }
+
+                    if (go.cloneNumber == 3 && gameObject.cloneNumber == 1)
                     {
                         gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y - 64);
                     }
-                    if (gameObject.Tag.Contains("Down"))
+                    if (go.cloneNumber == 3 && gameObject.cloneNumber == 2)
                     {
-                        gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y + 64);
+                        gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y - 64);
+                    }
+                    if (go.cloneNumber == 3 && gameObject.cloneNumber == 4)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X + 64, go.transform.position.Y);
+                    }
+
+                    if (go.cloneNumber == 4 && gameObject.cloneNumber == 1)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y - 64);
+                    }
+                    if (go.cloneNumber == 4 && gameObject.cloneNumber == 2)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X, go.transform.position.Y - 64);
+                    }
+                    if (go.cloneNumber == 4 && gameObject.cloneNumber == 3)
+                    {
+                        gameObject.transform.position = new Vector2(go.transform.position.X - 64, go.transform.position.Y);
+                    }
+
+                 
+                }
+                foreach (GameObject go2 in GameWorld.gameObjects)
+                {
+                    if (go2.Id == go.Id && go.Tag == "Player" && go2.Tag.Contains("Clone") && go.CurrentHealth < 0)
+                    {
+                        GameWorld.objectsToRemove.Add(go2);
+                        if (GameWorld.Instance.client != null)
+                        {
+                            GameWorld.Instance.client.SendRemoval(go2.Tag, go2.Id);
+                        }
                     }
                 }
             }

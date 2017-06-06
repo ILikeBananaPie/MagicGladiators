@@ -20,8 +20,11 @@ namespace MagicGladiators
 
         private DIRECTION direction;
 
-        public static int gold = 10000;
+        public static int gold = 300;
         public static float speed = 1;
+
+        private float hitTimer;
+        private bool canBePushed = true;
 
         private Transform transform;
         private SpriteFont fontText;
@@ -30,7 +33,6 @@ namespace MagicGladiators
         private float testTimer;
         private SpriteRenderer sprite;
         private float regenTimer;
-
         private float timer;
 
         public static List<GameObject> items = new List<GameObject>();
@@ -38,7 +40,9 @@ namespace MagicGladiators
         public static List<GameObject> deathAbilities = new List<GameObject>();
 
         private List<string> colors = new List<string>() { "Blue", "Red", "Orange", "Purple", "Brown", "Green", "LightGreen", "Yellow" };
+        private List<string> noGoldList = new List<string>() { "Map", "LavaHole", "LavaSpot", "Pillar", "Spellshield", "Deflect", "Enemy" };
 
+        public string lastHitBy { get; set; } = "";
 
         public static Vector2 testSpeed;
 
@@ -102,17 +106,10 @@ namespace MagicGladiators
 
         public void OnCollisionEnter(Collider other)
         {
-            //if (other.gameObject.Tag == "Dummy" || other.gameObject.Tag == "Enemy")
-            //{
-            //    //gameObject.CurrentHealth -= (other.gameObject.GetComponent("Dummy") as Dummy).Damage;
-            //    Vector2 test = (gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center;
-            //    testVector = (gameObject.GetComponent("Physics") as Physics).GetVector(test, (other.gameObject.GetComponent("Collider") as Collider).CircleCollisionBox.Center);
-            //    testVector.Normalize();
-            //    testPush = true;
-            //}
-            if (other.gameObject.Tag == "Enemy")
+           
+            if (other.gameObject.Id != gameObject.Id && !noGoldList.Exists(x => x == other.gameObject.Tag) && !other.gameObject.Tag.Contains("Critter") && !other.gameObject.Tag.Contains("Clone") && !other.gameObject.Tag.Contains("Firewave") && other.gameObject.Tag != "DeathMine" && other.gameObject.Tag != "DeathMeteor")
             {
-                //Deflect.SetVector(gameObject, other.gameObject);
+                lastHitBy = other.gameObject.Id;
             }
         }
 
@@ -122,15 +119,31 @@ namespace MagicGladiators
 
         public void isPushed(Vector2 vectorBetween)
         {
-            testPush = true;
-            testVector = vectorBetween;
-            testVector.Normalize();
+            if (canBePushed)
+            {
+                canBePushed = false;
+                testPush = true;
+                testVector = vectorBetween;
+                testVector.Normalize();
+                testVector = testVector * (2 - gameObject.CurrentHealth / gameObject.MaxHealth);
+            }
+
+
         }
 
         public void Update()
         {
-            Color color = (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color;
+            if (!canBePushed)
+            {
+                hitTimer += GameWorld.Instance.deltaTime;
+                if (hitTimer > 0.001)
+                {
+                    hitTimer = 0;
+                    canBePushed = true;
+                }
+            }
 
+            Color color = (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color;
             foreach (GameObject go in GameWorld.gameObjects)
             {
                 if (go.Tag == "Player" || go.Tag == "Enemy")
@@ -138,7 +151,6 @@ namespace MagicGladiators
                     (go.GetComponent("Animator") as Animator).PlayAnimation(colors[go.ConnectionNumber]);
                 }
             }
-
 
             if (gameObject.IsInvisible)
             {
@@ -214,6 +226,7 @@ namespace MagicGladiators
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (GameWorld.Instance.CurrentScene.scenetype == "PostScreen") { return; } 
 
             if (GameWorld.gameState == GameState.offgame)
             {
@@ -222,33 +235,42 @@ namespace MagicGladiators
                     if (go.Tag == "Player" || go.Tag == "Enemy")
                     {
                         go.transform.position = new Vector2(50, 50 + 50 * go.ConnectionNumber);
-                        spriteBatch.DrawString(fontText, "Name: " + go.Id, new Vector2(go.transform.position.X + 50, go.transform.position.Y), Color.Black);
+                        spriteBatch.DrawString(fontText, "Name: " + go.playerName, new Vector2(go.transform.position.X + 50, go.transform.position.Y), Color.Black);
+                        //foreach (GameObject go2 in GameWorld.Instance.client.readyList)
+                        //{
+                        //    if (go2.Id == go.Id)
+                        //    {
+                        //        Vector2 textSize = fontText.MeasureString("Name: " + go.playerName);
+                        //        string text;
+                        //        if (go.isReady)
+                        //        {
+                        //            text = "Ready";
+                        //        }
+                        //        else text = "Not Ready";
+                        //        spriteBatch.DrawString(fontText, " is " + text, new Vector2(go.transform.position.X + 50 + textSize.X, go.transform.position.Y), Color.Black);
+                        //    }
+                        //}
                     }
                 }
                 return;
             }
             MouseState mouse = Mouse.GetState();
-            spriteBatch.DrawString(fontText, "Health: " + gameObject.CurrentHealth.ToString(".00") + "/" + gameObject.MaxHealth.ToString(".00"), new Vector2(0, 0), Color.Black);
-            spriteBatch.DrawString(fontText, "Gold: " + gold, new Vector2(0, 20), Color.Black);
-#if DEBUG
-            spriteBatch.DrawString(fontText, "speed: " + testSpeed, new Vector2(0, 160), Color.Black);
-            spriteBatch.DrawString(fontText, "PlayerX: " + (int)gameObject.transform.position.X, new Vector2(0, 40), Color.Black);
-            spriteBatch.DrawString(fontText, "PlayerY: " + (int)gameObject.transform.position.Y, new Vector2(0, 60), Color.Black);
-            spriteBatch.DrawString(fontText, "MouseX: " + mouse.X, new Vector2(0, 80), Color.Black);
-            spriteBatch.DrawString(fontText, "MouseY: " + mouse.Y, new Vector2(0, 100), Color.Black);
-#endif
-
+            string instructions = "Press Esc to exit to menu";
+            if (GameWorld.Instance.CurrentScene.scenetype == "Practice")
+            {
+                instructions += " / Press F9 to reset Practice";
+            }
+            if (GameWorld.Instance.CurrentScene.scenetype == "Play" && GameWorld.buyPhase)
+            {
+                instructions += " / Press F6 to ready up";
+            }
+            spriteBatch.DrawString(fontText, instructions, new Vector2(0, 0), Color.Black);
+            spriteBatch.DrawString(fontText, "Health: " + gameObject.CurrentHealth.ToString(".00") + "/" + gameObject.MaxHealth.ToString(".00"), new Vector2(0, 40), Color.Black);
+            spriteBatch.DrawString(fontText, "Gold: " + gold, new Vector2(0, 60), Color.Black);
 
             if (GameWorld.Instance.CurrentScene.scenetype == "Play")
             {
-                string phase;
-                if (GameWorld.buyPhase)
-                {
-                    phase = "Buy Phase";
-                }
-                else phase = "Combat Phase";
-                spriteBatch.DrawString(fontText, phase, new Vector2(0, 180), Color.Black);
-                spriteBatch.DrawString(fontText, GameWorld.currentRound + " / " + GameWorld.numberOfRounds, new Vector2(0, 200), Color.Black);
+
             }
         }
 
@@ -284,6 +306,7 @@ namespace MagicGladiators
             }
 
         }
+
         public void GoldReward(int amount)
         {
             gold += (int)(amount * (1 + gameObject.GoldBonusPercent));

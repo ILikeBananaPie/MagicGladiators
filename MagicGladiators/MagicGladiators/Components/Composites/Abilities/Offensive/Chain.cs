@@ -20,7 +20,9 @@ namespace MagicGladiators
         public Chain(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 10;
+            damage = 7;
+
         }
 
 
@@ -43,9 +45,6 @@ namespace MagicGladiators
             }
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MagicGladiators
 {
-    class HomingMissile : OffensiveAbility, IUpdateable, ILoadable
+    class HomingMissile : OffensiveAbility, IUpdateable
     {
         private Animator animator;
         private IStrategy strategy;
@@ -24,6 +24,8 @@ namespace MagicGladiators
         private Vector2 target;
         private GameObject player;
         private float timer;
+       
+
 
         public HomingMissile(GameObject gameObject, Vector2 position, Vector2 target) : base(gameObject)
         {
@@ -35,7 +37,8 @@ namespace MagicGladiators
             testVector = target - originalPos;
             testVector.Normalize();
             this.transform = gameObject.transform;
-            cooldown = 5;
+            cooldown = 15;
+            damage = 7;
 
         }
 
@@ -59,9 +62,6 @@ namespace MagicGladiators
 
 
 
-        public override void LoadContent(ContentManager content)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

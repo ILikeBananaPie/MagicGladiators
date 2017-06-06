@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class RollingMeteor : Ability, ILoadable, IDeathAbility
+    class RollingMeteor : Ability, IDeathAbility
     {
         private float movementSpeed = 200;
 
@@ -21,6 +21,7 @@ namespace MagicGladiators
         private Animator animator;
 
         private Physics physics;
+
 
         private Random rnd;
 
@@ -44,40 +45,11 @@ namespace MagicGladiators
             this.animator = animator;
             this.physics = (transform.gameObject.GetComponent("Physics") as Physics);
             Name = "RollingMeteor";
-            cooldown = 15;
+            cooldown = 25;
         }
 
 
-        private void CreateAnimations()
-        {
-            SpriteRenderer spriteRenderer = (SpriteRenderer)gameObject.GetComponent("SpriteRenderer");
-
-
-
-            animator.CreateAnimation("IdleFront", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("IdleBack", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("IdleLeft", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("IdleRight", new Animation(1, 0, 0, 32, 32, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("WalkFront", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("WalkBack", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("WalkLeft", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("WalkRight", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("Shoot", new Animation(1, 0, 0, 32, 32, 6, Vector2.Zero, spriteRenderer.Sprite));
-
-            animator.PlayAnimation("Shoot");
-
-            strategy = new Idle(animator);
-        }
-
-        
-        public override void LoadContent(ContentManager content)
-        {
-            animator = (Animator)gameObject.GetComponent("Animator");
-
-            Texture2D sprite = content.Load<Texture2D>("Player");
-
-        }
-
+   
         public override void Update()
         {
             if (GameWorld.Instance.player.CurrentHealth > 0) { return; }
@@ -89,7 +61,6 @@ namespace MagicGladiators
 
             if (keyState.IsKeyDown(key) && !qPressed && canShoot)
             {
-                canShoot = false;
                 qPressed = true;
                 if (activated == true)
                 {
@@ -111,6 +82,7 @@ namespace MagicGladiators
 
             if (activated && mouse.LeftButton == ButtonState.Released && !mouseReleasedBool)
             {
+                canShoot = false;
                 pointB = new Vector2(mouse.Position.X, mouse.Position.Y);
 
                 Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(pointB, pointA);

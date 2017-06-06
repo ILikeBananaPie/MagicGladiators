@@ -17,13 +17,11 @@ namespace MagicGladiators
 
         public Firewave(GameObject gameObject) : base(gameObject)
         {
-            cooldown = 15;
+            cooldown = 25;
             Name = "Firewave";
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-        }
+        
 
         public override void Update()
         {
@@ -34,7 +32,6 @@ namespace MagicGladiators
 
             if (keyState.IsKeyDown(key) && canShoot)
             {
-                canShoot = false;
                 activated = true;
             }
 
@@ -42,6 +39,7 @@ namespace MagicGladiators
             {
                 if (mouse.LeftButton == ButtonState.Pressed)
                 {
+                    canShoot = false;
                     activated = false;
                     Vector2 position = new Vector2(mouse.Position.X, mouse.Position.Y);
                     Vector2 target;
@@ -145,8 +143,7 @@ namespace MagicGladiators
                         GameWorld.Instance.client.SendProjectile(side + ",Create", position, target);
                     }
 
-                    //activated = false;
-                    //canShoot = true;
+                
                 }
             }
         }

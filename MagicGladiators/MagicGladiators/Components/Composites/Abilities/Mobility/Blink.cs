@@ -23,7 +23,7 @@ namespace MagicGladiators
         public Blink(GameObject go, Transform transform, Animator animator) : base(go)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 10;
             this.go = go;
             this.animator = animator;
             this.transform = transform;
@@ -31,10 +31,6 @@ namespace MagicGladiators
         }
 
 
-        public override void LoadContent(ContentManager content)
-        {
-            
-        }
 
         public override void Update()
         {

@@ -53,15 +53,15 @@ namespace MagicGladiators
             {
                 gameObject.AddComponent(new SpriteRenderer(gameObject, "Pillar", 1));
             }
-            else gameObject.AddComponent(new SpriteRenderer(gameObject, "StandardMap600x600", 1));
+            else gameObject.AddComponent(new SpriteRenderer(gameObject, "StandardMap", 1));
 
             gameObject.AddComponent(new Animator(gameObject));
 
             gameObject.AddComponent(new Map(gameObject));
 
-            gameObject.AddComponent(new Collider(gameObject, false, true));
+            gameObject.AddComponent(new Collider(gameObject, true, true));
 
-            //gameObject.LoadContent(GameWorld.Instance.Content);
+            
 
 
             gameObject.transform.position = position;

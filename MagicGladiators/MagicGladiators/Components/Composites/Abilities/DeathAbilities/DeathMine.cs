@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MagicGladiators
 {
-    class DeathMine : Ability, ILoadable, IDeathAbility
+    class DeathMine : Ability, IDeathAbility
     {
         
         private Vector2 originalPos;
@@ -30,7 +30,7 @@ namespace MagicGladiators
             this.transform = transform;
             this.animator = animator;
             Name = "DeathMine";
-            cooldown = 10;
+            cooldown = 20;
         }
 
 
@@ -61,10 +61,7 @@ namespace MagicGladiators
             strategy = new Idle(animator);
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-
-        }
+       
 
         public override void Update()
         {

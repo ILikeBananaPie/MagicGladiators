@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MagicGladiators
 {
-    class Mine : DefensiveAbility, ILoadable, IUpdateable, ICollisionEnter
+    class Mine : DefensiveAbility, IUpdateable, ICollisionEnter
     {
         private GameObject go;
         private Vector2 originalPos;
@@ -19,7 +19,7 @@ namespace MagicGladiators
         public Mine(GameObject gameObject, Vector2 position) : base(gameObject)
         {
             canShoot = true;
-            cooldown = 5;
+            cooldown = 10;
             go = gameObject;
             originalPos = position;
 
@@ -32,10 +32,7 @@ namespace MagicGladiators
 
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-
-        }
+      
 
         public override void Update()
         {
@@ -49,12 +46,28 @@ namespace MagicGladiators
                 director.ConstructProjectile(gameObject.transform.position, Vector2.Zero, "Mine", new GameObject(), gameObject.Id);
                 if (GameWorld.Instance.client != null)
                 {
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        if (go.Id == gameObject.Id && go.Tag == "Mine")
+                        {
+                            GameWorld.objectsToRemove.Add(go);
+                            GameWorld.Instance.client.SendRemoval("Mine", gameObject.Id);
+                        }
+                    }
                     GameWorld.Instance.client.SendProjectile("Mine,Create", new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
+                }
+                else
+                {
+                    foreach (GameObject go in GameWorld.gameObjects)
+                    {
+                        if (go.Tag == "DeathMine")
+                        {
+                            GameWorld.objectsToRemove.Add(go);
+                        }
+                    }
                 }
             }
             
         }
-
-     
     }
 }

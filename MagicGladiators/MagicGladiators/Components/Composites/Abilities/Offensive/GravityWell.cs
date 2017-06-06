@@ -15,13 +15,11 @@ namespace MagicGladiators
         public GravityWell(GameObject go) : base(go)
         {
             canShoot = true;
-            cooldown = 3;
+            cooldown = 10;
+            damage = 7;
+
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-           
-        }
 
         public override void Update()
         {
