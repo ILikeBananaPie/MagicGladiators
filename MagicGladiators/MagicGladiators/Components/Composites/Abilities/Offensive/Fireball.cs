@@ -3,8 +3,10 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MagicGladiators
@@ -31,13 +33,18 @@ namespace MagicGladiators
             {
                 if (mouse.LeftButton == ButtonState.Pressed && canShoot && !GameWorld.Instance.MouseOnIcon)
                 {
+                    Thread.Sleep(50);
+                    if (!GameWorld.buyPhase)
+                    {
+
+                    }
+                    canShoot = false;
                     Director director = new Director(new ProjectileBuilder());
                     director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball", gameObject, gameObject.Id);
                     if (GameWorld.Instance.client != null)
                     {
                         GameWorld.Instance.client.SendProjectile("Fireball,Create", new Vector2(gameObject.transform.position.X + 1, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y));
                     }
-                    canShoot = false;
                     foreach (GameObject go in GameWorld.gameObjects)
                     {
                         Vector2 mousePos = new Vector2(mouse.Position.X, mouse.Position.Y);

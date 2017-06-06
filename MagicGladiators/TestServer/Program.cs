@@ -250,14 +250,14 @@ namespace TestServer
                             #region CreateProjectile
                             if (type == (byte)PacketType.CreateProjectile)
                             {
-                                UpdateConnectionList(msgIn.SenderConnection);
                                 string name = msgIn.ReadString();
                                 float posX = msgIn.ReadFloat();
                                 float posY = msgIn.ReadFloat();
                                 float velX = msgIn.ReadFloat();
                                 float velY = msgIn.ReadFloat();
                                 string writeline = name.Split(',').First();
-                                Console.WriteLine(writeline + " Created!");
+                                Console.WriteLine(writeline + " Created! - " + DateTime.Now);
+                                UpdateConnectionList(msgIn.SenderConnection);
                                 SendProjectile(name, posX, posY, velX, velY, msgIn.SenderConnection);
                             }
                             #endregion
@@ -394,7 +394,7 @@ namespace TestServer
             msgOut.Write(kills);
             msgOut.Write(damage);
             msgOut.Write(score);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         public static void SendGold(string id, int gold)
@@ -411,7 +411,7 @@ namespace TestServer
             msgOut = server.CreateMessage();
             msgOut.Write((byte)PacketType.Gold);
             msgOut.Write(gold);
-            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+            server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
         }
         //0-1
         public static void SendProjectile(string name, float posX, float posY, float targetX, float targetY, NetConnection sender)
@@ -442,7 +442,7 @@ namespace TestServer
                     msgOut.Write(posY);
                     msgOut.Write(targetX);
                     msgOut.Write(targetY);
-                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableUnordered, 0);
+                    server.SendMessage(msgOut, connectionList, NetDeliveryMethod.ReliableOrdered, 0);
                 }
             }
         }

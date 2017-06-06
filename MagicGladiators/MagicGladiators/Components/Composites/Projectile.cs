@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace MagicGladiators
 {
@@ -24,6 +25,7 @@ namespace MagicGladiators
         private Vector2 testVector;
 
         public static bool chainActivated;
+        private bool getScore = false;
 
         private float homingTimer;
         private float distance;
@@ -79,7 +81,6 @@ namespace MagicGladiators
 
         public Projectile(GameObject gameObject, Vector2 position, Vector2 target, GameObject shooter) : base(gameObject)
         {
-
             this.shooter = shooter;
             projectileSpeed = GameWorld.Instance.player.ProjectileSpeed;
             originalPos = position;
@@ -153,8 +154,8 @@ namespace MagicGladiators
             animator.CreateAnimation("Boomerang", new Animation(4, 96, 0, 32, 32, 15, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("GravityWell", new Animation(4, 64, 0, 32, 32, 7, Vector2.Zero, spriteRenderer.Sprite));
 
-            animator.CreateAnimation("FirewaveTopBottom", new Animation(1, 0, 1, 200, 100, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("FirewaveLeftRight", new Animation(1, 0, 0, 100, 200, 10, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("FirewaveTopBottom", new Animation(3, 200, 0, 200, 100, 1, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("FirewaveLeftRight", new Animation(3, 0, 0, 100, 200, 1, Vector2.Zero, spriteRenderer.Sprite));
 
             foreach (GameObject go in GameWorld.newObjects)
             {
@@ -258,7 +259,6 @@ namespace MagicGladiators
                             go.CurrentHealth += (GameWorld.Instance.player.GetComponent("Drain") as Drain).healing;
                         }
                     }
-
                 }
                 if (gameObject.Tag == "Chain" && gameObject.Id == GameWorld.Instance.player.Id && !chainActivated)
                 {
@@ -277,7 +277,7 @@ namespace MagicGladiators
                         }
                     }
 
-                    if (gameObject.Id != other.gameObject.Id || other.gameObject.Tag == "Dummy" && !other.gameObject.Tag.Contains("Critter") && !other.gameObject.Tag.Contains("Firewave"))
+                    if ((gameObject.Id != other.gameObject.Id || other.gameObject.Tag == "Dummy") && !other.gameObject.Tag.Contains("Critter") && !other.gameObject.Tag.Contains("Firewave"))
                     {
                         if (other.gameObject.Tag != "Player")
                         {
@@ -294,12 +294,16 @@ namespace MagicGladiators
                                     ability = "Fireball";
                                 }
                                 else ability = gameObject.Tag;
-                                (GameWorld.Instance.player.GetComponent("Player") as Player).GoldReward(4);
-                                GameWorld.Instance.player.DamageDone += (GameWorld.Instance.player.GetComponent(ability) as Ability).damage * other.gameObject.DamageResistance;
-                                GameWorld.Instance.player.TotalScore += (int)((GameWorld.Instance.player.GetComponent(ability) as Ability).damage * other.gameObject.DamageResistance);
-                                if (GameWorld.Instance.client != null)
+                                if (!getScore && gameObject.Id == GameWorld.Instance.player.Id)
                                 {
-                                    GameWorld.Instance.client.SendScore(GameWorld.Instance.player.Id, GameWorld.Instance.player.kills, GameWorld.Instance.player.DamageDone, GameWorld.Instance.player.TotalScore);
+                                    getScore = true;
+                                    (GameWorld.Instance.player.GetComponent("Player") as Player).GoldReward(4);
+                                    GameWorld.Instance.player.DamageDone += (GameWorld.Instance.player.GetComponent(ability) as Ability).damage * other.gameObject.DamageResistance;
+                                    GameWorld.Instance.player.TotalScore += (int)((GameWorld.Instance.player.GetComponent(ability) as Ability).damage * other.gameObject.DamageResistance);
+                                    if (GameWorld.Instance.client != null)
+                                    {
+                                        GameWorld.Instance.client.SendScore(GameWorld.Instance.player.Id, GameWorld.Instance.player.kills, GameWorld.Instance.player.DamageDone, GameWorld.Instance.player.TotalScore);
+                                    }
                                 }
                             }
                             Push();
@@ -340,7 +344,7 @@ namespace MagicGladiators
         {
             foreach (GameObject go in GameWorld.gameObjects)
             {
-                if (Vector2.Distance(new Vector2(go.transform.position.X + 16, go.transform.position.Y + 16), new Vector2(targetHit.transform.position.X + 16, targetHit.transform.position.Y + 16)) < Aoe * shooter.AoeBonus)
+                if (Vector2.Distance(new Vector2(go.transform.position.X + 16, go.transform.position.Y + 16), new Vector2(targetHit.transform.position.X + 16, targetHit.transform.position.Y + 16)) < Aoe * shooter.AoeBonus && (go.Tag == "Enemy" || go.Tag == "Player" || go.Tag == "Dummy"))
                 {
                     Vector2 vectorBetween;
                     if (targetHit.transform.position == go.transform.position)
@@ -381,7 +385,11 @@ namespace MagicGladiators
                             }
                             else
                             {
-                                GameWorld.Instance.client.SendPush(go.Id, vectorBetween, (GameWorld.Instance.player.GetComponent(ability) as Ability).damage * go.DamageResistance);
+                                if (gameObject.Tag == "HomingMissile")
+                                {
+                                    Debug.WriteLine("Homing pushing" + DateTime.Now);
+                                }
+                                GameWorld.Instance.client.SendPush(go.Id, vectorBetween, (GameWorld.Instance.player.GetComponent(ability) as Ability).damage);
                                 if (!GameWorld.buyPhase)
                                 {
 

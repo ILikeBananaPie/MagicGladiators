@@ -1149,9 +1149,16 @@ namespace MagicGladiators
                     }
                     if (playersAlive.Count < 2)
                     {
-                        Thread.Sleep(50);
                         if (currentRound < numberOfRounds)
                         {
+                            foreach (Component component in player.components)
+                            {
+                                if (component is Ability)
+                                {
+                                    (component as Ability).CanShoot = true;
+                                    (component as Ability).CooldownTimer = 0;
+                                }
+                            }
                             //revive all players & reset all stats
                             //CreateDummies();
                             client.SendSwitchPhase();
