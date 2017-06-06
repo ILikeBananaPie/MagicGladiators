@@ -154,8 +154,8 @@ namespace MagicGladiators
             animator.CreateAnimation("Boomerang", new Animation(4, 96, 0, 32, 32, 15, Vector2.Zero, spriteRenderer.Sprite));
             animator.CreateAnimation("GravityWell", new Animation(4, 64, 0, 32, 32, 7, Vector2.Zero, spriteRenderer.Sprite));
 
-            animator.CreateAnimation("FirewaveTopBottom", new Animation(3, 200, 0, 200, 100, 10, Vector2.Zero, spriteRenderer.Sprite));
-            animator.CreateAnimation("FirewaveLeftRight", new Animation(3, 0, 0, 100, 200, 10, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("FirewaveTopBottom", new Animation(3, 200, 0, 200, 100, 1, Vector2.Zero, spriteRenderer.Sprite));
+            animator.CreateAnimation("FirewaveLeftRight", new Animation(3, 0, 0, 100, 200, 1, Vector2.Zero, spriteRenderer.Sprite));
 
             foreach (GameObject go in GameWorld.newObjects)
             {
