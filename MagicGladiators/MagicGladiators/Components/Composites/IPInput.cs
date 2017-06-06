@@ -124,7 +124,7 @@ namespace MagicGladiators
                                 for (int i =0; i < x.Length; i++)
                                 {
                                     string y = string.Empty + x[i];
-                                    if (Regex.IsMatch(y, @"[0-9\.\:]+$"))
+                                    if (Regex.IsMatch(y, @"[0-9\.]+$"))
                                     {
                                         ip += x[i];
                                     }
