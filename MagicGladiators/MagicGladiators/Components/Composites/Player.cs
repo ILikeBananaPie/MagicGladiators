@@ -23,6 +23,9 @@ namespace MagicGladiators
         public static int gold = 300;
         public static float speed = 1;
 
+        private float hitTimer;
+        private bool canBePushed = true;
+
         private Transform transform;
         private SpriteFont fontText;
         private bool testPush;
@@ -116,16 +119,31 @@ namespace MagicGladiators
 
         public void isPushed(Vector2 vectorBetween)
         {
-            testPush = true;
-            testVector = vectorBetween;
-            testVector.Normalize();
-            testVector = testVector * (2 - gameObject.CurrentHealth / gameObject.MaxHealth);
+            if (canBePushed)
+            {
+                canBePushed = false;
+                testPush = true;
+                testVector = vectorBetween;
+                testVector.Normalize();
+                testVector = testVector * (2 - gameObject.CurrentHealth / gameObject.MaxHealth);
+            }
+
+
         }
 
         public void Update()
         {
-            Color color = (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color;
+            if (!canBePushed)
+            {
+                hitTimer += GameWorld.Instance.deltaTime;
+                if (hitTimer > 0.001)
+                {
+                    hitTimer = 0;
+                    canBePushed = true;
+                }
+            }
 
+            Color color = (gameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color;
             foreach (GameObject go in GameWorld.gameObjects)
             {
                 if (go.Tag == "Player" || go.Tag == "Enemy")

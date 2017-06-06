@@ -36,7 +36,7 @@ namespace MagicGladiators
             testVector = target - originalPos;
             testVector.Normalize();
             this.transform = gameObject.transform;
-            damage = 7;
+            damage = 5;
 
         }
 
