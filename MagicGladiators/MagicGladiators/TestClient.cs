@@ -914,7 +914,7 @@ namespace MagicGladiators
                             float damage = msgIn.ReadFloat();
                             float x = msgIn.ReadFloat();
                             float y = msgIn.ReadFloat();
-                            (GameWorld.Instance.player.GetComponent("Player") as Player).isPushed(new Vector2(x, y));
+                            (GameWorld.Instance.player.GetComponent("Player") as Player).isPushed(new Vector2(x, y) * ( 1 + GameWorld.Instance.player.CurrentHealth / GameWorld.Instance.player.MaxHealth));
                             (GameWorld.Instance.player.GetComponent("Player") as Player).TakeDamage(damage * GameWorld.Instance.player.DamageResistance);
                             Debug.WriteLine("Receiving " + (damage * GameWorld.Instance.player.DamageResistance) + " " + DateTime.Now);
                         }
