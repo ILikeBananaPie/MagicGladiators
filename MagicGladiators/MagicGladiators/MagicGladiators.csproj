@@ -160,6 +160,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Extra\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
