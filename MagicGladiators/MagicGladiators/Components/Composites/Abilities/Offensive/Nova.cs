@@ -32,11 +32,11 @@ namespace MagicGladiators
             go = gameObject;
             originalPos = position;
             this.target = target;
-            cooldown = 15;
+            cooldown = 20;
             testVector = target - originalPos;
             testVector.Normalize();
             this.transform = gameObject.transform;
-            damage = 5;
+            damage = 3;
 
         }
 
