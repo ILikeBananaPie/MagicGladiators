@@ -972,7 +972,7 @@ namespace MagicGladiators
                                         {
                                             if (color == Color.White && previousColor == Color.DarkGreen)
                                             {
-                                                go2.Speed += 0.5F;
+                                                //go2.Speed += 0.5F;
                                                 previousColor = color;
 
                                             }

@@ -37,7 +37,7 @@ namespace MagicGladiators
             testVector = target - originalPos;
             testVector.Normalize();
             this.transform = gameObject.transform;
-            cooldown = 10;
+            cooldown = 12;
             damage = 7;
 
         }
