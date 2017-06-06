@@ -850,7 +850,7 @@ namespace MagicGladiators
                                 if (item2.Name == item.Name && item2.upgradeLevel < 3)
                                 {
                                     item2.Upgrade();
-                                    Player.gold -= item2.Value;
+                                    Player.gold -= item.Value;
                                     isBuying = false;
                                     break;
                                 }
