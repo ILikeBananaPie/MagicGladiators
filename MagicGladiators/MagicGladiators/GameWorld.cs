@@ -271,7 +271,7 @@ namespace MagicGladiators
         public void CreateVendorAbilities()
         {
             Director director = new Director(new AbilityIconBuilder());
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 100, "Fire a projectile in the target \n direction, moving towards the \n closest enemy."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 110, "Fire a projectile in the target \n direction, moving towards the \n closest enemy."));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100, "Send you in the target direction. \n Exploding on contact."));
             buySpellPosition();
@@ -279,7 +279,7 @@ namespace MagicGladiators
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Deflect", 100, "Create a shield around you, \n deflecting any spells coming \n your way."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Mine", 100, "Place a static mine at the \n target position. Will explode \n on contact."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Mine", 50, "Place a static mine at the \n target position. Will explode \n on contact."));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "SpeedBoost", 100, "Increase your movement speed \n temporarily"));
             buySpellPosition();
@@ -289,7 +289,7 @@ namespace MagicGladiators
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Nova", 100, "Send out 8 straight flying \n projectiles in different directions."));
             buySpellPosition();
-            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Spellshield", 100, "Create a shield around you, \n deleting any spells coming \n your way."));
+            abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Spellshield", 110, "Create a shield around you, \n deleting any spells coming \n your way."));
             buySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "StoneArmour", 100, "Increase your knockback \n resistance and reduces your \n movement speed temporarily."));
             buySpellPosition();
@@ -342,25 +342,25 @@ namespace MagicGladiators
         {
             // name, hp, speed, dmgRes, lavaRes, value, knockRes, projectileSpeed, LifeSteal
             Director director = new Director(new ItemBuilder());
-            string[] testItem = new string[] { "Speed", "0", "0.05", "0", "0", "50", "0", "0", "0", "0", "0", "0" };
+            string[] testItem = new string[] { "Speed", "0", "0.05", "0", "0", "25", "0", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Hp", "5", "0", "0", "0", "50", "0", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "Hp", "5", "0", "0", "0", "25", "0", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LavaRes", "0", "0", "0", "-0.02", "50", "0", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "LavaRes", "0", "0", "0", "-0.02", "25", "0", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "DmgRes", "0", "0", "-0.02", "0", "50", "0", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "DmgRes", "0", "0", "-0.02", "0", "25", "0", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "50", "0.01", "0", "0", "0", "0", "0" };
+            testItem = new string[] { "KnockRes", "0", "0", "0", "0", "25", "0.01", "0", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "50", "0", "0.05", "0", "0", "0", "0" };
+            testItem = new string[] { "ProjectileSpeed", "0", "0", "0", "0", "25", "0", "0.05", "0", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "50", "0", "0", "0.02", "0", "0", "0" };
+            testItem = new string[] { "LifeSteal", "0", "0", "0", "0", "25", "0", "0", "0.02", "0", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "CDR", "0", "0", "0", "0", "50", "0", "0", "0", "0.05", "0", "0" };
+            testItem = new string[] { "CDR", "0", "0", "0", "0", "25", "0", "0", "0", "0.05", "0", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "AOE", "0", "0", "0", "0", "50", "0", "0", "0", "0", "0.1", "0" };
+            testItem = new string[] { "AOE", "0", "0", "0", "0", "25", "0", "0", "0", "0", "0.1", "0" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
-            testItem = new string[] { "Gold", "0", "0", "0", "0", "50", "0", "0", "0", "0", "0", "0.03" };
+            testItem = new string[] { "Gold", "0", "0", "0", "0", "25", "0", "0", "0", "0", "0", "0.03" };
             itemList.Add(director.ConstructItem(new Vector2(50, 50), testItem));
         }
 
@@ -1196,7 +1196,7 @@ namespace MagicGladiators
                         Player player = (go.GetComponent("Player") as Player);
                         if (client != null && player.lastHitBy != "" && !buyPhase)
                         {
-                            client.SendGold(player.lastHitBy, 20);
+                            client.SendGold(player.lastHitBy, 25);
                             player.lastHitBy = "";
                         }
                     }

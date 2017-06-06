@@ -294,7 +294,7 @@ namespace MagicGladiators
                                     ability = "Fireball";
                                 }
                                 else ability = gameObject.Tag;
-                                (GameWorld.Instance.player.GetComponent("Player") as Player).GoldReward(3);
+                                (GameWorld.Instance.player.GetComponent("Player") as Player).GoldReward(4);
                                 GameWorld.Instance.player.DamageDone += (GameWorld.Instance.player.GetComponent(ability) as Ability).damage * other.gameObject.DamageResistance;
                                 GameWorld.Instance.player.TotalScore += (int)((GameWorld.Instance.player.GetComponent(ability) as Ability).damage * other.gameObject.DamageResistance);
                                 if (GameWorld.Instance.client != null)

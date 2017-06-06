@@ -585,6 +585,7 @@ namespace MagicGladiators
                             }
                             else
                             {
+                                Player.gold += 20;
                                 GameWorld.buyPhase = true;
                                 GameWorld.currentRound++;
                                 GameWorld.Instance.StartRound();
@@ -632,6 +633,7 @@ namespace MagicGladiators
                                         }
                                     }
                                     //SendStartgame();
+                                    Player.gold += 20;
                                     SendSwitchPhase();
                                     GameWorld.Instance.StartRound();
                                     //GameWorld.currentRound++;
