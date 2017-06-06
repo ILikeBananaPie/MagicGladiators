@@ -850,7 +850,7 @@ namespace MagicGladiators
                                 if (item2.Name == item.Name && item2.upgradeLevel < 3)
                                 {
                                     item2.Upgrade();
-                                    Player.gold -= item2.UpgradeValue;
+                                    Player.gold -= item2.Value;
                                     isBuying = false;
                                     break;
                                 }
@@ -937,7 +937,7 @@ namespace MagicGladiators
                 {
                     if (mouseCircle.Intersects((go.GetComponent("Collider") as Collider).CircleCollisionBox))
                     {
-                        if (canBuy && mouse.LeftButton == ButtonState.Pressed && player.CurrentHealth > 0)
+                        if (canBuy && mouse.LeftButton == ButtonState.Pressed && player.CurrentHealth > 0 && !(go is IDeathAbility))
                         {
                             //rebind ability
                             KeyboardState keyState = Keyboard.GetState();
