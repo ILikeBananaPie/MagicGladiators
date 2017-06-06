@@ -305,6 +305,14 @@ namespace MagicGladiators
                                         GameWorld.Instance.client.SendScore(GameWorld.Instance.player.Id, GameWorld.Instance.player.kills, GameWorld.Instance.player.DamageDone, GameWorld.Instance.player.TotalScore);
                                     }
                                 }
+                                if (other.gameObject.Tag.Contains("Critter"))
+                                {
+                                    GameWorld.objectsToRemove.Add(go);
+                                    if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
+                                    {
+                                        GameWorld.Instance.client.SendRemoval(other.gameObject.Tag, other.gameObject.Id);
+                                    }
+                                }
                             }
                             Push();
                         }
@@ -408,14 +416,6 @@ namespace MagicGladiators
                     else if (go.Tag == "Enemy" && gameObject.Tag != "Chain" && gameObject.Tag != "Pillar")
                     {
                         (go.GetComponent("Enemy") as Enemy).Hit(GameWorld.Instance.player);
-                    }
-                    else if (go.Tag.Contains("Critter"))
-                    {
-                        GameWorld.objectsToRemove.Add(go);
-                        if (GameWorld.Instance.client != null && gameObject.Id == GameWorld.Instance.player.Id)
-                        {
-                            GameWorld.Instance.client.SendRemoval(go.Tag, go.Id);
-                        }
                     }
                 }
             }

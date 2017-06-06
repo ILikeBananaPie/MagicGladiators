@@ -55,20 +55,19 @@ namespace MagicGladiators
                 activationTimer += GameWorld.Instance.deltaTime;
                 if (activationTimer > activationTime)
                 {
-                    Color color = Color.White;
-                    foreach (var go in GameWorld.gameObjects)
-                    {
-                        if (go.Tag == "Map")
-                        {
-                            (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
-                            if (GameWorld.Instance.client != null)
-                            {
-                                GameWorld.Instance.client.SendColor("", "Map", color.R, color.G, color.B, color.A);
-                            }
-                        }
+                    //Color color = Color.White;
+                    //foreach (var go in GameWorld.gameObjects)
+                    //{
+                    //    if (go.Tag == "Map")
+                    //    {
+                    //        (go.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
+                    //        if (GameWorld.Instance.client != null)
+                    //        {
+                    //            GameWorld.Instance.client.SendColor("", "Map", color.R, color.G, color.B, color.A);
+                    //        }
+                    //    }
                        
-
-                    }
+                    //}
                     activated = false;
                     activationTimer = 0;
                 }
