@@ -711,16 +711,18 @@ namespace MagicGladiators
                                 }
                                 Vector2 test = (gameObject.GetComponent("Physics") as Physics).GetVector(bestTarget, gameObject.transform.position);
                                 test.Normalize();
-                                if (go.Tag == "Enemy")
-                                {
-                                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 10) * projectileSpeed;
-                                    break;
-                                }
-                                else
-                                {
-                                    (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 10) * projectileSpeed;
-                                    break;
-                                }
+                                (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 5) * projectileSpeed;
+                                break;
+                                //if (go.Tag == "Enemy")
+                                //{
+                                //    (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 10) * projectileSpeed;
+                                //    break;
+                                //}
+                                //else
+                                //{
+                                //    (gameObject.GetComponent("Physics") as Physics).Acceleration += (test / 10) * projectileSpeed;
+                                //    break;
+                                //}
 
                             }
                             if (Vector2.Distance(gameObject.transform.position, go.transform.position) > 300 && (go.Tag == "Dummy" || go.Tag == "Enemy"))
