@@ -140,7 +140,7 @@ namespace MagicGladiators
                         included[i].AddComponent(new OnClick(included[i], "ExitGame"));
                         break;
                     case 4:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaStatistics", 0));
                         included[i].transform.position = new Vector2(GameWorld.Instance.GraphicsDevice.Viewport.Width / 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 3.5f - 40);
                         included[i].AddComponent(new OnClick(included[i], "Statistic"));
                         break;
@@ -416,7 +416,7 @@ namespace MagicGladiators
                         included[i].AddComponent(new OnClick(included[i], "LoginAttempt"));
                         break;
                     case 1:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaCreateAccount", 0));
                         included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
                         included[i].AddComponent(new OnClick(included[i], "CreateAccount"));
                         break;
@@ -450,7 +450,7 @@ namespace MagicGladiators
                 switch (i)
                 {
                     case 0:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaCreateAccount", 0));
                         included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 4 - 40);
                         included[i].AddComponent(new OnClick(included[i], "CreateAttempt"));
                         break;
@@ -502,12 +502,12 @@ namespace MagicGladiators
                 switch (i)
                 {
                     case 0:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaToMainMenu", 0));
                         included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 1 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
                         included[i].AddComponent(new OnClick(included[i], "MainMenu"));
                         break;
                     case 1:
-                        included[i].AddComponent(new SpriteRenderer(included[i], "Placeholder", 0));
+                        included[i].AddComponent(new SpriteRenderer(included[i], "AlphaToLobby", 0));
                         included[i].transform.position = new Vector2((GameWorld.Instance.GraphicsDevice.Viewport.Width / 3) * 2 - 180, (GameWorld.Instance.GraphicsDevice.Viewport.Height / 6) * 5 - 40);
                         included[i].AddComponent(new OnClick(included[i], "BackToLobby"));
                         break;
