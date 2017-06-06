@@ -96,11 +96,9 @@ namespace MagicGladiators
                     //{
                     //    //do nothing
                     //}
+                    (component as IUpdateable).Update();
 
-                    else
-                    {
-                        (component as IUpdateable).Update();
-                    }
+
                 }
                 if (component is IAbility && !(component is IDeathAbility))
                 {
