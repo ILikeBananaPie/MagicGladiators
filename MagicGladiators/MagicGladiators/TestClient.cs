@@ -24,9 +24,6 @@ namespace MagicGladiators
         private SpriteFont font;
         public static string text = "";
         private static readonly object locker = new object();
-        private int test = 0;
-        private string playerIDTest;
-        private string EnemyIDTest;
         public string TestName { get; set; } = "";
         public string TestID { get; set; } = "";
         private string[] directions = new string[4] { "Up", "Down", "Left", "Right" };
@@ -35,7 +32,7 @@ namespace MagicGladiators
         private Color previousColor = Color.White;
         public List<GameObject> readyList { get; set; } = new List<GameObject>();
         private Random rnd = new Random();
-
+        
         //private float TestTimer;
 
         public TestClient(string ip)
