@@ -30,7 +30,7 @@ namespace MagicGladiators
             return origin - target;
         }
 
-        public Vector2 physicsBreak(float breakFactor, Vector2 velocity)
+        public Vector2 Friction(float breakFactor, Vector2 velocity)
         {
             if (gameObject.Tag == "Dummy")
             {
@@ -107,8 +107,7 @@ namespace MagicGladiators
         {
 
             Velocity = UpdateVelocity(Acceleration, Velocity);
-            Acceleration = physicsBreak(breakFactor, Velocity);
-
+            Acceleration = Friction(breakFactor, Velocity);
 
         }
     }

@@ -98,7 +98,7 @@ namespace CoreTest
         public void PhysicsBreakTestIf()
         {
             Physics physics = new Physics(new GameObject());
-            Vector2 actual = physics.physicsBreak(0.05F, new Vector2(1, 1));
+            Vector2 actual = physics.Friction(0.05F, new Vector2(1, 1));
             Vector2 expected = new Vector2(-0.05F, -0.05F);
             Assert.AreEqual(actual, expected);
         }
@@ -107,7 +107,7 @@ namespace CoreTest
         public void PhysicsBreakTestElse()
         {
             Physics physics = new Physics(new GameObject());
-            Vector2 actual = physics.physicsBreak(0.05F, new Vector2(0.0025F, 0.0025F));
+            Vector2 actual = physics.Friction(0.05F, new Vector2(0.0025F, 0.0025F));
             Vector2 expected = new Vector2(0, 0);
             //Assert.AreEqual(actual, expected);
         }
