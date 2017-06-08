@@ -60,6 +60,7 @@ namespace MagicGladiators
             if (updateThread == null)
             {
                 updateThread = new Thread(ThreadUpdate);
+                updateThread.Start();
             }
         }
 
@@ -103,9 +104,7 @@ namespace MagicGladiators
 
         public void NewPlaystate(SongState ss)
         {
-            Debug.WriteLine("Request new state: " + ss.ToString());
             newSong = ss;
-            Debug.WriteLine("newSong after request: " + newSong.ToString());
             
         }
 
