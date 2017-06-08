@@ -578,6 +578,7 @@ namespace MagicGladiators
             catch (NullReferenceException nre) { }
 
             // TODO: Add your update logic here
+            SaMM.i.Update();
             if (CurrentScene.scenetype == "Practice" || CurrentScene.scenetype == "Play")
             {
                 SaMM.i.NewPlaystate(SongState.Battle);
