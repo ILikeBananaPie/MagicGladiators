@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Content;
 using System.Threading;
+using System.Diagnostics;
 
 namespace MagicGladiators
 {
@@ -65,23 +66,28 @@ namespace MagicGladiators
         private Thread updateThread;
         private void ThreadUpdate()
         {
-            SongState nextSong = SongState.Menu;
+            SongState nextSong;
+            Debug.WriteLine("Thread Started");
             while (true)
             {
                 nextSong = newSong;
+                Debug.WriteLine("next song: " + nextSong.ToString() + " | new song: " + newSong.ToString() + " | lastSong: " + lastSong.ToString());
                 if (lastSong != nextSong)
                 {
+                    Debug.WriteLine("Last song is not equal to next song");
                     if (nextSong == SongState.Battle)
                     {
+                        Debug.WriteLine("Tries playing battle");
                         MediaPlayer.Play(bbgm);
                     }
                     if (nextSong == SongState.Menu)
                     {
+                        Debug.WriteLine("Tries playing battle");
                         MediaPlayer.Play(mbgm);
                     }
                     lastSong = nextSong;
                 }
-                Thread.Sleep(20);
+                Thread.Sleep(200);
             }
         }
 
@@ -97,7 +103,9 @@ namespace MagicGladiators
 
         public void NewPlaystate(SongState ss)
         {
+            Debug.WriteLine("Request new state: " + ss.ToString());
             newSong = ss;
+            Debug.WriteLine("newSong after request: " + newSong.ToString());
             
         }
 
