@@ -32,10 +32,6 @@ namespace MagicGladiators
 
         public Vector2 Friction(float breakFactor, Vector2 velocity)
         {
-            if (gameObject.Tag == "Dummy")
-            {
-
-            }
             float distanceTest = Vector2.Distance(velocity, Vector2.Zero);
             if (!(Vector2.Distance(velocity, Vector2.Zero) < 0.005F && Vector2.Distance(velocity, Vector2.Zero) > -0.005F) && gameObject.Id == GameWorld.Instance.player.Id)
             {

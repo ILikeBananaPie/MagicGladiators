@@ -248,22 +248,22 @@ namespace MagicGladiators
                 {
                     go.transform.position = playerpositions[go.ConnectionNumber];
                 }
-                if (go.Tag == "Enemy")
-                {
-                    if (index == 0)
-                    {
-                        go.transform.position = new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16);
-                    }
-                    if (index == 1)
-                    {
-                        go.transform.position = new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16);
-                    }
-                    if (index == 2)
-                    {
-                        go.transform.position = new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280);
-                    }
-                    index++;
-                }
+                //if (go.Tag == "Enemy")
+                //{
+                //    if (index == 0)
+                //    {
+                //        go.transform.position = new Vector2(mapCenter.X - 16 - 280, mapCenter.Y - 16);
+                //    }
+                //    if (index == 1)
+                //    {
+                //        go.transform.position = new Vector2(mapCenter.X - 16 + 280, mapCenter.Y - 16);
+                //    }
+                //    if (index == 2)
+                //    {
+                //        go.transform.position = new Vector2(mapCenter.X - 16, mapCenter.Y - 16 + 280);
+                //    }
+                //    index++;
+                //}
             }
             characters.Clear();
             characterColliders.Clear();
@@ -274,35 +274,35 @@ namespace MagicGladiators
         {
             Director director = new Director(new AbilityIconBuilder());
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "HomingMissile", 110, "Fire a projectile in the target \n direction, moving towards the \n closest enemy."));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Charge", 100, "Send you in the target direction."));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Drain", 100, "Fire a slow moving projectile \n in the target direction."));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Deflect", 100, "Create a shield around you, \n deflecting any spells coming \n your way."));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Mine", 50, "Place a static mine at the \n target position. Will explode \n on contact."));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "SpeedBoost", 100, "Increase your movement speed \n temporarily"));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Chain", 100, "Fires a slow moving projectile, \n that pulls you and the target \n together for a period of time."));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Blink", 100, "Instantly moves your character \n towards the target direction."));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Nova", 100, "Send out 8 straight flying \n projectiles in different directions."));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Spellshield", 110, "Create a shield around you, \n deleting any spells coming \n your way."));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "StoneArmour", 100, "Increase your knockback \n resistance and reduces your \n movement speed temporarily."));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Boomerang", 100, "Fire a projectile that return to \n your position"));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Recall", 100, "Teleport you to the position, you \n had when casting the spell"));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "GravityWell", 100, "Fire a projektile that pulls \n people in an area towards it."));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "MirrorImage", 100, "Create 3 clones of yourself. \n The clones mimics your fireball"));
-            buySpellPosition();
+            BuySpellPosition();
             abilityList.Add(director.ConstructIcon(new Vector2(buySpellX, buySpellY), "Invisibility", 100, "Become invisible to other players"));
 
             int x = Player.deathAbilities.Count * 34;
@@ -433,7 +433,7 @@ namespace MagicGladiators
             #endregion
         }
 
-        public void buySpellPosition()
+        public void BuySpellPosition()
         {
             if (buySpellX == Window.ClientBounds.Width - 42)
             {
@@ -611,6 +611,7 @@ namespace MagicGladiators
                     }
                 }
             }
+
             if (CurrentScene.scenetype == "Practice")
             {
                 foreach (GameObject go in gameObjects)
@@ -709,6 +710,7 @@ namespace MagicGladiators
                         }
                     }
                 }
+
                 if (NextScene.scenetype == "Practice")
                 {
                     CreateMap(selectedMap);
@@ -732,6 +734,7 @@ namespace MagicGladiators
                         go.LoadContent(Content);
                     }
                 }
+
                 if (NextScene.scenetype == "Host" || NextScene.scenetype == "Joined")
                 {
                     Director director = new Director(new PlayerBuilder());
@@ -1139,14 +1142,8 @@ namespace MagicGladiators
                                     (component as Ability).CooldownTimer = 0;
                                 }
                             }
-                            //revive all players & reset all stats
-                            //CreateDummies();
                             client.SendSwitchPhase();
-                            //player.TotalScore += player.RoundScore;
-                            //player.RoundScore = 0;
                             StartRound();
-                            //CreateMap(selectedMap);
-                            //ResetCharacters();
                             buyPhase = true;
                             currentRound++;
                         }
@@ -1156,8 +1153,6 @@ namespace MagicGladiators
                             currentRound = 1;
                             waitingForServerResponse = true;
                             client.SendEnding();
-                            //Thread.Sleep(50);
-                            //NextScene = Scene.PostScreen();
                         }
                     }
                 }
@@ -1236,29 +1231,20 @@ namespace MagicGladiators
 
             }
 
-
-
-
             DrawPlayerAbilities();
 
             if (buyPhase)
             {
                 DrawVendorItems();
-
                 DrawPlayerItems();
-
                 DrawVendorAbilities();
-
                 DrawTooltipVenderItem(mouse, mouseCircle);
-
                 DrawTooltipVenderAbility(mouse, mouseCircle);
-
                 DrawTooltipPlayerItem(mouse, mouseCircle);
-
                 DrawTooltipPlayerAbility(mouse, mouseCircle);
-
-
             }
+
+
             if (CurrentScene.scenetype == "Practice")
             {
                 if (player != null)

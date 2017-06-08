@@ -93,7 +93,6 @@ namespace CoreTest
 
 
 
-
         [TestMethod]
         public void PhysicsBreakTestIf()
         {
@@ -109,7 +108,7 @@ namespace CoreTest
             Physics physics = new Physics(new GameObject());
             Vector2 actual = physics.Friction(0.05F, new Vector2(0.0025F, 0.0025F));
             Vector2 expected = new Vector2(0, 0);
-            //Assert.AreEqual(actual, expected);
+            Assert.AreEqual(actual, expected);
         }
 
 
@@ -149,6 +148,9 @@ namespace CoreTest
             Vector2 expected = new Vector2(float.MinValue, float.MinValue);
             Assert.AreEqual(actual, expected);
         }
+
+
+
 
         [TestMethod]
         public void TestingFloatMaxValue()

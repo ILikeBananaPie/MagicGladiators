@@ -23,7 +23,6 @@ namespace MagicGladiators
         private SpriteBatch spriteBatch;
         private SpriteFont font;
         public static string text = "";
-        private static readonly object locker = new object();
         public string TestName { get; set; } = "";
         public string TestID { get; set; } = "";
         private string[] directions = new string[4] { "Up", "Down", "Left", "Right" };

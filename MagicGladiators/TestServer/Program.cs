@@ -32,11 +32,8 @@ namespace TestServer
             NetPeerConfiguration config = new NetPeerConfiguration("Server");
             config.Port = 51234;
             config.MaximumConnections = 8;
-            //config.EnableMessageType(NetIncomingMessageType.)
             config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
             config.EnableMessageType(NetIncomingMessageType.StatusChanged);
-            //config.EnableMessageType(NetIncomingMessageType.)
-            //config.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
             server = new NetServer(config);
             server.Start();
 

@@ -130,7 +130,9 @@ namespace MagicGladiators
             int index = 0;
             spriteBatch.DrawString(fontText, Name, new Vector2(x + 50, y - 50), Color.White, 0, Vector2.Zero, 1F, SpriteEffects.None, 1);
             plus += 20;
+
             var fieldValues2 = this.GetType().GetProperties().Select(field => field.GetValue(this)).ToList();
+
             for (int i = 1; i < fieldValues2.Count - 5; i++)
             {
                 object obj = fieldValues2[i];
