@@ -59,6 +59,7 @@ namespace MagicGladiators
         {
             if (updateThread == null)
             {
+                Debug.WriteLine("Creating Thread");
                 updateThread = new Thread(ThreadUpdate);
                 updateThread.Start();
             }
