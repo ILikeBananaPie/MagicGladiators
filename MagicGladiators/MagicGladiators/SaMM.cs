@@ -59,7 +59,6 @@ namespace MagicGladiators
         {
             if (updateThread == null)
             {
-                Debug.WriteLine("Creating Thread");
                 updateThread = new Thread(ThreadUpdate);
                 updateThread.Start();
             }
@@ -69,22 +68,17 @@ namespace MagicGladiators
         private void ThreadUpdate()
         {
             SongState nextSong;
-            Debug.WriteLine("Thread Started");
             while (true)
             {
                 nextSong = newSong;
-                Debug.WriteLine("next song: " + nextSong.ToString() + " | new song: " + newSong.ToString() + " | lastSong: " + lastSong.ToString());
                 if (lastSong != nextSong)
                 {
-                    Debug.WriteLine("Last song is not equal to next song");
                     if (nextSong == SongState.Battle)
                     {
-                        Debug.WriteLine("Tries playing battle");
                         MediaPlayer.Play(bbgm);
                     }
                     if (nextSong == SongState.Menu)
                     {
-                        Debug.WriteLine("Tries playing battle");
                         MediaPlayer.Play(mbgm);
                     }
                     lastSong = nextSong;
