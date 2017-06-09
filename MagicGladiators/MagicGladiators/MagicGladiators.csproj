@@ -38,7 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AbilityIcon.cs" />
+    <Compile Include="Components\Composites\AbilityIcon.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="Builder\AbilityIconBuilder.cs" />
     <Compile Include="Builder\Director.cs" />
