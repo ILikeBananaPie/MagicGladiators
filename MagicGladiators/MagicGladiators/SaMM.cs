@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Content;
+using System.Threading;
+using System.Diagnostics;
 
 namespace MagicGladiators
 {
@@ -55,7 +57,34 @@ namespace MagicGladiators
 
         public void Update()
         {
-            //MediaPlayer.Volume = (volume / 100);
+            if (updateThread == null)
+            {
+                updateThread = new Thread(ThreadUpdate);
+                updateThread.Start();
+            }
+        }
+
+        private Thread updateThread;
+        private void ThreadUpdate()
+        {
+            SongState nextSong;
+            while (true)
+            {
+                nextSong = newSong;
+                if (lastSong != nextSong)
+                {
+                    if (nextSong == SongState.Battle)
+                    {
+                        MediaPlayer.Play(bbgm);
+                    }
+                    if (nextSong == SongState.Menu)
+                    {
+                        MediaPlayer.Play(mbgm);
+                    }
+                    lastSong = nextSong;
+                }
+                Thread.Sleep(200);
+            }
         }
 
         public void LoadContent(ContentManager content)
@@ -70,19 +99,8 @@ namespace MagicGladiators
 
         public void NewPlaystate(SongState ss)
         {
-            //newSong = ss;
-            if (lastSong != ss)
-            {
-                if (ss == SongState.Battle)
-                {
-                    MediaPlayer.Play(bbgm);
-                }
-                if (ss == SongState.Menu)
-                {
-                    MediaPlayer.Play(mbgm);
-                }
-                lastSong = ss;
-            }
+            newSong = ss;
+            
         }
 
         public void MuteMusic()

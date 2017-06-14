@@ -32,11 +32,6 @@ namespace MagicGladiators
             {
                 if (mouse.RightButton == ButtonState.Pressed && canShoot && !GameWorld.Instance.MouseOnIcon)
                 {
-                    Thread.Sleep(50);
-                    if (!GameWorld.buyPhase)
-                    {
-
-                    }
                     canShoot = false;
                     Director director = new Director(new ProjectileBuilder());
                     director.ConstructProjectile(new Vector2(gameObject.transform.position.X, gameObject.transform.position.Y), new Vector2(mouse.Position.X, mouse.Position.Y), "Fireball", gameObject, gameObject.Id);
@@ -112,7 +107,6 @@ namespace MagicGladiators
                     }
                 }
             }
-          
         }
     }
 }

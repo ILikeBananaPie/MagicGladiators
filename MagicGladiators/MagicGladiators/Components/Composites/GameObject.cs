@@ -88,14 +88,6 @@ namespace MagicGladiators
             {
                 if (component is IUpdateable)
                 {
-                    //if ((component is IDeathAbility) && GameWorld.Instance.player.CurrentHealth < 0)
-                    //{
-                    //    (component as IDeathAbility).Update();
-                    //}
-                    //else if ((component is IDeathAbility) && GameWorld.Instance.player.CurrentHealth > 0)
-                    //{
-                    //    //do nothing
-                    //}
                     (component as IUpdateable).Update();
                 }
                 if (component is IAbility && !(component is IDeathAbility))

@@ -21,10 +21,10 @@ namespace MagicGladiators
             this.name = name;
         }
 
-        public static T ConvertToType<T>(object input)
-        {
-            return (T)Convert.ChangeType(input, typeof(T));
-        }
+        //public static T ConvertToType<T>(object input)
+        //{
+        //    return (T)Convert.ChangeType(input, typeof(T));
+        //}
 
         public Component GetComponent(GameObject gameObject, Vector2 position)
         {
@@ -158,9 +158,5 @@ namespace MagicGladiators
             }
             return component;
         }
-
-
-
-
     }
 }
