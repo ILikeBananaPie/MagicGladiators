@@ -1,0 +1,723 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MagicGladiators.AbilityIcon" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgCAABAAQ=</HashCode>
+      <FileName>AbilityIcon.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Animation" Collapsed="true">
+    <Position X="110.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAQAAgAAAAAAAAAgAAAgAA=</HashCode>
+      <FileName>Animation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.AbilityIconBuilder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="108.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAgAAAgAAAAAAQAAAAAQAAAkAAAAAAAAA=</HashCode>
+      <FileName>Builder\AbilityIconBuilder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MagicGladiators.Director" Collapsed="true">
+    <Position X="115.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAgAAAAAAAAEAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Builder\Director.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.DummyBuilder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="108.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAgAAAgAAAAAAQAAAAAQAAAkAAAAAAAAA=</HashCode>
+      <FileName>Builder\DummyBuilder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MagicGladiators.HomingMissileBuilder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="114" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAgAAAgAAAAAAQAAAAAQAAAkAAAAAAAAA=</HashCode>
+      <FileName>Builder\HomingMissileBuilder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MagicGladiators.ItemBuilder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="108.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAgAAAgAAAAAAQAAAAAQAAAkAAAAAAAAA=</HashCode>
+      <FileName>Builder\ItemBuilder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MagicGladiators.MapBuilder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="110.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAgAAAgAAAAAAQAAAAAQAAAkAAAAAAAAA=</HashCode>
+      <FileName>Builder\MapBuilder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MagicGladiators.PlayerBuilder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="114" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAgACAgAAAAAAQAAAAAQAAAkAAAAAAAAA=</HashCode>
+      <FileName>Builder\PlayerBuilder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MagicGladiators.ProjectileBuilder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="108.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAgAAAgAAAAAAQAAAAAQAAAkAAAAAAAAA=</HashCode>
+      <FileName>Builder\ProjectileBuilder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MagicGladiators.Critters" Collapsed="true">
+    <Position X="5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAACAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\DeathAbilities\Critters.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.DeathAbility" Collapsed="true">
+    <Position X="70.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAAAAABAAAACAAAAAgAAAAAgAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\DeathAbilities\DeathAbility.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.DeathMine" Collapsed="true">
+    <Position X="9.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FAQAAAAAAAAAAgAAAAAAQAAAAAAEAAAIAAAAAQAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\DeathAbilities\DeathMine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Firewave" Collapsed="true">
+    <Position X="11.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAAAAAAAAAAAAIAAQAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\DeathAbilities\Firewave.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.RollingMeteor" Collapsed="true">
+    <Position X="14" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FAUEAACEAAAAIgAAAAIAQAAAEAAEAABIAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\DeathAbilities\RollingMeteor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.ShrinkMap" Collapsed="true">
+    <Position X="16.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\DeathAbilities\ShrinkMap.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.SlowField" Collapsed="true">
+    <Position X="18.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAIAQAwAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\DeathAbilities\SlowField.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.DefensiveAbility" Collapsed="true">
+    <Position X="48.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Defensive\DefensiveAbility.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Deflect" Collapsed="true">
+    <Position X="45.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQQACAAAAAAACAAAAAAAyAQAABAAAAAAAAAABAAAAAU=</HashCode>
+      <FileName>Components\Composites\Abilities\Defensive\Deflect.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Invisibility" Collapsed="true">
+    <Position X="2.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAQAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Defensive\Invisibility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.Mine" Collapsed="true">
+    <Position X="47.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAQAAAAAAAAAAAIAAAAAQAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Defensive\Mine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.MirrorImage" Collapsed="true">
+    <Position X="7.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAAAAAAAAAAAAAAAYAQAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Defensive\MirrorImage.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Spellshield" Collapsed="true">
+    <Position X="50" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQQACAAAAAAAAAAAAAAASAQAABAAAAAAAAAAAAAAAAU=</HashCode>
+      <FileName>Components\Composites\Abilities\Defensive\Spellshield.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.StoneArmour" Collapsed="true">
+    <Position X="52.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAYAQAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Defensive\StoneArmour.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Blink" Collapsed="true">
+    <Position X="23" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAAAAAAAAAgAAIAAQQAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Mobility\Blink.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Charge" Collapsed="true">
+    <Position X="25.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAgAQAAAAAAgAAIAAQQAAAAABEAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Mobility\Charge.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.MobilityAbility" Collapsed="true">
+    <Position X="24" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Mobility\MobilityAbility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.Recall" Collapsed="true">
+    <Position X="27.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAIggAAAI=</HashCode>
+      <FileName>Components\Composites\Abilities\Mobility\Recall.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.SpeedBoost" Collapsed="true">
+    <Position X="20.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAARAwAAAAAAAgABAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Mobility\SpeedBoost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.Boomerang">
+    <Position X="29.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Offensive\Boomerang.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.Chain">
+    <Position X="32" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Offensive\Chain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.Drain" Collapsed="true">
+    <Position X="34.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Offensive\Drain.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Fireball" Collapsed="true">
+    <Position X="36.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Offensive\Fireball.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.GravityWell" Collapsed="true">
+    <Position X="38.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Offensive\GravityWell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.HomingMissile" Collapsed="true">
+    <Position X="41" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FAQAAAQAAAAAIAAAIAAQAAAAAAAEAAABAAAAAQAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Offensive\HomingMissile.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Nova" Collapsed="true">
+    <Position X="43.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FAQAAAQAAAAAIAAAIAAQAAAAAAAEAAABAAAAAQAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Offensive\Nova.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.OffensiveAbility" Collapsed="true">
+    <Position X="36.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Abilities\Offensive\OffensiveAbility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.Ability" Collapsed="true">
+    <Position X="27.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAJAAAggQAAAAABAAAACAAAAAiAQAAAgAAAAA=</HashCode>
+      <FileName>Components\Composites\Ability.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Client" Collapsed="true">
+    <Position X="56.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQAEBAECEAAgAAACAAKAAAAAAAAAAAAAAgAQAKAAQ=</HashCode>
+      <FileName>Components\Composites\Client.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Clone" Collapsed="true">
+    <Position X="63.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQQAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAU=</HashCode>
+      <FileName>Components\Composites\Clone.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Critter" Collapsed="true">
+    <Position X="72.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQQAAAAAAAAgAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAQ=</HashCode>
+      <FileName>Components\Composites\Critter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Dummy" Collapsed="true">
+    <Position X="79.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FAQAAATAAAAAIAAAAEAAAAAAAAAAAAAMAAAAIQEAAIw=</HashCode>
+      <FileName>Components\Composites\Dummy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Enemy" Collapsed="true">
+    <Position X="83.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQQAABAAAAAAAAAAAAIQAgAAAAAABAAAACQAgQAAAAw=</HashCode>
+      <FileName>Components\Composites\Enemy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.GameObject" Collapsed="true">
+    <Position X="88.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ASQCIA6AEAD4CoAAAAGADAQBAAIOAAAMAAIIgEAAAIQ=</HashCode>
+      <FileName>Components\Composites\GameObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.IPInput" Collapsed="true">
+    <Position X="92.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAEAAAAAAAgAAACAAIIEACAAFAAAAAABwAAAAAAQ=</HashCode>
+      <FileName>Components\Composites\IPInput.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Item" Collapsed="true">
+    <Position X="97.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FSAACgYAEABAAiBAAAAgAAQBAAAAAAAAAgAgAEAAAAQ=</HashCode>
+      <FileName>Components\Composites\Item.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.LobbyMenuButton" Collapsed="true">
+    <Position X="104" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAABAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Components\Composites\LobbyMenuButton.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Map" Collapsed="true">
+    <Position X="54.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FQQAAQQAAAAAAgAAAAAAgAAQARAAAAAMAQABAAAAAA0=</HashCode>
+      <FileName>Components\Composites\Map.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Muter" Collapsed="true">
+    <Position X="59" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Components\Composites\Muter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.OnClick" Collapsed="true">
+    <Position X="65.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAABABAAAAAAAACAAAAAEAAAAAAAABAAAAAQ=</HashCode>
+      <FileName>Components\Composites\OnClick.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Password" Collapsed="true">
+    <Position X="74.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAEAAAAAAAgAAACAAIIEACAAFAAAAAAAwAgAAAAQ=</HashCode>
+      <FileName>Components\Composites\Password.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Player" Collapsed="true">
+    <Position X="86" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FQQAAQZBEAAAIgAAAMgUAACAABAEBQCMACAIooQAAIU=</HashCode>
+      <FileName>Components\Composites\Player.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Projectile" Collapsed="true">
+    <Position X="90.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FQQEBASAgYQcIRAAcIAQAACAxEQEAACLQAAAgQAACAU=</HashCode>
+      <FileName>Components\Composites\Projectile.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Server" Collapsed="true">
+    <Position X="95" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAEAAiAAACAAABAAAAAAABAAIAAAAQAIAAQ=</HashCode>
+      <FileName>Components\Composites\Server.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Username" Collapsed="true">
+    <Position X="99.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAEAAAAAAAgAAACAAIIEACAAFAAAAAAAwAAAAAAQ=</HashCode>
+      <FileName>Components\Composites\Username.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Animator" Collapsed="true">
+    <Position X="101.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAgAABAAAAACAAAgAAgAAgAAAggAAAABAAAAAAAAA=</HashCode>
+      <FileName>Components\Leafs\Animator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Collider" Collapsed="true">
+    <Position X="106.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAiEAAiIAAAAAAAAAAgCAAAAAAAAAAYQ=</HashCode>
+      <FileName>Components\Leafs\Collider.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Component" Collapsed="true">
+    <Position X="53.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAgAEAAQAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Components\Leafs\Component.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Physics" Collapsed="true">
+    <Position X="61.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAREAAAAAIAAAIgAAAAAAAAAAAAAAAASAAAGAABEAAA=</HashCode>
+      <FileName>Components\Leafs\Physics.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.SpriteRenderer" Collapsed="true">
+    <Position X="68" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAgAAAAIAAAAAAAAgAACQAAAAgAAAgAQ=</HashCode>
+      <FileName>Components\Leafs\SpriteRenderer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MagicGladiators.Transform" Collapsed="true">
+    <Position X="77" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAIAAAAAAAAAAAACAEgAAAgAA=</HashCode>
+      <FileName>Components\Leafs\Transform.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.CreateAbility" Collapsed="true">
+    <Position X="112.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAgAABAAAAAAEAAAAAAAAgAAAQAA=</HashCode>
+      <FileName>CreateAbility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.dbCon" Collapsed="true">
+    <Position X="114" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAKAAAAEABAAABEAABBRAAADAAAAABAKACAAAABBAQ=</HashCode>
+      <FileName>dbCon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.GameWorld" Collapsed="true">
+    <Position X="112.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QASAFksMgUEJR8LEAzZpaKIhIEBFxIpZxQApBqCAmAY=</HashCode>
+      <FileName>GameWorld.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.Program" Collapsed="true">
+    <Position X="115.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.SaMM" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="110.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAgFAAAAIAAAAABQQAABAAAAAAIEIAAAAAACAAQ=</HashCode>
+      <FileName>SaMM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MagicGladiators.Scene" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="112.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oAQAAAAEgAAABgwAABAgDAQwBAABCABAgAAQAAAAAAQ=</HashCode>
+      <FileName>Scene\Scene.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MagicGladiators.FollowTarget" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="110.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAQAIAAAAAAAAAAEAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Strategies\FollowTarget.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MagicGladiators.Idle" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="115.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Strategies\Idle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MagicGladiators.Move" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="112.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAQAAAAAIgQAAAAAAAAAAAAEAAAJAAAAAAAAAAA=</HashCode>
+      <FileName>Strategies\Move.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MagicGladiators.StringExt" Collapsed="true">
+    <Position X="114" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>StringExt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.TestClient">
+    <Position X="115.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BSYGREAAEAJQIgCAADCVAJAKDEQEIACKAACABQCBAAA=</HashCode>
+      <FileName>TestClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.UpdatePackage" Collapsed="true">
+    <Position X="108.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAEAAAAAAAAAAAAACAAAIAAAACBAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>UpdatePackage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MagicGladiators.Components.Composites.InputReciever" Collapsed="true">
+    <Position X="81.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\InputReciever.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="MagicGladiators.Circle" Collapsed="true">
+    <Position X="108.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAIA=</HashCode>
+      <FileName>Circle.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="MagicGladiators.IBuilder" Collapsed="true">
+    <Position X="112.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAgAAAgAAAAAAQAAAAAQAAAEAAAAAAAAA=</HashCode>
+      <FileName>Builder\IBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MagicGladiators.IAbility" Collapsed="true">
+    <Position X="108.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Interfaces\IAbility.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MagicGladiators.IAnimateable" Collapsed="true">
+    <Position X="110.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Components\Interfaces\IAnimateable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MagicGladiators.ICollisionEnter" Collapsed="true">
+    <Position X="114" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Interfaces\ICollisionEnter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MagicGladiators.ICollisionExit" Collapsed="true">
+    <Position X="115.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Interfaces\ICollisionExit.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MagicGladiators.ICollisionStay" Collapsed="true">
+    <Position X="108.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Interfaces\ICollisionStay.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MagicGladiators.IDeathAbility" Collapsed="true">
+    <Position X="110.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Interfaces\IDeathAbility.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MagicGladiators.IDrawable" Collapsed="true">
+    <Position X="112.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Interfaces\IDrawable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MagicGladiators.ILoadable" Collapsed="true">
+    <Position X="114" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Components\Interfaces\ILoadable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MagicGladiators.IUpdateable" Collapsed="true">
+    <Position X="108.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Interfaces\IUpdateable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MagicGladiators.IStrategy" Collapsed="true">
+    <Position X="115.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Strategies\IStrategy.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="MagicGladiators.actions" Collapsed="true">
+    <Position X="108.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Ability.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MagicGladiators.DIRECTION" Collapsed="true">
+    <Position X="115.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAEAAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAA=</HashCode>
+      <FileName>Components\Composites\Player.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MagicGladiators.dbMatching" Collapsed="true">
+    <Position X="112.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAQEAAAAAAAABAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>dbCon.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MagicGladiators.dbCreate" Collapsed="true">
+    <Position X="110.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEBAgAAACAAAAAAAAAAAAI=</HashCode>
+      <FileName>dbCon.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MagicGladiators.dbTables" Collapsed="true">
+    <Position X="114" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>dbCon.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MagicGladiators.ObjectType" Collapsed="true">
+    <Position X="110.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameWorld.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MagicGladiators.GameState" Collapsed="true">
+    <Position X="108.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>GameWorld.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MagicGladiators.SongState" Collapsed="true">
+    <Position X="114" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SaMM.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MagicGladiators.PacketType" Collapsed="true">
+    <Position X="112.25" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RKAAAAEAGAAQiAkAgDAAQAAgJACAAAAABEQAAChACDM=</HashCode>
+      <FileName>TestClient.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
